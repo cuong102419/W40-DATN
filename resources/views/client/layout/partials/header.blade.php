@@ -36,7 +36,7 @@
                     <div class="header-middle-align ps-4 pe-4">
                         <div class="header-middle-align-start">
                             <div class="header-logo-area">
-                                <a href="index.html">
+                                <a href="{{ route('home') }}">
                                     <img class="logo-main" src="{{ asset('client/img/logo1.webp')}}" width="170"
                                         height="34" alt="Logo" />
                                     <img class="logo-light" src="{{ asset('client/img/logo-light.webp')}}" width="131"
