@@ -9,7 +9,7 @@
                         <div class="about-widget-wrap">
                             <div class="widget-logo-area">
                                 <a href="index.html">
-                                    <img class="logo-main" src="{{ asset('client/img/logo-light.webp')}}" width="131"
+                                    <img class="logo-main" src="{{ asset('client/img/logo1.webp')}}" width="170"
                                         height="34" alt="Logo" />
                                 </a>
                             </div>

@@ -28,7 +28,7 @@
         </ul>
         <p class="cart-total"><span>Subtotal:</span><span class="amount">£89.99</span></p>
         <a class="btn-theme" data-margin-bottom="10" href="{{ route('cart.index') }}">Xem giỏ hàng</a>
-        <a class="btn-theme" href="shop-checkout.html">Thanh toán</a>
+        <a class="btn-theme" href="{{ route('order.index') }}">Thanh toán</a>
         <a class="d-block text-end lh-1" href="shop-checkout.html"><img
                 src="{{ asset('client/img/photos/paypal.webp')}}" width="133" height="26" alt="Has-image"></a>
     </div>

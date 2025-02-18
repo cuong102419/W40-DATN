@@ -101,9 +101,9 @@
                                     </tr>
                                     <tr class="actions">
                                         <td class="border-0" colspan="6">
-                                            <button type="submit" class="update-cart" disabled>Update cart</button>
-                                            <button type="submit" class="clear-cart">Clear Cart</button>
-                                            <a href="shop.html" class="btn-theme btn-flat">Continue Shopping</a>
+                                            <button type="submit" class="update-cart" disabled>Cập nhật giỏ hàng</button>
+                                            <button type="submit" class="clear-cart">Xóa giỏ hàng</button>
+                                            <a href="{{ route('product.index') }}" class="btn-theme btn-flat">Tiếp tục mua sắm</a></a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -239,7 +239,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <a class="btn-theme btn-flat" href="shop-checkout.html">Proceed to checkout</a>
+                        <a class="btn-theme btn-flat" href="{{ route('order.index') }}">Thanh toán</a>
+
                     </div>
                 </div>
             </div>
