@@ -85,7 +85,7 @@ Freak Sport
                 <div class="product-item">
                     <div class="inner-content">
                         <div class="product-thumb">
-                            <a href="{{ route('product.index') }}">
+                            <a href="{{ route('product.detail') }}">
                                 <img src="{{ asset('client/img/shop/1.webp')}}" width="270" height="274"
                                     alt="Image-HasTech">
                             </a>
