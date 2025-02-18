@@ -28,3 +28,4 @@ Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 
+

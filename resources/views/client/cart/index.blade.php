@@ -240,6 +240,7 @@
                             </table>
                         </div>
                         <a class="btn-theme btn-flat" href="{{ route('order.index') }}">Thanh toán</a>
+
                     </div>
                 </div>
             </div>
