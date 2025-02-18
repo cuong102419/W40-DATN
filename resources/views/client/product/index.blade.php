@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-         <!--== Start Product Area Wrapper ==-->
+    <!--== Start Product Area Wrapper ==-->
     <section class="product-area product-default-area">
         <div class="container">
             <div class="row flex-xl-row-reverse justify-content-between">
@@ -16,6 +16,7 @@
                                 <div class="shop-top-left">
                                     <p class="pagination-line"><a href="shop.html">12</a> Product Found of <a
                                             href="shop.html">30</a></p>
+                                </div>
                                 <div class="shop-top-center">
                                     <nav class="product-nav">
                                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
