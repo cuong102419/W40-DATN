@@ -19,7 +19,7 @@
                                         <li class="email"><i class="fa fa-envelope"></i><a
                                                 href="mailto://demo@example.com">demo@example.com</a></li>
                                         <li class="account"><i class="fa fa-user"></i><a
-                                                href="account-login.html">Account</a></li>
+                                                href="{{ route('dashboard.index') }}">Account</a></li>
                                     </ul>
                                 </div>
                             </div>
