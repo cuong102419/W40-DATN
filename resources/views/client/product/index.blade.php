@@ -163,7 +163,7 @@ Chi tiết sản phẩm
                         </li>
                         <li role="presentation">
                             <a id="reviews-tab" data-bs-toggle="pill" href="#reviews" role="tab" aria-controls="reviews"
-                                aria-selected="false">Đán giá<span>(05)</span></a>
+                                aria-selected="false">Đánh giá<span>(05)</span></a>
                         </li>
                     </ul>
                     <div class="tab-content product-tab-content" id="ReviewTabContent">
