@@ -126,7 +126,7 @@ Chi tiết sản phẩm
                                     exercitation ullamco laboris nisi ut aliquip exet commodo consequat. Duis aute irure
                                     dolor</p>
                                 <div class="product-color">
-                                    <h6 class="title">Color</h6>
+                                    <h6 class="title">Màu</h6>
                                     <ul class="color-list">
                                         <li data-bg-color="#586882"></li>
                                         <li class="active" data-bg-color="#505050"></li>
@@ -149,14 +149,12 @@ Chi tiết sản phẩm
                                             <input type="text" title="Quantity" value="1">
                                         </div>
                                     </div>
-                                    <a class="btn-theme" href="shop-cart.html">Add to Cart</a>
+                                    <a class="btn-theme" href="shop-cart.html">Thêm vào giỏ hàng</a>
                                 </div>
                                 <div class="product-wishlist-compare">
-                                    <a href="shop-wishlist.html"><i class="pe-7s-like"></i>Add to Wishlist</a>
-                                    <a href="shop-compare.html"><i class="pe-7s-shuffle"></i>Add to Compare</a>
+                                    <a href="shop-wishlist.html"><i class="pe-7s-like"></i>Thêm vào danh sách yêu thích</a>
                                 </div>
                                 <div class="product-info-footer">
-                                    <h6 class="code"><span>Code :</span>Ch-256xl</h6>
                                     <div class="social-icons">
                                         <span>Share</span>
                                         <a href="#/"><i class="fa fa-facebook"></i></a>
@@ -178,15 +176,15 @@ Chi tiết sản phẩm
                     <ul class="nav product-tab-nav" id="ReviewTab" role="tablist">
                         <li role="presentation">
                             <a class="active" id="information-tab" data-bs-toggle="pill" href="#information" role="tab"
-                                aria-controls="information" aria-selected="true">Information</a>
+                                aria-controls="information" aria-selected="true">Thông tin</a>
                         </li>
                         <li role="presentation">
                             <a id="description-tab" data-bs-toggle="pill" href="#description" role="tab"
-                                aria-controls="description" aria-selected="false">Description</a>
+                                aria-controls="description" aria-selected="false">Mô tả</a>
                         </li>
                         <li role="presentation">
                             <a id="reviews-tab" data-bs-toggle="pill" href="#reviews" role="tab" aria-controls="reviews"
-                                aria-selected="false">Reviews <span>(05)</span></a>
+                                aria-selected="false">Đán giá<span>(05)</span></a>
                         </li>
                     </ul>
                     <div class="tab-content product-tab-content" id="ReviewTabContent">

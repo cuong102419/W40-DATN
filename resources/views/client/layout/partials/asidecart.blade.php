@@ -2,7 +2,7 @@
     aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
         <h1 id="offcanvasRightLabel"></h1>
-        <button class="btn-aside-cart-close" data-bs-dismiss="offcanvas" aria-label="Close">Shopping Cart <i
+        <button class="btn-aside-cart-close" data-bs-dismiss="offcanvas" aria-label="Close">Giỏ hàng<i
                 class="fa fa-chevron-right"></i></button>
     </div>
     <div class="offcanvas-body">
@@ -27,8 +27,8 @@
             </li>
         </ul>
         <p class="cart-total"><span>Subtotal:</span><span class="amount">£89.99</span></p>
-        <a class="btn-theme" data-margin-bottom="10" href="shop-cart.html">View cart</a>
-        <a class="btn-theme" href="shop-checkout.html">Checkout</a>
+        <a class="btn-theme" data-margin-bottom="10" href="{{ route('cart.index') }}">Xem giỏ hàng</a>
+        <a class="btn-theme" href="shop-checkout.html">Thanh toán</a>
         <a class="d-block text-end lh-1" href="shop-checkout.html"><img
                 src="{{ asset('client/img/photos/paypal.webp')}}" width="133" height="26" alt="Has-image"></a>
     </div>
