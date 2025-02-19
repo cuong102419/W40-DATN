@@ -45,9 +45,9 @@
             <!-- Navbar Start -->
             @include('admin.layout.partials.nav')
             <!-- Navbar End -->
-
-            @yield('content')
-
+            <div class="container-fluid pt-4 px-4"> 
+                @yield('content')
+            </div>
             <!-- Footer Start -->
             @include('admin.layout.partials.footer')
             <!-- Footer End -->
