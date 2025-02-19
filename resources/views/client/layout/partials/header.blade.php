@@ -18,8 +18,8 @@
                                         </li>
                                         <li class="email"><i class="fa fa-envelope"></i><a
                                                 href="mailto://demo@example.com">demo@example.com</a></li>
-                                        <li class="account"><i class="fa fa-user"></i>
-                                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                                        <li class="account" style="display: flex"><i class="fa fa-user"></i>
+                                            <a href="#" class="nav-link dropdown-toggle mt-1" data-bs-toggle="dropdown">
                                                 <span class="d-none d-lg-inline-flex">Acount</span>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
