@@ -23,7 +23,10 @@
                                                 <span class="d-none d-lg-inline-flex">Acount</span>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                                                <a href="{{route('dashboard.index')}}" class="dropdown-item">Admin</a>
+                                                <a href="{{route('dashboard.index')}}" class="dropdown-item fas fa-user-shield">Admin</a>
+                                                <a href="#" class="dropdown-item">Profile</a>
+                                                <a href="#" class="dropdown-item">Login</a>
+                                                <a href="#" class="dropdown-item">Logout</a>
                                             </div>
                                         </li>
                                     </ul>
