@@ -1,17 +1,16 @@
 @extends('admin.layout.master')
 
 @section('title')
-    Danh sách sản phẩm
+    Danh mục
 @endsection
 
 @section('content')
-    <!-- Table Start -->
     <div class="row g-4">
         <div class="col-12">
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">Responsive Table</h6>
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>

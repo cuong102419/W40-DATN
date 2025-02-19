@@ -11,3 +11,13 @@
 
 <!-- Template Javascript -->
 <script src="{{asset('administrator/js/main.js')}}"></script>
+
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea#description',
+        plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+        toolbar_mode: 'floating',
+        height: 300
+    });
+</script>
