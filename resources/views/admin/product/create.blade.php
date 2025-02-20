@@ -35,7 +35,7 @@
                 <div class="col-12">
                     <label for="" class="form-label">Mô tả</label>
                     <div class="mb-3">
-                        <textarea class="form-control" name="" id="description" cols="30" rows="5"></textarea>
+                        <textarea class="form-control" name="description" id="description" cols="30" rows="5"></textarea>
                     </div>
                 </div>
             </div>
