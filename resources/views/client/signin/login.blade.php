@@ -7,7 +7,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background: rgb(255, 240, 223);
+      background: rgb(252, 252, 252);
       position: relative;
     }
 
@@ -153,13 +153,27 @@
       text-decoration: none;
       color: rgb(105, 105, 248);
     }
+    a{
+      text-decoration: none;
+      color: white;
+    }
+    .btn {
+      border: #c2a628;
+      background: #d26420;
+      width: 100px;
+      height: 40px;
+    }
+    .btn:hover{
+      background: #be2113;
+    }
   </style>
 </head>
-
+<button class="btn"><div class=""><a href="javascript:history.back()"><i class="fas fa-arrow-left"></i> Home</a></button>
 <body>
   <div class="wrapper" id="form-wrapper">
     <div class="form-container1" id="login-container">
-      <h2>Welcome to Freak Sport</h2>
+      
+      <h2>Sign in</h2>
       <input type="text" id="login-username" placeholder="Username">
       <input type="password" id="login-password" placeholder="Password">
       <div class="remember-container">
@@ -186,7 +200,7 @@
 
     <div class="overlay overlay-default"></div>
   </div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
   <script>
     function showSignup() {
       document.getElementById("form-wrapper").classList.add("show-signup");
