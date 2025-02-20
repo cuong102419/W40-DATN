@@ -21,19 +21,29 @@
                 </div>
             </div>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('admin-brand.index') ? 'active' : '' }}" data-bs-toggle="dropdown"><i class="fas fa-tag"></i>Thương
+                <a href="#"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-brand.index') || request()->routeIs('admin-brand.create') ? 'active' : '' }}"
+                    data-bs-toggle="dropdown"><i class="fas fa-tag"></i>Thương
                     hiệu</a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a href="{{ route('admin-brand.index') }}" class="dropdown-item {{ request()->routeIs('admin-brand.index') ? 'active' : '' }}">Danh sách</a>
-                    <a href="#" class="dropdown-item">Thêm mới</a>
+                    <a href="{{ route('admin-brand.index') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-brand.index') ? 'active' : '' }}">Danh
+                        sách</a>
+                    <a href="{{ route('admin-brand.create') }}" class="dropdown-item {{ request()->routeIs('admin-brand.create') ? 'active' : '' }}">Thêm mới</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('admin-product.index') || request()->routeIs('admin-product.create') ? 'active' : '' }}" data-bs-toggle="dropdown"><i class="fas fa-box"></i></i>Sản
+                <a href="#"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-product.index') || request()->routeIs('admin-product.create') ? 'active' : '' }}"
+                    data-bs-toggle="dropdown"><i class="fas fa-box"></i></i>Sản
                     phẩm</a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a href="{{ route('admin-product.index') }}" class="dropdown-item {{ request()->routeIs('admin-product.index') ? 'active' : '' }}">Danh sách</a>
-                    <a href="{{ route('admin-product.create') }}" class="dropdown-item {{ request()->routeIs('admin-product.create') ? 'active' : '' }}">Thêm mới</a>
+                    <a href="{{ route('admin-product.index') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-product.index') ? 'active' : '' }}">Danh
+                        sách</a>
+                    <a href="{{ route('admin-product.create') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-product.create') ? 'active' : '' }}">Thêm
+                        mới</a>
                 </div>
             </div>
             <a href="widget.html" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
