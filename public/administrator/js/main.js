@@ -205,23 +205,3 @@
 
 })(jQuery);
 
-document.querySelectorAll('.nav-item > a').forEach(item => {
-    item.addEventListener('click', function () {
-        localStorage.setItem('activeNav', this.href);
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
-        this.parentElement.classList.add('active');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const activeNav = localStorage.getItem('activeNav');
-    if (activeNav) {
-        document.querySelectorAll('.nav-item > a').forEach(item => {
-            if (item.href === activeNav) {
-                item.parentElement.classList.add('active');
-            }
-        });
-    }
-});
-
