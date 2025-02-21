@@ -55,8 +55,8 @@
                         </div>
                         <div class="header-middle-align-center">
                             <div class="header-search-area">
-                                <form class="header-searchbox">
-                                    <input type="search" class="form-control" placeholder="Search">
+                                <form action="{{ route('search') }}" class="header-searchbox">
+                                    <input type="search" name="keyword" class="form-control" placeholder="Search" required>
                                     <button class="btn-submit" type="submit"><i class="pe-7s-search"></i></button>
                                 </form>
                             </div>
