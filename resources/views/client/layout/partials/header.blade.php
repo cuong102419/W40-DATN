@@ -105,7 +105,7 @@
                                 </li>
                                 <li><a class="fs-6 fw-bold" href="{{ route('blog.index') }}"><span>Tin tức</span></a>
                                 </li>
-                                <li><a class="fs-6 fw-bold" href=""><span>Liên hệ</span></a></li>
+                                <li><a class="fs-6 fw-bold" href="{{ route('contact.form') }}"><span>Liên hệ</span></a></li>
                             </ul>
                         </div>
                     </div>

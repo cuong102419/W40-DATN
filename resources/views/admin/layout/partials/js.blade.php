@@ -12,7 +12,11 @@
 <!-- Template Javascript -->
 <script src="{{asset('administrator/js/main.js')}}"></script>
 
-<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 <script>
-    CKEDITOR.replace( 'description' );
+    CKEDITOR.replace( 'description', {
+        entities: false,      
+        basicEntities: false,
+        entities_latin: false,
+        entities_greek: false 
+    });
 </script>

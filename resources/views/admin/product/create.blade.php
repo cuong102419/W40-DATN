@@ -7,6 +7,7 @@
 @section('content')
     <div class="bg-light rounded h-100 p-4">
         <form action="{{ route('admin-product.store') }}" method="post">
+            @csrf
             <div class="row g-4">
                 <div class="col-6">
                     <div class="mb-3">
@@ -26,13 +27,19 @@
                     <div class="mb-3">
                         <label for="" class="form-label">Danh mục</label>
                         <select class="form-select" name="category" id="">
-                            <option value="">Chọn danh mục</option>
+                            <option value="" selected disabled>Chọn danh mục</option>
+                            @foreach ($categories as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Thương hiệu</label>
                         <select class="form-select" name="brand" id="">
-                            <option value="">Chọn thương hiệu</option>
+                            <option value="" disabled selected>Chọn thương hiệu</option>
+                            @foreach ($brands as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="mb-3 mt-5 form-check">
@@ -52,4 +59,5 @@
             </div>
         </form>
     </div>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 @endsection
