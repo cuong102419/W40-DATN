@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::get('/product/1', [ProductController::class, 'detail'])->name('product.detail');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
@@ -36,6 +38,7 @@ Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.fo
 Route::post('/contact', [ContactController::class, 'sendContact'])->name('contact.send');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 Route::get('login', [AuthenticController::class, 'login'])->name('login');
+
 
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
