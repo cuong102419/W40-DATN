@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
 
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
-            $table->double('total_amount');
+            $table->double('total');
             $table->string('payment_method');
             $table->string('address');
             $table->string('fullname'); 

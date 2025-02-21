@@ -12,12 +12,7 @@
 <!-- Template Javascript -->
 <script src="{{asset('administrator/js/main.js')}}"></script>
 
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 <script>
-    tinymce.init({
-        selector: 'textarea#description',
-        plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-        toolbar_mode: 'floating',
-        height: 300
-    });
+    CKEDITOR.replace( 'description' );
 </script>

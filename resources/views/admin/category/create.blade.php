@@ -14,7 +14,7 @@
                         <input type="text" name="name" class="form-control">
                     </div>
                     <div class="mb-3">
-                        <button class="btn btn-primary" type="submit">Thêm</button>
+                        <button class="btn btn-primary" type="submit"><i class="fas fa-save me-2"></i> Lưu</button>
                     </div>
                 </form>
             </div>
