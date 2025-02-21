@@ -10,6 +10,9 @@
         <div class="col-12">
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">Danh sách sản phẩm</h6>
+                <div class="mb-4 text-end">
+                    <a href="{{ route('admin-product.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i>Thêm mới</a>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -29,8 +32,7 @@
                                 <td>jhon@email.com</td>
                                 <td>
                                     <div class="d-flex">
-                                        <a href="#" class="btn text-success"><i class="fas fa-info-circle fa-lg"></i></a>
-                                        <a href="#" class="btn text-primary ms-2"><i class="fas fa-pen"></i></a>
+                                        <a href="{{ route('admin-product.detail') }}" class="btn text-primary ms-2" title="Chi tiết sản phẩm"><i class="fas fa-info-circle fa-lg"></i></a>
                                         <form action="#" class="ms-2">
                                             <button class="btn text-danger" onclick="return confirm('Mày có muốn xóa nó.')"><i class="fas fa-trash"></i></button>
                                         </form>

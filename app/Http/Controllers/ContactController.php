@@ -11,7 +11,7 @@ class ContactController extends Controller
     // Hiển thị form liên hệ
     public function showForm()
     {
-        return view('client.contact'); 
+        return view('client.contact.contact'); 
     }
 
     // Xử lý gửi form
@@ -30,7 +30,7 @@ class ContactController extends Controller
         ];
 
         // Gửi email
-        Mail::to('ductmph43718@fpt.edu.vnvn')->send(new ContactMail((array) $request->all()));
+        Mail::to('ductmph43718@fpt.edu.vn')->send(new ContactMail((array) $request->all()));
 
 
 

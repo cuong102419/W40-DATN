@@ -44,16 +44,25 @@ Route::prefix('admin')->group(function () {
        Route::get('/', [AdminProductController::class, 'index'])->name('admin-product.index'); 
        Route::get('/create', [AdminProductController::class, 'create'])->name('admin-product.create');
        Route::post('/store', [AdminProductController::class, 'store'])->name('admin-product.store');
+       Route::get('/1', [AdminProductController::class, 'detail'])->name('admin-product.detail');
     });
 
     Route::prefix('/category')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('admin-category.index');
         Route::get('/create', [CategoryController::class, 'create'])->name('admin-category.create');
+        Route::post('/store', [CategoryController::class, 'store'])->name('admin-category.store');
+        Route::get('/edit/{category}', [CategoryController::class, 'edit'])->name('admin-category.edit');
+        Route::put('/update/{category}', [CategoryController::class, 'update'])->name('admin-category.update');
+        Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])->name('admin-category.delete');
     });
 
     Route::prefix('/brand')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('admin-brand.index');
         Route::get('/create', [BrandController::class, 'create'])->name('admin-brand.create');
+        Route::post('/store', [BrandController::class, 'store'])->name('admin-brand.store');
+        Route::get('/edit/{brand}', [BrandController::class, 'edit'])->name('admin-brand.edit');
+        Route::put('/update/{brand}', [BrandController::class, 'update'])->name('admin-brand.update');
+        Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
 });
 

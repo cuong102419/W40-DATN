@@ -1,18 +1,23 @@
 @extends('admin.layout.master')
 
 @section('title')
-    Thêm danh mục
+    Cập nhật danh mục
 @endsection
 
 @section('content')
     <div class="row g-4">
         <div class="col-12">
             <div id="form-cate" class="bg-light rounded min vh-100 p-4">
-                <form id="category-form" action="{{ route('admin-category.store') }}" method="post">
+                <form id="category-form" action="{{ route('admin-category.update', $category->id) }}" method="post">
                     @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label class="form-label">ID</label>
+                        <input type="text" name="name" disabled class="form-control mb-2" value="{{ $category->id }}">
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Tên danh mục</label>
-                        <input type="text" name="name" class="form-control mb-2">
+                        <input type="text" name="name" class="form-control mb-2" value="{{ $category->name }}">
                         <span class="text-danger error-name"></span>
                     </div>
                     <div class="mb-3">
@@ -31,28 +36,28 @@
                 e.preventDefault();
 
                 let form = $(this);
-                let formData = form.serialize();
+                let formData = form.serialize() + "&_method=PUT";
 
                 $.ajax({
-                    type: form.attr("method"),
+                    type: "POST",
                     url: form.attr("action"),
                     data: formData,
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
                             let alertSuccess = `
-                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i>${response.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `;
+                                <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-check-circle me-2"></i>${response.message}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            `;
                             $("#form-cate").prepend(alertSuccess);
 
-                            $("input[name='name']").val("");
-
+                            
                             setTimeout(() => {
-                                $("#alert-success").fadeOut();
-                            }, 3000);;
+                                location.reload();
+                            }, 2000);
+                            
                         }
                     }, error: function (xhr) {
                         console.error(xhr.responseText);

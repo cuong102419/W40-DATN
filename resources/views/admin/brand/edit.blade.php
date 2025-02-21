@@ -1,24 +1,29 @@
 @extends('admin.layout.master')
 
 @section('title')
-    Thêm danh mục
+    Cập nhật thương hiệu
 @endsection
 
 @section('content')
     <div class="row g-4">
         <div class="col-12">
-            <div id="form-cate" class="bg-light rounded min vh-100 p-4">
-                <form id="category-form" action="{{ route('admin-category.store') }}" method="post">
+            <div id="form-brand" class="bg-light rounded min vh-100 p-4">
+                <form action="{{ route('admin-brand.update', $brand->id) }}" id="brand-form" method="post">
                     @csrf
+                    @method('PUT')
                     <div class="mb-3">
-                        <label class="form-label">Tên danh mục</label>
-                        <input type="text" name="name" class="form-control mb-2">
+                        <label class="form-label">ID</label>
+                        <input type="text" name="name" disabled class="form-control mb-2" value="{{ $brand->id }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tên Thương hiệu</label>
+                        <input type="text" name="name" class="form-control mb-2" value="{{ $brand->name }}">
                         <span class="text-danger error-name"></span>
                     </div>
                     <div class="mb-3">
-                        <a href="{{ route('admin-category.index') }}" class="btn btn-sm btn-secondary"><i
+                        <a href="{{ route('admin-brand.index') }}" class="btn btn-sm btn-secondary"><i
                                 class="fas fa-arrow-left"></i> Danh sách</a>
-                        <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-save me-2"></i>Lưu</button>
+                        <button class="btn btn-success btn-sm" type="submit"><i class="fas fa-save me-2"></i> Cập nhật</button>
                     </div>
                 </form>
             </div>
@@ -27,14 +32,14 @@
 
     <script>
         $(document).ready(function () {
-            $("#category-form").on("submit", function (e) {
+            $("#brand-form").on("submit", function (e) {
                 e.preventDefault();
 
                 let form = $(this);
-                let formData = form.serialize();
+                let formData = form.serialize() + "&_method=PUT";
 
                 $.ajax({
-                    type: form.attr("method"),
+                    type: "POST",
                     url: form.attr("action"),
                     data: formData,
                     dataType: "json",
@@ -46,13 +51,11 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         `;
-                            $("#form-cate").prepend(alertSuccess);
-
-                            $("input[name='name']").val("");
+                            $("#form-brand").prepend(alertSuccess);
 
                             setTimeout(() => {
-                                $("#alert-success").fadeOut();
-                            }, 3000);;
+                                location.reload();
+                            }, 2000);
                         }
                     }, error: function (xhr) {
                         console.error(xhr.responseText);
