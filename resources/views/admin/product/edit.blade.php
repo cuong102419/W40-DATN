@@ -1,29 +1,30 @@
 @extends('admin.layout.master')
 
 @section('title')
-    Thêm mới sản phẩm
+    Cập nhật sản phẩm - {{ $product->name }}
 @endsection
 
 @section('content')
     <div class="bg-light rounded h-100 p-4">
         <div id="form-product">
-            <form id="product-form" action="{{ route('admin-product.store') }}" method="post">
+            <form id="product-form" action="{{ route('admin-product.update', $product->id) }}" method="post">
                 @csrf
+                @method('PUT')
                 <div class="row g-4">
                     <div class="col-6">
                         <div class="mb-3">
                             <label class="form-label">Mã sản phẩm</label>
-                            <input type="text" name="sku" class="form-control">
+                            <input type="text" name="sku" class="form-control" value="{{ $product->sku }}">
                             <span class="text-danger error-sku mt-2"></span>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tên sản phẩm</label>
-                            <input type="text" name="name" class="form-control">
+                            <input type="text" name="name" class="form-control" value="{{ $product->name }}">
                             <span class="text-danger error-name mt-2"></span>
                         </div>
                         <div class="mb-3">
                             <label for="" class="form-label">Giảm giá</label>
-                            <input type="number" name="discount" class="form-control" min="0" step="0.1">
+                            <input type="number" name="discount" class="form-control" min="0" step="0.1" value="{{ $product->discount }}">
                             <span class="text-danger error-discount mt-2"></span>
 
                         </div>
@@ -32,9 +33,9 @@
                         <div class="mb-3">
                             <label for="" class="form-label">Danh mục</label>
                             <select class="form-select" name="category_id" id="">
-                                <option value="" selected disabled>Chọn danh mục</option>
+                                <option value="" disabled>Chọn danh mục</option>
                                 @foreach ($categories as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option {{ $product->category_id == $item->id ?? 'selected' }}  value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger error-category mt-2"></span>
@@ -42,16 +43,16 @@
                         <div class="mb-3">
                             <label for="" class="form-label">Thương hiệu</label>
                             <select class="form-select" name="brand_id" id="">
-                                <option value="" disabled selected>Chọn thương hiệu</option>
+                                <option value="" disabled>Chọn thương hiệu</option>
                                 @foreach ($brands as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option {{ $product->brand_id == $item->id ?? 'selected' }} value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger error-brand mt-2"></span>
                         </div>
                         <div class="mb-3 mt-5 form-check">
                             <label class="form-check-label" for="">Sản phẩm nổi bật</label>
-                            <input type="checkbox" name="featured" value="1" class="form-check-input">
+                            <input type="checkbox" {{ $product->featured == 1 ? 'checked' : ''}} name="featured" value="1" class="form-check-input">
                         </div>
                     </div>
                     <div class="col-12">
@@ -61,7 +62,7 @@
                         <span class="text-danger error-description mt-2"></span>
                         <div class="mb-3">
                             <textarea class="form-control" name="description" id="description" cols="30"
-                                rows="10"></textarea>
+                                rows="10">{{ $product->description }}</textarea>
                         </div>
                     </div>
                     <div>
@@ -121,9 +122,9 @@
 
                             setTimeout(() => {
                                 $("#alert-success").fadeOut(500, function () {
-                                    location.reload();
+                                    window.location.href = "{{ route('admin-product.detail',  $product->id) }}";
                                 });
-                            }, 5000);
+                            }, 3000);
                         }
                     },
                     error: function (xhr) {

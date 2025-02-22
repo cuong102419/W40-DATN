@@ -29,4 +29,8 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+
+    public function imageLists() {
+        return $this->hasMany(ImageList::class, 'product_id');
+    }
 }
