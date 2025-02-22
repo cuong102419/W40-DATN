@@ -5,12 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\ImageList;
+use App\Models\ImageVariant;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
     public function index() {
-        return view('admin.product.index');
+        $products = Product::latest('id')->paginate(10);
+        return view('admin.product.index', compact('products'));
     }
 
     public function create() {
@@ -20,10 +25,41 @@ class ProductController extends Controller
     }
 
     public function store(Request $request) {
-        dd($request);
+        $data = $request->validate([
+            'sku' => ['required', 'min:4', 'unique:products'],
+            'name' => ['required', 'min:4', 'unique:products'],
+            'category_id' => ['required'],
+            'brand_id' => ['required'],
+            'discount' => ['nullable'],
+            'featured' => ['nullable'],
+            'description' => ['required']
+        ], [
+            'sku.required' => 'Mã sản phẩm không được để trống.',
+            'sku.min' => 'Mã sản phẩm tối thiểu 4 kí tự.',
+            'sku.unique' => 'Mã sản phẩm đã tồn tại. Hãy chọn mã khác.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'name.min' => 'Tên sản phẩm tối thiểu 4 kí tự.',
+            'name.unique' => 'Tên sản phẩm đã tồn tại. Hãy chọn tên khác.',
+            'category_id.required' => 'Vui lòng chọn loại sản phẩm.',
+            'brand_id.required' => 'Vui lòng chọn hãng sản phẩm.',
+            'description.required' => 'Mô tả không được để trống.'
+        ]);
+
+        $product = Product::create($data);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Thêm thương hiệu thành công.'
+            ], Response::HTTP_OK);
+        }
+
+        return redirect()->back();
     }
 
-    public function detail() {
-        return view('admin.product.detail');
+    public function detail(Product $product) {
+        $images = ImageList::where('product_id', $product->id)->get();
+        
+        return view('admin.product.detail', compact('product', 'images'));
     }
 }

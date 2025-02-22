@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->double('discount')->default(0);
             $table->string('sku');
-            $table->boolean('feartured')->default(0);
+            $table->boolean('featured')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

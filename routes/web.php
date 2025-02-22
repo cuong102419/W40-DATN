@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ImageListController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\AuthenticController;
 use App\Http\Controllers\BlogController;
@@ -44,10 +45,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('/product')->group(function () {
-       Route::get('/', [AdminProductController::class, 'index'])->name('admin-product.index'); 
-       Route::get('/create', [AdminProductController::class, 'create'])->name('admin-product.create');
-       Route::post('/store', [AdminProductController::class, 'store'])->name('admin-product.store');
-       Route::get('/1', [AdminProductController::class, 'detail'])->name('admin-product.detail');
+        Route::get('/', [AdminProductController::class, 'index'])->name('admin-product.index');
+        Route::get('/create', [AdminProductController::class, 'create'])->name('admin-product.create');
+        Route::post('/store', [AdminProductController::class, 'store'])->name('admin-product.store');
+        Route::get('/detail/{product}', [AdminProductController::class, 'detail'])->name('admin-product.detail');
+        Route::post('/images', [ImageListController::class, 'store'])->name('admin-image.create');
+        Route::delete('/images/delete/{image}', [ImageListController::class, 'destroy'])->name('admin-image.delete');
     });
 
     Route::prefix('/category')->group(function () {
