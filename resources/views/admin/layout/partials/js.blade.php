@@ -12,11 +12,3 @@
 <!-- Template Javascript -->
 <script src="{{asset('administrator/js/main.js')}}"></script>
 
-<script>
-    CKEDITOR.replace( 'description', {
-        entities: false,      
-        basicEntities: false,
-        entities_latin: false,
-        entities_greek: false 
-    });
-</script>

@@ -6,6 +6,18 @@
 
 @section('content')
     <div class="bg-light rounded p-4">
+        <div id="form-image">
+        </div>
+        @if (session('success'))
+            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        <h6 class="mb-4">Chi tiết sản phẩm</h6>
+        <div class="mb-3 text-end">
+            <a href="" class="btn btn-sm btn-success"><i class="fas fa-boxes me-2"></i>Quản lý biến thể</a>
+        </div>
         <div class="row">
             <div class="table-reponsive">
                 <table class="table table-bordered">
@@ -17,44 +29,79 @@
                     <tr>
                         <td colspan="2">
                             <div class="row">
-                                <div class="col-4 mb-3">
-                                    <div class="position-relative">
-                                        <img src="{{ asset('client/img/photos/giày-thể-thao-nam-mới-nhất-2-1.jpg') }}"
-                                        width="300" alt="" class="img-fluid">
-                                    <button type="button"
-                                        class="btn text-secondary btn-sm position-absolute top-0 start-100 translate-middle">
-                                        <i class="fas fa-trash-alt fa-lg" title="Xóa ảnh"></i>
-                                    </button>
+                                @foreach ($images as $item)
+                                    <div class="col-4 mb-3">
+                                        <div class="position-relative">
+                                            <img src="{{ Storage::url($item->image_url) }}" width="250" alt=""
+                                                class="img-fluid">
+                                            <form id="delete-image" action="{{ route('admin-image.delete', $item->id) }}"
+                                                method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn text-secondary btn-sm position-absolute top-0 start-100 translate-middle">
+                                                    <i class="fas fa-trash-alt fa-lg" title="Xóa ảnh"
+                                                        onclick="return confirm('Mày có muốn xóa nó?')"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-4 mb-3">
-                                    <label for="uploadImage"
-                                        class="btn btn-outline-primary d-flex flex-column align-items-center py-3 mb-2">
-                                        <i class="fas fa-upload"></i>
-                                        <span>Tải ảnh lên</span>
-                                    </label>
-                                    <input multiple hidden type="file" id="uploadImage"
-                                        class="custom-file-input form-control">
-                                </div>
+                                @endforeach
+                                <form id="image-form" action="{{ route('admin-image.create') }}" method="post"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="col-4 mb-3">
+                                        <label for="uploadImage"
+                                            class="btn btn-outline-primary d-flex flex-column align-items-center py-3 mb-2">
+                                            <i class="fas fa-upload"></i>
+                                            <span>Tải ảnh lên</span>
+                                        </label>
+                                        <span class="text-danger error-image-url mt-2"></span>
+                                        <input multiple hidden type="file" name="image_url[]" id="uploadImage"
+                                            class="custom-file-input form-control">
+                                        <input type="text" name="product_id" value="{{ $product->id }}" hidden>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-primary btn-sm" type="submit"><i
+                                                class="fas fa-save me-2"></i>Lưu</button>
+                                    </div>
+                                </form>
                             </div>
-
                         </td>
                     </tr>
                     <tr>
                         <th>Mã sản phẩm</th>
-                        <td></td>
+                        <td>{{ $product->sku }}</td>
                     </tr>
                     <tr>
                         <th>Tên sản phẩm</th>
-                        <td></td>
+                        <td>{{ $product->name }}</td>
                     </tr>
                     <tr>
                         <th>Danh mục
-                        <td></td>
+                        <td>{{ $product->category->name }}</td>
                     </tr>
                     <tr>
                         <th>Thương hiệu</th>
-                        <td></td>
+                        <td>{{ $product->brand->name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ngày tạo</th>
+                        <td>{{ $product->created_at->format('d-m-Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Giảm giá</th>
+                        <td>{{ $product->discount }} %</td>
+                    </tr>
+                    <tr>
+                        <th>Sản phẩm nổi bật</th>
+                        <td>{{ $product->featured == 0 ? 'Không' : 'Có'}}</td>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="text-center">Mô tả</th>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="p-5">{!! $product->description !!}</td>
                     </tr>
                 </table>
             </div>
@@ -68,6 +115,48 @@
             document.querySelector("label[for='uploadImage'] span").textContent = displayText;
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#image-form").on("submit", function (e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr("action"),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            $("#form-image").prepend(`
+                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>${response.message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `);
+
+                            $(".error-image-url").text("");
+                            setTimeout(() => location.reload(), 2000);
+                        }
+                    },
+                    error: function (xhr) {
+                        $(".error-image-url").text("");
+
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            Object.keys(errors).forEach(key => {
+                                $(".error-image-url").append(errors[key][0] + "<br>");
+                            });
+                        }
+                    }
+                });
+            });
+        });
     </script>
 
 @endsection
