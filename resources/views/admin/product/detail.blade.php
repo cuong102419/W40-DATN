@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 
 @section('title')
-    Chi tiết sản phẩm
+    Chi tiết sản phẩm - {{ $product->name }}
 @endsection
 
 @section('content')
@@ -15,8 +15,10 @@
             </div>
         @endif
         <h6 class="mb-4">Chi tiết sản phẩm</h6>
-        <div class="mb-3 text-end">
-            <a href="" class="btn btn-sm btn-success"><i class="fas fa-boxes me-2"></i>Quản lý biến thể</a>
+        <div class="mb-3 text-start">
+            <a href="{{ route('admin-product.index') }}" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left me-2"></i>Danh sách</a>
+            <a href="{{ route('admin-product.edit', $product->id) }}" class="btn btn-sm btn-primary"><i class="fas fa-pen me-2"></i>Cập nhật</a>
+            <a href="" class="btn btn-sm btn-success"><i class="fas fa-boxes me-2"></i>Biến thể</a>
         </div>
         <div class="row">
             <div class="table-reponsive">
