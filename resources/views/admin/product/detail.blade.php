@@ -43,7 +43,7 @@
                                                 <button type="submit"
                                                     class="btn text-secondary btn-sm position-absolute top-0 start-100 translate-middle">
                                                     <i class="fas fa-trash-alt fa-lg" title="Xóa ảnh"
-                                                        onclick="return confirm('Mày có muốn xóa nó?')"></i>
+                                                        onclick="return confirm('Bạn có muốn xóa ảnh này không?')"></i>
                                                 </button>
                                             </form>
                                         </div>
