@@ -22,7 +22,7 @@
             </div>
             <div class="nav-item dropdown">
                 <a href="#"
-                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-brand.index') || request()->routeIs('admin-brand.create') ? 'active' : '' }}"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-brand.index') || request()->routeIs('admin-brand.create') || request()->routeIs('admin-brand.edit') ? 'active' : '' }}"
                     data-bs-toggle="dropdown"><i class="fas fa-tag"></i> Thương
                     hiệu</a>
                 <div class="dropdown-menu bg-transparent border-0">
@@ -34,7 +34,7 @@
             </div>
             <div class="nav-item dropdown">
                 <a href="#"
-                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-product.index') || request()->routeIs('admin-product.create') ? 'active' : '' }}"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-product.index') || request()->routeIs('admin-product.create') || request()->routeIs('admin-product.detail') || request()->routeIs('admin-product.edit') ? 'active' : '' }}"
                     data-bs-toggle="dropdown"><i class="fas fa-box"></i></i> Sản
                     phẩm</a>
                 <div class="dropdown-menu bg-transparent border-0">
