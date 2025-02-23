@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageListController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\AuthenticController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -56,6 +57,10 @@ Route::prefix('admin')->group(function () {
         Route::delete('/delete/{product}', [AdminProductController::class, 'destroy'])->name('admin-product.delete');
         Route::post('/images', [ImageListController::class, 'store'])->name('admin-image.create');
         Route::delete('/images/delete/{image}', [ImageListController::class, 'destroy'])->name('admin-image.delete');
+        Route::get('/{product}/variant', [ProductVariantController::class, 'index'])->name('product-variant.index');
+        Route::get('/{product}/variant/create', [ProductVariantController::class, 'create'])->name('product-variant.create');
+        Route::post('/variant/store', [ProductVariantController::class,'store'])->name('product-variant.store');
+
     });
 
     Route::prefix('/category')->group(function () {
