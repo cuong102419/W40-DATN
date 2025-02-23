@@ -18,7 +18,7 @@ class ProductController extends Controller
     {
         $products = Product::with('imageLists')->latest('id')->paginate(10);
 
-        return view('admin.product.index', compact('products', ));
+        return view('admin.product.index', compact('products'));
     }
 
     public function create()
