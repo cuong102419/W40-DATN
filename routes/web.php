@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-Route::get('/product/1', [ProductController::class, 'detail'])->name('product.detail');
+Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
@@ -60,6 +60,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/{product}/variant', [ProductVariantController::class, 'index'])->name('product-variant.index');
         Route::get('/{product}/variant/create', [ProductVariantController::class, 'create'])->name('product-variant.create');
         Route::post('/variant/store', [ProductVariantController::class,'store'])->name('product-variant.store');
+        Route::get('/{product}/variant/edit/{variant}', [ProductVariantController::class, 'edit'])->name('product-variant.edit');
+        Route::put('/variant/update/{variant}', [ProductVariantController::class, 'update'])->name('product-variant.update');
+        Route::delete('/variant/delete/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variant.delete');
 
     });
 

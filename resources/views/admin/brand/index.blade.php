@@ -20,38 +20,46 @@
                             class="fas fa-plus me-2"></i>Tạo mới</a>
                 </div>
                 <div class="table-responsive mt-3">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Tên thương hiệu
-                                <th scope="col">Ngày tạo</th>
-                                <th scope="col" class="text-nowrap text-center" style="width:1px">Hành động</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($brands as $brand)
+                    @if ($brands->isNotEmpty())
+                        <table class="table table-striped">
+                            <thead>
                                 <tr>
-                                    <th scope="row">{{ $brand->id }}</th>
-                                    <td>{{ $brand->name }}</td>
-                                    <td>{{ $brand->created_at->format('d-m-Y') }}</td>
-                                    <td>
-                                        <div class="d-flex">
-                                            <a href="{{ route('admin-brand.edit', $brand->id) }}" class="btn text-primary ms-2" title="Sửa"><i class="fas fa-pen"></i></a>
-                                            <form method="post" action="{{ route('admin-brand.delete', $brand->id) }}" class="ms-2">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button title="Xóa" class="btn text-danger"
-                                                    onclick="return confirm('Bạn có chắc muốn xóa.')"><i
-                                                        class="far fa-trash-alt"></i></button>
-                                            </form>
-                                        </div>
-                                    </td>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên thương hiệu</th>
+                                    <th>Số lượng sản phẩm</th>
+                                    <th scope="col">Ngày tạo</th>
+                                    <th scope="col" class="text-nowrap text-center" style="width:1px">Hành động</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    {{ $brands->links() }}
+                            </thead>
+                            <tbody>
+                                @foreach ($brands as $brand)
+                                    <tr>
+                                        <th scope="row">{{ $brand->id }}</th>
+                                        <td>{{ $brand->name }}</td>
+                                        <td>{{ $brand->products->count() }}</td>
+                                        <td>{{ $brand->created_at->format('d-m-Y') }}</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <a href="{{ route('admin-brand.edit', $brand->id) }}" class="btn text-primary ms-2"
+                                                    title="Sửa"><i class="fas fa-pen"></i></a>
+                                                <form method="post" action="{{ route('admin-brand.delete', $brand->id) }}"
+                                                    class="ms-2">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button title="Xóa" class="btn text-danger"
+                                                        onclick="return confirm('Bạn có chắc muốn xóa.')"><i
+                                                            class="far fa-trash-alt"></i></button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        {{ $brands->links() }}
+                    @else
+                        <h2>Chưa có thương hiệu nào.</h2>
+                    @endif
                 </div>
             </div>
         </div>

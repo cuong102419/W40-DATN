@@ -9,7 +9,7 @@
                     class="fa fa-tachometer-alt"></i> Dashboard</a>
             <div class="nav-item dropdown">
                 <a href="#"
-                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-category.index') || request()->routeIs('admin-category.create') || request()->routeIs('admin-category.edit') ? 'active' : '' }}"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-category.index') || request()->routeIs('admin-category.create') ? 'active' : '' }}"
                     data-bs-toggle="dropdown"><i class="fas fa-list-ul"></i> Danh mục</a>
                 <div class="dropdown-menu bg-transparent border-0">
                     <a href="{{ route('admin-category.index') }}"
@@ -22,19 +22,21 @@
             </div>
             <div class="nav-item dropdown">
                 <a href="#"
-                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-brand.index') || request()->routeIs('admin-brand.create') || request()->routeIs('admin-brand.edit') ? 'active' : '' }}"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-brand.index') || request()->routeIs('admin-brand.create') ? 'active' : '' }}"
                     data-bs-toggle="dropdown"><i class="fas fa-tag"></i> Thương
                     hiệu</a>
                 <div class="dropdown-menu bg-transparent border-0">
                     <a href="{{ route('admin-brand.index') }}"
                         class="dropdown-item {{ request()->routeIs('admin-brand.index') ? 'active' : '' }}">Danh
                         sách</a>
-                    <a href="{{ route('admin-brand.create') }}" class="dropdown-item {{ request()->routeIs('admin-brand.create') ? 'active' : '' }}">Thêm mới</a>
+                    <a href="{{ route('admin-brand.create') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-brand.create') ? 'active' : '' }}">Thêm
+                        mới</a>
                 </div>
             </div>
             <div class="nav-item dropdown">
                 <a href="#"
-                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-product.index') || request()->routeIs('admin-product.create') || request()->routeIs('admin-product.detail') || request()->routeIs('admin-product.edit') ? 'active' : '' }}"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-product.index') || request()->routeIs('admin-product.create') ? 'active' : '' }}"
                     data-bs-toggle="dropdown"><i class="fas fa-box"></i></i> Sản
                     phẩm</a>
                 <div class="dropdown-menu bg-transparent border-0">
