@@ -58,7 +58,7 @@
                                                         <div class="inner-content">
                                                             <div class="product-thumb">
                                                                 <a href="single-product.html">
-                                                                    <img src="{{ $product->image }}" width="270" height="274" alt="{{ $product->name }}">
+                                                                    <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="270" height="274" alt="{{ $product->name }}">
                                                                 </a>
                                                                 <div class="product-flag">
                                                                     <ul>
@@ -415,20 +415,31 @@
                 <div class="col-xl-3">
                     <div class="shop-sidebar">
                         <div class="shop-sidebar-category">
-                            <h4 class="sidebar-title">Top Categories</h4>
-                            <div class="sidebar-category">
-                                <ul class="category-list mb--0">
-                                    <li><a href="shop.html">Shoes <span>(6)</span></a></li>
-                                    <li><a href="shop.html">Computer <span>(4)</span></a></li>
-                                    <li><a href="shop.html">Covid-19 <span>(2)</span></a></li>
-                                    <li><a href="shop.html">Electronics <span>(6)</span></a></li>
-                                    <li><a href="shop.html">Frame Sunglasses <span>(12)</span></a></li>
-                                    <li><a href="shop.html">Furniture <span>(7)</span></a></li>
-                                    <li><a href="shop.html">Genuine Leather <span>(9)</span></a></li>
+                            <h4 class="sidebar-title">Danh mục</h4>
+                            <ul>
+                                @foreach ($categories as $category)
+                                    <li>
+                                        <a href="{{ route('product.index', ['category' => $category->id]) }}">
+                                            {{ $category->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        <div class="shop-sidebar-brand">
+                            <h4 class="sidebar-title">Thương hiệu</h4>
+                            <div class="sidebar-brand">
+                                <ul class="brand-list mb--0">
+                                    @foreach ($brands as $brand)
+                                        <li>
+                                            <a href="{{ route('product.index', ['brand' => $brand->id]) }}">
+                                                {{ $brand->name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
-
                         <div class="shop-sidebar-price-range">
                             <h4 class="sidebar-title">Price Filter</h4>
                             <div class="sidebar-price-range">
@@ -471,18 +482,7 @@
                             </div>
                         </div>
 
-                        <div class="shop-sidebar-brand">
-                            <h4 class="sidebar-title">Brand</h4>
-                            <div class="sidebar-brand">
-                                <ul class="brand-list mb--0">
-                                    <li><a href="shop.html">Lakmeetao <span>(6)</span></a></li>
-                                    <li><a href="shop.html">Beautifill <span>(4)</span></a></li>
-                                    <li><a href="shop.html">Made In GD <span>(2)</span></a></li>
-                                    <li><a href="shop.html">Pecifico <span>(6)</span></a></li>
-                                    <li><a href="shop.html">Xlovgtir <span>(12)</span></a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
