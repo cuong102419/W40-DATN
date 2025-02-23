@@ -22,8 +22,8 @@ class ProductController extends Controller
         $products = $query->get();
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
-    public function detail() {
-        return view('client.product.detail');
+    public function detail(Product $product) {
+        return view('client.product.detail', compact('product'));
     }
     public function show($id)
     {
@@ -40,6 +40,8 @@ class ProductController extends Controller
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
+        $categories = Category::all();
+        $brands = Brand::all();
 
         if ($keyword) {
             $products = Product::where('name', 'LIKE', "%$keyword%")->get();
@@ -47,7 +49,7 @@ class ProductController extends Controller
             $products = Product::all();
         }
 
-        return view('client.product.index', compact('products'));
+        return view('client.product.index', compact('products', 'categories', 'brands'));
     }
 
 }

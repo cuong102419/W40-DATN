@@ -15,18 +15,26 @@
                         <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+                @elseif (session('error'))
+                    <div id="alert-success" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-times me-2"></i></i>{{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 @endif
                 <div class="mb-4 text-end">
                     <a href="{{ route('admin-product.create') }}" class="btn btn-sm btn-primary"><i
                             class="fas fa-plus me-1"></i>Thêm mới</a>
                 </div>
                 <div class="table-responsive">
+                    @if ($products->isNotEmpty())
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Mã sản phẩm</th>
                                 <th scope="col">Tên sản phẩm</th>
+                                <th>Thương hiệu</th>
+                                <td>Danh mục</td>
                                 <th scope="col">Hình ảnh</th>
                                 <th scope="col" style="width: 10%" class="text-center">Hành động</th>
                             </tr>
@@ -37,6 +45,8 @@
                                     <th scope="row">{{ $product->id }}</th>
                                     <td>{{ $product->sku }}</td>
                                     <td>{{ $product->name }}</td>
+                                    <td>{{ $product->brand->name }}</td>
+                                    <td>{{ $product->category->name }}</td>
                                     <td>
                                         @if ($product->imageLists->isNotEmpty())
                                             <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="100" alt="">
@@ -62,6 +72,9 @@
                             @endforeach
                         </tbody>
                     </table>
+                    @else
+                        <h2>Chưa có sản phẩm nào</h2>
+                    @endif
                 </div>
             </div>
         </div>

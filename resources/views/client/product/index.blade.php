@@ -58,7 +58,10 @@
                                                         <div class="inner-content">
                                                             <div class="product-thumb">
                                                                 <a href="single-product.html">
-                                                                    <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="270" height="274" alt="{{ $product->name }}">
+                                                                    @if ($product->imageLists->isNotEmpty())
+                                                                        <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
+                                                                            width="270" height="274" alt="{{ $product->name }}">
+                                                                    @endif
                                                                 </a>
                                                                 <div class="product-flag">
                                                                     <ul>
@@ -66,24 +69,32 @@
                                                                     </ul>
                                                                 </div>
                                                                 <div class="product-action">
-                                                                    <a class="btn-product-wishlist" href="shop-wishlist.html"><i class="fa fa-heart"></i></a>
-                                                                    <a class="btn-product-cart" href="shop-cart.html"><i class="fa fa-shopping-cart"></i></a>
+                                                                    <a class="btn-product-wishlist" href="shop-wishlist.html"><i
+                                                                            class="fa fa-heart"></i></a>
+                                                                    <a class="btn-product-cart" href="shop-cart.html"><i
+                                                                            class="fa fa-shopping-cart"></i></a>
                                                                     <button type="button" class="btn-product-quick-view-open">
                                                                         <i class="fa fa-arrows"></i>
                                                                     </button>
-                                                                    <a class="btn-product-compare" href="shop-compare.html"><i class="fa fa-random"></i></a>
+                                                                    <a class="btn-product-compare" href="shop-compare.html"><i
+                                                                            class="fa fa-random"></i></a>
                                                                 </div>
-                                                                <a class="banner-link-overlay" href="{{route('product.detail')}}"></a>
+                                                                <a class="banner-link-overlay"
+                                                                    href="{{route('product.detail', $product->id)}}"></a>
                                                             </div>
                                                             <div class="product-info">
                                                                 <div class="category">
                                                                     <ul>
-                                                                        <li><a href="{{route('product.detail')}}">{{ $product->category_id->name ?? 'Chưa có danh mục' }}</a></li>
+                                                                        <li><a
+                                                                                href="{{route('product.detail', $product->id)}}">{{ $product->category_id->name ?? 'Chưa có danh mục' }}</a>
+                                                                        </li>
                                                                     </ul>
                                                                 </div>
-                                                                <h4 class="title"><a href="single-product.html">{{ $product->name }}</a></h4>
+                                                                <h4 class="title"><a
+                                                                        href="single-product.html">{{ $product->name }}</a></h4>
                                                                 <div class="prices">
-                                                                    <span class="price">${{ number_format($product->discount, 2) }}</span>
+                                                                    <span
+                                                                        class="price">${{ number_format($product->discount, 2) }}</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -92,7 +103,7 @@
                                                 </div>
                                             @endforeach
                                         @endif
-                                       
+
                                         <div class="col-12">
                                             <div class="pagination-items">
                                                 <ul class="pagination justify-content-end mb--0">
@@ -112,8 +123,8 @@
                                                 <div class="inner-content">
                                                     <div class="product-thumb">
                                                         <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-1.webp')}}" width="322" height="360"
-                                                                alt="Image-HasTech">
+                                                            <img src="{{ asset('client/img/shop/list-1.webp')}}" width="322"
+                                                                height="360" alt="Image-HasTech">
                                                         </a>
                                                         <div class="product-flag">
                                                             <ul>
@@ -164,8 +175,8 @@
                                                 <div class="inner-content">
                                                     <div class="product-thumb">
                                                         <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-2.webp')}}" width="322" height="360"
-                                                                alt="Image-HasTech">
+                                                            <img src="{{ asset('client/img/shop/list-2.webp')}}" width="322"
+                                                                height="360" alt="Image-HasTech">
                                                         </a>
                                                         <div class="product-action">
                                                             <a class="btn-product-wishlist" href="shop-wishlist.html"><i
@@ -209,8 +220,8 @@
                                                 <div class="inner-content">
                                                     <div class="product-thumb">
                                                         <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-3.webp')}}" width="322" height="360"
-                                                                alt="Image-HasTech">
+                                                            <img src="{{ asset('client/img/shop/list-3.webp')}}" width="322"
+                                                                height="360" alt="Image-HasTech">
                                                         </a>
                                                         <div class="product-flag">
                                                             <ul>
@@ -261,8 +272,8 @@
                                                 <div class="inner-content">
                                                     <div class="product-thumb">
                                                         <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-4.webp')}}" width="322" height="360"
-                                                                alt="Image-HasTech">
+                                                            <img src="{{ asset('client/img/shop/list-4.webp')}}" width="322"
+                                                                height="360" alt="Image-HasTech">
                                                         </a>
                                                         <div class="product-action">
                                                             <a class="btn-product-wishlist" href="shop-wishlist.html"><i
@@ -306,8 +317,8 @@
                                                 <div class="inner-content">
                                                     <div class="product-thumb">
                                                         <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-5.webp')}}" width="322" height="360"
-                                                                alt="Image-HasTech">
+                                                            <img src="{{ asset('client/img/shop/list-5.webp')}}" width="322"
+                                                                height="360" alt="Image-HasTech">
                                                         </a>
                                                         <div class="product-flag">
                                                             <ul>
@@ -356,8 +367,8 @@
                                                 <div class="inner-content">
                                                     <div class="product-thumb">
                                                         <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-6.webp')}}" width="322" height="360"
-                                                                alt="Image-HasTech">
+                                                            <img src="{{ asset('client/img/shop/list-6.webp')}}" width="322"
+                                                                height="360" alt="Image-HasTech">
                                                         </a>
                                                         <div class="product-action">
                                                             <a class="btn-product-wishlist" href="shop-wishlist.html"><i
@@ -482,7 +493,7 @@
                             </div>
                         </div>
 
-                        
+
                     </div>
                 </div>
             </div>
