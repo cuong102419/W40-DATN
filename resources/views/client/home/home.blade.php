@@ -181,7 +181,7 @@
                                         <div class="product-item">
                                             <div class="inner-content">
                                                 <div class="product-thumb">
-                                                    <a href="{{ route('product.show', $product->id) }}">
+                                                    <a href="">
                                                         @if ($product->imageLists->isNotEmpty())
                                                             <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
                                                                 width="270" height="274" alt="{{ $product->name }}">
@@ -212,7 +212,7 @@
                                                         </ul>
                                                     </div>
                                                     <h4 class="title"><a
-                                                            href="{{ route('product.show', $product->id) }}">{{ $product->name }}</a>
+                                                            href="">{{ $product->name }}</a>
                                                     </h4>
                                                     <div class="prices">
                                                         <span
