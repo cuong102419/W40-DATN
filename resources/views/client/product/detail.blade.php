@@ -123,7 +123,7 @@ Chi tiết sản phẩm
                                         <li>XL</li>
                                     </ul>
                                 </div>
-                        
+                           
                                 <div class="product-quick-action">
                                     <div class="qty-wrap">
                                         <div class="pro-qty">
@@ -391,7 +391,7 @@ Chi tiết sản phẩm
         <div class="row">
             <div class="col-12">
                 <div class="section-title text-center">
-                    <h3 class="title">Related Products</h3>
+                    <h3 class="title">Similar Product</h3>
                     <div class="desc">
                         <p>There are many variations of passages of Lorem Ipsum available</p>
                     </div>
@@ -403,265 +403,41 @@ Chi tiết sản phẩm
                 <div class="product-slider-wrap">
                     <div class="swiper-container product-slider-col4-container">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <!--== Start Product Item ==-->
-                                <div class="product-item">
-                                    <div class="inner-content">
-                                        <div class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/1.webp')}}" width="270" height="274"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                            <div class="product-flag">
-                                                <ul>
-                                                    <li class="discount">-10%</li>
-                                                </ul>
+                            @foreach ($products as $product)
+                                <div class="swiper-slide">
+                                    <div class="product-item">
+                                        <div class="inner-content">
+                                            <div class="product-thumb">
+                                                <a href="{{ route('product.detail', $product->id) }}">
+                                                    <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="270" height="274" alt="{{ $product->name }}">
+                                                </a>
+                                                <div class="product-action">
+                                                    <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
+                                                    <a class="btn-product-cart" href="#"><i class="fa fa-shopping-cart"></i></a>
+                                                    <button type="button" class="btn-product-quick-view-open">
+                                                        <i class="fa fa-arrows"></i>
+                                                    </button>
+                                                    <a class="btn-product-compare" href="#"><i class="fa fa-random"></i></a>
+                                                </div>
+                                                <a class="banner-link-overlay" href="{{ route('product.detail', $product->id) }}"></a>
                                             </div>
-                                            <div class="product-action">
-                                                <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                        class="fa fa-heart"></i></a>
-                                                <a class="btn-product-cart" href="shop-cart.html"><i
-                                                        class="fa fa-shopping-cart"></i></a>
-                                                <button type="button" class="btn-product-quick-view-open">
-                                                    <i class="fa fa-arrows"></i>
-                                                </button>
-                                                <a class="btn-product-compare" href="shop-compare.html"><i
-                                                        class="fa fa-random"></i></a>
-                                            </div>
-                                            <a class="banner-link-overlay" href="shop.html"></a>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="category">
-                                                <ul>
-                                                    <li><a href="shop.html">Men</a></li>
-                                                    <li class="sep">/</li>
-                                                    <li><a href="shop.html">Women</a></li>
-                                                </ul>
-                                            </div>
-                                            <h4 class="title"><a href="single-product.html">Modern Smart Shoes</a></h4>
-                                            <div class="prices">
-                                                <span class="price-old">$300</span>
-                                                <span class="sep">-</span>
-                                                <span class="price">$240.00</span>
+                                            <div class="product-info">
+                                                <div class="category">
+                                                    <ul>
+                                                        <li><a href="#">{{ $product->category->name ?? 'Uncategorized' }}</a></li>
+                                                    </ul>
+                                                </div>
+                                                <h4 class="title">
+                                                    <a href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a>
+                                                </h4>
+                                                <div class="prices">
+                                                    <span class="price">${{ number_format($product->price, 2) }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!--== End prPduct Item ==-->
-                            </div>
-                            <div class="swiper-slide">
-                                <!--== Start Product Item ==-->
-                                <div class="product-item">
-                                    <div class="inner-content">
-                                        <div class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/7.webp')}}" width="270" height="274"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                        class="fa fa-heart"></i></a>
-                                                <a class="btn-product-cart" href="shop-cart.html"><i
-                                                        class="fa fa-shopping-cart"></i></a>
-                                                <button type="button" class="btn-product-quick-view-open">
-                                                    <i class="fa fa-arrows"></i>
-                                                </button>
-                                                <a class="btn-product-compare" href="shop-compare.html"><i
-                                                        class="fa fa-random"></i></a>
-                                            </div>
-                                            <a class="banner-link-overlay" href="shop.html"></a>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="category">
-                                                <ul>
-                                                    <li><a href="shop.html">Men</a></li>
-                                                    <li class="sep">/</li>
-                                                    <li><a href="shop.html">Women</a></li>
-                                                </ul>
-                                            </div>
-                                            <h4 class="title"><a href="single-product.html">Quickiin Mens shoes</a></h4>
-                                            <div class="prices">
-                                                <span class="price">$240.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--== End prPduct Item ==-->
-                            </div>
-                            <div class="swiper-slide">
-                                <!--== Start Product Item ==-->
-                                <div class="product-item">
-                                    <div class="inner-content">
-                                        <div class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/3.webp')}}" width="270" height="274"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                            <div class="product-flag">
-                                                <ul>
-                                                    <li class="discount">-10%</li>
-                                                </ul>
-                                            </div>
-                                            <div class="product-action">
-                                                <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                        class="fa fa-heart"></i></a>
-                                                <a class="btn-product-cart" href="shop-cart.html"><i
-                                                        class="fa fa-shopping-cart"></i></a>
-                                                <button type="button" class="btn-product-quick-view-open">
-                                                    <i class="fa fa-arrows"></i>
-                                                </button>
-                                                <a class="btn-product-compare" href="shop-compare.html"><i
-                                                        class="fa fa-random"></i></a>
-                                            </div>
-                                            <a class="banner-link-overlay" href="shop.html"></a>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="category">
-                                                <ul>
-                                                    <li><a href="shop.html">Men</a></li>
-                                                    <li class="sep">/</li>
-                                                    <li><a href="shop.html">Women</a></li>
-                                                </ul>
-                                            </div>
-                                            <h4 class="title"><a href="single-product.html">Rexpo Womens shoes</a></h4>
-                                            <div class="prices">
-                                                <span class="price-old">$300</span>
-                                                <span class="sep">-</span>
-                                                <span class="price">$240.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--== End prPduct Item ==-->
-                            </div>
-                            <div class="swiper-slide">
-                                <!--== Start Product Item ==-->
-                                <div class="product-item">
-                                    <div class="inner-content">
-                                        <div class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/4.webp')}}" width="270" height="274"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                        class="fa fa-heart"></i></a>
-                                                <a class="btn-product-cart" href="shop-cart.html"><i
-                                                        class="fa fa-shopping-cart"></i></a>
-                                                <button type="button" class="btn-product-quick-view-open">
-                                                    <i class="fa fa-arrows"></i>
-                                                </button>
-                                                <a class="btn-product-compare" href="shop-compare.html"><i
-                                                        class="fa fa-random"></i></a>
-                                            </div>
-                                            <a class="banner-link-overlay" href="shop.html"></a>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="category">
-                                                <ul>
-                                                    <li><a href="shop.html">Men</a></li>
-                                                    <li class="sep">/</li>
-                                                    <li><a href="shop.html">Women</a></li>
-                                                </ul>
-                                            </div>
-                                            <h4 class="title"><a href="single-product.html">Leather Mens Slipper</a>
-                                            </h4>
-                                            <div class="prices">
-                                                <span class="price">$240.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--== End prPduct Item ==-->
-                            </div>
-                            <div class="swiper-slide">
-                                <!--== Start Product Item ==-->
-                                <div class="product-item">
-                                    <div class="inner-content">
-                                        <div class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/5.webp')}}" width="270" height="274"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                            <div class="product-action">
-                                                <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                        class="fa fa-heart"></i></a>
-                                                <a class="btn-product-cart" href="shop-cart.html"><i
-                                                        class="fa fa-shopping-cart"></i></a>
-                                                <button type="button" class="btn-product-quick-view-open">
-                                                    <i class="fa fa-arrows"></i>
-                                                </button>
-                                                <a class="btn-product-compare" href="shop-compare.html"><i
-                                                        class="fa fa-random"></i></a>
-                                            </div>
-                                            <a class="banner-link-overlay" href="shop.html"></a>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="category">
-                                                <ul>
-                                                    <li><a href="shop.html">Men</a></li>
-                                                    <li class="sep">/</li>
-                                                    <li><a href="shop.html">Women</a></li>
-                                                </ul>
-                                            </div>
-                                            <h4 class="title"><a href="single-product.html">Primitive Mens shoes</a>
-                                            </h4>
-                                            <div class="prices">
-                                                <span class="price-old">$300</span>
-                                                <span class="sep">-</span>
-                                                <span class="price">$240.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--== End prPduct Item ==-->
-                            </div>
-                            <div class="swiper-slide">
-                                <!--== Start Product Item ==-->
-                                <div class="product-item">
-                                    <div class="inner-content">
-                                        <div class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/6.webp')}}" width="270" height="274"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                            <div class="product-flag">
-                                                <ul>
-                                                    <li class="discount">-10%</li>
-                                                </ul>
-                                            </div>
-                                            <div class="product-action">
-                                                <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                        class="fa fa-heart"></i></a>
-                                                <a class="btn-product-cart" href="shop-cart.html"><i
-                                                        class="fa fa-shopping-cart"></i></a>
-                                                <button type="button" class="btn-product-quick-view-open">
-                                                    <i class="fa fa-arrows"></i>
-                                                </button>
-                                                <a class="btn-product-compare" href="shop-compare.html"><i
-                                                        class="fa fa-random"></i></a>
-                                            </div>
-                                            <a class="banner-link-overlay" href="shop.html"></a>
-                                        </div>
-                                        <div class="product-info">
-                                            <div class="category">
-                                                <ul>
-                                                    <li><a href="shop.html">Men</a></li>
-                                                    <li class="sep">/</li>
-                                                    <li><a href="shop.html">Women</a></li>
-                                                </ul>
-                                            </div>
-                                            <h4 class="title"><a href="single-product.html">Simple Fabric Shoe</a></h4>
-                                            <div class="prices">
-                                                <span class="price-old">$300</span>
-                                                <span class="sep">-</span>
-                                                <span class="price">$240.00</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--== End prPduct Item ==-->
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <!--== Add Swiper Arrows ==-->

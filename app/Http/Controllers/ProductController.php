@@ -23,18 +23,17 @@ class ProductController extends Controller
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
     public function detail($id) {
-        $product = Product::with('category', 'brand')->find($id);
+        $product = Product::with('category', 'brand', 'imageLists')->find($id);
+        
         if (!$product) {
             return abort(404); 
         }
-        return view('client.product.detail', compact('product'));
+
+        $products = Product::with('category', 'brand', 'imageLists')->get();
+    
+        return view('client.product.detail', compact('product', 'products'));
     }
     
-    public function show($id)
-    {
-        $product = Product::where('id', $id)->first();
-        return view('client.product.detail', ['product' => $product]);
-    }
     public function product()
     {
         $products = Product::all();
