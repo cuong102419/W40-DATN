@@ -33,4 +33,8 @@ class Product extends Model
     public function imageLists() {
         return $this->hasMany(ImageList::class, 'product_id');
     }
+
+    public function variants() {
+        return $this->hasMany(ProductVariant::class, 'product_id');
+    }
 }
