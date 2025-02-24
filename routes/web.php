@@ -30,7 +30,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
-Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/product/{id}', [ProductController::class, 'detail'])->name('product.detail');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
