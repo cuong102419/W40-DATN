@@ -94,7 +94,7 @@
                                                                         href="{{route('product.detail', $product->id)}}">{{ $product->name }}</a></h4>
                                                                 <div class="prices">
                                                                     <span
-                                                                        class="price">${{ number_format($product->discount, 2) }}</span>
+                                                                        class="price text-danger">{{ number_format($product->variants->min('price'), 2) }}đ</span>
                                                                 </div>
                                                             </div>
                                                         </div>

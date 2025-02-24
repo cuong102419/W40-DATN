@@ -86,7 +86,7 @@ Chi tiết sản phẩm
                             <div class="product-single-info">
                                 <h3 class="main-title">{{ $product->name }}</h3>  <!-- Tên sản phẩm -->
                                 <div class="prices">
-                                    <span class="price"> VND</span> <!-- Giá sản phẩm -->
+                                    <span class="price text-danger">{{ number_format($product->variants->min('price')) }} VND</span> <!-- Giá sản phẩm -->
                                 </div>
                         
                                 <div class="rating-box-wrap">
