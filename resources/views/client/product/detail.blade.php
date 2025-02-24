@@ -86,7 +86,7 @@ Chi tiết sản phẩm
                             <div class="product-single-info">
                                 <h3 class="main-title">{{ $product->name }}</h3>  <!-- Tên sản phẩm -->
                                 <div class="prices">
-                                    <span class="price">{{ number_format($product->price, 0, ',', '.') }} VND</span> <!-- Giá sản phẩm -->
+                                    <span class="price"> VND</span> <!-- Giá sản phẩm -->
                                 </div>
                         
                                 <div class="rating-box-wrap">
@@ -102,7 +102,7 @@ Chi tiết sản phẩm
                                     </div>
                                 </div>
                         
-                                <p>{{ $product->description }}</p> <!-- Mô tả sản phẩm -->
+                                <p>{!! $product->description !!}</p> <!-- Mô tả sản phẩm -->
                         
                                 <div class="product-color">
                                     <h6 class="title">Màu</h6>
