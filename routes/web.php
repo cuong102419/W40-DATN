@@ -40,7 +40,9 @@ Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'sendContact'])->name('contact.send');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
-Route::get('login', [AuthenticController::class, 'login'])->name('login');
+Route::get('/login', [AuthenticController::class, 'index'])->name('login.index');
+Route::post('/login', [AuthenticController::class, 'login'])->name('login.login');
+Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup');
 
 
 Route::prefix('admin')->group(function () {
