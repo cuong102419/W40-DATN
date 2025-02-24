@@ -57,7 +57,7 @@
                                                     <div class="product-item">
                                                         <div class="inner-content">
                                                             <div class="product-thumb">
-                                                                <a href="single-product.html">
+                                                                <a href="{{route('product.detail', $product->id)}}">
                                                                     @if ($product->imageLists->isNotEmpty())
                                                                         <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
                                                                             width="270" height="274" alt="{{ $product->name }}">
@@ -91,7 +91,7 @@
                                                                     </ul>
                                                                 </div>
                                                                 <h4 class="title"><a
-                                                                        href="single-product.html">{{ $product->name }}</a></h4>
+                                                                        href="{{route('product.detail', $product->id)}}">{{ $product->name }}</a></h4>
                                                                 <div class="prices">
                                                                     <span
                                                                         class="price">${{ number_format($product->discount, 2) }}</span>
