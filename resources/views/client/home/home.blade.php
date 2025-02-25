@@ -20,7 +20,6 @@
                             <div class="product-collection-content">
                                 <div class="content">
                                     <h3 class="title"><a href="shop.html">Sports Shoes</a></h3>
-                                    <h4 class="price">From $95.00</h4>
                                 </div>
                             </div>
                             <div class="product-collection-thumb"
@@ -37,7 +36,6 @@
                             <div class="product-collection-content">
                                 <div class="content">
                                     <h3 class="title"><a href="shop.html">Latest Shoes</a></h3>
-                                    <h4 class="price">From $90.00</h4>
                                 </div>
                             </div>
                             <div class="product-collection-thumb" data-bg-img="{{ asset('client/img/shop/banner/1.jpg')}}">
@@ -54,7 +52,6 @@
                             <div class="product-collection-content">
                                 <div class="content">
                                     <h3 class="title"><a href="shop.html">Office Shoes</a></h3>
-                                    <h4 class="price">From $82.00</h4>
                                 </div>
                             </div>
                             <div class="product-collection-thumb" data-bg-img="{{ asset('client/img/shop/banner/2.jpg') }}">
@@ -165,7 +162,7 @@
                     <div class="section-title text-center">
                         <h3 class="title">Best Seller</h3>
                         <div class="desc">
-                            <p>There are many variations of passages of Lorem Ipsum available</p>
+                            <p>There are many best-selling products</p>
                         </div>
                     </div>
                 </div>

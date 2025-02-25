@@ -17,65 +17,25 @@ Chi tiết sản phẩm
                             <div class="product-single-thumb">
                                 <div class="swiper-container single-product-thumb single-product-thumb-slider">
                                     <div class="swiper-wrapper">
+                                        @foreach ($product->imageLists as $image)
                                         <div class="swiper-slide">
                                             <a class="lightbox-image" data-fancybox="gallery"
                                                 href="{{asset('client/img/shop/product-single/1.webp')}}">
-                                                <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
+                                                <img src="{{ Storage::url($image->image_url) }}"
                                                     width="570" height="541" alt="Image-HasTech">
                                             </a>
                                         </div>
-                                        <div class="swiper-slide">
-                                            <a class="lightbox-image" data-fancybox="gallery"
-                                                href="{{ asset('client/img/shop/product-single/2.webp')}}">
-                                                <img src="{{ asset('client/img/shop/product-single/2.webp')}}"
-                                                    width="570" height="541" alt="Image-HasTech">
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <a class="lightbox-image" data-fancybox="gallery"
-                                                href="{{ asset('client/img/shop/product-single/3.webp')}}">
-                                                <img src="{{ asset('client/img/shop/product-single/3.webp')}}"
-                                                    width="570" height="541" alt="Image-HasTech">
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <a class="lightbox-image" data-fancybox="gallery"
-                                                href="{{asset('client/img/shop/product-single/4.webp')}}">
-                                                <img src="{{asset('client/img/shop/product-single/4.webp')}}"
-                                                    width="570" height="541" alt="Image-HasTech">
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <a class="lightbox-image" data-fancybox="gallery"
-                                                href="assets/img/shop/product-single/5.webp">
-                                                <img src="assets/img/shop/product-single/5.webp" width="570"
-                                                    height="541" alt="Image-HasTech">
-                                            </a>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="swiper-container single-product-nav single-product-nav-slider">
                                     <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-1.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-2.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-3.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-4.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-5.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
+                                        @foreach ($product->imageLists as $image)
+                                            <div class="swiper-slide">
+                                                <img src="{{ Storage::url($image->image_url) }}" width="127" height="127" alt="{{ $product->name }}">
+                                            </div>
+                                        @endforeach
+
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +62,7 @@ Chi tiết sản phẩm
                                     </div>
                                 </div>
                         
-                                <p>{!! $product->description !!}</p> <!-- Mô tả sản phẩm -->
+                                <p></p> <!-- Mô tả sản phẩm -->
                         
                                 <div class="product-color">
                                     <h6 class="title">Màu</h6>
@@ -189,16 +149,7 @@ Chi tiết sản phẩm
                         </div>
                         <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description-tab">
                             <div class="product-description">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim adlo minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in tun tuni reprehenderit in voluptate velit esse cillum dolore eu
-                                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                                    qui officia deserun mollit anim id est laborum. Sed ut perspiciatis unde omnis iste
-                                    natus error sit voluptatem accusantium doloremque laudantium, totam rel aperiam,
-                                    eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
-                                    sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
-                                    fugit, sed quia consequuntur.</p>
+                                <p>{!! $product->description !!}</p>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
@@ -216,7 +167,7 @@ Chi tiết sản phẩm
                                         <span class="review-caption">Based on 5 reviews</span>
                                         <span class="review-write-btn">Write a review</span>
                                     </div>
-                                </div>
+                                </div> 
 
                                 <!--== Start Reviews Form Item ==-->
                                 <div class="reviews-form-area">
