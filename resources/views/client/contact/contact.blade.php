@@ -26,8 +26,8 @@
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="name" class="form-label fw-bold text-white">Số điện thoại</label>
-                            <input type="text" class="form-control" id="name" name="tel" required>
+                            <label for="tel" class="form-label fw-bold text-white">Số điện thoại</label>
+                            <input type="number" class="form-control" id="tel" name="tel" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label fw-bold text-white">Email</label>
