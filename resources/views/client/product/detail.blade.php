@@ -17,65 +17,25 @@ Chi tiết sản phẩm
                             <div class="product-single-thumb">
                                 <div class="swiper-container single-product-thumb single-product-thumb-slider">
                                     <div class="swiper-wrapper">
+                                        @foreach ($product->imageLists as $image)
                                         <div class="swiper-slide">
                                             <a class="lightbox-image" data-fancybox="gallery"
                                                 href="{{asset('client/img/shop/product-single/1.webp')}}">
-                                                <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
+                                                <img src="{{ Storage::url($image->image_url) }}"
                                                     width="570" height="541" alt="Image-HasTech">
                                             </a>
                                         </div>
-                                        <div class="swiper-slide">
-                                            <a class="lightbox-image" data-fancybox="gallery"
-                                                href="{{ asset('client/img/shop/product-single/2.webp')}}">
-                                                <img src="{{ asset('client/img/shop/product-single/2.webp')}}"
-                                                    width="570" height="541" alt="Image-HasTech">
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <a class="lightbox-image" data-fancybox="gallery"
-                                                href="{{ asset('client/img/shop/product-single/3.webp')}}">
-                                                <img src="{{ asset('client/img/shop/product-single/3.webp')}}"
-                                                    width="570" height="541" alt="Image-HasTech">
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <a class="lightbox-image" data-fancybox="gallery"
-                                                href="{{asset('client/img/shop/product-single/4.webp')}}">
-                                                <img src="{{asset('client/img/shop/product-single/4.webp')}}"
-                                                    width="570" height="541" alt="Image-HasTech">
-                                            </a>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <a class="lightbox-image" data-fancybox="gallery"
-                                                href="assets/img/shop/product-single/5.webp">
-                                                <img src="assets/img/shop/product-single/5.webp" width="570"
-                                                    height="541" alt="Image-HasTech">
-                                            </a>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="swiper-container single-product-nav single-product-nav-slider">
                                     <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-1.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-2.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-3.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-4.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <img src="{{asset('client/img/shop/product-single/nav-5.webp')}}"
-                                                width="127" height="127" alt="Image-HasTech">
-                                        </div>
+                                        @foreach ($product->imageLists as $image)
+                                            <div class="swiper-slide">
+                                                <img src="{{ Storage::url($image->image_url) }}" width="127" height="127" alt="{{ $product->name }}">
+                                            </div>
+                                        @endforeach
+
                                     </div>
                                 </div>
                             </div>

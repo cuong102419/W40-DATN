@@ -24,7 +24,7 @@ class ProductController extends Controller
     }
     public function detail($id) {
         $product = Product::with('category', 'brand', 'imageLists')->find($id);
-        
+        $nextProduct = Product::where('id', '>', $id)->orderBy('id', 'asc')->first();
         if (!$product) {
             return abort(404); 
         }
