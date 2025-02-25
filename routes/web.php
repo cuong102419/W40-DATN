@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -43,9 +44,9 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.in
 Route::get('/login', [AuthenticController::class, 'index'])->name('login.index');
 Route::post('/login', [AuthenticController::class, 'login'])->name('login.login');
 Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup');
+Route::get('/logout', [AuthenticController::class, 'logout'])->middleware('auth')->name('logout');
 
-
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('/product')->group(function () {
