@@ -207,7 +207,7 @@ Chi tiết sản phẩm
                                         <span class="review-caption">Based on 5 reviews</span>
                                         <span class="review-write-btn">Write a review</span>
                                     </div>
-                                </div>
+                                </div> 
 
                                 <!--== Start Reviews Form Item ==-->
                                 <div class="reviews-form-area">
