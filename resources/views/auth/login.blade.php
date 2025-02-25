@@ -12,8 +12,14 @@
                 @csrf
                 <h2>Đăng nhập</h2>
                 <input type="text" name="email" placeholder="Email">
+                @error('email')
+                    <span>{{ $message }}</span>
+                @enderror
                 <input type="password" name="password" placeholder="Mật khẩu">
                 <div class="remember-container">
+                    @error('password')
+                        <span>{{ $message }}</span>
+                    @enderror
                     <a href="#" class="toggle-link">Quên mật khẩu?</a>
                 </div>
                 <button type="submit">Đăng nhập</button>
@@ -23,12 +29,25 @@
 
         <div class="form-container" id="signup-container">
             <form action="{{ route('signup') }}" method="post">
-              @csrf
+                @csrf
                 <h2>Đăng ký</h2>
                 <input type="email" name="email" id="signup-email" placeholder="Email">
+                @error('email')
+                    <span>{{ $message }}</span>
+                @enderror
                 <input type="text" name="name" id="signup-username" placeholder="Họ tên">
+                @error('name')
+                    <span>{{ $message }}</span>
+                @enderror
                 <input type="password" name="password" id="signup-password" placeholder="Mật khẩu">
-                <input type="password" name="confirm_password" id="signup-confirm-password" placeholder="Nhập lại mật khẩu">
+                @error('password')
+                    <span>{{ $message }}</span>
+                @enderror
+                <input type="password" name="confirm_password" id="signup-confirm-password"
+                    placeholder="Nhập lại mật khẩu">
+                @error('confirm_password')
+                    <span>{{ $message }}</span>
+                @enderror
                 <button type="submit">Đăng ký</button>
             </form>
             <p class="toggle-link" onclick="showLogin()">Bạn đã có tài khoản. Đăng nhập</p>

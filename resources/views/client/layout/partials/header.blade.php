@@ -26,7 +26,7 @@
                                                 <a href="{{route('dashboard.index')}}" class="dropdown-item fas fa-user-shield">Admin</a>
                                                 <a href="#" class="dropdown-item">Profile</a>
                                                 <a href="{{route('login.index')}}" class="dropdown-item">Login</a>
-                                                <a href="#" class="dropdown-item">Logout</a>
+                                                <a href="{{  route('logout')}}" class="dropdown-item">Logout</a>
                                             </div>
                                         </li>
                                     </ul>
