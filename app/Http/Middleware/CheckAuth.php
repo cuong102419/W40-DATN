@@ -23,7 +23,7 @@ class CheckAuth
                 return redirect()->route('home');
             }
         } else {
-            return redirect()->route('login.index');
+            return redirect()->route('login');
         }
     }
 }

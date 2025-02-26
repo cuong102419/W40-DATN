@@ -8,42 +8,50 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return view('auth.login');
     }
 
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
         $data = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'min:8']
         ]);
-        
-        if(Auth::attempt($data)) {
-            if(Auth::user()->role == 'admin') {
+
+        if (Auth::attempt($data)) {
+            if (Auth::user()->role == 'admin') {
                 return redirect()->route('dashboard.index');
             }
         } else {
-            return redirect()->route('login.index');
+            return redirect()->route('login');
         }
     }
 
-    public function signup(Request $request) {
-        // dd($request);
+    public function signup(Request $request)
+    {
         $data = $request->validate([
             'email' => ['required', 'email'],
             'name' => ['required', 'min:4'],
+            'phone_number' => ['required', 'min:10'],
             'password' => ['required', 'min:8'],
             'confirm_password' => ['required', 'min:8', 'same:password']
         ]);
-        
-        User::create($data);
-        
-        return redirect()->route('home');
 
+        User::create($data);
+
+        return redirect()->route('home');
     }
 
-    public function logout() {
+    public function logout()
+    {
         Auth::logout();
-        return redirect()->route('login.index');
+        return redirect()->route('login');
+    }
+
+    public function profile()
+    {
+        return view('client.user.index');
     }
 }
