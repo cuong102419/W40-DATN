@@ -41,10 +41,11 @@ Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'sendContact'])->name('contact.send');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
-Route::get('/login', [AuthenticController::class, 'index'])->name('login.index');
+Route::get('/login', [AuthenticController::class, 'index'])->name('login');
 Route::post('/login', [AuthenticController::class, 'login'])->name('login.login');
 Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup');
 Route::get('/logout', [AuthenticController::class, 'logout'])->middleware('auth')->name('logout');
+Route::get('/profile', [AuthenticController::class, 'profile'])->middleware('auth')->name('profile');
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
