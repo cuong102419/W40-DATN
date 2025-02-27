@@ -19,15 +19,24 @@
                                         <li class="email"><i class="fa fa-envelope"></i><a
                                                 href="mailto://demo@example.com">demo@example.com</a></li>
                                         <li class="account" style="display: flex"><i class="fa fa-user"></i>
-                                            <a href="#" class="nav-link dropdown-toggle mt-1" data-bs-toggle="dropdown">
-                                                <span class="d-none d-lg-inline-flex">Acount</span>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                                                <a href="{{route('dashboard.index')}}" class="dropdown-item fas fa-user-shield">Admin</a>
-                                                <a href="{{  route('profile')}}" class="dropdown-item">Profile</a>
-                                                <a href="{{route('login')}}" class="dropdown-item">Login</a>
-                                                <a href="{{  route('logout')}}" class="dropdown-item">Logout</a>
-                                            </div>
+                                            @if (Auth::check())
+                                                <a href="#" class="nav-link dropdown-toggle mt-1" data-bs-toggle="dropdown">
+                                                    <span class="d-none d-lg-inline-flex">Tài khoản</span>
+                                                </a>
+                                                <div
+                                                    class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                                                    @if (Auth::user()->role == 'admin')
+                                                        <a href="{{route('dashboard.index')}}"
+                                                            class="dropdown-item fas fa-user-shield">Trang quản trị</a>
+                                                    @endif
+                                                    <a href="{{  route('profile')}}" class="dropdown-item">Hồ sơ</a>
+                                                    <a href="{{  route('logout')}}" class="dropdown-item">Đăng xuất</a>
+                                                </div>
+                                            @else
+                                                <a href="{{ route('signin.signin') }}" class="nav-link mt-1">
+                                                    <span class="d-none d-lg-inline-flex">Đăng nhập</span>
+                                                </a>
+                                            @endif
                                         </li>
                                     </ul>
                                 </div>
@@ -56,7 +65,8 @@
                         <div class="header-middle-align-center">
                             <div class="header-search-area">
                                 <form action="{{ route('search') }}" class="header-searchbox">
-                                    <input type="search" name="keyword" class="form-control" placeholder="Search" required>
+                                    <input type="search" name="keyword" class="form-control" placeholder="Search"
+                                        required>
                                     <button class="btn-submit" type="submit"><i class="pe-7s-search"></i></button>
                                 </form>
                             </div>
@@ -98,14 +108,17 @@
                     <div class="header-align">
                         <div class="header-navigation-area position-relative w-100 container">
                             <ul class="main-menu nav justify-content-between">
-                                <li class=""><a class="fs-6 fw-bold" href="{{ route('home') }}"><span>Trang chủ</span></a>
+                                <li class=""><a class="fs-6 fw-bold" href="{{ route('home') }}"><span>Trang
+                                            chủ</span></a>
                                 </li>
-                                <li><a class="fs-6 fw-bold" href="{{ route('product.index') }}"><span>Sản phẩm</span></a></li>
+                                <li><a class="fs-6 fw-bold" href="{{ route('product.index') }}"><span>Sản
+                                            phẩm</span></a></li>
                                 <li class=""><a class="fs-6 fw-bold" href="#/"><span>Về chúng tôi</span></a>
                                 </li>
                                 <li><a class="fs-6 fw-bold" href="{{ route('blog.index') }}"><span>Tin tức</span></a>
                                 </li>
-                                <li><a class="fs-6 fw-bold" href="{{ route('contact.form') }}"><span>Liên hệ</span></a></li>
+                                <li><a class="fs-6 fw-bold" href="{{ route('contact.form') }}"><span>Liên hệ</span></a>
+                                </li>
                             </ul>
                         </div>
                     </div>

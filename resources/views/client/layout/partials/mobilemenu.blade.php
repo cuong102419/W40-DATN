@@ -43,7 +43,7 @@
                             <a href="{{route('dashboard.index')}}" class="dropdown-item fas fa-user-shield">Admin</a>
                         </li>
                         <li><a href="#" class="dropdown-item">Profile</a></li>
-                        <li><a href="{{route('login')}}" class="dropdown-item">Login</a></li>
+                        <li><a href="{{route('signin')}}" class="dropdown-item">Login</a></li>
                         <li><a href="#" class="dropdown-item">Logout</a></li>
                     </ul>
                 </li>

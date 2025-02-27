@@ -10,22 +10,28 @@ class AuthenticController extends Controller
 {
     public function index()
     {
-        return view('auth.login');
+        return view('auth.signin');
     }
 
-    public function login(Request $request)
+    public function formSignup() {
+        return view('auth.signup');
+    }
+
+    public function signin(Request $request)
     {
         $data = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'min:8']
         ]);
-
+        // dd($data);
         if (Auth::attempt($data)) {
             if (Auth::user()->role == 'admin') {
                 return redirect()->route('dashboard.index');
+            } else {
+                return redirect()->route('home');
             }
         } else {
-            return redirect()->route('login');
+            return redirect()->route('signin');
         }
     }
 
@@ -34,20 +40,19 @@ class AuthenticController extends Controller
         $data = $request->validate([
             'email' => ['required', 'email'],
             'name' => ['required', 'min:4'],
-            'phone_number' => ['required', 'min:10'],
             'password' => ['required', 'min:8'],
             'confirm_password' => ['required', 'min:8', 'same:password']
         ]);
-
+        // dd($data);
         User::create($data);
 
-        return redirect()->route('home');
+        return redirect()->route('signin');
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('signin');
     }
 
     public function profile()
