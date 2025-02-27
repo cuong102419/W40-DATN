@@ -1,0 +1,43 @@
+@extends('auth.layout.master')
+
+@section('title')
+    Đăng nhập
+@endsection
+
+@section('content')
+    <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <a href="{{ route('home') }}" class="pt-1">
+                <img src="{{ asset('client/img/logo1.webp') }}" width="150" alt="">
+            </a>
+            <h4 class="pt-3 text-primary">Đăng nhập</h4>
+        </div>
+        <form action="{{ route('signin.signin') }}" method="post">
+            @csrf
+            <div class="form-floating mb-3">
+                <input type="email" name="email" class="form-control" id="floatingInput">
+                <label for="floatingInput">Email</label>
+                <div class="mt-2">
+                    <span class="text-danger">Chan đê</span>
+                </div>
+            </div>
+            <div class="form-floating mb-4">
+                <input type="password" name="password" class="form-control" id="floatingPassword">
+                <label for="floatingPassword">Mật khẩu</label>
+                <div class="mt-2">
+                    <span class="text-danger">Chan đê</span>
+                </div>
+            </div>
+            <div class="mb-4">
+                <a href="">Quên mật khẩu</a>
+            </div>
+            <button type="submit" class="btn btn-primary py-3 w-100 mb-4 text-uppercase">Đăng nhập</button>
+            <p class="text-center mb-0">Bạn chưa có tài khoản? <a href="{{ route('signup') }}">Đăng ký</a></p>
+            <div class="d-flex justify-content-center align-items-center">
+                <p class="text-center me-2 mt-3">Hoặc đăng nhập bằng </p>
+                <a href="#" class="btn btn-outline-primary "><i
+                        class="fab fa-google fa-lg me-2"></i><strong>Google</strong></a>
+            </div>
+        </form>
+    </div>
+@endsection

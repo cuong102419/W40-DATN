@@ -79,13 +79,13 @@
             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                 <img class="rounded-circle me-lg-2" src="{{ asset('administrator/img/tho_7.png')}}" alt=""
                     style="width: 40px; height: 40px;">
-                <span class="d-none d-lg-inline-flex">Acount</span>
+                <span class="d-none d-lg-inline-flex">Xin chào: {{ Auth::user()->name }}</span>
             </a>
             <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                <a href="#" class="dropdown-item">My Profile</a>
-                <a href="#" class="dropdown-item">Settings</a>
-                <a href="#" class="dropdown-item">Log Out</a>
-                <a href="{{route('home')}}" class="dropdown-item">Return to client page</a>
+                <a href="#" class="dropdown-item">Hồ sơ của tôi</a>
+                <a href="#" class="dropdown-item">Cài đặt</a>
+                <a href="{{ route('logout') }}" class="dropdown-item">Đăng xuất</a>
+                <a href="{{route('home')}}" class="dropdown-item">Về trang chính</a>
             </div>
         </div>
     </div>
