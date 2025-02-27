@@ -24,88 +24,46 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="cart-product-item">
-                                        <td class="product-remove">
-                                            <a href="#/"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-                                        <td class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/product-mini/1.webp')}}" width="90" height="110"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                        </td>
-                                        <td class="product-name">
-                                            <h4 class="title"><a href="single-product.html">Leather Mens Slipper</a></h4>
-                                        </td>
-                                        <td class="product-price">
-                                            <span class="price">£69.99</span>
-                                        </td>
-                                        <td class="product-quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" class="quantity" title="Quantity" value="1">
-                                            </div>
-                                        </td>
-                                        <td class="product-subtotal">
-                                            <span class="price">£69.99</span>
-                                        </td>
-                                    </tr>
-                                    <tr class="cart-product-item">
-                                        <td class="product-remove">
-                                            <a href="#/"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-                                        <td class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/product-mini/2.webp')}}" width="90" height="110"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                        </td>
-                                        <td class="product-name">
-                                            <h4 class="title"><a href="single-product.html">Quickiin Mens shoes</a></h4>
-                                        </td>
-                                        <td class="product-price">
-                                            <span class="price">£20.00</span>
-                                        </td>
-                                        <td class="product-quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" class="quantity" title="Quantity" value="1">
-                                            </div>
-                                        </td>
-                                        <td class="product-subtotal">
-                                            <span class="price">£20.00</span>
-                                        </td>
-                                    </tr>
-                                    <tr class="cart-product-item">
-                                        <td class="product-remove">
-                                            <a href="#/"><i class="fa fa-trash-o"></i></a>
-                                        </td>
-                                        <td class="product-thumb">
-                                            <a href="single-product.html">
-                                                <img src="{{asset('client/img/shop/product-mini/3.webp')}}" width="90" height="110"
-                                                    alt="Image-HasTech">
-                                            </a>
-                                        </td>
-                                        <td class="product-name">
-                                            <h4 class="title"><a href="single-product.html">Rexpo Womens shoes</a></h4>
-                                        </td>
-                                        <td class="product-price">
-                                            <span class="price">£39.00</span>
-                                        </td>
-                                        <td class="product-quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" class="quantity" title="Quantity" value="1">
-                                            </div>
-                                        </td>
-                                        <td class="product-subtotal">
-                                            <span class="price">£39.00</span>
-                                        </td>
-                                    </tr>
-                                    <tr class="actions">
-                                        <td class="border-0" colspan="6">
-                                            <button type="submit" class="update-cart" disabled>Cập nhật giỏ hàng</button>
-                                            <button type="submit" class="clear-cart">Xóa giỏ hàng</button>
-                                            <a href="{{ route('product.index') }}" class="btn-theme btn-flat">Tiếp tục mua sắm</a></a>
-                                        </td>
-                                    </tr>
+                                    @php $total = 0; @endphp
+                                    @foreach($cartItems as $item)
+                                        @php
+                                            $subtotal = $item->product->price * $item->quantity;
+                                            $total += $subtotal;
+                                        @endphp
+                                        <tr>
+                                            <!-- Cột Hình ảnh & Tên sản phẩm -->
+                                            <td class="d-flex align-items-center">
+                                                <img src="{{ asset('images/' . $item->product->image) }}" width="80" class="me-3" alt="{{ $item->product->name }}">
+                                                {{ $item->product->name }}
+                                            </td>
+                                            
+                                            <!-- Cột Giá -->
+                                            <td>£{{ number_format($item->product->price, 2) }}</td>
+                    
+                                            <!-- Cột Số lượng -->
+                                            <td>
+                                                <form action="{{ route('cart.update', $item->id) }}" method="POST" class="d-flex align-items-center">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" name="quantity" value="{{ $item->quantity - 1 }}">-</button>
+                                                    <input type="text" name="quantity" value="{{ $item->quantity }}" class="form-control text-center mx-2" style="width: 50px;" readonly>
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" name="quantity" value="{{ $item->quantity + 1 }}">+</button>
+                                                </form>
+                                            </td>
+                    
+                                            <!-- Cột Tổng tiền -->
+                                            <td>£{{ number_format($subtotal, 2) }}</td>
+                    
+                                            <!-- Cột Xóa sản phẩm -->
+                                            <td>
+                                                <form action="{{ route('cart.remove', $item->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">🗑</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </form>

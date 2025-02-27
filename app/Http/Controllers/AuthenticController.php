@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticController extends Controller
 {
@@ -38,6 +39,7 @@ class AuthenticController extends Controller
             'password' => ['required', 'min:8'],
             'confirm_password' => ['required', 'min:8', 'same:password']
         ]);
+        $data['password'] = Hash::make($data['password']);
 
         User::create($data);
 
