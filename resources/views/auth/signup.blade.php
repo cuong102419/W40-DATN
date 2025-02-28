@@ -60,6 +60,8 @@
             $("#signup-form").on("submit", function(e) {
                 e.preventDefault();
 
+                $(".text-danger").text("");
+
                 let form = $(this);
                 let formData = form.serialize();
 
