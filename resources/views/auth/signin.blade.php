@@ -5,27 +5,34 @@
 @endsection
 
 @section('content')
-    <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+    <div id="form-signin" class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+        @if (session('success'))
+            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <div class="d-flex align-items-center justify-content-between mb-3">
             <a href="{{ route('home') }}" class="pt-1">
                 <img src="{{ asset('client/img/logo1.webp') }}" width="150" alt="">
             </a>
             <h4 class="pt-3 text-primary">Đăng nhập</h4>
         </div>
-        <form action="{{ route('signin.signin') }}" method="post">
+        <form id="signin-form" action="{{ route('signin.signin') }}" method="post">
             @csrf
             <div class="form-floating mb-3">
                 <input type="email" name="email" class="form-control" id="floatingInput">
                 <label for="floatingInput">Email</label>
                 <div class="mt-2">
-                    <span class="text-danger">Chan đê</span>
+                    <span class="text-danger error-email"></span>
                 </div>
             </div>
             <div class="form-floating mb-4">
                 <input type="password" name="password" class="form-control" id="floatingPassword">
                 <label for="floatingPassword">Mật khẩu</label>
                 <div class="mt-2">
-                    <span class="text-danger">Chan đê</span>
+                    <span class="text-danger error-password"></span>
                 </div>
             </div>
             <div class="mb-4">
@@ -40,4 +47,71 @@
             </div>
         </form>
     </div>
+    {{-- Validate ajax --}}
+    <script>
+        $(document).ready(function() {
+            $("#signin-form").on("submit", function(e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let formData = form.serialize();
+
+                $.ajax({
+                    type: form.attr("method"),
+                    url: form.attr("action"),
+                    data: formData,
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.status === "success") {
+                            let alertSuccess = `
+                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>${response.message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `;
+                            $("#form-signin").prepend(alertSuccess);
+
+
+                            setTimeout(() => {
+                                $("#alert-success").fadeOut();
+                                if (response.role === 'admin') {
+                                    window.location.href = "{{ route('dashboard.index') }}";
+                                } else {
+                                    window.location.href = "{{ route('home') }}";
+                                }
+                            }, 3000);;
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            if (errors.email) {
+                                $(".error-email").text(errors.email[0]);
+                            }
+                            if (errors.password) {
+                                $(".error-password").text(errors.password[0]);
+                            }
+                        }
+
+                        if (xhr.responseJSON && xhr.responseJSON.status === "error") {
+                            let alertError = `
+                            <div id="alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation me-2"></i>${xhr.responseJSON.message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `;
+                            $("#form-signin").prepend(alertError);
+
+
+                            setTimeout(() => {
+                                $("#alert-error").fadeOut();
+                            }, 3000);
+                        }
+                    }
+                })
+            });
+        });
+    </script>
 @endsection
