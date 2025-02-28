@@ -31,28 +31,39 @@ class AuthenticController extends Controller
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
         ]);
         if (Auth::attempt($data)) {
-            $user = Auth::user();
-            if (Auth::user()->role == 'admin') {
+            if (Auth::user()->status == 1) {
+                $user = Auth::user();
+                if (Auth::user()->role == 'admin') {
+
+                    if ($request->ajax()) {
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => 'Đăng nhập thành công.',
+                            'role' => $user->role
+                        ], Response::HTTP_OK);
+                    }
+                    return redirect()->route('dashboard.index');
+                } else {
+                    if ($request->ajax()) {
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => 'Đăng nhập thành công.',
+                            'role' => $user->role
+                        ], Response::HTTP_OK);
+                    }
+                    return redirect()->route('home');
+                }
+            } else {
 
                 if ($request->ajax()) {
                     return response()->json([
-                        'status' => 'success',
-                        'message' => 'Đăng nhập thành công.',
-                        'role' => $user->role
-                    ], Response::HTTP_OK);
+                        'status' => 'error',
+                        'message' => 'Tài khoản đã bị khóa.'
+                    ], Response::HTTP_UNAUTHORIZED);
                 }
-                return redirect()->route('dashboard.index');
-            } else {
-                if ($request->ajax()) {
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'Đăng nhập thành công.',
-                        'role' => $user->role
-                    ], Response::HTTP_OK);
-                }
-                return redirect()->route('home');
             }
         } else {
+
             if ($request->ajax()) {
                 return response()->json([
                     'status' => 'error',

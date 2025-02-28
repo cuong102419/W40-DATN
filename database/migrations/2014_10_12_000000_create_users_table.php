@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->string('avatar', 50)->nullable();
+            $table->text('address')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
