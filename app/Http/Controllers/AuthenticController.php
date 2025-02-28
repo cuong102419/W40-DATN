@@ -54,7 +54,6 @@ class AuthenticController extends Controller
                     return redirect()->route('home');
                 }
             } else {
-
                 if ($request->ajax()) {
                     return response()->json([
                         'status' => 'error',
