@@ -30,6 +30,7 @@
                                                             class="dropdown-item fas fa-user-shield">Trang quản trị</a>
                                                     @endif
                                                     <a href="{{  route('profile')}}" class="dropdown-item">Hồ sơ</a>
+                                                    <a href="" class="dropdown-item">Cập nhật tài khoản</a>
                                                     <a href="{{  route('logout')}}" class="dropdown-item">Đăng xuất</a>
                                                 </div>
                                             @else
