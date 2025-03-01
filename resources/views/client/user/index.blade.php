@@ -44,7 +44,7 @@
                 </tr>
             </table>
             <div class="text-center mt-4 mb-5">
-                <a href="{{ route('change-password' }}" class="btn-theme btn-sm">Đổi mật khẩu</a>
+                <a href="{{ route('change-password') }}" class="btn-theme btn-sm">Đổi mật khẩu</a>
             </div>
         </div>
     </div>
