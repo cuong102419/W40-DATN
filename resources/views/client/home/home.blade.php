@@ -204,7 +204,7 @@
                                                     <div class="category">
                                                         <ul>
                                                             <li><a
-                                                                    href="{{route('product.detail', $product->id)}}">{{ $product->category_id->name ?? 'Chưa có danh mục' }}</a>
+                                                                    href="{{route('product.detail', $product->id)}}">{{ $product->category->name ?? 'Uncategorized' }}</a>
                                                             </li>
                                                         </ul>
                                                     </div>
