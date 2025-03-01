@@ -47,6 +47,8 @@ Route::post('/signin', [AuthenticController::class, 'signin'])->name('signin.sig
 Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup.signup');
 Route::get('/logout', [AuthenticController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/profile', [AuthenticController::class, 'profile'])->middleware('auth')->name('profile');
+Route::get('/change-password', [AuthenticController::class, 'changePassword'])->middleware('auth')->name('change-password');
+Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassword'])->middleware('auth')->name('update-password');
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
