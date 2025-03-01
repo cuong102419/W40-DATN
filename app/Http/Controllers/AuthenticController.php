@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticController extends Controller
@@ -112,5 +113,35 @@ class AuthenticController extends Controller
     public function profile()
     {
         return view('client.user.index');
+    }
+    public function changePassword() {
+        return view('client.user.changepassword');
+    }
+
+    public function updatePassword(Request $request, User $user) {
+        $data = $request->validate([
+            'password' => ['required', 'min:8'],
+            'new_password' => ['required', 'min:8', 'different:password'],
+            'confirm_new_password' => ['required', 'min:8', 'same:new_password']
+        ], [
+            'password.required' => 'Không được để trống.',
+            'password.min' => 'Tối thiểu 8 ký tự.',
+            'new_password.required' => 'Không được để trống.',
+            'new_password.min' => 'Tối thiểu 8 ký tự.',
+            'new_password.different' => 'Không được trùng với mật khẩu cũ.',
+            'confirm_new_password.required' => 'Không được để trống.',
+            'confirm_new_password.min' => 'Tối thiểu 8 ký tự.',
+            'confirm_new_password.same' => 'Mật khẩu không khớp.',
+        ]);
+        
+        if(!Hash::check($data['password'], $user->password)) {
+            return redirect()->back()->with('error', 'Mật khẩu cũ không chính xác.');
+        }
+
+        $user->password = Hash::make($data['new_password']);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Đổi mật khẩu thành công.');
+
     }
 }
