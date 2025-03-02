@@ -69,16 +69,36 @@
                                                                     </ul>
                                                                 </div>
                                                                 <div class="product-action">
-                                                                    <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                                            class="fa fa-heart"></i></a>
-                                                                    <a class="btn-product-cart" href="shop-cart.html"><i
-                                                                            class="fa fa-shopping-cart"></i></a>
+                                                                    <a class="btn-product-wishlist" href="#">
+                                                                        <i class="fa fa-heart"></i>
+                                                                    </a>
+                                                                
+                                                                    <form action="{{ route('cart.add') }}" method="POST" onsubmit="addToCart(event, this)">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id" value="{{ $product->id }}">
+                                                                        <input type="hidden" name="name" value="{{ $product->name }}">
+                                                                        <input type="hidden" name="price" value="{{ $product->price }}">
+                                                                        <input type="hidden" name="image" value="{{ $product->imageLists->first()->image_url ?? '' }}">
+                                                                        <input type="hidden" name="quantity" value="1">
+                                                                        <button type="submit" class="btn-product-cart">
+                                                                            <i class="fa fa-shopping-cart"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                
                                                                     <button type="button" class="btn-product-quick-view-open">
                                                                         <i class="fa fa-arrows"></i>
                                                                     </button>
-                                                                    <a class="btn-product-compare" href="shop-compare.html"><i
-                                                                            class="fa fa-random"></i></a>
+                                                                    
+                                                                    <a class="btn-product-compare" href="shop-compare.html">
+                                                                        <i class="fa fa-random"></i>
+                                                                    </a>
                                                                 </div>
+                                                                
+                                                                <!-- Khu vực hiển thị giỏ hàng -->
+                                                                <div id="cart-items">
+                                                                    <!-- Sản phẩm trong giỏ hàng sẽ hiển thị ở đây -->
+                                                                </div>
+                                                                
                                                                 <a class="banner-link-overlay"
                                                                     href="{{route('product.detail', $product->id)}}"></a>
                                                             </div>
