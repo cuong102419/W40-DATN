@@ -135,11 +135,25 @@ class AuthenticController extends Controller
         ]);
         
         if(!Hash::check($data['password'], $user->password)) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Mật khẩu cũ không chính xác.'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            
             return redirect()->back()->with('error', 'Mật khẩu cũ không chính xác.');
         }
 
         $user->password = Hash::make($data['new_password']);
         $user->save();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Đổi mật khẩu thành công.'
+            ], Response::HTTP_OK);
+        }
 
         return redirect()->back()->with('success', 'Đổi mật khẩu thành công.');
 
