@@ -86,7 +86,7 @@
                                                                 <div class="category">
                                                                     <ul>
                                                                         <li><a
-                                                                                href="{{route('product.detail', $product->id)}}">{{ $product->category_id->name ?? 'Chưa có danh mục' }}</a>
+                                                                                href="{{route('product.detail', $product->id)}}">{{ $product->category->name ?? 'Uncategorized' }}</a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -94,7 +94,7 @@
                                                                         href="{{route('product.detail', $product->id)}}">{{ $product->name }}</a></h4>
                                                                 <div class="prices">
                                                                     <span
-                                                                        class="price text-danger">{{ number_format($product->variants->min('price'), 2) }}đ</span>
+                                                                        class="price text-danger">{{ number_format($product->variants->min('price'), 2)}}đ</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -117,297 +117,61 @@
                                 </div>
                                 <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <!--== Start Product Item ==-->
-                                            <div class="product-item product-list-item">
-                                                <div class="inner-content">
-                                                    <div class="product-thumb">
-                                                        <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-1.webp')}}" width="322"
-                                                                height="360" alt="Image-HasTech">
-                                                        </a>
-                                                        <div class="product-flag">
-                                                            <ul>
-                                                                <li class="discount">-10%</li>
-                                                            </ul>
+
+                                        @foreach ($products as $product)
+                                            <div class="col-md-12">
+                                                <!--== Start Product Item ==-->
+                                                <div class="product-item product-list-item">
+                                                    <div class="inner-content">
+                                                        <div class="product-thumb">
+                                                            <a href="{{ route('product.detail', $product->id) }}">
+                                                                <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="322"
+                                                                    height="360" alt="{{ $product->name }}">
+                                                            </a>
+
+                                                            @if ($product->discount)
+                                                            <div class="product-flag">
+                                                                <ul>
+                                                                    <li class="discount">-{{ $product->discount }}%</li>
+                                                                </ul>
+                                                            </div>
+                                                            @endif
+
+                                                            <div class="product-action">
+                                                                <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
+                                                                <a class="btn-product-cart" href="#"><i class="fa fa-shopping-cart"></i></a>
+                                                                <button type="button" class="btn-product-quick-view-open">
+                                                                    <i class="fa fa-arrows"></i>
+                                                                </button>
+                                                                <a class="btn-product-compare" href="#"><i class="fa fa-random"></i></a>
+                                                            </div>
+                                                            <a class="banner-link-overlay" href="{{ route('product.detail', $product->id) }}"></a>
                                                         </div>
-                                                        <div class="product-action">
-                                                            <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                                    class="fa fa-heart"></i></a>
-                                                            <a class="btn-product-cart" href="shop-cart.html"><i
-                                                                    class="fa fa-shopping-cart"></i></a>
-                                                            <button type="button" class="btn-product-quick-view-open">
-                                                                <i class="fa fa-arrows"></i>
-                                                            </button>
-                                                            <a class="btn-product-compare" href="shop-compare.html"><i
-                                                                    class="fa fa-random"></i></a>
+                                                        <div class="product-info">
+                                                            <div class="category">
+                                                                <ul>
+                                                                    <li><a href="#">{{ $product->category->name ?? 'Uncategorized' }}</a></li>
+                                                                </ul>
+                                                            </div>
+                                                            <h4 class="title"><a href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a></h4>
+                                                            <div class="prices">
+
+                                                                @if ($product->discount)
+                                                                    <span class="price-old">${{ number_format($product->price, 2) }}</span>
+                                                                    <span class="sep">-</span>
+                                                                    <span class="price">${{ number_format($product->price * (1 - $product->discount / 100), 2) }}</span>
+                                                                @else
+                                                                    <span class="price">${{ number_format($product->price, 2) }}</span>
+                                                                @endif
+
+                                                            </div>
+                                                            <p>{!! Str::limit($product->description, 100) !!}</p>
+                                                            <a class="btn-theme btn-sm" href="#">Add To Cart</a>
                                                         </div>
-                                                        <a class="banner-link-overlay" href="shop.html"></a>
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <div class="category">
-                                                            <ul>
-                                                                <li><a href="shop.html">Men</a></li>
-                                                                <li class="sep">/</li>
-                                                                <li><a href="shop.html">Women</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <h4 class="title"><a href="single-product.html">Leather Mens
-                                                                Slipper</a></h4>
-                                                        <div class="prices">
-                                                            <span class="price-old">$300</span>
-                                                            <span class="sep">-</span>
-                                                            <span class="price">$240.00</span>
-                                                        </div>
-                                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                                                            Voluptatem quo, rerum rem soluta quisquam, repellat is deleniti
-                                                            omnis culpa ea quis provident dolore esse, offici modi dolorem
-                                                            nam cum eligendi enim!</p>
-                                                        <a class="btn-theme btn-sm" href="shop-cart.html">Add To Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--== End prPduct Item ==-->
-                                        </div>
-                                        <div class="col-md-12">
-                                            <!--== Start Product Item ==-->
-                                            <div class="product-item product-list-item">
-                                                <div class="inner-content">
-                                                    <div class="product-thumb">
-                                                        <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-2.webp')}}" width="322"
-                                                                height="360" alt="Image-HasTech">
-                                                        </a>
-                                                        <div class="product-action">
-                                                            <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                                    class="fa fa-heart"></i></a>
-                                                            <a class="btn-product-cart" href="shop-cart.html"><i
-                                                                    class="fa fa-shopping-cart"></i></a>
-                                                            <button type="button" class="btn-product-quick-view-open">
-                                                                <i class="fa fa-arrows"></i>
-                                                            </button>
-                                                            <a class="btn-product-compare" href="shop-compare.html"><i
-                                                                    class="fa fa-random"></i></a>
-                                                        </div>
-                                                        <a class="banner-link-overlay" href="shop.html"></a>
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <div class="category">
-                                                            <ul>
-                                                                <li><a href="shop.html">Men</a></li>
-                                                                <li class="sep">/</li>
-                                                                <li><a href="shop.html">Women</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <h4 class="title"><a href="single-product.html">Quickiin Mens
-                                                                shoes</a></h4>
-                                                        <div class="prices">
-                                                            <span class="price">$240.00</span>
-                                                        </div>
-                                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                                                            Voluptatem quo, rerum rem soluta quisquam, repellat is deleniti
-                                                            omnis culpa ea quis provident dolore esse, offici modi dolorem
-                                                            nam cum eligendi enim!</p>
-                                                        <a class="btn-theme btn-sm" href="shop-cart.html">Add To Cart</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--== End prPduct Item ==-->
-                                        </div>
-                                        <div class="col-md-12">
-                                            <!--== Start Product Item ==-->
-                                            <div class="product-item product-list-item">
-                                                <div class="inner-content">
-                                                    <div class="product-thumb">
-                                                        <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-3.webp')}}" width="322"
-                                                                height="360" alt="Image-HasTech">
-                                                        </a>
-                                                        <div class="product-flag">
-                                                            <ul>
-                                                                <li class="discount">-10%</li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="product-action">
-                                                            <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                                    class="fa fa-heart"></i></a>
-                                                            <a class="btn-product-cart" href="shop-cart.html"><i
-                                                                    class="fa fa-shopping-cart"></i></a>
-                                                            <button type="button" class="btn-product-quick-view-open">
-                                                                <i class="fa fa-arrows"></i>
-                                                            </button>
-                                                            <a class="btn-product-compare" href="shop-compare.html"><i
-                                                                    class="fa fa-random"></i></a>
-                                                        </div>
-                                                        <a class="banner-link-overlay" href="shop.html"></a>
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <div class="category">
-                                                            <ul>
-                                                                <li><a href="shop.html">Men</a></li>
-                                                                <li class="sep">/</li>
-                                                                <li><a href="shop.html">Women</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <h4 class="title"><a href="single-product.html">Rexpo Womens
-                                                                shoes</a></h4>
-                                                        <div class="prices">
-                                                            <span class="price-old">$300</span>
-                                                            <span class="sep">-</span>
-                                                            <span class="price">$240.00</span>
-                                                        </div>
-                                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                                                            Voluptatem quo, rerum rem soluta quisquam, repellat is deleniti
-                                                            omnis culpa ea quis provident dolore esse, offici modi dolorem
-                                                            nam cum eligendi enim!</p>
-                                                        <a class="btn-theme btn-sm" href="shop-cart.html">Add To Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--== End prPduct Item ==-->
-                                        </div>
-                                        <div class="col-md-12">
-                                            <!--== Start Product Item ==-->
-                                            <div class="product-item product-list-item">
-                                                <div class="inner-content">
-                                                    <div class="product-thumb">
-                                                        <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-4.webp')}}" width="322"
-                                                                height="360" alt="Image-HasTech">
-                                                        </a>
-                                                        <div class="product-action">
-                                                            <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                                    class="fa fa-heart"></i></a>
-                                                            <a class="btn-product-cart" href="shop-cart.html"><i
-                                                                    class="fa fa-shopping-cart"></i></a>
-                                                            <button type="button" class="btn-product-quick-view-open">
-                                                                <i class="fa fa-arrows"></i>
-                                                            </button>
-                                                            <a class="btn-product-compare" href="shop-compare.html"><i
-                                                                    class="fa fa-random"></i></a>
-                                                        </div>
-                                                        <a class="banner-link-overlay" href="shop.html"></a>
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <div class="category">
-                                                            <ul>
-                                                                <li><a href="shop.html">Men</a></li>
-                                                                <li class="sep">/</li>
-                                                                <li><a href="shop.html">Women</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <h4 class="title"><a href="single-product.html">Modern Smart
-                                                                Shoes</a></h4>
-                                                        <div class="prices">
-                                                            <span class="price">$240.00</span>
-                                                        </div>
-                                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                                                            Voluptatem quo, rerum rem soluta quisquam, repellat is deleniti
-                                                            omnis culpa ea quis provident dolore esse, offici modi dolorem
-                                                            nam cum eligendi enim!</p>
-                                                        <a class="btn-theme btn-sm" href="shop-cart.html">Add To Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--== End prPduct Item ==-->
-                                        </div>
-                                        <div class="col-md-12">
-                                            <!--== Start Product Item ==-->
-                                            <div class="product-item product-list-item">
-                                                <div class="inner-content">
-                                                    <div class="product-thumb">
-                                                        <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-5.webp')}}" width="322"
-                                                                height="360" alt="Image-HasTech">
-                                                        </a>
-                                                        <div class="product-flag">
-                                                            <ul>
-                                                                <li class="discount">-10%</li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="product-action">
-                                                            <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                                    class="fa fa-heart"></i></a>
-                                                            <a class="btn-product-cart" href="shop-cart.html"><i
-                                                                    class="fa fa-shopping-cart"></i></a>
-                                                            <button type="button" class="btn-product-quick-view-open">
-                                                                <i class="fa fa-arrows"></i>
-                                                            </button>
-                                                            <a class="btn-product-compare" href="shop-compare.html"><i
-                                                                    class="fa fa-random"></i></a>
-                                                        </div>
-                                                        <a class="banner-link-overlay" href="shop.html"></a>
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <div class="category">
-                                                            <ul>
-                                                                <li><a href="shop.html">Men</a></li>
-                                                                <li class="sep">/</li>
-                                                                <li><a href="shop.html">Women</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <h4 class="title"><a href="single-product.html">Primitive Mens
-                                                                shoes</a></h4>
-                                                        <div class="prices">
-                                                            <span class="price">$240.00</span>
-                                                        </div>
-                                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                                                            Voluptatem quo, rerum rem soluta quisquam, repellat is deleniti
-                                                            omnis culpa ea quis provident dolore esse, offici modi dolorem
-                                                            nam cum eligendi enim!</p>
-                                                        <a class="btn-theme btn-sm" href="shop-cart.html">Add To Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--== End prPduct Item ==-->
-                                        </div>
-                                        <div class="col-md-12">
-                                            <!--== Start Product Item ==-->
-                                            <div class="product-item product-list-item">
-                                                <div class="inner-content">
-                                                    <div class="product-thumb">
-                                                        <a href="single-product.html">
-                                                            <img src="{{ asset('client/img/shop/list-6.webp')}}" width="322"
-                                                                height="360" alt="Image-HasTech">
-                                                        </a>
-                                                        <div class="product-action">
-                                                            <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                                    class="fa fa-heart"></i></a>
-                                                            <a class="btn-product-cart" href="shop-cart.html"><i
-                                                                    class="fa fa-shopping-cart"></i></a>
-                                                            <button type="button" class="btn-product-quick-view-open">
-                                                                <i class="fa fa-arrows"></i>
-                                                            </button>
-                                                            <a class="btn-product-compare" href="shop-compare.html"><i
-                                                                    class="fa fa-random"></i></a>
-                                                        </div>
-                                                        <a class="banner-link-overlay" href="shop.html"></a>
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <div class="category">
-                                                            <ul>
-                                                                <li><a href="shop.html">Men</a></li>
-                                                                <li class="sep">/</li>
-                                                                <li><a href="shop.html">Women</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <h4 class="title"><a href="single-product.html">Leather Mens
-                                                                Slipper</a></h4>
-                                                        <div class="prices">
-                                                            <span class="price-old">$300</span>
-                                                            <span class="sep">-</span>
-                                                            <span class="price">$240.00</span>
-                                                        </div>
-                                                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                                                            Voluptatem quo, rerum rem soluta quisquam, repellat is deleniti
-                                                            omnis culpa ea quis provident dolore esse, offici modi dolorem
-                                                            nam cum eligendi enim!</p>
-                                                        <a class="btn-theme btn-sm" href="shop-cart.html">Add To Cart</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--== End prPduct Item ==-->
-                                        </div>
+                                        @endforeach
                                         <div class="col-12">
                                             <div class="pagination-items">
                                                 <ul class="pagination justify-content-end mb--0">

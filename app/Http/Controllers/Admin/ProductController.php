@@ -30,41 +30,37 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            $data = $request->validate([
-                'sku' => ['required', 'min:4', 'unique:products'],
-                'name' => ['required', 'min:4', 'unique:products'],
-                'category_id' => ['required'],
-                'brand_id' => ['required'],
-                'discount' => ['required'],
-                'featured' => ['nullable'],
-                'description' => ['required']
-            ], [
-                'sku.required' => 'Mã sản phẩm không được để trống.',
-                'sku.min' => 'Mã sản phẩm tối thiểu 4 kí tự.',
-                'sku.unique' => 'Mã sản phẩm đã tồn tại. Hãy chọn mã khác.',
-                'name.required' => 'Tên sản phẩm không được để trống.',
-                'name.min' => 'Tên sản phẩm tối thiểu 4 kí tự.',
-                'name.unique' => 'Tên sản phẩm đã tồn tại. Hãy chọn tên khác.',
-                'category_id.required' => 'Vui lòng chọn loại sản phẩm.',
-                'brand_id.required' => 'Vui lòng chọn hãng sản phẩm.',
-                'description.required' => 'Mô tả không được để trống.',
-                'discount.required' => 'Giá trị giảm giá không được để trống'
-            ]);
+        $data = $request->validate([
+            'sku' => ['required', 'min:4', 'unique:products'],
+            'name' => ['required', 'min:4', 'unique:products'],
+            'category_id' => ['required'],
+            'brand_id' => ['required'],
+            'discount' => ['required'],
+            'featured' => ['nullable'],
+            'description' => ['required']
+        ], [
+            'sku.required' => 'Mã sản phẩm không được để trống.',
+            'sku.min' => 'Mã sản phẩm tối thiểu 4 kí tự.',
+            'sku.unique' => 'Mã sản phẩm đã tồn tại. Hãy chọn mã khác.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'name.min' => 'Tên sản phẩm tối thiểu 4 kí tự.',
+            'name.unique' => 'Tên sản phẩm đã tồn tại. Hãy chọn tên khác.',
+            'category_id.required' => 'Vui lòng chọn loại sản phẩm.',
+            'brand_id.required' => 'Vui lòng chọn hãng sản phẩm.',
+            'description.required' => 'Mô tả không được để trống.',
+            'discount.required' => 'Giá trị giảm giá không được để trống'
+        ]);
 
-            Product::create($data);
+        Product::create($data);
 
-            if ($request->ajax()) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Thêm sản phẩm thành công.'
-                ], Response::HTTP_OK);
-            }
-
-            return redirect()->back();
-        } catch (\Throwable $th) {
-            return redirect()->route('admin-product.index')->with('error', 'Thêm sản phẩm thất bại.');
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Thêm sản phẩm thành công.'
+            ], Response::HTTP_OK);
         }
+
+        return redirect()->back();
     }
 
     public function detail(Product $product)
@@ -84,51 +80,47 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        try {
-            $data = $request->validate([
-                'sku' => ['required', 'min:4', Rule::unique('products')->ignore($product->id)],
-                'name' => ['required', 'min:4', Rule::unique('products')->ignore($product->id)],
-                'category_id' => ['required'],
-                'brand_id' => ['required'],
-                'discount' => ['required'],
-                'featured' => ['nullable'],
-                'description' => ['required']
-            ], [
-                'sku.required' => 'Mã sản phẩm không được để trống.',
-                'sku.min' => 'Mã sản phẩm tối thiểu 4 kí tự.',
-                'sku.unique' => 'Mã sản phẩm đã tồn tại. Hãy chọn mã khác.',
-                'name.required' => 'Tên sản phẩm không được để trống.',
-                'name.min' => 'Tên sản phẩm tối thiểu 4 kí tự.',
-                'name.unique' => 'Tên sản phẩm đã tồn tại. Hãy chọn tên khác.',
-                'category_id.required' => 'Vui lòng chọn loại sản phẩm.',
-                'brand_id.required' => 'Vui lòng chọn hãng sản phẩm.',
-                'description.required' => 'Mô tả không được để trống.',
-                'discount.required' => 'Giá trị giảm giá không được để trống'
-            ]);
-    
-            $product->update($data);
-    
-            if ($request->ajax()) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Cập nhật sản phẩm thành công.'
-                ], Response::HTTP_OK);
-            }
-    
-            return redirect()->back();
-        } catch (\Throwable $th) {
-            return redirect()->route('admin-product.index')->with('error', 'Cập nhật sản phẩm thất bại.');
+        $data = $request->validate([
+            'sku' => ['required', 'min:4', Rule::unique('products')->ignore($product->id)],
+            'name' => ['required', 'min:4', Rule::unique('products')->ignore($product->id)],
+            'category_id' => ['required'],
+            'brand_id' => ['required'],
+            'discount' => ['required'],
+            'featured' => ['nullable'],
+            'description' => ['required']
+        ], [
+            'sku.required' => 'Mã sản phẩm không được để trống.',
+            'sku.min' => 'Mã sản phẩm tối thiểu 4 kí tự.',
+            'sku.unique' => 'Mã sản phẩm đã tồn tại. Hãy chọn mã khác.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'name.min' => 'Tên sản phẩm tối thiểu 4 kí tự.',
+            'name.unique' => 'Tên sản phẩm đã tồn tại. Hãy chọn tên khác.',
+            'category_id.required' => 'Vui lòng chọn loại sản phẩm.',
+            'brand_id.required' => 'Vui lòng chọn hãng sản phẩm.',
+            'description.required' => 'Mô tả không được để trống.',
+            'discount.required' => 'Giá trị giảm giá không được để trống'
+        ]);
+
+        $product->update($data);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật sản phẩm thành công.'
+            ], Response::HTTP_OK);
         }
+
+        return redirect()->back();
     }
 
     public function destroy(Product $product)
     {
-       try {
-        $product->delete();
+        try {
+            $product->delete();
 
-        return redirect()->back()->with('success', 'Xóa sản phẩm thành công.');
-       } catch (\Throwable $th) {
-        return redirect()->route('admin-product.index')->with('error', 'Xóa sản phẩm thất bại.');
-       }
+            return redirect()->back()->with('success', 'Xóa sản phẩm thành công.');
+        } catch (\Throwable $th) {
+            return redirect()->route('admin-product.index')->with('error', 'Xóa sản phẩm thất bại.');
+        }
     }
 }

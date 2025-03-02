@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
-Route::get('/product/{id}', [ProductController::class, 'detail'])->name('product.detail');
+Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
@@ -40,11 +40,14 @@ Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'sendContact'])->name('contact.send');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
-Route::get('/login', [AuthenticController::class, 'index'])->name('login');
-Route::post('/login', [AuthenticController::class, 'login'])->name('login.login');
-Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup');
+Route::get('/signin', [AuthenticController::class, 'index'])->name('signin');
+Route::get('/signup', [AuthenticController::class, 'formSignup'])->name('signup');
+Route::post('/signin', [AuthenticController::class, 'signin'])->name('signin.signin');
+Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup.signup');
 Route::get('/logout', [AuthenticController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/profile', [AuthenticController::class, 'profile'])->middleware('auth')->name('profile');
+Route::get('/change-password', [AuthenticController::class, 'changePassword'])->middleware('auth')->name('change-password');
+Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassword'])->middleware('auth')->name('update-password');
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
