@@ -7,7 +7,7 @@
 @section('content')
     <div class="mt-5 mb-5">
         <div class="row">
-            <div class="col-sm-8 m-auto">
+            <div id="form-change-pass" class="col-sm-8 m-auto">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -27,34 +27,28 @@
         <div class="row">
             <div class="col-12">
                 <div class="login-form-content">
-                    <form action="{{ route('update-password', Auth::user()->id) }}" method="post">
+                    <form id="change-pass-form" action="{{ route('update-password', Auth::user()->id) }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="">Mật khẩu cũ <span class="required">*</span></label>
                                     <input class="form-control" type="password" name="password">
-                                    @error('password')
-                                        <span class="mt-3 text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <span class="text-danger error-password"></span>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="">Mật khẩu mới <span class="required">*</span></label>
                                     <input class="form-control" type="password" name="new_password">
-                                    @error('new_password')
-                                        <span class="mt-3 text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <span class="text-danger error-new-password"></span>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="">Nhập lại mật khẩu mới <span class="required">*</span></label>
                                     <input class="form-control" type="password" name="confirm_new_password">
-                                    @error('confirm_new_password')
-                                        <span class="mt-3 text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <span class="text-danger error-confirm-new-password"></span>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -68,4 +62,76 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#change-pass-form").on("submit", function(e) {
+                e.preventDefault();
+
+                $(".text-danger").text("");
+                
+                let form = $(this);
+                let formData = form.serialize();
+
+                $.ajax({
+                    type: form.attr("method"),
+                    url: form.attr("action"),
+                    data: formData,
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.status === "success") {
+                            let alertSuccess = `
+                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="fas fa-check-circle me-2"></i>${response.message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `;
+                            $("#form-change-pass").prepend(alertSuccess);
+
+
+                            setTimeout(() => {
+                                $("#alert-success").fadeOut();
+                                if (response.role === 'admin') {
+                                    window.location.href = "{{ route('dashboard.index') }}";
+                                } else {
+                                    window.location.href = "{{ route('home') }}";
+                                }
+                            }, 3000);;
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            if (errors.password) {
+                                $(".error-password").text(errors.password[0]);
+                            }
+                            if (errors.new_password) {
+                                $(".error-new-password").text(errors.new_password[0]);
+                            }
+                            if (errors.confirm_new_password) {
+                                $(".error-confirm-new-password").text(errors.confirm_new_password[0]);
+                            }
+                        }
+
+                        if (xhr.responseJSON && xhr.responseJSON.status === "error") {
+                            let alertError = `
+                            <div id="alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fa fa-exclamation-triangle me-2"></i>${xhr.responseJSON.message}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        `;
+                            $("#form-change-pass").prepend(alertError);
+
+
+                            setTimeout(() => {
+                                $("#alert-error").fadeOut();
+                            }, 3000);
+                        }
+                    }
+                })
+            });
+        });
+    </script>
 @endsection
