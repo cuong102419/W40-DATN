@@ -49,13 +49,13 @@ Route::get('/profile', [AuthenticController::class, 'profile'])->middleware('aut
 Route::get('/change-password', [AuthenticController::class, 'changePassword'])->middleware('auth')->name('change-password');
 Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassword'])->middleware('auth')->name('update-password');
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+//Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
 //giỏ hàng
 Route::middleware(['auth'])->group(function () {
-   // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::get('/cart/add/{id}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::post('/cart/update/{id}', [CartController::class, 'updateCart'])->name('cart.update');
     Route::get('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
