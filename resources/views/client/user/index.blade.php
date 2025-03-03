@@ -14,7 +14,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="text-center">
-                        <img width="130" class="rounded-circle" src="{{ asset('administrator/img/tho_7.png')}}" alt="">
+                        <img width="130" class="rounded" src="{{ Storage::url(Auth::user()->avatar) ??  asset('administrator/img/tho_7.png') }}" alt="">
                     </td>
                 </tr>
                 <tr>
@@ -44,7 +44,7 @@
                 </tr>
             </table>
             <div class="text-center mt-4 mb-5">
-                <a href="{{ route('change-password') }}" class="btn-theme btn-sm">Đổi mật khẩu</a>
+                <a href="{{ route('profile.edit')}}" class="btn-theme btn-sm">Cập nhật thông tin</a>
             </div>
         </div>
     </div>

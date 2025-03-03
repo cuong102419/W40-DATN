@@ -82,7 +82,7 @@
                         if (response.status === "success") {
                             let alertSuccess = `
                             <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i>${response.message}
+                                <i class="fa fa-check-circle me-2"></i>${response.message}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         `;
@@ -91,11 +91,6 @@
 
                             setTimeout(() => {
                                 $("#alert-success").fadeOut();
-                                if (response.role === 'admin') {
-                                    window.location.href = "{{ route('dashboard.index') }}";
-                                } else {
-                                    window.location.href = "{{ route('home') }}";
-                                }
                             }, 3000);;
                         }
                     },
