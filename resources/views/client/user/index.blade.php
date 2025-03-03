@@ -14,7 +14,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="text-center">
-                        <img width="130" class="rounded" src="{{ Storage::url(Auth::user()->avatar) ??  asset('administrator/img/tho_7.png') }}" alt="">
+                        <img width="130" class="rounded" src="{{ Auth::user()->avatar ? Storage::url(Auth::user()->avatar) :  asset('administrator/img/tho_7.png') }}" alt="">
                     </td>
                 </tr>
                 <tr>
