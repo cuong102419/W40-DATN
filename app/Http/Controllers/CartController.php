@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Cart as ModelsCart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +13,8 @@ class CartController extends Controller
 {
     public function index() {
 
-        $cart = Cart::getContent();
-        //dd($cart);
+        $cart = ModelsCart::getContent();
+        // dd($cart);
          // Lấy toàn bộ sản phẩm trong giỏ hàng
         return view('client.cart.index', compact('cart'));
     
@@ -24,7 +24,7 @@ class CartController extends Controller
     // Thêm sản phẩm vào giỏ hàng
     public function addToCart(Request $request)
 {
-    //dd($request->all());
+    // dd($request->all());
     
 
     $cart = session()->get('cart', []);
@@ -38,8 +38,9 @@ class CartController extends Controller
     ];
 
     session()->put('cart', $cart);
-
+    // dd($cart);
     // 🔥 TRẢ VỀ GIAO DIỆN
+
     return view('client.cart.index', compact('cart'));
 }
 

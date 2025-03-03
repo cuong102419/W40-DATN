@@ -16,9 +16,9 @@
   <title>@yield('title')</title>
 
   <!--== Favicon ==-->  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">  lỗi ở đây --}}
 
-  <link rel="shortcut icon" href="{{ asset('client/img/favicon.ico')}}" type="image/x-icon" />
+  <link rel="shortcut icon" href="{{ asset('client/img/favicon.icon')}}" type="image/x-icon" />
 
   {{-- Css file --}}
   @include('client.layout.partials.css')

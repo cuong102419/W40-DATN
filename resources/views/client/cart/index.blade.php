@@ -36,8 +36,8 @@ Giỏ hàng
                                         <form action="{{ route('cart.remove', ['id' => $item['id']]) }}" method="POST">
                                             @csrf
                                             @method('DELETE') --}}
-                                            <button type="submit" style="background: none; border: none; cursor: pointer;">
-                                                <i class="fas fa-trash-alt" style="color: red; font-size: 20px;"></i>
+                                            <button type="submit" class="text-danger" style="background: none; border: none; cursor: pointer;">
+                                                <i class="fa fa-trash-o"aria-hidden="true"></i>
                                             </button>
                                         {{-- </form> --}}
                                         {{-- @else
@@ -46,7 +46,7 @@ Giỏ hàng
                                     </td>
                                     <!-- Cột Hình ảnh -->
                                     <td class="product-thumb">
-                                        <img src="{{ $item['attributes']['image'] ?? asset('default-image.jpg') }}" width="50">
+                                        <img src="{{ Storage::url($item['image']) ?? asset('default-image.jpg') }}" width="100">
                                     </td>
 
                                     <!-- Cột Tên sản phẩm -->
