@@ -13,6 +13,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +50,8 @@ Route::get('/logout', [AuthenticController::class, 'logout'])->middleware('auth'
 Route::get('/profile', [AuthenticController::class, 'profile'])->middleware('auth')->name('profile');
 Route::get('/change-password', [AuthenticController::class, 'changePassword'])->middleware('auth')->name('change-password');
 Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassword'])->middleware('auth')->name('update-password');
+Route::get('/profile/edit', [UserController::class, 'edit'])->middleware('auth')->name('profile.edit');
+Route::put('/profile/edit', [UserController::class, 'update'])->middleware('auth')->name('profile.update');
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
