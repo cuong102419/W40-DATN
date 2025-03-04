@@ -48,7 +48,7 @@
             <p class="text-center mb-0">Bạn đã có tài khoản? <a href="{{ route('signin') }}">Đăng nhập</a></p>
             <div class="d-flex justify-content-center align-items-center">
                 <p class="text-center me-2 mt-3">Hoặc đăng ký bằng </p>
-                <a href="#" class="btn btn-outline-primary "><i
+                <a href="{{ route('auth.google') }}" class="btn btn-outline-primary "><i
                         class="fab fa-google fa-lg me-2"></i><strong>Google</strong></a>
             </div>
         </form>
