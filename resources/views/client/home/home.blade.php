@@ -215,7 +215,7 @@
                                                         <span
                                                             class="price-old">${{ number_format($product->original_price, 2) }}</span>
                                                         <span class="sep">-</span>
-                                                        <span class="price">${{ number_format($product->price, 2) }}</span>
+                                                        <span class="text-danger price">{{ number_format($product->variants->min('price'), 2) }}đ</span>
                                                     </div>
                                                 </div>
                                             </div>

@@ -34,10 +34,10 @@ class ProductController extends Controller
         return view('client.product.detail', compact('product', 'products'));
     }
     
-    public function product()
+    public function product($id)
     {
-        $products = Product::all();
-        return view('client.product.index', compact('products'));
+        $product = Product::with('variants')->find($id);
+        return view('product-detail', compact('product'));
         
     }
     public function search(Request $request)
@@ -54,4 +54,5 @@ class ProductController extends Controller
 
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
+    
 }

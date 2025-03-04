@@ -2,6 +2,7 @@
 <link href="{{ asset('client/css/bootstrap.min.css')}}" rel="stylesheet" />
 <!--== Font Awesome Min Icon CSS ==-->
 <link href="{{ asset('client/css/font-awesome.min.css')}}" rel="stylesheet" />
+{{-- Có sẵn bản 4.0 cũ hơn r mai kia up lên bản mới sau --}}
 <!--== Pe7 Stroke Icon CSS ==-->
 <link href="{{ asset('client/css/pe-icon-7-stroke.css')}}" rel="stylesheet" />
 <!--== Swiper CSS ==-->
@@ -13,5 +14,6 @@
 
 <!--== Main Style CSS ==-->
 <link href="{{ asset('client/css/style.css')}}" rel="stylesheet" />
+
 
 <script src="{{ asset('administrator/jquery/jquery-3.7.1.min.js') }}"></script>

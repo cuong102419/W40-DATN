@@ -6,7 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 use Symfony\Component\HttpFoundation\Response;
+
 
 class AuthenticController extends Controller
 {
@@ -91,6 +93,7 @@ class AuthenticController extends Controller
             'confirm_password.min' => 'Tối thiểu 8 ký tự.',
             'confirm_password.same' => 'Mật khẩu không khớp,vui lòng nhập lại.'
         ]);
+        $data['password'] = Hash::make($data['password']);
 
         User::create($data);
 

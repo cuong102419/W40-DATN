@@ -69,16 +69,36 @@
                                                                     </ul>
                                                                 </div>
                                                                 <div class="product-action">
-                                                                    <a class="btn-product-wishlist" href="shop-wishlist.html"><i
-                                                                            class="fa fa-heart"></i></a>
-                                                                    <a class="btn-product-cart" href="shop-cart.html"><i
-                                                                            class="fa fa-shopping-cart"></i></a>
+                                                                    <a class="btn-product-wishlist" href="#">
+                                                                        <i class="fa fa-heart"></i>
+                                                                    </a>
+                                                                
+                                                                    <form action="{{ route('cart.add') }}" method="POST" onsubmit="addToCart(event, this)">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id" value="{{ $product->id }}">
+                                                                        <input type="hidden" name="name" value="{{ $product->name }}">
+                                                                        <input type="hidden" name="price" value="{{$product->variants->min('price')}}">
+                                                                        <input type="hidden" name="image" value="{{ $product->imageLists->first()->image_url ?? '' }}">
+                                                                        <input type="hidden" name="quantity" value="1">
+                                                                        <button type="submit" class="btn-product-cart">
+                                                                            <i class="fa fa-shopping-cart"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                
                                                                     <button type="button" class="btn-product-quick-view-open">
                                                                         <i class="fa fa-arrows"></i>
                                                                     </button>
-                                                                    <a class="btn-product-compare" href="shop-compare.html"><i
-                                                                            class="fa fa-random"></i></a>
+                                                                    
+                                                                    <a class="btn-product-compare" href="shop-compare.html">
+                                                                        <i class="fa fa-random"></i>
+                                                                    </a>
                                                                 </div>
+                                                                
+                                                                <!-- Khu vực hiển thị giỏ hàng -->
+                                                                <div id="cart-items">
+                                                                    <!-- Sản phẩm trong giỏ hàng sẽ hiển thị ở đây -->
+                                                                </div>
+                                                                
                                                                 <a class="banner-link-overlay"
                                                                     href="{{route('product.detail', $product->id)}}"></a>
                                                             </div>
@@ -116,6 +136,7 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
+                                    
                                     <div class="row">
 
                                         @foreach ($products as $product)
@@ -227,19 +248,12 @@
                             <div class="sidebar-color">
                                 <ul class="color-list">
                                     <li data-bg-color="#39ed8c" class="active"></li>
-                                    <li data-bg-color="#a6ed42"></li>
-                                    <li data-bg-color="#daed39"></li>
-                                    <li data-bg-color="#eed739"></li>
-                                    <li data-bg-color="#eca23a"></li>
-                                    <li data-bg-color="#f36768"></li>
-                                    <li data-bg-color="#e14755"></li>
-                                    <li data-bg-color="#dc83a3"></li>
-                                    <li data-bg-color="#dc82da"></li>
-                                    <li data-bg-color="#9a82dd"></li>
-                                    <li data-bg-color="#82c2db"></li>
-                                    <li data-bg-color="#6bd6b0"></li>
-                                    <li data-bg-color="#9ed76b"></li>
-                                    <li data-bg-color="#c8c289"></li>
+                                    @foreach($product->variants->unique('color') as $variant)
+                                        <li class="color-option" 
+                                            data-color="{{ $variant->color }}" 
+                                            style="background-color: {{ $variant->color }}">
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -248,14 +262,13 @@
                             <h4 class="sidebar-title">Size</h4>
                             <div class="sidebar-size">
                                 <ul class="size-list">
-                                    <li><a href="shop.html">S <span>(6)</span></a></li>
-                                    <li><a href="shop.html">M <span>(4)</span></a></li>
-                                    <li><a href="shop.html">L <span>(2)</span></a></li>
-                                    <li><a href="shop.html">XL <span>(6)</span></a></li>
-                                    <li><a href="shop.html">XXL <span>(12)</span></a></li>
+                                    @foreach($product->variants->unique('size') as $variant)
+                                        <li class="size-option" data-size="{{ $variant->size }}">{{ $variant->size }}</li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
+                        
 
 
                     </div>

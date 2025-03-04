@@ -36,7 +36,6 @@ Route::get('/product/{product}', [ProductController::class, 'detail'])->name('pr
 Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
@@ -53,6 +52,10 @@ Route::get('/change-password', [AuthenticController::class, 'changePassword'])->
 Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassword'])->middleware('auth')->name('update-password');
 Route::get('/profile/edit', [UserController::class, 'edit'])->middleware('auth')->name('profile.edit');
 Route::put('/profile/edit', [UserController::class, 'update'])->middleware('auth')->name('profile.update');
+Route::get('/get-similar-products', [ProductController::class, 'getSimilarProducts']);
+
+// Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
 
 Route::controller(SigninGoogleController::class)->group(function () {
 
@@ -63,6 +66,18 @@ Route::controller(SigninGoogleController::class)->group(function () {
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
+//giỏ hàng
+Route::middleware('auth')->group(function () {
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::delete('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+});
+
+
+Route::prefix('admin')->group(function () {
+
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('/product')->group(function () {
@@ -84,6 +99,8 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
 
     });
 
+    
+
     Route::prefix('/category')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('admin-category.index');
         Route::get('/create', [CategoryController::class, 'create'])->name('admin-category.create');
@@ -101,6 +118,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/update/{brand}', [BrandController::class, 'update'])->name('admin-brand.update');
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
+});
 });
 
 

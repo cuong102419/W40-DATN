@@ -11,11 +11,14 @@
   <meta name="description" content="Shome - Shoes eCommerce Website Template" />
   <meta name="keywords" content="footwear, shoes, modern, shop, store, ecommerce, responsive, e-commerce" />
   <meta name="author" content="codecarnival" />
+  
 
   <title>@yield('title')</title>
 
-  <!--== Favicon ==-->
-  <link rel="shortcut icon" href="{{ asset('client/img/favicon.ico')}}" type="image/x-icon" />
+  <!--== Favicon ==-->  
+  {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">  lỗi ở đây --}}
+
+  <link rel="shortcut icon" href="{{ asset('client/img/favicon.icon')}}" type="image/x-icon" />
 
   {{-- Css file --}}
   @include('client.layout.partials.css')
