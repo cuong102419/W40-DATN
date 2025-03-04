@@ -21,3 +21,5 @@
 
 <!--== Main Style CSS ==-->
 <link href="{{ asset('client/css/style.css')}}" rel="stylesheet" />
+
+<script src="{{ asset('administrator/jquery/jquery-3.7.1.min.js') }}"></script>
