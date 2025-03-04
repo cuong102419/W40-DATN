@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="row justify-content-center m-3 mb-3">
+    <div class="row justify-content-center mt-5 mb-3">
         <div class="col-6">
             <h2 class="text-uppercase text-center">Thông tin chi tiết</h2>
             <table class="table">

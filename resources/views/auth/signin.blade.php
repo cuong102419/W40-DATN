@@ -11,6 +11,11 @@
                 <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        @elseif (session('error'))
+            <div id="alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation me-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         @endif
 
         <div class="d-flex align-items-center justify-content-between mb-3">
@@ -49,12 +54,12 @@
     </div>
     {{-- Validate ajax --}}
     <script>
-        $(document).ready(function() {
-            $("#signin-form").on("submit", function(e) {
+        $(document).ready(function () {
+            $("#signin-form").on("submit", function (e) {
                 e.preventDefault();
 
                 $(".text-danger").text("");
-                
+
                 let form = $(this);
                 let formData = form.serialize();
 
@@ -63,14 +68,14 @@
                     url: form.attr("action"),
                     data: formData,
                     dataType: "json",
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status === "success") {
                             let alertSuccess = `
-                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i>${response.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `;
+                                <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-check-circle me-2"></i>${response.message}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            `;
                             $("#form-signin").prepend(alertSuccess);
 
 
@@ -84,7 +89,7 @@
                             }, 3000);;
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error(xhr.responseText);
 
                         if (xhr.status === 422) {
@@ -99,11 +104,11 @@
 
                         if (xhr.responseJSON && xhr.responseJSON.status === "error") {
                             let alertError = `
-                            <div id="alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fas fa-exclamation me-2"></i>${xhr.responseJSON.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `;
+                                <div id="alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-exclamation me-2"></i>${xhr.responseJSON.message}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            `;
                             $("#form-signin").prepend(alertError);
 
 
