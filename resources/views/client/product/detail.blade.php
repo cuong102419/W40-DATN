@@ -69,7 +69,6 @@ Chi tiết sản phẩm
                                             <li class="color-option" data-color="{{ strtolower($variant->color) }}" data-size="{{ $variant->size }}" data-price="{{ $variant->price }}" style="background-color: {{ $variant->color }}"></li>
                                         @endforeach
                                     </ul>
-                    
                                 </div>
 
                                 <div class="product-size">
