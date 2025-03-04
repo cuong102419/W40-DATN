@@ -12,4 +12,5 @@ use Darryldecode\Cart\Facades\CartFacade as Cart;
 class CartController extends Controller
 {
     //
+    
 }
