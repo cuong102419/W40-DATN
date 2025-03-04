@@ -51,6 +51,7 @@ Route::get('/change-password', [AuthenticController::class, 'changePassword'])->
 Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassword'])->middleware('auth')->name('update-password');
 Route::get('/profile/edit', [UserController::class, 'edit'])->middleware('auth')->name('profile.edit');
 Route::put('/profile/edit', [UserController::class, 'update'])->middleware('auth')->name('profile.update');
+Route::get('/get-similar-products', [ProductController::class, 'getSimilarProducts']);
 
 // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 

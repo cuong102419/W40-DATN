@@ -44,7 +44,7 @@ Chi tiết sản phẩm
                         <div class="col-xl-6">
                             <!--== Start Product Info Area ==-->
                             <div class="product-single-info">
-                                <h3 class="main-title">{{ $product->name }}</h3>  <!-- Tên sản phẩm -->
+                                <h3 class="main-title">{{ $product->name }}</h3>  
                                 <div class="prices">
                                     <span class="price text-danger">{{ number_format($product->variants->min('price')) }} VND</span> <!-- Giá sản phẩm -->
                                 </div>
@@ -61,29 +61,35 @@ Chi tiết sản phẩm
                                         <a href="javascript:void(0)">(5 Customer Review)</a>
                                     </div>
                                 </div>
-                        
-                                <p></p> <!-- Mô tả sản phẩm -->
-                        
+                                
                                 <div class="product-color">
                                     <h6 class="title">Màu</h6>
                                     <ul class="color-list">
-                                        <li data-bg-color="#586882"></li>
-                                        <li class="active" data-bg-color="#505050"></li>
-                                        <li data-bg-color="#73707a"></li>
-                                        <li data-bg-color="#c7bb9b"></li>
+                                        @foreach($product->variants->unique('color') as $variant)
+                                            <li class="color-option" data-color="{{ strtolower($variant->color) }}" data-size="{{ $variant->size }}" data-price="{{ $variant->price }}" style="background-color: {{ $variant->color }}"></li>
+                                        @endforeach
                                     </ul>
+                    
                                 </div>
-                        
+
                                 <div class="product-size">
                                     <h6 class="title">Size</h6>
                                     <ul class="size-list">
-                                        <li>S</li>
-                                        <li class="active">M</li>
-                                        <li>L</li>
-                                        <li>XL</li>
+                                        @foreach($product->variants->unique('size') as $variant)
+                                            <li class="size-option" data-size="{{ strtolower($variant->size) }}" data-color="{{ $variant->color }}" data-price="{{ $variant->price }}">{{ $variant->size }}</li>
+                                        @endforeach
                                     </ul>
                                 </div>
-                           
+                                <style>
+                                    .disabled {
+                                        opacity: 0.5;
+                                        pointer-events: none;
+                                    }
+                                    .active {
+                                        border: 2px solid red;
+                                    }
+
+                                </style>
                                 <div class="product-quick-action">
                                     <div class="qty-wrap">
                                         <div class="pro-qty">
@@ -106,6 +112,7 @@ Chi tiết sản phẩm
                                     </div>
                                 </div>
                             </div>
+                            
                             <!--== End Product Info Area ==-->
                         </div>
                         
@@ -333,6 +340,7 @@ Chi tiết sản phẩm
             </div>
         </div>
     </div>
+    <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 </section>
 <!--== End Product Single Area Wrapper ==-->
 
