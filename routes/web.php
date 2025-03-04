@@ -13,6 +13,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SigninGoogleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\CheckAuth;
@@ -53,6 +54,14 @@ Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassw
 Route::get('/profile/edit', [UserController::class, 'edit'])->middleware('auth')->name('profile.edit');
 Route::put('/profile/edit', [UserController::class, 'update'])->middleware('auth')->name('profile.update');
 
+Route::controller(SigninGoogleController::class)->group(function () {
+
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+
+});
+
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
@@ -68,7 +77,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/images/delete/{image}', [ImageListController::class, 'destroy'])->name('admin-image.delete');
         Route::get('/{product}/variant', [ProductVariantController::class, 'index'])->name('product-variant.index');
         Route::get('/{product}/variant/create', [ProductVariantController::class, 'create'])->name('product-variant.create');
-        Route::post('/variant/store', [ProductVariantController::class,'store'])->name('product-variant.store');
+        Route::post('/variant/store', [ProductVariantController::class, 'store'])->name('product-variant.store');
         Route::get('/{product}/variant/edit/{variant}', [ProductVariantController::class, 'edit'])->name('product-variant.edit');
         Route::put('/variant/update/{variant}', [ProductVariantController::class, 'update'])->name('product-variant.update');
         Route::delete('/variant/delete/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variant.delete');
