@@ -10,4 +10,8 @@ class CartController extends Controller
     {
         return view('client.cart.index');
     }
+
+    public function create() {
+        
+    }
 }
