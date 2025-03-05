@@ -84,10 +84,6 @@ Chi tiết sản phẩm
                                         opacity: 0.5;
                                         pointer-events: none;
                                     }
-                                    .active {
-                                        border: 2px solid red;
-                                    }
-
                                 </style>
                                 <div class="product-quick-action">
                                     <div class="qty-wrap">

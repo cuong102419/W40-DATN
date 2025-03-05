@@ -31,9 +31,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
-Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
+
+Route::prefix('/product')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/{product}', [ProductController::class, 'detail'])->name('product.detail');
+    Route::get('/{product}', [ProductController::class, 'detail'])->name('product.detail');
+});
+
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
@@ -54,30 +58,15 @@ Route::get('/profile/edit', [UserController::class, 'edit'])->middleware('auth')
 Route::put('/profile/edit', [UserController::class, 'update'])->middleware('auth')->name('profile.update');
 Route::get('/get-similar-products', [ProductController::class, 'getSimilarProducts']);
 
-// Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 
 Route::controller(SigninGoogleController::class)->group(function () {
-
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
-
     Route::get('auth/google/callback', 'handleGoogleCallback');
-
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
-//giỏ hàng
-Route::middleware('auth')->group(function () {
-    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
-    Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    Route::delete('/cart/clear', [CartController::class, 'clearCart'])->name('cart.clear');
-});
-
-
-Route::prefix('admin')->group(function () {
-
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('/product')->group(function () {
@@ -96,10 +85,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/{product}/variant/edit/{variant}', [ProductVariantController::class, 'edit'])->name('product-variant.edit');
         Route::put('/variant/update/{variant}', [ProductVariantController::class, 'update'])->name('product-variant.update');
         Route::delete('/variant/delete/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variant.delete');
-
     });
-
-    
 
     Route::prefix('/category')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('admin-category.index');
@@ -118,7 +104,6 @@ Route::prefix('admin')->group(function () {
         Route::put('/update/{brand}', [BrandController::class, 'update'])->name('admin-brand.update');
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
-});
 });
 
 

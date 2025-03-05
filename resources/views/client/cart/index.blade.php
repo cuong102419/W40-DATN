@@ -17,8 +17,8 @@ Giỏ hàng
 
                                 <tr>
 
-                                    <th class="product-remove">&nbsp;</th>
-                                    <th class="product-thumb">&nbsp;</th>
+                                    <th class="product-remove"></th>
+                                    <th class="product-thumb"></th>
                                     <th class="product-name">Sản phẩm</th>
                                     <th class="product-price">Giá</th>
                                     <th class="product-quantity">Số lượng</th>
@@ -29,45 +29,35 @@ Giỏ hàng
                             </select>
                             <tbody>
 
-                                @foreach($cart as $item)
                                 <tr class="cart-product-item">
                                     <td class="product-remove"  >
-                                 {{-- @if(!empty($item) && isset($item['id']))
-                                        <form action="{{ route('cart.remove', ['id' => $item['id']]) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE') --}}
-                                            <button type="submit" class="text-danger" style="background: none; border: none; cursor: pointer;">
-                                                <i class="fa fa-trash-o"aria-hidden="true"></i>
+                                            <button type="submit" class="text-danger btn">
+                                                <i class="fa fa-trash-o fa-lg"></i>
                                             </button>
-                                        {{-- </form> --}}
-                                        {{-- @else
-                                        <p>Dữ liệu sản phẩm không hợp lệ</p>
-                                        @endif --}}
                                     </td>
                                     <!-- Cột Hình ảnh -->
                                     <td class="product-thumb">
-                                        <img src="{{ Storage::url($item['image']) ?? asset('default-image.jpg') }}" width="100">
+                                        <img src="" width="100">
                                     </td>
 
                                     <!-- Cột Tên sản phẩm -->
-                                    <td class="product-name">{{ $item['name'] ?? 'Sản phẩm không xác định' }}</td>
+                                    <td class="product-name"></td>
 
                                     <!-- Cột Giá -->
-                                    <td class="product-price">{{ number_format($item['price'] ?? 0, 0, ',', '.') }} VND</td>
+                                    <td class="product-price">VND</td>
 
                                     <!-- Cột Số lượng + Cập nhật -->
 
                                     <td class="product-quantity">
                                         <div class="pro-qty">
-                                            <input type="text" name="quantity" value="{{ $item['quantity'] ?? 1 }}" min="1" >
+                                            <input type="text" name="quantity" value="" min="1" >
                                         </div>
                                     </td>
 
                                     <!-- Cột Thành tiền -->
-                                    <td  class="product-subtotal">{{ number_format(($item['price'] ?? 0) * ($item['quantity'] ?? 1), 0, ',', '.') }} VND</td>
+                                    <td  class="product-subtotal">VND</td>
 
                                 </tr>
-                                @endforeach
                             </tbody>
                             <tr class="actions">
                                 <td class="border-0" colspan="6">

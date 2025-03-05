@@ -33,7 +33,7 @@ class SigninGoogleController extends Controller
                 if ($finduser->role == 'admin') {
                     Auth::login($finduser);
 
-                    return redirect()->intended('/admin');
+                    return redirect()->route('dashboard.index');
                 }
 
                 return redirect()->intended('/');
