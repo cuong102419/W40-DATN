@@ -16,6 +16,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\CheckAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +47,7 @@ Route::get('/signin', [AuthenticController::class, 'index'])->name('signin');
 Route::get('/signup', [AuthenticController::class, 'formSignup'])->name('signup');
 Route::post('/signin', [AuthenticController::class, 'signin'])->name('signin.signin');
 Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup.signup');
+
 Route::get('/logout', [AuthenticController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/profile', [AuthenticController::class, 'profile'])->middleware('auth')->name('profile');
 Route::get('/change-password', [AuthenticController::class, 'changePassword'])->middleware('auth')->name('change-password');
@@ -68,11 +70,10 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/images/delete/{image}', [ImageListController::class, 'destroy'])->name('admin-image.delete');
         Route::get('/{product}/variant', [ProductVariantController::class, 'index'])->name('product-variant.index');
         Route::get('/{product}/variant/create', [ProductVariantController::class, 'create'])->name('product-variant.create');
-        Route::post('/variant/store', [ProductVariantController::class,'store'])->name('product-variant.store');
+        Route::post('/variant/store', [ProductVariantController::class, 'store'])->name('product-variant.store');
         Route::get('/{product}/variant/edit/{variant}', [ProductVariantController::class, 'edit'])->name('product-variant.edit');
         Route::put('/variant/update/{variant}', [ProductVariantController::class, 'update'])->name('product-variant.update');
         Route::delete('/variant/delete/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variant.delete');
-
     });
 
     Route::prefix('/category')->group(function () {
@@ -92,6 +93,9 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/update/{brand}', [BrandController::class, 'update'])->name('admin-brand.update');
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
+
+    //
+    Route::get('/signlit/form', [AuthenticController::class, 'formSignlit'])->name('signlit.form');
+    Route::get('/signlit', [AuthenticController::class, 'signlit'])->name('signlit');
+    Route::post('/signlit', [AuthenticController::class, 'signlit'])->name('signlit.submit');
 });
-
-

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticController extends Controller
@@ -158,4 +159,42 @@ class AuthenticController extends Controller
         return redirect()->back()->with('success', 'Đổi mật khẩu thành công.');
 
     }
+    // admin
+
+    public function listAuth()
+    {
+        $auth = User::all();
+        return view('admin.auth.signlit', compact('auth'));
+    }
+    public function editActive(Request $request, User $auth)
+    {
+        // dd($request->all());
+        $data['active'] = $request->active;
+        $auth->update($data);
+        return redirect()->route('admin.auth')->with('success', 'Cập nhập thành công !');
+    }
+    public function addUser(){
+        return view('admin.auth.signup');
+    }
+    public function postUser(Request $request){
+        // dd($request->all());
+        $data = $request->validate([
+            'username'      => ['required','unique:users','min:3'],
+            'email'         =>['required','unique:users','email'],
+            'password'      =>['required','min:5'],
+            'confirmpass'   =>['required','min:5','same:password'],
+            'fullname'      =>['nullable','min:3'],
+            'image'         =>['nullable','image'],
+            'role'          =>['nullable'],
+        ]);
+        if($request->hasFile('image')){
+            $data['image'] = Storage::put('users',$request->file('image'));
+        }
+        User::query()->create($data);
+        return redirect()->route('admin.addUser')->with('success','Thêm mới thành công !');
+    }   
+    
 }
+
+
+
