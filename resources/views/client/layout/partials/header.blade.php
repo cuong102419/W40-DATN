@@ -26,8 +26,7 @@
                                                 <div
                                                     class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                                                     @if (Auth::user()->role == 'admin')
-                                                        <a href="{{route('dashboard.index')}}"
-                                                            class="dropdown-item fas fa-user-shield">Trang quản trị</a>
+                                                        <a href="{{route('dashboard.index')}}" class="dropdown-item fas fa-user-shield">Trang quản trị</a>
                                                     @endif
                                                     <a href="{{  route('profile')}}" class="dropdown-item">Hồ sơ</a>
                                                     <a href="{{  route('change-password')}}" class="dropdown-item">Đổi mật khẩu</a>

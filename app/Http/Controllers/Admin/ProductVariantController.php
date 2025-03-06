@@ -25,10 +25,25 @@ class ProductVariantController extends Controller
 
     public function store(Request $request)
     {
+
         $data = $request->validate([
             'product_id' => ['nullable'],
             'quantity' => ['required'],
-            'price' => ['required'],
+            'price' => [
+                'required',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->color) {
+                        $firstVariant = ProductVariant::where('product_id', $request->product_id)
+                            ->where('color', $request->color)
+                            ->orderBy('id', 'asc')
+                            ->first();
+
+                        if ($firstVariant && $value != $firstVariant->price) {
+                            $fail('Giá phải trùng với giá của các biến thể có cùng màu: ' . number_format($firstVariant->price) . ' đ');
+                        }
+                    }
+                }
+            ],
             'size' => [
                 'required',
                 Rule::unique('product_variants')->where(function ($query) use ($request) {
@@ -50,6 +65,7 @@ class ProductVariantController extends Controller
             'size.unique' => 'Kích cỡ và màu sắc này đã tồn tại cho sản phẩm này.',
             'color.unique' => 'Màu sắc và kích cỡ này đã tồn tại cho sản phẩm này.'
         ]);
+
 
         ProductVariant::create($data);
 
@@ -79,14 +95,14 @@ class ProductVariantController extends Controller
                 Rule::unique('product_variants')->where(function ($query) use ($request) {
                     return $query->where('product_id', $request->product_id)
                         ->where('color', $request->color);
-                })
+                })->ignore($variant->id)
             ],
             'color' => [
                 'nullable',
                 Rule::unique('product_variants')->where(function ($query) use ($request) {
                     return $query->where('product_id', $request->product_id)
                         ->where('size', $request->size);
-                })
+                })->ignore($variant->id)
             ]
         ], [
             'quantity.required' => 'Số lượng không được để trống.',
@@ -97,6 +113,9 @@ class ProductVariantController extends Controller
         ]);
 
         $variant->update($data);
+        ProductVariant::where('color', $variant->color)
+            ->where('product_id', $variant->product_id)
+            ->update(['price' => $data['price']]);
 
         if ($request->ajax()) {
             return response()->json([

@@ -6,7 +6,12 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return view('client.cart.index');
+    }
+
+    public function create() {
+        
     }
 }

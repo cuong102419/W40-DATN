@@ -99,11 +99,6 @@
                                     </div>
                                     <div class="product-action">
                                         <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
-                                        <a class="btn-product-cart" href="#"><i class="fa fa-shopping-cart"></i></a>
-                                        <button type="button" class="btn-product-quick-view-open">
-                                            <i class="fa fa-arrows"></i>
-                                        </button>
-                                        <a class="btn-product-compare" href="#"><i class="fa fa-random"></i></a>
                                     </div>
                                     <a class="banner-link-overlay" href="{{route('product.detail', $product->id)}}"></a>
                                 </div>
@@ -191,12 +186,6 @@
                                                     </div>
                                                     <div class="product-action">
                                                         <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
-                                                        <a class="btn-product-cart" href="#"><i
-                                                                class="fa fa-shopping-cart"></i></a>
-                                                        <button type="button" class="btn-product-quick-view-open">
-                                                            <i class="fa fa-arrows"></i>
-                                                        </button>
-                                                        <a class="btn-product-compare" href="#"><i class="fa fa-random"></i></a>
                                                     </div>
                                                     <a class="banner-link-overlay" href="{{route('product.detail', $product->id)}}"></a>
                                                 </div>
@@ -215,7 +204,7 @@
                                                         <span
                                                             class="price-old">${{ number_format($product->original_price, 2) }}</span>
                                                         <span class="sep">-</span>
-                                                        <span class="price">${{ number_format($product->price, 2) }}</span>
+                                                        <span class="text-danger price">{{ number_format($product->variants->min('price'), 2) }}đ</span>
                                                     </div>
                                                 </div>
                                             </div>

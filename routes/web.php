@@ -13,6 +13,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SigninGoogleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\CheckAuth;
@@ -31,12 +32,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
-Route::get('/product/{product}', [ProductController::class, 'detail'])->name('product.detail');
+
+Route::prefix('/product')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('product.index');
+    Route::get('/{product}', [ProductController::class, 'detail'])->name('product.detail');
+    Route::get('/{product}', [ProductController::class, 'detail'])->name('product.detail');
+});
+
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
@@ -54,6 +58,15 @@ Route::get('/change-password', [AuthenticController::class, 'changePassword'])->
 Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassword'])->middleware('auth')->name('update-password');
 Route::get('/profile/edit', [UserController::class, 'edit'])->middleware('auth')->name('profile.edit');
 Route::put('/profile/edit', [UserController::class, 'update'])->middleware('auth')->name('profile.update');
+Route::get('/get-similar-products', [ProductController::class, 'getSimilarProducts']);
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+
+Route::controller(SigninGoogleController::class)->group(function () {
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');
+});
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');

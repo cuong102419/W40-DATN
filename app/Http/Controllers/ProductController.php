@@ -9,7 +9,8 @@ use App\Models\Brand;
 
 class ProductController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $categories = Category::all();
         $brands = Brand::all();
         $query = Product::query();
@@ -22,23 +23,24 @@ class ProductController extends Controller
         $products = $query->get();
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
-    public function detail($id) {
+    public function detail($id)
+    {
         $product = Product::with('category', 'brand', 'imageLists')->find($id);
         $nextProduct = Product::where('id', '>', $id)->orderBy('id', 'asc')->first();
         if (!$product) {
-            return abort(404); 
+            return abort(404);
         }
 
         $products = Product::with('category', 'brand', 'imageLists')->get();
-    
+
         return view('client.product.detail', compact('product', 'products'));
     }
-    
-    public function product()
+
+    public function product($id)
     {
-        $products = Product::all();
-        return view('client.product.index', compact('products'));
-        
+        $product = Product::with('variants')->find($id);
+        return view('product-detail', compact('product'));
+
     }
     public function search(Request $request)
     {
@@ -54,4 +56,6 @@ class ProductController extends Controller
 
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
+
+    
 }
