@@ -34,7 +34,7 @@
                                 @foreach ($images as $item)
                                     <div class="col-4 mb-3">
                                         <div class="position-relative">
-                                            <img src="{{ Storage::url($item->image_url) }}" width="250" alt=""
+                                            <img src="{{ Storage::url($item->image_url) }}" width="200" alt=""
                                                 class="img-fluid">
                                             <form id="delete-image" action="{{ route('admin-image.delete', $item->id) }}"
                                                 method="post">

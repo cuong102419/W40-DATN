@@ -58,8 +58,13 @@ Route::get('/profile/edit', [UserController::class, 'edit'])->middleware('auth')
 Route::put('/profile/edit', [UserController::class, 'update'])->middleware('auth')->name('profile.update');
 Route::get('/get-similar-products', [ProductController::class, 'getSimilarProducts']);
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-
+Route::prefix('/cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add/{product}', [CartController::class, 'add'])->name('cart.add');
+    Route::get('/delete', [CartController::class, 'destroy'])->name('cart.delete');
+    Route::get('/delete/{id}', [CartController::class, 'delete'])->name('cart.delete.product');
+    Route::put('/update', [CartController::class, 'update'])->name('cart.update');
+});
 
 Route::controller(SigninGoogleController::class)->group(function () {
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
