@@ -64,49 +64,52 @@
                                             <a href="javascript:void(0)">(5 Customer Review)</a>
                                         </div>
                                     </div>
+                                    <form action="{{ route('cart.add', $product->id) }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="color" id="selected-color">
+                                        <input type="hidden" name="size" id="selected-size">
 
-                                    <div class="product-color">
-                                        <h6 class="title">Màu</h6>
-                                        <ul class="color-list">
-                                            @foreach($product->variants->unique('color') as $variant)
-                                                @php
-                                                    $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
-                                                @endphp
-                                                <li class="color-option" data-color="{{ strtolower($variant->color) }}"
-                                                data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
-                                                style="background-color: {{ $variant->color }}">
-                                                </li>
-                                            @endforeach
-                                        </ul>
-
-                                    </div>
-
-                                    <div class="product-size">
-                                        <h6 class="title">Size</h6>
-                                        <ul class="size-list">
-                                            @foreach($product->variants->unique('size') as $variant)
-                                                <li class="size-option" data-size="{{ strtolower($variant->size) }}"
-                                                    data-color="{{ $variant->color }}" data-price="{{ $variant->price }}">
-                                                    {{ $variant->size }}
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    <style>
-                                        .disabled {
-                                            opacity: 0.5;
-                                            pointer-events: none;
-                                        }
-                                    </style>
-                                    <div class="product-quick-action">
-                                        <div class="qty-wrap">
-                                            <div class="pro-qty">
-                                                <input type="text" title="Quantity" value="1">
-                                            </div>
+                                        <div class="product-color">
+                                            <h6 class="title">Màu</h6>
+                                            <ul class="color-list">
+                                                @foreach($product->variants->unique('color') as $variant)
+                                                    @php
+                                                        $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
+                                                    @endphp
+                                                    <li class="color-option" data-color="{{ strtolower($variant->color) }}"
+                                                        data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
+                                                        style="background-color: {{ $variant->color }}">
+                                                    </li>
+                                                @endforeach
+                                            </ul>
                                         </div>
-                                        <a class="btn-theme" href="shop-cart.html">Thêm vào giỏ hàng</a>
-                                    </div>
 
+                                        <div class="product-size">
+                                            <h6 class="title">Size</h6>
+                                            <ul class="size-list">
+                                                @foreach($product->variants->unique('size')->sortBy('size') as $variant)
+                                                    <li class="size-option" data-size="{{ strtolower($variant->size) }}"
+                                                        data-color="{{ $variant->color }}" data-price="{{ $variant->price }}">
+                                                        {{ $variant->size }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        <style>
+                                            .disabled {
+                                                opacity: 0.5;
+                                                pointer-events: none;
+                                            }
+                                        </style>
+                                        <div class="product-quick-action">
+                                            <div class="qty-wrap">
+                                                <div class="pro-qty">
+                                                    <input type="text" title="Quantity" name="quantity" value="1">
+                                                </div>
+                                            </div>
+                                            <button class="btn-theme">Thêm vào giỏ hàng</button>
+                                        </div>
+                                    </form>
                                     <div class="product-wishlist-compare">
                                         <a href="shop-wishlist.html"><i class="pe-7s-like"></i> Thêm vào danh sách yêu
                                             thích</a>
