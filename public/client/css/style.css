@@ -5209,6 +5209,8 @@ table p {
 }
 .shopping-cart-form .table tbody .actions .clear-cart {
   margin-right: 10px;
+  margin-top: 10px;
+
 }
 @media only screen and (max-width: 767px) {
   .shopping-cart-form .table tbody .actions .clear-cart {
