@@ -33,23 +33,21 @@ class CategoryController extends Controller
 
         Category::create($data);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Thêm danh mục thàng công.'
-            ], Response::HTTP_OK);
-        }
-
-        return redirect()->back();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Thêm danh mục thành công!'
+        ], Response::HTTP_OK);
     }
 
-    public function edit(Category $category) {
+    public function edit(Category $category)
+    {
         return view('admin.category.edit', compact('category'));
     }
 
-    public function update(Request $request, Category $category) {
+    public function update(Request $request, Category $category)
+    {
         $data = $request->validate([
-            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4','unique:categories,name,' . $category->name]
+            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', 'unique:categories,name,' . $category->name]
         ], [
             'name.required' => 'Tên danh mục không được để trống.',
             'name.min' => 'Tên danh mục phải có ít nhất 4 ký tự.',
@@ -69,10 +67,14 @@ class CategoryController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(Category $category) {
-        $category->delete();
-
-        return redirect()->back()->with('success', 'Xóa thành công.');
+    public function destroy(Category $category)
+    {
+        try {
+            $category->delete();
+            return redirect()->back()->with('success', 'Xóa thành công!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Xóa không thành công!');
+        }
     }
 
 }

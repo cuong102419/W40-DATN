@@ -28,10 +28,6 @@
                                     </thead>
                                     <tbody>
                                         @foreach (session('cart') as $cart)
-                                            @php
-                                                $product = $products->where('id', $cart['product_id'])->first();
-                                                $variant = $variants->where('id', $cart['id'])->first();
-                                            @endphp
                                             <tr class="cart-product-item">
                                                 <td class="product-remove">
                                                     <a href="{{ route('cart.delete.product', $cart['id']) }}" class="text-danger"><i
@@ -39,7 +35,7 @@
                                                 </td>
                                                 <td class="product-thumb">
                                                     <a href="{{ route('product.detail', $cart['product_id']) }}">
-                                                        <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="100"
+                                                        <img src="{{ Storage::url($cart['image']) }}" width="100"
                                                             alt="Image-HasTech">
                                                     </a>
                                                 </td>
@@ -47,16 +43,16 @@
                                                     <div>
                                                         <h4 class="fw-bold text-center">
                                                             <a href="{{ route('product.detail', $cart['product_id']) }}"
-                                                                class="text-dark">{{ $product->name }}</a>
+                                                                class="text-dark">{{ $cart['name'] }}</a>
                                                         </h4>
                                                         <div class="row justify-content-center">
                                                             <div class="col-auto">
-                                                                <span class="fw-bold small">Kích cỡ: {{ $variant->size }}</span>
+                                                                <span class="fw-bold small">Kích cỡ: {{ $cart['size'] }}</span>
                                                             </div>
                                                             <div class="col-auto d-flex align-items-center">
                                                                 <span class="fw-bold small">Màu sắc:</span>
                                                                 <span class="rounded-circle border border-secondary shadow ms-2"
-                                                                    style="width: 28px; height: 28px; background-color: {{ $variant->color }}; display: inline-block;">
+                                                                    style="width: 22px; height: 22px; background-color: {{ $cart['color'] }}; display: inline-block;">
                                                                 </span>
                                                             </div>
                                                         </div>
