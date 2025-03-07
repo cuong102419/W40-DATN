@@ -101,16 +101,17 @@ class ProductController extends Controller
             'discount.required' => 'Giá trị giảm giá không được để trống'
         ]);
 
-        $product->update($data);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Cập nhật sản phẩm thành công.'
-            ], Response::HTTP_OK);
+        if (!$request->has('featured')) {
+            $data['featured'] = 0;
         }
 
-        return redirect()->back();
+        $product->update($data);
+
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật sản phẩm thành công.'
+        ], Response::HTTP_OK);
     }
 
     public function destroy(Product $product)

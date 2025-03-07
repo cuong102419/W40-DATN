@@ -154,6 +154,7 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
+    'Toastr' => Yoeunes\Toastr\Facades\Toastr::class,
 
     'providers' => ServiceProvider::defaultProviders()->merge([
         /*
@@ -168,6 +169,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Yoeunes\Toastr\ToastrServiceProvider::class,
+
     ])->toArray(),
 
     /*
@@ -184,5 +187,4 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
-
 ];

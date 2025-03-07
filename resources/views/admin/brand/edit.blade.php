@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <a href="{{ route('admin-brand.index') }}" class="btn btn-sm btn-secondary"><i
                                 class="fas fa-arrow-left"></i> Danh sách</a>
-                        <button class="btn btn-success btn-sm" type="submit"><i class="fas fa-save me-2"></i> Cập nhật</button>
+                        <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-save me-2"></i>Lưu</button>
                     </div>
                 </form>
             </div>
@@ -45,16 +45,10 @@
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
-                            let alertSuccess = `
-                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i>${response.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `;
-                            $("#form-brand").prepend(alertSuccess);
-
+                            toastr.success(response.message);
+                            
                             setTimeout(() => {
-                                location.reload();
+                                window.location.href = "{{ route('admin-brand.index') }}";
                             }, 2000);
                         }
                     }, error: function (xhr) {
