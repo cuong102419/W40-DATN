@@ -20,7 +20,7 @@ class ProductController extends Controller
         if ($request->has('brand')) {
             $query->where('brand_id', $request->brand);
         }
-        $products = $query->get();
+        $products = $query->whereHas('variants')->latest('id')->paginate(10);
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
     public function detail($id)
