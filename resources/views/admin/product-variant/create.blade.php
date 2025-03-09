@@ -42,6 +42,7 @@
                     </div>
                 </div>
                 <div class="mt-3">
+                    <a href="{{ route('product-variant.index', $product->id) }}" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left me-2"></i>Danh sách</a>
                     <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-save me-2"></i>Lưu</button>
                 </div>
             </form>
@@ -63,19 +64,15 @@
                     success: function (response) {
                         console.log(response);
                         if (response.status === "success") {
-                            let alertSuccess = `
-                                <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <i class="fas fa-check-circle me-2"></i>${response.message}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            `;
-                            $("#variant-form").prepend(alertSuccess);
+                            $("input[name='price']").val("");
+                            $("input[name='quantity']").val("");
+                            $("input[name='size']").val("");
+                            $("input[name='color']").val("");
 
-                            $("input[name='name']").val("");
-
+                            toastr.success(response.message);
                             setTimeout(() => {
                                 $("#alert-success").fadeOut();
-                                window.location.href = "{{ route('product-variant.index',  $product->id) }}";
+                                window.location.href = "{{ route('product-variant.index', $product->id) }}";
                             }, 3000);;
                         }
                     }, error: function (xhr) {

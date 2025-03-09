@@ -8,12 +8,6 @@
     <div class="bg-light rounded p-4">
         <div id="form-image">
         </div>
-        @if (session('success'))
-            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
         <h6 class="mb-4">Chi tiết sản phẩm</h6>
         <div class="mb-3 text-start">
             <a href="{{ route('admin-product.index') }}" class="btn btn-sm btn-secondary"><i class="fas fa-arrow-left me-2"></i>Danh sách</a>
@@ -21,8 +15,8 @@
             <a href="{{ route('product-variant.index', $product->id) }}" class="btn btn-sm btn-success"><i class="fas fa-boxes me-2"></i>Biến thể</a>
         </div>
         <div class="row">
-            <div class="table-reponsive">
-                <table class="table table-bordered">
+            <div class="table-reponsive bg-white">
+                <table class="table table-bordered mt-3">
                     <tr>
                         <th colspan="2" class="text-center">
                             Ảnh
@@ -135,13 +129,7 @@
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
-                            $("#form-image").prepend(`
-                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i>${response.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `);
-
+                           toastr.success(response.message);
                             $(".error-image-url").text("");
                             setTimeout(() => location.reload(), 2000);
                         }

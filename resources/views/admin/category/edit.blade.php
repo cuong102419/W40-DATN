@@ -45,17 +45,10 @@
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
-                            let alertSuccess = `
-                                <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                    <i class="fas fa-check-circle me-2"></i>${response.message}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                </div>
-                            `;
-                            $("#form-cate").prepend(alertSuccess);
-
+                            toastr.success(response.message);
                             
                             setTimeout(() => {
-                                location.reload();
+                                window.location.href = "{{ route('admin-category.index') }}";
                             }, 2000);
                             
                         }

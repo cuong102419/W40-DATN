@@ -26,10 +26,12 @@
                                                 <div
                                                     class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                                                     @if (Auth::user()->role == 'admin')
-                                                        <a href="{{route('dashboard.index')}}" class="dropdown-item fas fa-user-shield">Trang quản trị</a>
+                                                        <a href="{{route('dashboard.index')}}"
+                                                            class="dropdown-item fas fa-user-shield">Trang quản trị</a>
                                                     @endif
                                                     <a href="{{  route('profile')}}" class="dropdown-item">Hồ sơ</a>
-                                                    <a href="{{  route('change-password')}}" class="dropdown-item">Đổi mật khẩu</a>
+                                                    <a href="{{  route('change-password')}}" class="dropdown-item">Đổi mật
+                                                        khẩu</a>
                                                     <a href="{{  route('logout')}}" class="dropdown-item">Đăng xuất</a>
                                                 </div>
                                             @else
@@ -87,7 +89,9 @@
                                     <button class="shopping-cart-btn" type="button" data-bs-toggle="offcanvas"
                                         data-bs-target="#AsideOffcanvasCart" aria-controls="offcanvasRightLabel">
                                         <i class="pe-7s-shopbag icon"></i>
-                                        <sup class="shop-count">02</sup>
+                                        @if (session('cart'))
+                                            <sup class="shop-count">{{ count(session('cart', [])) }}</sup>
+                                        @endif
                                     </button>
                                 </div>
                                 <button class="btn-menu" type="button" data-bs-toggle="offcanvas"

@@ -111,19 +111,14 @@
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
-                            let alertSuccess = `
-                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i>${response.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `;
-                            $("#form-product").prepend(alertSuccess);
-
-                            setTimeout(() => {
-                                $("#alert-success").fadeOut(500, function () {
-                                    location.reload();
-                                });
-                            }, 5000);
+                            $("input[name='sku']").val("");
+                            $("input[name='name']").val("");
+                            $("input[name='discount']").val("");
+                            $("select[name='category_id']").val("");
+                            $("select[name='brand_id']").val("");
+                            $("input[name='featured']").prop("checked", false);
+                            CKEDITOR.instances.description.setData("");
+                            toastr.success(response.message);
                         }
                     },
                     error: function (xhr) {

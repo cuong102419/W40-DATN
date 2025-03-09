@@ -112,19 +112,11 @@
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
-                            let alertSuccess = `
-                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fas fa-check-circle me-2"></i>${response.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `;
-                            $("#form-product").prepend(alertSuccess);
+                            toastr.success(response.message);
 
                             setTimeout(() => {
-                                $("#alert-success").fadeOut(500, function () {
-                                    window.location.href = "{{ route('admin-product.detail',  $product->id) }}";
-                                });
-                            }, 3000);
+                                window.location.href = "{{ route('admin-product.detail', $product->id) }}";
+                            }, 2000);
                         }
                     },
                     error: function (xhr) {

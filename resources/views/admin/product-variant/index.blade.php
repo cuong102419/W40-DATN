@@ -9,22 +9,11 @@
         <div class="col-12">
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">Danh sách biến thể - {{ $product->name }}</h6>
-                @if (session('success'))
-                    <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @elseif (session('error'))
-                    <div id="alert-success" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-times me-2"></i></i>{{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
                 <div class="mb-4 text-start">
                     <a href="{{ route('admin-product.detail', $product->id) }}" class="btn btn-sm btn-secondary"><i
-                            class="fas fa-arrow-left"></i> Sản phẩm</a>
+                            class="fas fa-arrow-left me-2"></i>Sản phẩm</a>
                     <a href="{{ route('product-variant.create', $product->id) }}" class="btn btn-sm btn-primary"><i
-                            class="fas fa-plus me-1"></i>Thêm mới</a>
+                            class="fas fa-plus me-2"></i>Thêm mới</a>
                 </div>
                 <div class="table-responsive">
                     @if ($variants->isNotEmpty())
