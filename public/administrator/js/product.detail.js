@@ -71,3 +71,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+// Add to cart
+$(document).ready(function () {
+    $('#add-to-cart').submit(function (e) {
+        e.preventDefault();
+
+        let form = $(this);
+        let formData = form.serialize();
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: formData,
+            success: function (response) {
+                if (response.status === 'success') {
+                    toastr.success(response.message);
+
+                    setTimeout(() => {
+                        window.location.href = cartIndexUrl;
+                    }, 2000);
+                }
+            },
+            error: function (xhr) {
+                if(xhr.responseJSON.status === 'error') {
+                    toastr.error(xhr.responseJSON.message);
+                }
+            }
+        });
+    });
+});

@@ -64,7 +64,7 @@
                                             <a href="javascript:void(0)">(5 Customer Review)</a>
                                         </div>
                                     </div>
-                                    <form action="{{ route('cart.add', $product->id) }}" method="post">
+                                    <form id="add-to-cart" action="{{ route('cart.add', $product->id) }}" method="post">
                                         @csrf
                                         <input type="hidden" name="color" id="selected-color">
                                         <input type="hidden" name="size" id="selected-size">
@@ -432,5 +432,8 @@
         </div>
     </section>
     <!--== End Product Area Wrapper ==-->
+    <script>
+        var cartIndexUrl = "{{ route('cart.index') }}";
+    </script>
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 @endsection

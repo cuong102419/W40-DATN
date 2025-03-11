@@ -15,5 +15,10 @@
 <!--== Main Style CSS ==-->
 <link href="{{ asset('client/css/style.css')}}" rel="stylesheet" />
 
-
 <script src="{{ asset('administrator/jquery/jquery-3.7.1.min.js') }}"></script>
+
+<!-- Toastr CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
