@@ -9,17 +9,6 @@
         <div class="col-12">
             <div class="bg-light rounded min vh-100 p-4">
                 <h6 class="mb-4">Danh sách danh mục</h6>
-                @if (session('success'))
-                    <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @elseif (session('error'))
-                    <div id="alert-success" class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-times me-2"></i></i>{{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
                 <div class="text-end">
                     <a href="{{ route('admin-category.create') }}" class="btn btn-sm btn-primary"><i
                             class="fas fa-plus me-2"></i>Tạo mới</a>

@@ -33,10 +33,10 @@ class SigninGoogleController extends Controller
                 if ($finduser->role == 'admin') {
                     Auth::login($finduser);
 
-                    return redirect()->route('dashboard.index');
+                    return redirect()->route('dashboard.index')->with('success', 'Đăng nhập thành công.');
                 }
 
-                return redirect()->intended('/');
+                return redirect()->route('home')->with('success', 'Đăng nhập thành công.');
             } else {
 
                 $newUser = User::updateOrCreate(['email' => $user->email], [
@@ -49,12 +49,12 @@ class SigninGoogleController extends Controller
 
                 Auth::login($newUser);
 
-                return redirect()->intended('/');
+                return redirect()->route('home')->with('success', 'Đăng nhập thành công.');
 
             }
 
         } catch (Exception $e) {
-            dd($e->getMessage());
+            return redirect('auth/signin')->with('error', 'Đăng nhập thất bại.');
         }
     }
 }

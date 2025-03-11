@@ -37,41 +37,29 @@ class AuthenticController extends Controller
             if (Auth::user()->status == 1) {
                 $user = Auth::user();
                 if (Auth::user()->role == 'admin') {
-
-                    if ($request->ajax()) {
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => 'Đăng nhập thành công.',
-                            'role' => $user->role
-                        ], Response::HTTP_OK);
-                    }
-                    return redirect()->route('dashboard.index');
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Đăng nhập thành công.',
+                        'role' => $user->role
+                    ], Response::HTTP_OK);
                 } else {
-                    if ($request->ajax()) {
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => 'Đăng nhập thành công.',
-                            'role' => $user->role
-                        ], Response::HTTP_OK);
-                    }
-                    return redirect()->route('home');
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Đăng nhập thành công.',
+                        'role' => $user->role
+                    ], Response::HTTP_OK);
                 }
             } else {
-                if ($request->ajax()) {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Tài khoản đã bị khóa.'
-                    ], Response::HTTP_UNAUTHORIZED);
-                }
-            }
-        } else {
-
-            if ($request->ajax()) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Email hoặc mật khẩu không chính xác.'
+                    'message' => 'Tài khoản đã bị khóa.'
                 ], Response::HTTP_UNAUTHORIZED);
             }
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Email hoặc mật khẩu không chính xác.'
+            ], Response::HTTP_UNAUTHORIZED);
         }
     }
 
@@ -97,14 +85,10 @@ class AuthenticController extends Controller
 
         User::create($data);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Tạo tài khoản thành công, hãy đăng nhập lại.'
-            ], Response::HTTP_OK);
-        }
-
-        return redirect()->route('signin');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Tạo tài khoản thành công, hãy đăng nhập lại.'
+        ], Response::HTTP_OK);
     }
 
     public function logout()
@@ -117,11 +101,13 @@ class AuthenticController extends Controller
     {
         return view('client.user.index');
     }
-    public function changePassword() {
+    public function changePassword()
+    {
         return view('client.user.changepassword');
     }
 
-    public function updatePassword(Request $request, User $user) {
+    public function updatePassword(Request $request, User $user)
+    {
         $data = $request->validate([
             'password' => ['required', 'min:8'],
             'new_password' => ['required', 'min:8', 'different:password'],
@@ -136,30 +122,22 @@ class AuthenticController extends Controller
             'confirm_new_password.min' => 'Tối thiểu 8 ký tự.',
             'confirm_new_password.same' => 'Mật khẩu không khớp.',
         ]);
-        
-        if(!Hash::check($data['password'], $user->password)) {
-            if ($request->ajax()) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Mật khẩu cũ không chính xác.'
-                ], Response::HTTP_UNAUTHORIZED);
-            }
-            
-            return redirect()->back()->with('error', 'Mật khẩu cũ không chính xác.');
+
+        if (!Hash::check($data['password'], $user->password)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Mật khẩu cũ không chính xác.'
+            ], Response::HTTP_UNAUTHORIZED);
+
         }
 
         $user->password = Hash::make($data['new_password']);
         $user->save();
 
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Đổi mật khẩu thành công.'
-            ], Response::HTTP_OK);
-        }
-
-        return redirect()->back()->with('success', 'Đổi mật khẩu thành công.');
-
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Đổi mật khẩu thành công.'
+        ], Response::HTTP_OK);
     }
     
     

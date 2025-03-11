@@ -28,14 +28,13 @@ class ImageListController extends Controller
     {
         $data = $request->validate([
             'image_url' => ['required', 'array',],
-            'image_url.*' => ['required', 'image', 'mimes:jpeg,png,jpg'],
+            'image_url.*' => ['required', 'image'],
             'product_id' => ['nullable'],
         ], [
             'image_url.required' => 'Không được để trống.',
             'image_url.array' => 'Dữ liệu gửi lên không hợp lệ.',
             'image_url.*.required' => 'Không được để trống.',
-            'image_url.*.image' => 'Tệp không hợp lệ.',
-            'image_url.*.mimes' => 'Chỉ hỗ trợ định dạng: jpeg, png, jpg.'
+            'image_url.*.image' => 'Tệp không hợp lệ.'
         ]);
 
         if (!empty($data['image_url'])) {
