@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageListController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthenticController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SigninGoogleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Auth;
@@ -107,8 +109,8 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
 
-    //
-    Route::get('/signlit/form', [AuthenticController::class, 'formSignlit'])->name('signlit.form');
-    Route::get('/signlit', [AuthenticController::class, 'signlit'])->name('signlit');
-    Route::post('/signlit', [AuthenticController::class, 'signlit'])->name('signlit.submit');
+    Route::prefix('/user')->group(function () {
+        Route::get('/', [AdminUserController::class, 'listUser'])->name('admin.user');
+        Route::put('/{user}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+    });
 });

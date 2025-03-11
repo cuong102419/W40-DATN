@@ -49,7 +49,7 @@
                 </div>
             </div>
             <a href="widget.html" class="nav-item nav-link"><i class="fas fa-receipt"></i> Đơn hàng</a>
-            <a href="form.html" class="nav-item nav-link"><i class="fas fa-user"></i> Người dùng</a>
+            <a href="{{ route('admin.user') }}" class="nav-item nav-link"><i class="fas fa-user"></i> Người dùng</a>
             <a href="table.html" class="nav-item nav-link"><i class="fas fa-comments"></i> Đánh giá</a>
         </div>
     </nav>
