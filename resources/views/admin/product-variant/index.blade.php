@@ -30,9 +30,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($variants as $variant)
+                                @foreach ($variants as $index => $variant)
                                     <tr>
-                                        <th scope="row">{{ $variant->id }}</th>
+                                        <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $product->name }}</td>
                                         <td>
                                             <span

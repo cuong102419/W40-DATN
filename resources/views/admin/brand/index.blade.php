@@ -32,9 +32,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($brands as $brand)
+                                @foreach ($brands as $index => $brand)
                                     <tr>
-                                        <th scope="row">{{ $brand->id }}</th>
+                                        <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $brand->name }}</td>
                                         <td>{{ $brand->products->count() }}</td>
                                         <td>{{ $brand->created_at->format('d-m-Y') }}</td>

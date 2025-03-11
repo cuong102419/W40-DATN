@@ -29,9 +29,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($products as $product)
+                            @foreach ($products as $index => $product)
                                 <tr>
-                                    <th scope="row">{{ $product->id }}</th>
+                                    <th scope="row">{{ $index + 1}}</th>
                                     <td>{{ $product->sku }}</td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->brand->name }}</td>

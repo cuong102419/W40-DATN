@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="shopping-cart-form table-responsive">
-                            <form action="{{ route('cart.update') }}" method="post">
+                            <form id="update-cart" action="{{ route('cart.update') }}" method="post">
                                 @csrf
                                 @method('PUT')
                                 <table class="table text-center">
@@ -30,7 +30,7 @@
                                         @foreach (session('cart') as $cart)
                                             <tr class="cart-product-item">
                                                 <td class="product-remove">
-                                                    <a href="{{ route('cart.delete.product', $cart['id']) }}" class="text-danger"><i
+                                                    <a href="{{ route('cart.delete.product', $cart['id']) }}" class="delete-item-cart text-danger"><i
                                                             class="fa fa-trash-o"></i></a>
                                                 </td>
                                                 <td class="product-thumb">
@@ -79,7 +79,7 @@
                                     <tr class="actions">
                                         <td class="border-0" colspan="6">
                                             <button type="submit" class="update-cart">Cập nhật giỏ hàng</button>
-                                            <a href="{{ route('cart.delete') }}" class="clear-cart btn-theme">Xóa giỏ hàng</a>
+                                            <a href="{{ route('cart.delete') }}" class="clear-cart btn-theme" id="clear-cart">Xóa giỏ hàng</a>
                                             <a href="{{ route('product.index') }}" class="btn-theme btn-flat">Tiếp tục mua sắm</a>
                                         </td>
                                     </tr>
@@ -228,4 +228,6 @@
         </div>
     </section>
     <!--== End Blog Area Wrapper ==-->
+
+    <script src="{{ asset('client/js/cart.js') }}"></script>
 @endsection

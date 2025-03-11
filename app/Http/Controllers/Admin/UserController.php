@@ -16,12 +16,20 @@ class UserController extends Controller
             1 => ['value' => 'Hoạt động', 'class' => 'text-success'],
             0 => ['value' => 'Vô hiệu hóa', 'class' => 'text-danger']
         ];
-        return view('users.list', compact('users', 'status'));
+        $role = [
+            'admin' => 'Quản trị viên',
+            'user' => 'Người dùng'
+        ];
+        return view('admin.users.list', compact('users', 'status', 'role'));
     }
-    public function edit(Request $request, User $user) {
-        // dd($request);
-        $user->status = $request->status;
-        $user->save();
-        return redirect()->back()->with('success', 'Cập nhật thành công.');
+    public function edit(Request $request, User $user)
+    {
+        try {
+            $user->status = $request->status;
+            $user->save();
+            return redirect()->back()->with('success', 'Cập nhật thành công.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
+        }
     }
 }

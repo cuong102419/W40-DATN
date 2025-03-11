@@ -84,18 +84,9 @@
                     dataType: "json",
                     success: function(response) {
                         if (response.status === "success") {
-                            let alertSuccess = `
-                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fa fa-check-circle me-2"></i>${response.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div
-                        `;
-                            $("#form-profile").prepend(alertSuccess);
-
+                            toastr.success(response.message);
 
                             setTimeout(() => {
-                                $("#alert-success").fadeOut();
-
                                 window.location.href = "{{ route('profile') }}";
                             }, 3000);;
                         }
@@ -115,6 +106,9 @@
                                 $(".error-address").text(errors
                                     .address[0]);
                             }
+                        }
+                        if (xhr.responseJSON.status === "error") {
+                            toastr.error(xhr.responseJSON.message);
                         }
                     }
                 })
