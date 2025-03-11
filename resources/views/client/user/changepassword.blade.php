@@ -80,18 +80,10 @@
                     dataType: "json",
                     success: function(response) {
                         if (response.status === "success") {
-                            let alertSuccess = `
-                            <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="fa fa-check-circle me-2"></i>${response.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `;
-                            $("#form-change-pass").prepend(alertSuccess);
-
-
-                            setTimeout(() => {
-                                $("#alert-success").fadeOut();
-                            }, 3000);;
+                            $("input[name='password']").val("");
+                            $("input[name='new_password']").val("");
+                            $("input[name='confirm_new_password']").val("");
+                            toastr.success(response.message);
                         }
                     },
                     error: function(xhr) {
@@ -111,18 +103,7 @@
                         }
 
                         if (xhr.responseJSON && xhr.responseJSON.status === "error") {
-                            let alertError = `
-                            <div id="alert-error" class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fa fa-exclamation-triangle me-2"></i>${xhr.responseJSON.message}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        `;
-                            $("#form-change-pass").prepend(alertError);
-
-
-                            setTimeout(() => {
-                                $("#alert-error").fadeOut();
-                            }, 3000);
+                            toastr.error(xhr.responseJSON.message);
                         }
                     }
                 })

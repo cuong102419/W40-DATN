@@ -5,31 +5,37 @@
             <div class="bg-light rounded min vh-100 p-4">
                 <div class="">
                     <div class="d-flex align-items-center">
-                        <h4 class="card-title">Danh sách khách hàng</h4>
+                        <h6 class="title">Danh sách khách hàng</h6>
                         </a>
                     </div>
                 </div>
                 <div class=" table-responsive">
-                    <table class="table mt-4">
+                    <table class="table mt-4 table-striped">
                         <thead>
                             <tr class="text-center">
                                 <th>STT</th>
-                                <th>FULL NAME</th>
+                                <th>Họ tên</th>
                                 <th>EMAIL</th>
-                                <th>ROLE</th>
-                                <th>ACTIVE</th>
-                                <th>ACTION</th>
+                                <th>Chức năng</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $index => $user)
                                 <tr class="text-center">
-                                    <td>{{ $index + 1 }}</td>
+                                    <th>{{ $index + 1 }}</th>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->role }}</td>
-                                    <td><span
-                                            class="{{ $status[$user->status]['class'] }}">{{ $status[$user->status]['value'] }}</span>
+                                    <td>
+                                        {{ $role[$user->role] }}
+                                    </td>
+                                    <td>
+                                        <span class="{{ $status[$user->status]['class'] }} fw-bold">{{ $status[$user->status]['value'] }}</span>
+                                    </td>
+                                    <td>
+                                        {{ $user->created_at->format('d-m-Y') }}
                                     </td>
                                     <td>
                                         <!-- Button trigger modal -->
@@ -81,8 +87,8 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                            data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="submit" class="btn btn-primary">Lưu</button>
                                                     </div>
                                                 </div>
                                             </form>
