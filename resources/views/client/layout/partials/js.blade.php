@@ -23,3 +23,5 @@
 
 <!--=== jQuery Custom Js ===-->
 <script src="{{ asset('client/js/custom.js')}}"></script>
+
+<script src="{{ asset('client/js/cart.js') }}"></script>
