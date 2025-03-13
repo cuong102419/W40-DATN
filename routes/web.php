@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageListController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthenticController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -15,8 +16,10 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SigninGoogleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UsersController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\CheckAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +53,7 @@ Route::get('/signin', [AuthenticController::class, 'index'])->name('signin');
 Route::get('/signup', [AuthenticController::class, 'formSignup'])->name('signup');
 Route::post('/signin', [AuthenticController::class, 'signin'])->name('signin.signin');
 Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup.signup');
+
 Route::get('/logout', [AuthenticController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/profile', [AuthenticController::class, 'profile'])->middleware('auth')->name('profile');
 Route::get('/change-password', [AuthenticController::class, 'changePassword'])->middleware('auth')->name('change-password');
@@ -109,6 +113,9 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/update/{brand}', [BrandController::class, 'update'])->name('admin-brand.update');
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
+
+    Route::prefix('/user')->group(function () {
+        Route::get('/', [AdminUserController::class, 'listUser'])->name('admin.user');
+        Route::put('/{user}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+    });
 });
-
-

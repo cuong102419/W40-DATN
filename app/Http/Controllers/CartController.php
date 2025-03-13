@@ -76,44 +76,74 @@ class CartController extends Controller
 
     public function destroy()
     {
-        session()->forget('cart');
+        try {
+            session()->forget('cart');
 
-        return redirect()->back()->with('success', 'Xóa giỏ hàng thành công!');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Xóa giỏ hàng thành công!'
+            ], Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Xóa giỏ hàng không thành công!'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function delete($id)
     {
-        $cart = session()->get('cart', []);
+        try {
+            $cart = session()->get('cart', []);
 
-        $cart = array_values(array_filter($cart, function ($item) use ($id) {
-            return $item['id'] != $id;
-        }));
+            $cart = array_values(array_filter($cart, function ($item) use ($id) {
+                return $item['id'] != $id;
+            }));
 
-        session()->put('cart', $cart);
+            session()->put('cart', $cart);
 
-        return redirect()->back();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Xóa sản phẩm khỏi giỏ hàng thành công!'
+            ], Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Xóa sản phẩm khỏi giỏ hàng thất bại!'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function update(Request $request)
     {
-        $data = $request->quantity;
-        $cart = session()->get('cart', []);
+        try {
+            $data = $request->quantity;
+            $cart = session()->get('cart', []);
 
-        foreach ($data as $id => $quantity) {
-            if ($quantity <= 0) {
-                return redirect()->back()->with('error', 'Số lượng không hợp lệ!');
-            }
+            foreach ($data as $id => $quantity) {
+                if ($quantity <= 0) {
+                    return redirect()->back()->with('error', 'Số lượng không hợp lệ!');
+                }
 
-            foreach ($cart as $index => $item) {
-                if ($item['id'] == $id) {
-                    $cart[$index]['quantity'] = $quantity;
-                    break;
+                foreach ($cart as $index => $item) {
+                    if ($item['id'] == $id) {
+                        $cart[$index]['quantity'] = $quantity;
+                        break;
+                    }
                 }
             }
+
+            session()->put('cart', $cart);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật giỏ hàng thành công!',
+            ], Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Cập nhật giỏ hàng thất bại!'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        session()->put('cart', $cart);
-
-        return redirect()->back()->with('success', 'Cập nhật giỏ hàng thành công!');
     }
 }

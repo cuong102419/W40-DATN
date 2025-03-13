@@ -26,9 +26,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $cate)
+                                @foreach ($categories as $index => $cate)
                                     <tr>
-                                        <th scope="row">{{ $cate->id }}</th>
+                                        <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $cate->name }}</td>
                                         <td>{{ $cate->products->count() }}</td>
                                         <td>{{ $cate->created_at->format('d-m-Y') }}</td>

@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -139,4 +139,9 @@ class AuthenticController extends Controller
             'message' => 'Đổi mật khẩu thành công.'
         ], Response::HTTP_OK);
     }
+    
+    
 }
+
+
+
