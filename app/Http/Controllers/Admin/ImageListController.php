@@ -27,30 +27,30 @@ class ImageListController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'image_url' => ['required', 'array',],
-            'image_url.*' => ['required', 'image'],
-            'product_id' => ['nullable'],
+            'image_url'     => ['required', 'array',],
+            'image_url.*'   => ['required', 'image'],
+            'product_id'    => ['nullable'],
         ], [
-            'image_url.required' => 'Không được để trống.',
-            'image_url.array' => 'Dữ liệu gửi lên không hợp lệ.',
-            'image_url.*.required' => 'Không được để trống.',
-            'image_url.*.image' => 'Tệp không hợp lệ.'
+            'image_url.required'    => 'Không được để trống.',
+            'image_url.array'       => 'Dữ liệu gửi lên không hợp lệ.',
+            'image_url.*.required'  => 'Không được để trống.',
+            'image_url.*.image'     => 'Tệp không hợp lệ.'
         ]);
 
         if (!empty($data['image_url'])) {
             $data['image_url'] = $this->uploadFile($request, 'image_url');
             foreach ($data['image_url'] as $item) {
                 ImageList::create([
-                    'product_id' => $data['product_id'],
-                    'image_url' => $item
+                    'product_id'    => $data['product_id'],
+                    'image_url'     => $item
                 ]);
             }
         }
 
         if ($request->ajax()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Thêm ảnh thành công.'
+                'status'    => 'success',
+                'message'   => 'Thêm ảnh thành công.'
             ], Response::HTTP_OK);
         }
 

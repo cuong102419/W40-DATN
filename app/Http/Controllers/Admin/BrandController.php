@@ -27,17 +27,17 @@ class BrandController extends Controller
             'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', 'unique:brands']
         ], [
             'name.required' => 'Tên thương hiệu không được để trống.',
-            'name.min' => 'Tên thương hiệu phải có ít nhất 4 ký tự.',
-            'name.unique' => 'Tên thương hiệu đã tồn tại, vui lòng nhập tên khác.',
-            'name.regex' => 'Tên thương hiệu không hợp lệ.'
+            'name.min'      => 'Tên thương hiệu phải có ít nhất 4 ký tự.',
+            'name.unique'   => 'Tên thương hiệu đã tồn tại, vui lòng nhập tên khác.',
+            'name.regex'    => 'Tên thương hiệu không hợp lệ.'
         ]);
 
         Brand::create($data);
 
         if ($request->ajax()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Thêm thương hiệu thành công.'
+                'status'    => 'success',
+                'message'   => 'Thêm thương hiệu thành công.'
             ], Response::HTTP_OK);
         }
 
@@ -55,17 +55,17 @@ class BrandController extends Controller
             'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', 'unique:brands,name,' . $brand->name]
         ], [
             'name.required' => 'Tên thương hiệu không được để trống.',
-            'name.min' => 'Tên thương hiệu phải có ít nhất 4 ký tự.',
-            'name.unique' => 'Tên thương hiệu đã tồn tại, vui lòng nhập tên khác.',
-            'name.regex' => 'Tên thương hiệu không hợp lệ.'
+            'name.min'      => 'Tên thương hiệu phải có ít nhất 4 ký tự.',
+            'name.unique'   => 'Tên thương hiệu đã tồn tại, vui lòng nhập tên khác.',
+            'name.regex'    => 'Tên thương hiệu không hợp lệ.'
         ]);
 
         $brand->update($data);
 
         if ($request->ajax()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Cập nhật thương hiệu thành công.'
+                'status'    => 'success',
+                'message'   => 'Cập nhật thương hiệu thành công.'
             ], Response::HTTP_OK);
         }
 

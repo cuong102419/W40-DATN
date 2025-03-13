@@ -75,6 +75,10 @@ Route::controller(SigninGoogleController::class)->group(function () {
     Route::get('auth/google/callback', 'handleGoogleCallback');
 });
 
+Route::prefix('/checkout')->group(function() {
+    Route::post('/create', [OrderController::class, 'create'])->name('order.create');
+});
+
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
