@@ -11,7 +11,13 @@ class CartController extends Controller
 {
     public function index()
     {
-        return view('client.cart.index');
+        $cart = session()->get('cart', []);
+        $total = 0;
+        foreach ($cart as $item) {
+            $total += $item['quantity'] * $item['price'];
+        }
+
+        return view('client.cart.index', compact( 'total'));
     }
 
     public function add(Request $request, Product $product)
@@ -28,8 +34,10 @@ class CartController extends Controller
                 ->where('color', $data['color'])
                 ->where('size', $data['size'])
                 ->first();
-            $product = Product::find($productVariant['product_id']);
 
+            $product = Product::find($productVariant['product_id']);
+            $discount = $product->discount;
+            $price = $productVariant->price * (1 - $discount / 100);
 
             $productIndex = null;
             foreach ($cart as $index => $item) {
@@ -50,7 +58,7 @@ class CartController extends Controller
                     'color' => $data['color'],
                     'size' => $data['size'],
                     'quantity' => $data['quantity'],
-                    'price' => $productVariant->price
+                    'price' => $price
                 ];
             }
             session()->put('cart', $cart);

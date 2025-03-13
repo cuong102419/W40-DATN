@@ -10,89 +10,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <div class="checkout-page-login-wrap">
-                        <!--== Start Checkout Login Accordion ==-->
-                        <div class="login-accordion" id="LoginAccordion">
-                            <div class="card">
-                                <h3>
-                                    <i class="fa fa-info-circle"></i>
-                                    Returning customer?
-                                    <a href="#/" data-bs-toggle="collapse" data-bs-target="#loginaccordion">Click here to
-                                        login</a>
-                                </h3>
-                                <div id="loginaccordion" class="collapse" data-bs-parent="#LoginAccordion">
-                                    <div class="card-body">
-                                        <div class="login-wrap">
-                                            <p>If you have shopped with us before, please enter your details below. If you
-                                                are a new customer, please proceed to the Billing & Shipping section.</p>
-                                            <form action="#" method="post">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label for="logEmail">Username or email <span
-                                                                    class="required">*</span></label>
-                                                            <input id="logEmail" class="form-control" type="email">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group left-m">
-                                                            <label for="logPass">Password <span
-                                                                    class="required">*</span></label>
-                                                            <input id="logPass" class="form-control" type="password">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group mt-30">
-                                                            <button class="btn-login">Login</button>
-                                                            <div class="rememberme-account">
-                                                                <div class="custom-control custom-checkbox">
-                                                                    <input type="checkbox"
-                                                                        class="custom-control-input visually-hidden"
-                                                                        id="remembermePass">
-                                                                    <label class="custom-control-label"
-                                                                        for="remembermePass">Remember me</label>
-                                                                </div>
-                                                            </div>
-                                                            <a class="lost-password" href="#">Lost your password?</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--== End Checkout Login Accordion ==-->
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
                     <div class="checkout-page-coupon-wrap">
                         <!--== Start Checkout Coupon Accordion ==-->
                         <div class="coupon-accordion" id="CouponAccordion">
                             <div class="card">
                                 <h3>
                                     <i class="fa fa-info-circle"></i>
-                                    Have a Coupon?
-                                    <a href="#/" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Click here to
-                                        enter your code</a>
+                                    Bạn có mã giảm giá
+                                    <a href="#/" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Click vào đây
+                                        để nhập</a>
                                 </h3>
                                 <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
                                     <div class="card-body">
                                         <div class="apply-coupon-wrap mb-60">
-                                            <p>If you have a coupon code, please apply it below.</p>
                                             <form action="#" method="post">
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <input class="form-control" type="text"
-                                                                placeholder="Coupon code">
+                                                                placeholder="Mã giảm giá">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <button class="btn-coupon">Apply coupon</button>
+                                                        <button class="btn-coupon">Áp dụng giảm giá</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -109,233 +49,45 @@
                 <div class="col-lg-6">
                     <!--== Start Billing Accordion ==-->
                     <div class="checkout-billing-details-wrap">
-                        <h2 class="title">Billing details</h2>
+                        <h2 class="title">Chi tiết thanh toán</h2>
                         <div class="billing-form-wrap">
                             <form action="#" method="post">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="f_name">First name <abbr class="required"
-                                                    title="required">*</abbr></label>
-                                            <input id="f_name" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="l_name">Last name <abbr class="required"
-                                                    title="required">*</abbr></label>
-                                            <input id="l_name" type="text" class="form-control">
+                                            <label for="l_name">Họ tên <span class="required"
+                                                    title="required">*</span></label>
+                                            <input id="l_name" type="text" class="form-control" placeholder="Nhập họ tên.">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="com_name">Company name (optional)</label>
-                                            <input id="com_name" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="country">Country <abbr class="required"
-                                                    title="required">*</abbr></label>
-                                            <select id="country" class="form-control">
-                                                <option>Bangladesh</option>
-                                                <option>Afghanistan</option>
-                                                <option>Albania</option>
-                                                <option>Algeria</option>
-                                                <option>Armenia</option>
-                                                <option>India</option>
-                                                <option>Pakistan</option>
-                                                <option>England</option>
-                                                <option>London</option>
-                                                <option>London</option>
-                                                <option>China</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="street-address">Street address <abbr class="required"
-                                                    title="required">*</abbr></label>
+                                            <label for="street-address">Địa chỉ <span class="required"
+                                                    title="required">*</span></label>
                                             <input id="street-address" type="text" class="form-control"
-                                                placeholder="House number and street name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="street-address2" class="visually-hidden">Street address 2 <abbr
-                                                    class="required" title="required">*</abbr></label>
-                                            <input id="street-address2" type="text" class="form-control"
-                                                placeholder="Apartment, suite, unit etc. (optional)">
+                                                placeholder="Nhập địa chỉ.">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="town">Town / City <abbr class="required"
-                                                    title="required">*</abbr></label>
-                                            <input id="town" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="district">District <abbr class="required"
-                                                    title="required">*</abbr></label>
-                                            <select id="district" class="form-control">
-                                                <option>Afghanistan</option>
-                                                <option>Albania</option>
-                                                <option>Algeria</option>
-                                                <option>Armenia</option>
-                                                <option>India</option>
-                                                <option>Pakistan</option>
-                                                <option>England</option>
-                                                <option>London</option>
-                                                <option>London</option>
-                                                <option>China</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="pz-code">Postcode / ZIP (optional)</label>
-                                            <input id="pz-code" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="phone">Phone (optional)</label>
-                                            <input id="phone" type="text" class="form-control">
+                                            <label for="phone">Số điên thoại <span class="required"
+                                                    title="required">*</span></label>
+                                            <input id="phone" type="text" class="form-control"
+                                                placeholder="Nhập số điện thoại.">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group" data-margin-bottom="30">
-                                            <label for="email">Email address <abbr class="required"
-                                                    title="required">*</abbr></label>
-                                            <input id="email" type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div id="CheckoutBillingAccordion" class="col-md-12">
-                                        <div class="checkout-box" data-margin-bottom="25" data-bs-toggle="collapse"
-                                            data-bs-target="#CheckoutOne" aria-expanded="false" role="toolbar">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input visually-hidden"
-                                                    id="CreateAccount">
-                                                <label class="custom-control-label" for="CreateAccount">Create an
-                                                    account?</label>
-                                            </div>
-                                        </div>
-                                        <div id="CheckoutOne" class="collapse" data-margin-top="30"
-                                            data-bs-parent="#CheckoutBillingAccordion">
-                                            <div class="form-group">
-                                                <label for="password">Create account password <abbr class="required"
-                                                        title="required">*</abbr></label>
-                                                <input id="password" type="password" class="form-control"
-                                                    placeholder="Password">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="CheckoutBillingAccordion2" class="col-md-12">
-                                        <div class="checkout-box" data-margin-bottom="25" data-bs-toggle="collapse"
-                                            data-bs-target="#CheckoutTwo" aria-expanded="false" role="toolbar">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input visually-hidden"
-                                                    id="ship-to-different-address">
-                                                <label class="custom-control-label" for="ship-to-different-address">Ship to
-                                                    a different address?</label>
-                                            </div>
-                                        </div>
-                                        <div id="CheckoutTwo" class="collapse" data-margin-top="30"
-                                            data-bs-parent="#CheckoutBillingAccordion2">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="f_name2">First name <abbr class="required"
-                                                                title="required">*</abbr></label>
-                                                        <input id="f_name2" type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label for="l_name2">Last name <abbr class="required"
-                                                                title="required">*</abbr></label>
-                                                        <input id="l_name2" type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="com_name2">Company name (optional)</label>
-                                                        <input id="com_name2" type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="country2">Country <abbr class="required"
-                                                                title="required">*</abbr></label>
-                                                        <select id="country2" class="form-control">
-                                                            <option>Bangladesh</option>
-                                                            <option>Afghanistan</option>
-                                                            <option>Albania</option>
-                                                            <option>Algeria</option>
-                                                            <option>Armenia</option>
-                                                            <option>India</option>
-                                                            <option>Pakistan</option>
-                                                            <option>England</option>
-                                                            <option>London</option>
-                                                            <option>London</option>
-                                                            <option>China</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="street-address2-3">Street address <abbr class="required"
-                                                                title="required">*</abbr></label>
-                                                        <input id="street-address2-3" type="text" class="form-control"
-                                                            placeholder="House number and street name">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="street-address2-2" class="visually-hidden">Street
-                                                            address 2 <abbr class="required"
-                                                                title="required">*</abbr></label>
-                                                        <input id="street-address2-2" type="text" class="form-control"
-                                                            placeholder="Apartment, suite, unit etc. (optional)">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="town3">Town / City <abbr class="required"
-                                                                title="required">*</abbr></label>
-                                                        <input id="town3" type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="district2">District <abbr class="required"
-                                                                title="required">*</abbr></label>
-                                                        <select id="district2" class="form-control">
-                                                            <option>Afghanistan</option>
-                                                            <option>Albania</option>
-                                                            <option>Algeria</option>
-                                                            <option>Armenia</option>
-                                                            <option>India</option>
-                                                            <option>Pakistan</option>
-                                                            <option>England</option>
-                                                            <option>London</option>
-                                                            <option>London</option>
-                                                            <option>China</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label for="pz-code2">Postcode / ZIP (optional)</label>
-                                                        <input id="pz-code2" type="text" class="form-control">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <label for="email">Địa chỉ email <span class="required"
+                                                    title="required">*</span></label>
+                                            <input id="email" type="text" class="form-control" placeholder="Nhập email.">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group mb--0">
-                                            <label for="order-notes">Order notes (optional)</label>
+                                            <label for="order-notes">Ghi chú (Không bắt buộc)</label>
                                             <textarea id="order-notes" class="form-control"
-                                                placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                                placeholder="Thêm ghi chú cho đơn hàng của bạn."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -348,37 +100,52 @@
                     <!--== Start Order Details Accordion ==-->
                     <div class="checkout-order-details-wrap">
                         <div class="order-details-table-wrap table-responsive">
-                            <h2 class="title mb-25">Your order</h2>
+                            <h2 class="title mb-25">Đơn hàng của bạn</h2>
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="product-name">Product</th>
-                                        <th class="product-total">Total</th>
+                                        <th colspan="2" class="product-name text-center">Sản phẩm</th>
+                                        <th class="product-total">Tổng</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-body">
-                                    <tr class="cart-item">
-                                        <td class="product-name">Satin gown <span class="product-quantity">× 1</span></td>
-                                        <td class="product-total">£69.99</td>
-                                    </tr>
-                                    <tr class="cart-item">
-                                        <td class="product-name">Printed cotton t-shirt <span class="product-quantity">×
-                                                1</span></td>
-                                        <td class="product-total">£20.00</td>
-                                    </tr>
+                                    @foreach (session('cart', []) as $cart)
+                                        <tr class="cart-item">
+                                            <td class="product-image"><img src="{{ Storage::url($cart['image']) }}" width="80"
+                                                    alt=""></td>
+                                            <td class="product-name ps-3">
+                                                {{ $cart['name'] }} <span class="product-quantity">×
+                                                    {{ $cart['quantity'] }}</span>
+                                                <div class="d-flex">
+                                                    <span>Size: {{ $cart['size'] }}</span>
+                                                    <div>
+                                                        <span class="rounded-circle border border-secondary shadow ms-2"
+                                                            style="width: 17px; height: 17px; background-color: {{ $cart['color'] }}; display: inline-block;">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="product-total">{{ number_format($cart['price']) }}đ</td>
+                                        </tr>
+                                    @endforeach
+
                                 </tbody>
                                 <tfoot class="table-foot">
                                     <tr class="cart-subtotal">
-                                        <th>Subtotal</th>
-                                        <td>£89.99</td>
+                                        <th colspan="2">Tổng cộng</th>
+                                        <td>{{ number_format($subTotal) }}đ</td>
                                     </tr>
                                     <tr class="shipping">
-                                        <th>Shipping</th>
-                                        <td>Flat rate: £2.00</td>
+                                        <th colspan="2">Shipping</th>
+                                        <td>Giá cố định: £2.00</td>
                                     </tr>
                                     <tr class="order-total">
-                                        <th>Total </th>
-                                        <td>£91.99</td>
+                                        <th colspan="2">
+                                            <h5>Thành tiền</h5>
+                                        </th>
+                                        <td>
+                                            <h5 class=""></h5>
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>

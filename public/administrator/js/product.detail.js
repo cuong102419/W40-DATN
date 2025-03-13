@@ -18,11 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    let productDiscount = parseFloat(document.querySelector("#product-discount").value || 0);
+    console.log("Giảm giá mới:", productDiscount);
+
     function updatePrice() {
         if (selectedColor && selectedSize) {
             const variant = productVariants.find(v => v.color === selectedColor && v.size === selectedSize);
             if (variant) {
-                priceDisplay.textContent = new Intl.NumberFormat().format(variant.price) + " VND";
+                let finalPrice = variant.price * (1 - productDiscount / 100);
+                priceDisplay.textContent = new Intl.NumberFormat().format(finalPrice) + " VND";
             }
         }
     }
@@ -50,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".color-option").forEach(opt => opt.classList.remove("active"));
             this.classList.add("active");
 
-            document.querySelector("#selected-color").value = selectedColor; // Gán giá trị vào input hidden
+            document.querySelector("#selected-color").value = selectedColor;
 
             updateAvailableOptions();
             updatePrice();
@@ -64,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".size-option").forEach(opt => opt.classList.remove("active"));
             this.classList.add("active");
 
-            document.querySelector("#selected-size").value = selectedSize; // Gán giá trị vào input hidden
+            document.querySelector("#selected-size").value = selectedSize;
 
             updateAvailableOptions();
             updatePrice();
@@ -94,7 +98,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr) {
-                if(xhr.responseJSON.status === 'error') {
+                if (xhr.responseJSON.status === 'error') {
                     toastr.error(xhr.responseJSON.message);
                 }
             }

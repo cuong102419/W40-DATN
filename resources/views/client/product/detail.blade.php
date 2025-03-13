@@ -47,9 +47,15 @@
                                 <div class="product-single-info">
                                     <h3 class="main-title">{{ $product->name }}</h3>
                                     <div class="prices">
-                                        <span
-                                            class="price text-danger">{{ str_replace(',', '.', number_format($product->variants->min('price'))) }}
-                                            VND</span> <!-- Giá sản phẩm -->
+                                        @if ($product->discount)
+                                            <span
+                                                class="price text-danger">{{ str_replace(',', '.', number_format($product->variants->min('price') * (1 - $product->discount / 100))) }}
+                                                VND</span>
+                                        @else
+                                            <span
+                                                class="price text-danger">{{ str_replace(',', '.', number_format($product->variants->min('price'))) }}
+                                                VND</span>
+                                        @endif
                                     </div>
 
                                     <div class="rating-box-wrap">
@@ -68,6 +74,9 @@
                                         @csrf
                                         <input type="hidden" name="color" id="selected-color">
                                         <input type="hidden" name="size" id="selected-size">
+                                        <input type="hidden" id="product-discount" value="{{ $product->discount }}">
+
+
                                         <div class="product-quantity">
                                             <h6 class="title"></h6>
                                             <ul class="quantity-list">
@@ -87,13 +96,13 @@
                                             <h6 class="title">Màu</h6>
                                             <ul class="color-list">
                                                 @foreach($product->variants->unique('color') as $variant)
-                                                    @php
-                                                        $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
-                                                    @endphp
-                                                    <li class="color-option" data-color="{{ strtolower($variant->color) }}"
-                                                        data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
-                                                        style="background-color: {{ $variant->color }}">
-                                                    </li>
+                                                                                            @php
+                                                                                                $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
+                                                                                            @endphp
+                                                                                            <li class="color-option" data-color="{{ strtolower($variant->color) }}"
+                                                                                                data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
+                                                                                                style="background-color: {{ $variant->color }}">
+                                                                                            </li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -448,6 +457,7 @@
     <!--== End Product Area Wrapper ==-->
     <script>
         var cartIndexUrl = "{{ route('cart.index') }}";
+        let productDiscount = @json($product->discount);
     </script>
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 @endsection

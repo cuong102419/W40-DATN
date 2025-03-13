@@ -15,8 +15,8 @@
                 <ul class="aside-cart-product-list">
                     @foreach (session('cart') as $cart)
                         <li class="product-list-item">
-                            <a href="{{ route('cart.delete.product', $cart['id']) }}" class="remove">×</a>
-                            <a href="single-product.html">
+                            <a href="{{ route('cart.delete.product', $cart['id']) }}" class="delete-item-cart remove">×</a>
+                            <a href="{{ route('product.detail', $cart['product_id']) }}">
                                 <img src="{{ Storage::url($cart['image']) }}" width="90" height="110" alt="Image-HasTech">
                                 <span class="product-title">{{ $cart['name'] }}</span>
                             </a>
