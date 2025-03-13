@@ -19,28 +19,35 @@ document.addEventListener("DOMContentLoaded", function () {
             updateStockStatus();
         });
     });
-
     function updateStockStatus() {
         if (!selectedColor || !selectedSize) {
             document.getElementById("stock-status").innerText = "Chọn màu và size";
             return;
         }
-
+    
         console.log("Checking stock for:", selectedColor, selectedSize); 
-
+    
         let variant = [...document.querySelectorAll(".quantity-option")].find(q =>
             q.dataset.color === selectedColor && q.dataset.size === selectedSize
         );
-
+    
         if (variant) {
             let quantity = parseInt(variant.dataset.quantity);
             console.log("Found quantity:", quantity); 
-            document.getElementById("stock-status").innerText = quantity > 0 ? "Còn hàng" : "Hết hàng";
+    
+            if (quantity === 0) {
+                document.getElementById("stock-status").innerText = "Hết hàng";
+            } else if (quantity < 5) {
+                document.getElementById("stock-status").innerText = `Sắp hết hàng (${quantity})`;
+            } else {
+                document.getElementById("stock-status").innerText = `Còn hàng(${quantity})`;
+            }
         } else {
             console.log("Variant not found!");
             document.getElementById("stock-status").innerText = "Hết hàng";
         }
     }
+    
 });
 // --------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
