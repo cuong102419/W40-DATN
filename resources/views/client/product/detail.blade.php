@@ -75,34 +75,33 @@
                                         <input type="hidden" name="color" id="selected-color">
                                         <input type="hidden" name="size" id="selected-size">
                                         <input type="hidden" id="product-discount" value="{{ $product->discount }}">
+   
+                                        <p id="stock-status">Chọn màu và size</p>
+                                        <ul class="quantity-list">
+                                            @foreach($product->variants as $variant)
+                                                <li class="quantity-option"
+                                                    data-color="{{ strtolower($variant->color) }}"
+                                                    data-size="{{ strtolower($variant->size) }}"
+                                                    data-quantity="{{ $variant->quantity }}">
+                                                </li>
+                                            @endforeach
+                                        </ul>
 
+                                        <script>
+                                            
 
-                                        <div class="product-quantity">
-                                            <h6 class="title"></h6>
-                                            <ul class="quantity-list">
-                                                @foreach($product->variants as $variant)
-                                                    <li class="quantity-option" data-color="{{ strtolower($variant->color) }}"
-                                                        data-size="{{ $variant->size }}" data-price="{{ $variant->price }}"
-                                                        data-quantity="{{ $variant->quantity }}">
-                                                        <span class="stock-status">
-                                                            {{ $variant->quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}
-                                                        </span>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        
+                                        </script>
                                         <div class="product-color">
                                             <h6 class="title">Màu</h6>
                                             <ul class="color-list">
                                                 @foreach($product->variants->unique('color') as $variant)
-                                                                                            @php
-                                                                                                $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
-                                                                                            @endphp
-                                                                                            <li class="color-option" data-color="{{ strtolower($variant->color) }}"
-                                                                                                data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
-                                                                                                style="background-color: {{ $variant->color }}">
-                                                                                            </li>
+                                                    @php
+                                                        $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
+                                                    @endphp
+                                                    <li class="color-option" data-color="{{ strtolower($variant->color) }}"
+                                                        data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
+                                                        style="background-color: {{ $variant->color }}">
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -119,7 +118,12 @@
                                             </ul>
                                         </div>
                                         <style>
-                                            .disabled {
+                                            .color-option.selected, .size-option.selected {
+                                                border: 2px solid black;
+                                                opacity: 1;
+                                            }
+
+                                            .color-option.disabled, .size-option.disabled {
                                                 opacity: 0.5;
                                                 pointer-events: none;
                                             }
