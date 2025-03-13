@@ -14,4 +14,8 @@ class OrderController extends Controller
         }
         return view('client.order.index', compact('subTotal'));
     }
+
+    public function create(Request $request) {
+        // dd($request);
+    }
 }

@@ -10,13 +10,13 @@
                                     <div class="slider-content">
                                         <div class="content">
                                             <div class="title-box">
-                                                <h2 class="title ">Exclusive New Shoes</h2>
+                                                <h2 class="title ">Giày mới độc quyền</h2>
                                             </div>
                                             <div class="desc-box">
-                                                <p class="desc ">Up To 30% Off All Shoes & Products</p>
+                                                <p class="desc ">Giảm giá đến 30% Cho tất cả các loại giày</p>
                                             </div>
                                             <div class="btn-box">
-                                                <a class="btn-slider" href="shop.html">Shop Now</a>
+                                                <a class="btn-slider" href="{{ route('product.index') }}">Xem ngay</a>
                                             </div>
                                         </div>
                                     </div>
@@ -53,13 +53,13 @@
                                     <div class="slider-content">
                                         <div class="content">
                                             <div class="title-box">
-                                                <h2 class="title">Exclusive New Shoes</h2>
+                                                <h5 class="title">năng động, phá cách và đam mê</h5>
                                             </div>
                                             <div class="desc-box">
-                                                <p class="desc">Up To 30% Off All Shoes & Products</p>
+                                                <p class="desc">Thằng nào có tiền, mua ngay cho tao, ít thì 5 đôi</p>
                                             </div>
                                             <div class="btn-box">
-                                                <a class="btn-slider" href="shop.html">Shop Now</a>
+                                                <a class="btn-slider" href="{{ route('product.index') }}">Xem ngay</a>
                                             </div>
                                         </div>
                                     </div>

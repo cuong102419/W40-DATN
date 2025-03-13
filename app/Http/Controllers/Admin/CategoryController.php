@@ -50,17 +50,17 @@ class CategoryController extends Controller
             'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', 'unique:categories,name,' . $category->name]
         ], [
             'name.required' => 'Tên danh mục không được để trống.',
-            'name.min' => 'Tên danh mục phải có ít nhất 4 ký tự.',
-            'name.unique' => 'Tên danh mục đã tồn tại, vui lòng nhập tên khác.',
-            'name.regex' => 'Tên danh mục không hợp lệ.'
+            'name.min'      => 'Tên danh mục phải có ít nhất 4 ký tự.',
+            'name.unique'   => 'Tên danh mục đã tồn tại, vui lòng nhập tên khác.',
+            'name.regex'    => 'Tên danh mục không hợp lệ.'
         ]);
 
         $category->update($data);
 
         if ($request->ajax()) {
             return response()->json([
-                'status' => 'success',
-                'message' => 'Cập nhật danh mục thành công.'
+                'status'    => 'success',
+                'message'   => 'Cập nhật danh mục thành công.'
             ], Response::HTTP_OK);
         }
 
