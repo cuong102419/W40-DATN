@@ -32,6 +32,7 @@ class ProductController extends Controller
         }
 
         $products = Product::with('category', 'brand', 'imageLists')->get();
+        $product->increment('view');
 
         return view('client.product.detail', compact('product', 'products'));
     }

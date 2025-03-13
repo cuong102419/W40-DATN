@@ -72,10 +72,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title text-center">
-                        <h3 class="title">Featured Items</h3>
-                        <div class="desc">
-                            <p>There are many variations of passages of Lorem Ipsum available</p>
-                        </div>
+                        <h3 class="title">Sản phẩm nổi bật</h3>
                     </div>
                 </div>
             </div>
@@ -161,10 +158,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title text-center">
-                        <h3 class="title">Best Seller</h3>
-                        <div class="desc">
-                            <p>There are many best-selling products</p>
-                        </div>
+                        <h3 class="title">Bán chạy nhất</h3>
                     </div>
                 </div>
             </div>
@@ -252,9 +246,9 @@
                             </a>
                         </div>
                         <div class="content">
-                            <h2 class="title">Sports Shoes</h2>
-                            <p class="desc">Up To 30% Off All Shoes & Products</p>
-                            <a class="btn-theme" href="shop.html">Shop Now</a>
+                            <h2 class="title">Giày thể thao</h2>
+                            <p class="desc">Giảm giá 30% cho tất cả các loại giày</p>
+                            <a class="btn-theme" href="{{ route('product.index') }}">Xem ngay</a>
                         </div>
                     </div>
                 </div>
@@ -279,10 +273,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title text-center">
-                        <h3 class="title">Latest Blog</h3>
-                        <div class="desc">
-                            <p>There are many variations of passages of Lorem Ipsum available</p>
-                        </div>
+                        <h3 class="title">Blog mới nhất</h3>
                     </div>
                 </div>
             </div>

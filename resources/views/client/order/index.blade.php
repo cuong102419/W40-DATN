@@ -51,42 +51,49 @@
                     <div class="checkout-billing-details-wrap">
                         <h2 class="title">Chi tiết thanh toán</h2>
                         <div class="billing-form-wrap">
-                            <form action="#" method="post">
+                            <form id="checkout" action="{{ route('order.create') }}" method="post">
+                                @csrf
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="l_name">Họ tên <span class="required"
                                                     title="required">*</span></label>
-                                            <input id="l_name" type="text" class="form-control" placeholder="Nhập họ tên.">
+                                            <input id="l_name" name="fullname" type="text" class="form-control"
+                                                placeholder="Nhập họ tên." value="{{ Auth::user()->name ?? '' }}">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="street-address">Địa chỉ <span class="required"
                                                     title="required">*</span></label>
-                                            <input id="street-address" type="text" class="form-control"
-                                                placeholder="Nhập địa chỉ.">
+                                            <input id="street-address" name="address" type="text" class="form-control"
+                                                placeholder="Nhập địa chỉ." value="{{ Auth::user()->address ?? '' }}">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="phone">Số điên thoại <span class="required"
                                                     title="required">*</span></label>
-                                            <input id="phone" type="text" class="form-control"
-                                                placeholder="Nhập số điện thoại.">
+                                            <input id="phone" name="phone_number" type="text" class="form-control"
+                                                placeholder="Nhập số điện thoại." value="{{ Auth::user()->phone_number ?? '' }}">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group" data-margin-bottom="30">
                                             <label for="email">Địa chỉ email <span class="required"
                                                     title="required">*</span></label>
-                                            <input id="email" type="text" class="form-control" placeholder="Nhập email.">
+                                            <input id="email" name="email" type="text" class="form-control"
+                                                placeholder="Nhập email." value="{{ Auth::user()->email ?? '' }}">
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input id="payment_method" type="hidden" name="payment_method" class="form-control"
+                                            value="">
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group mb--0">
                                             <label for="order-notes">Ghi chú (Không bắt buộc)</label>
-                                            <textarea id="order-notes" class="form-control"
+                                            <textarea name="note" id="order-notes" class="form-control"
                                                 placeholder="Thêm ghi chú cho đơn hàng của bạn."></textarea>
                                         </div>
                                     </div>
@@ -105,7 +112,7 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2" class="product-name text-center">Sản phẩm</th>
-                                        <th class="product-total">Tổng</th>
+                                        <th class="product-total">Giá</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-body">
@@ -137,7 +144,7 @@
                                     </tr>
                                     <tr class="shipping">
                                         <th colspan="2">Shipping</th>
-                                        <td>Giá cố định: £2.00</td>
+                                        <td>Giá cố định: 100.000đ</td>
                                     </tr>
                                     <tr class="order-total">
                                         <th colspan="2">
@@ -152,71 +159,39 @@
                             <div class="shop-payment-method">
                                 <div id="PaymentMethodAccordion">
                                     <div class="card">
-                                        <div class="card-header" id="check_payments">
-                                            <h5 class="title" data-bs-toggle="collapse" data-bs-target="#itemOne"
-                                                aria-controls="itemOne" aria-expanded="true">Direct bank transfer</h5>
-                                        </div>
-                                        <div id="itemOne" class="collapse show" aria-labelledby="check_payments"
-                                            data-bs-parent="#PaymentMethodAccordion">
-                                            <div class="card-body">
-                                                <p>Make your payment directly into our bank account. Please use your Order
-                                                    ID as the payment reference. Your order will not be shipped until the
-                                                    funds have cleared in our account.</p>
-                                            </div>
+                                        <div class="card-header">
+                                            <input type="radio" name="payment_method" value="COD" id="payment_cod" checked>
+                                            <label for="payment_cod">Thanh toán khi nhận hàng (COD)</label>
                                         </div>
                                     </div>
+
                                     <div class="card">
-                                        <div class="card-header" id="check_payments2">
-                                            <h5 class="title" data-bs-toggle="collapse" data-bs-target="#itemTwo"
-                                                aria-controls="itemTwo" aria-expanded="false">Check payments</h5>
-                                        </div>
-                                        <div id="itemTwo" class="collapse" aria-labelledby="check_payments2"
-                                            data-bs-parent="#PaymentMethodAccordion">
-                                            <div class="card-body">
-                                                <p>Please send a check to Store Name, Store Street, Store Town, Store State
-                                                    / County, Store Postcode.</p>
-                                            </div>
+                                        <div class="card-header">
+                                            <input type="radio" name="payment_method" value="MOMO" id="payment_momo">
+                                            <label for="payment_momo">Ví điện tử MOMO</label>
                                         </div>
                                     </div>
+
                                     <div class="card">
-                                        <div class="card-header" id="check_payments3">
-                                            <h5 class="title" data-bs-toggle="collapse" data-bs-target="#itemThree"
-                                                aria-controls="itemTwo" aria-expanded="false">Cash on delivery</h5>
-                                        </div>
-                                        <div id="itemThree" class="collapse" aria-labelledby="check_payments3"
-                                            data-bs-parent="#PaymentMethodAccordion">
-                                            <div class="card-body">
-                                                <p>Pay with cash upon delivery.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header" id="check_payments4">
-                                            <h5 class="title" data-bs-toggle="collapse" data-bs-target="#itemFour"
-                                                aria-controls="itemTwo" aria-expanded="false">PayPal Express Checkout <img
-                                                    src="assets/img/photos/paypal2.webp" width="40" height="26"
-                                                    alt="Image-HasTech"></h5>
-                                        </div>
-                                        <div id="itemFour" class="collapse" aria-labelledby="check_payments4"
-                                            data-bs-parent="#PaymentMethodAccordion">
-                                            <div class="card-body">
-                                                <p>Pay via PayPal; you can pay with your credit card if you don’t have a
-                                                    PayPal account.</p>
-                                            </div>
+                                        <div class="card-header">
+                                            <input type="radio" name="payment_method" value="ATM" id="payment_vnpay">
+                                            <label for="payment_vnpay">Chuyển khoản ngân hàng</label>
                                         </div>
                                     </div>
                                 </div>
-                                <p class="p-text">Your personal data will be used to process your order, support your
-                                    experience throughout this website, and for other purposes described in our <a
-                                        href="#/">privacy policy.</a></p>
-                                <div class="agree-policy">
+                                @if (!Auth::check())
+                                    <p class="p-text">Hãy đăng nhập để có thể theo dõi đơn hàng của bạn <a
+                                            href="{{ route('signin') }}">Đăng nhập ngay.</a></p>
+                                @endif
+                                <div class="agree-policy mt-5">
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" id="privacy" class="custom-control-input visually-hidden">
-                                        <label for="privacy" class="custom-control-label">I have read and agree to the
-                                            website terms and conditions <span class="required">*</span></label>
+                                        <input type="checkbox" required id="privacy"
+                                            class="custom-control-input visually-hidden">
+                                        <label for="privacy" class="custom-control-label">Tôi đồng ý với điều
+                                            khoản và điều kiện khi mua hàng <span class="required">*</span></label>
                                     </div>
                                 </div>
-                                <a href="account-login.html" class="btn-theme">Place order</a>
+                                <button type="submit" class="btn-theme w-100">Thanh toán</button>
                             </div>
                         </div>
                     </div>
@@ -226,4 +201,6 @@
         </div>
     </section>
     <!--== End Shopping Checkout Area Wrapper ==-->
+
+    <script src="{{ asset('client/js/checkout.js') }}"></script>
 @endsection
