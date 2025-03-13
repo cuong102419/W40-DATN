@@ -92,46 +92,28 @@
                     <div class="col-md-6 col-lg-4">
                         <div id="CategoriesAccordion" class="shipping-form-calculate">
                             <div class="section-title-cart">
-                                <h5 class="title">Calculate Shipping</h5>
+                                <h5 class="title">Phí vận chuyển</h5>
                                 <div class="desc">
-                                    <p>Estimate your shipping fee *</p>
+                                    <p>Chi phí ước tính *</p>
                                 </div>
                             </div>
                             <span data-bs-toggle="collapse" data-bs-target="#CategoriesTwo" aria-expanded="true"
-                                role="button">Calculate shipping</span>
+                                role="button">Tính chi phí</span>
                             <div id="CategoriesTwo" class="collapse show" data-bs-parent="#CategoriesAccordion">
                                 <form action="#" method="post">
                                     <div class="row row-gutter-50">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="visually-hidden" for="FormCountry">State</label>
-                                                <select id="FormCountry" class="form-control">
-                                                    <option selected>Select a country…</option>
+                                                <label for="townCity" class="visually-hidden">Tỉnh / Thành phố</label>
+                                                <input type="text" id="townCity" class="form-control" placeholder="Tỉnh / Thành phố"
+                                                @if (Auth::check())
+                                                    value="{{ Auth::user()->address }}"
+                                                @endif>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="stateCounty" class="visually-hidden">State / County</label>
-                                                <input type="text" id="stateCounty" class="form-control"
-                                                    placeholder="State / County">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="townCity" class="visually-hidden">Town / City</label>
-                                                <input type="text" id="townCity" class="form-control" placeholder="Town / City">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="postcodeZip" class="visually-hidden">Postcode / ZIP</label>
-                                                <input type="text" id="postcodeZip" class="form-control"
-                                                    placeholder="Postcode / ZIP">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <button type="submit" class="update-totals">Update totals</button>
+                                                <button type="submit" class="update-totals">Tính chi phí</button>
                                             </div>
                                         </div>
                                     </div>
@@ -142,9 +124,9 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="shipping-form-coupon">
                             <div class="section-title-cart">
-                                <h5 class="title">Coupon Code</h5>
+                                <h5 class="title">Thêm mã giảm giá</h5>
                                 <div class="desc">
-                                    <p>Enter your coupon code if you have one.</p>
+                                    <p>Nhập mã giảm giá nếu bạn có.</p>
                                 </div>
                             </div>
                             <form action="#" method="post">
@@ -153,12 +135,12 @@
                                         <div class="form-group">
                                             <label for="couponCode" class="visually-hidden">Coupon Code</label>
                                             <input type="text" id="couponCode" class="form-control"
-                                                placeholder="Enter your coupon code..">
+                                                placeholder="Nhập mã giảm giá của bạn..">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <button type="submit" class="coupon-btn">Apply coupon</button>
+                                            <button type="submit" class="coupon-btn">Nhập</button>
                                         </div>
                                     </div>
                                 </div>
@@ -168,46 +150,33 @@
                     <div class="col-md-12 col-lg-4">
                         <div class="shipping-form-cart-totals">
                             <div class="section-title-cart">
-                                <h5 class="title">Cart totals</h5>
+                                <h5 class="title">Tổng giỏ hàng</h5>
                             </div>
                             <div class="cart-total-table">
                                 <table class="table">
                                     <tbody>
                                         <tr class="cart-subtotal">
                                             <td>
-                                                <p class="value">Subtotal</p>
+                                                <p class="value">Tổng giá:</p>
                                             </td>
                                             <td>
-                                                <p class="price">£128.00</p>
+                                                <p class="price">{{ number_format($total) }}đ</p>
                                             </td>
                                         </tr>
                                         <tr class="shipping">
                                             <td>
-                                                <p class="value">Shipping</p>
+                                                <p class="value">Vận chuyển:</p>
                                             </td>
                                             <td>
-                                                <ul class="shipping-list">
-                                                    <li class="radio">
-                                                        <input type="radio" name="shipping" id="radio1" checked>
-                                                        <label for="radio1"><span></span> Flat Rate</label>
-                                                    </li>
-                                                    <li class="radio">
-                                                        <input type="radio" name="shipping" id="radio2">
-                                                        <label for="radio2"><span></span> Free Shipping</label>
-                                                    </li>
-                                                    <li class="radio">
-                                                        <input type="radio" name="shipping" id="radio3">
-                                                        <label for="radio3"><span></span> Local Pickup</label>
-                                                    </li>
-                                                </ul>
+                                                <p class="price">0</p>
                                             </td>
                                         </tr>
                                         <tr class="order-total">
                                             <td>
-                                                <p class="value">Total</p>
+                                                <h6 class="value">Tổng:</h6>
                                             </td>
                                             <td>
-                                                <p class="price">£128.00</p>
+                                                <h6 class="price text-danger">{{ number_format($total) }}đ</h6>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -228,6 +197,4 @@
         </div>
     </section>
     <!--== End Blog Area Wrapper ==-->
-
-    <script src="{{ asset('client/js/cart.js') }}"></script>
 @endsection

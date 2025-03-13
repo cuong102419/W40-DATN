@@ -74,12 +74,6 @@
                                                                     </a>                                                                                                                                                     
 
                                                                 </div>
-                                                                
-                                                                <!-- Khu vực hiển thị giỏ hàng -->
-                                                                <div id="cart-items">
-                                                                    <!-- Sản phẩm trong giỏ hàng sẽ hiển thị ở đây -->
-                                                                </div>
-                                                                
                                                                 <a class="banner-link-overlay"
                                                                     href="{{route('product.detail', $product->id)}}"></a>
                                                             </div>
@@ -94,7 +88,13 @@
                                                                 <h4 class="title"><a
                                                                         href="{{route('product.detail', $product->id)}}">{{ $product->name }}</a></h4>
                                                                 <div class="prices">
-                                                                    <span class="price text-danger">{{ number_format($product->variants->min('price'), 2)}}đ</span>
+                                                                    @if ($product->discount)
+                                                                        <span class="price-old">{{ number_format($product->variants->min('price'), 2) }}đ</span>
+                                                                        <span class="sep">-</span>
+                                                                        <span class="price text-danger">${{ number_format($product->variants->min('price') * (1 - $product->discount / 100), 2) }}đ</span>
+                                                                    @else
+                                                                        <span class="price-old text-danger">${{ number_format($product->variants->min('price'), 2) }}đ</span>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -140,11 +140,6 @@
 
                                                             <div class="product-action">
                                                                 <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
-                                                                <a class="btn-product-cart" href="#"><i class="fa fa-shopping-cart"></i></a>
-                                                                <button type="button" class="btn-product-quick-view-open">
-                                                                    <i class="fa fa-arrows"></i>
-                                                                </button>
-                                                                <a class="btn-product-compare" href="#"><i class="fa fa-random"></i></a>
                                                             </div>
                                                             <a class="banner-link-overlay" href="{{ route('product.detail', $product->id) }}"></a>
                                                         </div>
@@ -158,16 +153,15 @@
                                                             <div class="prices">
 
                                                                 @if ($product->discount)
-                                                                    <span class="price-old">${{ number_format($product->price, 2) }}</span>
-                                                                    <span class="sep">-</span>
-                                                                    <span class="price">${{ number_format($product->price * (1 - $product->discount / 100), 2) }}</span>
-                                                                @else
-                                                                    <span class="price">${{ number_format($product->price, 2) }}</span>
-                                                                @endif
+                                                                        <span class="price-old">{{ number_format($product->variants->min('price'), 2) }}đ</span>
+                                                                        <span class="sep">-</span>
+                                                                        <span class="price text-danger">${{ number_format($product->variants->min('price') * (1 - $product->discount / 100), 2) }}đ</span>
+                                                                    @else
+                                                                        <span class="price-old text-danger">${{ number_format($product->variants->min('price'), 2) }}đ</span>
+                                                                    @endif
 
                                                             </div>
                                                             <p>{!! Str::limit($product->description, 100) !!}</p>
-                                                            <a class="btn-theme btn-sm" href="#">Add To Cart</a>
                                                         </div>
                                                     </div>
                                                 </div>
