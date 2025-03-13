@@ -77,6 +77,21 @@
                                         <input type="hidden" id="product-discount" value="{{ $product->discount }}">
 
 
+                                        <div class="product-quantity">
+                                            <h6 class="title"></h6>
+                                            <ul class="quantity-list">
+                                                @foreach($product->variants as $variant)
+                                                    <li class="quantity-option" data-color="{{ strtolower($variant->color) }}"
+                                                        data-size="{{ $variant->size }}" data-price="{{ $variant->price }}"
+                                                        data-quantity="{{ $variant->quantity }}">
+                                                        <span class="stock-status">
+                                                            {{ $variant->quantity > 0 ? 'Còn hàng' : 'Hết hàng' }}
+                                                        </span>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        
                                         <div class="product-color">
                                             <h6 class="title">Màu</h6>
                                             <ul class="color-list">
