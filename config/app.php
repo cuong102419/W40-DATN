@@ -154,7 +154,6 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
-    'Toastr' => Yoeunes\Toastr\Facades\Toastr::class,
 
     'providers' => ServiceProvider::defaultProviders()->merge([
         /*
@@ -169,7 +168,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Yoeunes\Toastr\ToastrServiceProvider::class,
+        Flasher\Toastr\Laravel\FlasherToastrServiceProvider::class,
+
 
     ])->toArray(),
 
