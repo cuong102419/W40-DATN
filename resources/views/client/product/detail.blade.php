@@ -142,7 +142,7 @@
                                         @csrf
                                         {{-- Thêm vào yêu thích --}}
                                         <div class="product-wishlist-compare">
-                                        <button   class="btn btn-danger">Thêm vào yêu thích</button>
+                                        <a class="pe-7s-like">Thêm vào yêu thích</a>
                                         </div>
                                     </form>
 
