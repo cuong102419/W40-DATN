@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SigninGoogleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Auth;
@@ -124,6 +125,15 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::get('/edit/{brand}', [BrandController::class, 'edit'])->name('admin-brand.edit');
         Route::put('/update/{brand}', [BrandController::class, 'update'])->name('admin-brand.update');
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
+    });
+
+    Route::prefix('/voucher')->group(function () {
+        Route::get('/', [VoucherController::class, 'index'])->name('admin-voucher.index');
+        Route::get('/create', [VoucherController::class, 'create'])->name('admin-voucher.create');
+        Route::post('/store', [VoucherController::class, 'store'])->name('admin-voucher.store');
+        Route::get('/edit/{voucher}', [VoucherController::class, 'edit'])->name('admin-voucher.edit');
+        Route::put('/update/{voucher}', [VoucherController::class, 'update'])->name('admin-voucher.update');
+        Route::delete('/delete/{voucher}', [VoucherController::class, 'destroy'])->name('admin-voucher.delete');
     });
 
     Route::prefix('/user')->group(function () {
