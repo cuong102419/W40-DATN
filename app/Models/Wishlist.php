@@ -8,4 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Wishlist extends Model
 {
     use HasFactory;
+    protected $table = 'wishlists';
+    protected $fillable = [
+        'user_id',
+        'product_id',
+        'price',
+        'image',
+    ];
+
+    // Liên kết với User
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    // Liên kết với Product
+    public function product() {
+        return $this->belongsTo(Product::class);
+    }
 }

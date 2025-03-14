@@ -136,11 +136,15 @@
                                             </div>
                                             <button class="btn-theme">Thêm vào giỏ hàng</button>
                                         </div>
+                                        
                                     </form>
-                                    <div class="product-wishlist-compare">
-                                        <a href="shop-wishlist.html"><i class="pe-7s-like"></i> Thêm vào danh sách yêu
-                                            thích</a>
-                                    </div>
+                                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                                        @csrf
+                                        {{-- Thêm vào yêu thích --}}
+                                        <div class="product-wishlist-compare">
+                                        <button   class="btn btn-danger">Thêm vào yêu thích</button>
+                                        </div>
+                                    </form>
 
                                     <div class="product-info-footer">
                                         <div class="social-icons">
