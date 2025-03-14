@@ -48,7 +48,7 @@ Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'sendContact'])->name('contact.send');
-Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+//Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 Route::get('/signin', [AuthenticController::class, 'index'])->name('signin');
 Route::get('/signup', [AuthenticController::class, 'formSignup'])->name('signup');
 Route::post('/signin', [AuthenticController::class, 'signin'])->name('signin.signin');
@@ -68,6 +68,14 @@ Route::prefix('/cart')->group(function () {
     Route::get('/delete', [CartController::class, 'destroy'])->name('cart.delete');
     Route::get('/delete/{id}', [CartController::class, 'delete'])->name('cart.delete.product');
     Route::put('/update', [CartController::class, 'update'])->name('cart.update');
+});
+
+Route::prefix('/wishlist')->group(function () {
+    Route::get('/', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
+    Route::get('/delete', [WishlistController::class, 'destroy'])->name('wishlist.delete');
+    Route::get('/delete/{id}', [WishlistController::class, 'delete'])->name('wishlist.delete.product');
+    
 });
 
 Route::controller(SigninGoogleController::class)->group(function () {
