@@ -48,6 +48,22 @@
                         mới</a>
                 </div>
             </div>
+
+            <div class="nav-item dropdown">
+                <a href="#"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-voucher.index') || request()->routeIs('admin-voucher.create') ? 'active' : '' }}"
+                    data-bs-toggle="dropdown"><i class="fas fa-tag"></i> Khuyến
+                    mãi</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="{{ route('admin-voucher.index') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-voucher.index') ? 'active' : '' }}">Danh
+                        sách</a>
+                    <a href="{{ route('admin-voucher.create') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-voucher.create') ? 'active' : '' }}">Thêm
+                        mới</a>
+                </div>
+            </div>
+
             <a href="widget.html" class="nav-item nav-link"><i class="fas fa-receipt"></i> Đơn hàng</a>
             <a href="{{ route('admin.user') }}" class="nav-item nav-link {{ request()->routeIs('admin.user') ? 'active' : '' }}"><i class="fas fa-user"></i> Người dùng</a>
             <a href="table.html" class="nav-item nav-link"><i class="fas fa-comments"></i> Đánh giá</a>

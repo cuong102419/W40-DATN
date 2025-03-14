@@ -8,4 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Voucher extends Model
 {
     use HasFactory;
+
+    protected $table = 'vouchers'; 
+
+    protected $fillable = [
+        'name',
+        'product_id',
+        'code',
+        'value',
+        'quantity',
+    ];
+
+
+    
+    
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
 }
