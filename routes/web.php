@@ -85,6 +85,7 @@ Route::controller(SigninGoogleController::class)->group(function () {
 
 Route::prefix('/checkout')->group(function() {
     Route::post('/create', [OrderController::class, 'create'])->name('order.create');
+    Route::get('/{order}', [OrderController::class, 'detail'])->name('order.detail');
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {

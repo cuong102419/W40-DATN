@@ -88,7 +88,7 @@
 
                             setTimeout(() => {
                                 window.location.href = "{{ route('profile') }}";
-                            }, 3000);;
+                            }, 2000);;
                         }
                     },
                     error: function(xhr) {

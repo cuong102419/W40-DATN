@@ -60,6 +60,9 @@
                                                     title="required">*</span></label>
                                             <input id="l_name" name="fullname" type="text" class="form-control"
                                                 placeholder="Nhập họ tên." value="{{ Auth::user()->name ?? '' }}">
+                                            @error('fullname')
+                                                <span class="text-danger small mt-2">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -68,22 +71,32 @@
                                                     title="required">*</span></label>
                                             <input id="street-address" name="address" type="text" class="form-control"
                                                 placeholder="Nhập địa chỉ." value="{{ Auth::user()->address ?? '' }}">
+                                            @error('address')
+                                                <span class="text-danger small mt-2">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="phone">Số điên thoại <span class="required"
                                                     title="required">*</span></label>
-                                            <input id="phone" name="phone_number" type="text" class="form-control"
-                                                placeholder="Nhập số điện thoại." value="{{ Auth::user()->phone_number ?? '' }}">
+                                            <input id="phone" name="phone_number" type="phone" class="form-control"
+                                                placeholder="Nhập số điện thoại."
+                                                value="{{ Auth::user()->phone_number ?? '' }}">
+                                            @error('phone_number')
+                                                <span class="text-danger small mt-2">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group" data-margin-bottom="30">
                                             <label for="email">Địa chỉ email <span class="required"
                                                     title="required">*</span></label>
-                                            <input id="email" name="email" type="text" class="form-control"
+                                            <input id="email" name="email" type="email" class="form-control"
                                                 placeholder="Nhập email." value="{{ Auth::user()->email ?? '' }}">
+                                            @error('email')
+                                                <span class="text-danger small mt-2">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -151,7 +164,7 @@
                                             <h5>Thành tiền</h5>
                                         </th>
                                         <td>
-                                            <h5 class=""></h5>
+                                            <h5 class="text-danger">{{ number_format($subTotal) }}đ</h5>
                                         </td>
                                     </tr>
                                 </tfoot>
