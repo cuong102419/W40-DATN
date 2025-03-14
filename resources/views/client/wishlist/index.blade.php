@@ -50,7 +50,6 @@ Sản phẩm yêu thích
                                             </div>
                                         </div>
                                     </div>
-
                                 </td>
                                 <td class="product-stock-status">
                                     <span class="stock">Còn hàng</span>
