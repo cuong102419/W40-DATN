@@ -124,7 +124,10 @@ class CartController extends Controller
 
             foreach ($data as $id => $quantity) {
                 if ($quantity <= 0) {
-                    return redirect()->back()->with('error', 'Số lượng không hợp lệ!');
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Số lượng không hợp lệ.'
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
 
                 foreach ($cart as $index => $item) {

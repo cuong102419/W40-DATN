@@ -20,13 +20,14 @@ class UserController extends Controller
         try {
             $data = $request->validate([
                 'name' => ['required', 'min:4'],
-                'phone_number' => ['required'],
+                'phone_number' => ['required', 'phone:VN'],
                 'avatar' => ['nullable', 'image'],
                 'address' => ['required', 'min:4']
             ], [
                 'name.required' => 'Không được để trống.',
                 'name.min' => 'Tối thiểu 4 ký tự.',
                 'phone_number.required' => 'Không được để trống.',
+                'phone_number.phone' => 'Số điện thoại không hợp lệ.',
                 'address.required' => 'Không được để trống.',
                 'address.min' => 'Tối thiểu 4 ký tự.'
             ]);

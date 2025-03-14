@@ -75,12 +75,11 @@
                                         <input type="hidden" name="color" id="selected-color">
                                         <input type="hidden" name="size" id="selected-size">
                                         <input type="hidden" id="product-discount" value="{{ $product->discount }}">
-   
+
                                         <p id="stock-status">Chọn màu và size</p>
                                         <ul class="quantity-list">
                                             @foreach($product->variants as $variant)
-                                                <li class="quantity-option"
-                                                    data-color="{{ strtolower($variant->color) }}"
+                                                <li class="quantity-option" data-color="{{ strtolower($variant->color) }}"
                                                     data-size="{{ strtolower($variant->size) }}"
                                                     data-quantity="{{ $variant->quantity }}">
                                                 </li>
@@ -88,20 +87,20 @@
                                         </ul>
 
                                         <script>
-                                            
+
 
                                         </script>
                                         <div class="product-color">
                                             <h6 class="title">Màu</h6>
                                             <ul class="color-list">
                                                 @foreach($product->variants->unique('color') as $variant)
-                                                    @php
-                                                        $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
-                                                    @endphp
-                                                    <li class="color-option" data-color="{{ strtolower($variant->color) }}"
-                                                        data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
-                                                        style="background-color: {{ $variant->color }}">
-                                                    </li>
+                                                                                            @php
+                                                                                                $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
+                                                                                            @endphp
+                                                                                            <li class="color-option" data-color="{{ strtolower($variant->color) }}"
+                                                                                                data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
+                                                                                                style="background-color: {{ $variant->color }}">
+                                                                                            </li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -118,12 +117,14 @@
                                             </ul>
                                         </div>
                                         <style>
-                                            .color-option.selected, .size-option.selected {
+                                            .color-option.selected,
+                                            .size-option.selected {
                                                 border: 2px solid black;
                                                 opacity: 1;
                                             }
 
-                                            .color-option.disabled, .size-option.disabled {
+                                            .color-option.disabled,
+                                            .size-option.disabled {
                                                 opacity: 0.5;
                                                 pointer-events: none;
                                             }
@@ -136,11 +137,15 @@
                                             </div>
                                             <button class="btn-theme">Thêm vào giỏ hàng</button>
                                         </div>
+
                                     </form>
-                                    <div class="product-wishlist-compare">
-                                        <a href="shop-wishlist.html"><i class="pe-7s-like"></i> Thêm vào danh sách yêu
-                                            thích</a>
-                                    </div>
+                                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                                        @csrf
+                                        {{-- Thêm vào yêu thích --}}
+                                        <div class="product-wishlist-compare">
+                                            <a href="#"><i class="pe-7s-like"></i> Thêm vào yêu thích</a>
+                                        </div>
+                                    </form>
 
                                     <div class="product-info-footer">
                                         <div class="social-icons">

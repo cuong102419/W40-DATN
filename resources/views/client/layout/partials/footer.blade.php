@@ -108,16 +108,9 @@
     <!--== Start Footer Bottom ==-->
     <div class="footer-bottom">
         <div class="container pt--0 pb--0">
-            <div class="row">
-                <div class="col-md-7 col-lg-6">
-                    <p class="copyright">© 2021 Shome. Made with <i class="fa fa-heart"></i> by <a target="_blank"
-                            href="https://themeforest.net/user/codecarnival/portfolio">Codecarnival.</a></p>
-                </div>
-                <div class="col-md-5 col-lg-6">
-                    <div class="payment">
-                        <a href="account-login.html"><img src="{{ asset('client/img/photos/payment-card.webp')}}"
-                                width="192" height="21" alt="Payment Logo"></a>
-                    </div>
+            <div class="row justify-content-center">
+                <div class="text-center">
+                    <p class="copyright">© 2025. Copyright &copy; by Freak Sport
                 </div>
             </div>
         </div>
