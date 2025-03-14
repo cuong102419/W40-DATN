@@ -16,11 +16,13 @@ class Wishlist extends Model
         'image',
     ];
 
+
+
+    
     // Liên kết với User
     public function user() {
         return $this->belongsTo(User::class);
     }
-
     // Liên kết với Product
     public function product() {
         return $this->belongsTo(Product::class);
