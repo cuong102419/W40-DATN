@@ -72,4 +72,3 @@ Sản phẩm yêu thích
 </section>
 <!--== End Wishlist Area Wrapper ==-->
 @endsection
-dd
