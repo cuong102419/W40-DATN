@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageListController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SigninGoogleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Auth;
@@ -127,8 +129,21 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
 
+    Route::prefix('/voucher')->group(function () {
+        Route::get('/', [VoucherController::class, 'index'])->name('admin-voucher.index');
+        Route::get('/create', [VoucherController::class, 'create'])->name('admin-voucher.create');
+        Route::post('/store', [VoucherController::class, 'store'])->name('admin-voucher.store');
+        Route::get('/edit/{voucher}', [VoucherController::class, 'edit'])->name('admin-voucher.edit');
+        Route::put('/update/{voucher}', [VoucherController::class, 'update'])->name('admin-voucher.update');
+        Route::delete('/delete/{voucher}', [VoucherController::class, 'destroy'])->name('admin-voucher.delete');
+    });
+
     Route::prefix('/user')->group(function () {
         Route::get('/', [AdminUserController::class, 'listUser'])->name('admin.user');
         Route::put('/{user}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+    });
+
+    Route::prefix('/order')->group(function() {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('admin-order.index');
     });
 });
