@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('admin-order.index') }}" class="nav-item nav-link {{ request()->routeIs('admin-order.index') ? 'active' : '' }}"><i class="fas fa-receipt"></i> Đơn hàng</a>
+            <a href="{{ route('admin-order.index') }}" class="nav-item nav-link {{ request()->routeIs('admin-order.index') || request()->routeIs('admin-order.detail') ? 'active' : '' }}"><i class="fas fa-receipt"></i> Đơn hàng</a>
             <a href="{{ route('admin.user') }}" class="nav-item nav-link {{ request()->routeIs('admin.user') ? 'active' : '' }}"><i class="fas fa-user"></i> Người dùng</a>
             <a href="table.html" class="nav-item nav-link"><i class="fas fa-comments"></i> Đánh giá</a>
         </div>
