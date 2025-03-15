@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained();
 
-            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
+            $table->enum('status', ['unconfirmed', 'confirmed', 'shipping ', 'delivered', 'completed', 'canceled'])->default('unconfirmed');
             $table->double('total');
             $table->string('payment_method');
             $table->enum('payment_status', ['unpaid', 'paid', 'refunded', 'cancel'])->default('unpaid');
