@@ -88,69 +88,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row row-gutter-50">
-                    <div class="col-md-6 col-lg-4">
-                        <div id="CategoriesAccordion" class="shipping-form-calculate">
-                            <div class="section-title-cart">
-                                <h5 class="title">Phí vận chuyển</h5>
-                                <div class="desc">
-                                    <p>Chi phí ước tính *</p>
-                                </div>
-                            </div>
-                            <span data-bs-toggle="collapse" data-bs-target="#CategoriesTwo" aria-expanded="true"
-                                role="button">Tính chi phí</span>
-                            <div id="CategoriesTwo" class="collapse show" data-bs-parent="#CategoriesAccordion">
-                                <form action="#" method="post">
-                                    <div class="row row-gutter-50">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="townCity" class="visually-hidden">Tỉnh / Thành phố</label>
-                                                <input type="text" id="townCity" class="form-control" placeholder="Tỉnh / Thành phố"
-                                                @if (Auth::check())
-                                                    value="{{ Auth::user()->address }}"
-                                                @endif>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <button type="submit" class="update-totals">Tính chi phí</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="shipping-form-coupon">
-                            <div class="section-title-cart">
-                                <h5 class="title">Thêm mã giảm giá</h5>
-                                <div class="desc">
-                                    <p>Nhập mã giảm giá nếu bạn có.</p>
-                                </div>
-                            </div>
-                            <form action="#" method="post">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="couponCode" class="visually-hidden">Coupon Code</label>
-                                            <input type="text" id="couponCode" class="form-control"
-                                                placeholder="Nhập mã giảm giá của bạn..">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <button type="submit" class="coupon-btn">Nhập</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-4">
+                <div class="row row-gutter-50 justify-content-center">
+                    <div class="col-md-12 col-lg-6">
                         <div class="shipping-form-cart-totals">
                             <div class="section-title-cart">
-                                <h5 class="title">Tổng giỏ hàng</h5>
+                                <h3 class="text-center">Tổng giỏ hàng</h3>
                             </div>
                             <div class="cart-total-table">
                                 <table class="table">
