@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImageListController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -140,5 +141,9 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('/', [AdminUserController::class, 'listUser'])->name('admin.user');
         Route::put('/{user}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+    });
+
+    Route::prefix('/order')->group(function() {
+        Route::get('/', [AdminOrderController::class, 'index'])->name('admin-order.index');
     });
 });
