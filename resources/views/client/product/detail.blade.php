@@ -94,13 +94,13 @@
                                             <h6 class="title">Màu</h6>
                                             <ul class="color-list">
                                                 @foreach($product->variants->unique('color') as $variant)
-                                                                                            @php
-                                                                                                $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
-                                                                                            @endphp
-                                                                                            <li class="color-option" data-color="{{ strtolower($variant->color) }}"
-                                                                                                data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
-                                                                                                style="background-color: {{ $variant->color }}">
-                                                                                            </li>
+                                                    @php
+                                                        $sizes = $product->variants->where('color', $variant->color)->pluck('size')->implode(',');
+                                                    @endphp
+                                                    <li class="color-option" data-color="{{ strtolower($variant->color) }}"
+                                                        data-size="{{ $sizes }}" data-price="{{ $variant->price }}"
+                                                        style="background-color: {{ $variant->color }}">
+                                                    </li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -411,7 +411,7 @@
                                             <div class="inner-content">
                                                 <div class="product-thumb">
                                                     <a href="{{ route('product.detail', $product->id) }}">
-                                                        <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
+                                                        <img src="{{ Storage::url($product->imageLists->first()?->image_url) }}"
                                                             width="270" height="274" alt="{{ $product->name }}">
                                                     </a>
                                                     <div class="product-action">

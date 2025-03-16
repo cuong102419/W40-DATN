@@ -21,6 +21,13 @@
   Typography CSS
 -----------------------------------------------------------------------
 */
+.ui-slider-tip {
+  display: none !important;
+}
+
+.ui-slider .ui-slider-handle span {
+  display: none !important;
+}
 body {
   color: #474747;
   font-size: 16px;
