@@ -13,11 +13,12 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
         $total = 0;
+        // dd($cart);
         foreach ($cart as $item) {
             $total += $item['quantity'] * $item['price'];
         }
 
-        return view('client.cart.index', compact( 'total'));
+        return view('client.cart.index', compact('total'));
     }
 
     public function add(Request $request, Product $product)
@@ -30,10 +31,27 @@ class CartController extends Controller
                 'quantity' => ['required', 'min:1']
             ]);
 
+            if ($data['quantity'] <= 0) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Số lượng không hợp lệ!'
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
             $productVariant = ProductVariant::where('product_id', $product->id)
                 ->where('color', $data['color'])
                 ->where('size', $data['size'])
                 ->first();
+            if ($data['quantity'] > $productVariant->quantity) {
+
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Số lượng bạn chọn vượt quá số lượng hàng!'
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            } else {
+                $productVariant->quantity -= $data['quantity'];
+                $productVariant->save();
+            }
 
             $product = Product::find($productVariant['product_id']);
             $discount = $product->discount;
@@ -63,6 +81,7 @@ class CartController extends Controller
             }
             session()->put('cart', $cart);
 
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Thêm vào giỏ hàng thành công!',
@@ -79,6 +98,16 @@ class CartController extends Controller
     public function destroy()
     {
         try {
+            $cart = session('cart', []);
+
+            foreach ($cart as $item) {
+                $productVariant = ProductVariant::find($item['id']);
+                if ($productVariant) {
+                    $productVariant->quantity += $item['quantity'];
+                    $productVariant->save();
+                }
+            }
+
             session()->forget('cart');
 
             return response()->json([
@@ -97,6 +126,16 @@ class CartController extends Controller
     {
         try {
             $cart = session()->get('cart', []);
+
+            $product = collect($cart)->firstWhere('id', $id);
+
+            if ($product) {
+                $productVariant = ProductVariant::find($id);
+                if ($productVariant) {
+                    $productVariant->quantity += $product['quantity'];
+                    $productVariant->save();
+                }
+            }
 
             $cart = array_values(array_filter($cart, function ($item) use ($id) {
                 return $item['id'] != $id;
@@ -130,11 +169,36 @@ class CartController extends Controller
                     ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
 
+                $productVariant = ProductVariant::find($id);
+
+                if (!$productVariant) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Không tìm thấy sản phẩm.'
+                    ], Response::HTTP_NOT_FOUND);
+                }
+
                 foreach ($cart as $index => $item) {
                     if ($item['id'] == $id) {
+                        $valueQuantity = $quantity - $item['quantity'];
+
+                        if ($valueQuantity > $productVariant->quantity && $valueQuantity > 0) {
+                            return response()->json([
+                                'status' => 'error',
+                                'message' => 'Số lượng không đủ cho mặt hàng.'
+                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                        }
+
                         $cart[$index]['quantity'] = $quantity;
+                        if ($valueQuantity < 0) {
+                            $productVariant->quantity += abs($valueQuantity);
+                        } else {
+                            $productVariant->quantity -= $valueQuantity;
+                        }
+                        $productVariant->save();
                         break;
                     }
+
                 }
             }
 

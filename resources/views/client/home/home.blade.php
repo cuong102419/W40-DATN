@@ -89,11 +89,13 @@
                                                 height="274" alt="{{ $product->name }}">
                                         @endif
                                     </a>
-                                    <div class="product-flag">
-                                        <ul>
-                                            <li class="discount">-{{ $product->discount }}%</li>
-                                        </ul>
-                                    </div>
+                                    @if ($product->discount > 0)
+                                        <div class="product-flag">
+                                            <ul>
+                                                <li class="discount">-{{ $product->discount }}%</li>
+                                            </ul>
+                                        </div>
+                                    @endif
                                     <div class="product-action">
                                         <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
                                     </div>
@@ -111,12 +113,12 @@
                                             href="{{ route('product.detail',$product->id) }}">{{ $product->name }}</a>
                                     </h4>
                                     <div class="prices">
-                                        @if ($product->discount)
+                                        @if ($product->discount > 0)
                                             <span class="price-old">{{ number_format($product->variants->min('price')) }}đ</span>
                                             <span class="sep">-</span>
                                             <span class="price text-danger">{{ number_format($product->variants->min('price') * (1 - $product->discount / 100)) }}đ</span>
                                         @else
-                                            <span class="price-old text-danger">{{ number_format($product->variants->min('price')) }}đ</span>
+                                            <span class="price text-danger">{{ number_format($product->variants->min('price')) }}đ</span>
                                         @endif
                                     </div>
                                 </div>
@@ -179,11 +181,13 @@
                                                                 width="270" height="274" alt="{{ $product->name }}">
                                                         @endif
                                                     </a>
-                                                    <div class="product-flag">
-                                                        <ul>
-                                                            <li class="discount">-{{ $product->discount }}%</li>
-                                                        </ul>
-                                                    </div>
+                                                    @if ($product->discount > 0)
+                                                        <div class="product-flag">
+                                                            <ul>
+                                                                <li class="discount">-{{ $product->discount }}%</li>
+                                                            </ul>
+                                                        </div>
+                                                    @endif
                                                     <div class="product-action">
                                                         <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
                                                     </div>
@@ -201,12 +205,12 @@
                                                             href="">{{ $product->name }}</a>
                                                     </h4>
                                                     <div class="prices">
-                                                        @if ($product->discount)
+                                                        @if ($product->discount > 0)
                                                             <span class="price-old">{{ number_format($product->variants->min('price')) }}đ</span>
                                                             <span class="sep">-</span>
                                                             <span class="price text-danger">{{ number_format($product->variants->min('price') * (1 - $product->discount / 100)) }}đ</span>
                                                         @else
-                                                            <span class="price-old text-danger">{{ number_format($product->variants->min('price')) }}đ</span>
+                                                            <span class="price text-danger">{{ number_format($product->variants->min('price')) }}đ</span>
                                                         @endif
                                                     </div>
                                                 </div>
