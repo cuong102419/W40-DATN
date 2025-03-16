@@ -210,45 +210,229 @@
                                 </ul>
                             </div>
                         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         <div class="shop-sidebar-price-range">
-                            <h4 class="sidebar-title">Price Filter</h4>
+                            <h4 class="sidebar-title">Lọc theo giá</h4>
                             <div class="sidebar-price-range">
+                                <input type="text" id="amount" readonly style="border:0; color:#000000; font-weight:bold;">
                                 <div id="price-range"></div>
+                                <button id="filter-price" class="btn btn-primary mt-2">Lọc</button>
                             </div>
                         </div>
-
-                        <div class="shop-sidebar-color">
-                            <h4 class="sidebar-title">Color</h4>
-                            <div class="sidebar-color">
-                                <ul class="color-list">
-                                    <li data-bg-color="#39ed8c" class="active"></li>
-                                    @foreach($product->variants->unique('color') as $variant)
-                                        <li class="color-option" 
-                                            data-color="{{ $variant->color }}" 
-                                            style="background-color: {{ $variant->color }}">
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="shop-sidebar-size">
-                            <h4 class="sidebar-title">Size</h4>
-                            <div class="sidebar-size">
-                                <ul class="size-list">
-                                    @foreach($product->variants->unique('size') as $variant)
-                                        <li class="size-option" data-size="{{ $variant->size }}">{{ $variant->size }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                        
-
+                        <style>
+                            
+                        </style>
+                       
+                            
 
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <script src="{{ asset('administrator/js/product.js') }}"></script>
     <!--== End Product Area Wrapper ==-->
 @endsection

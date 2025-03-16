@@ -43,4 +43,34 @@ document.addEventListener("DOMContentLoaded", function () {
             fetchProducts(selectedColor, selectedSize);
         });
     });
+    $(document).ready(function () {
+        
+        let minPrice = 0;
+        let maxPrice = 10000000; 
+    
+        $("#price-range").slider({
+            range: true,
+            min: minPrice,
+            max: maxPrice,
+            values: [minPrice, maxPrice], 
+            step: 10000, 
+            slide: function (event, ui) {
+                $("#amount").val(ui.values[0].toLocaleString() + "đ - " + ui.values[1].toLocaleString() + "đ");
+            }
+        });
+    
+        $("#amount").val($("#price-range").slider("values", 0).toLocaleString() + "đ - " +
+            $("#price-range").slider("values", 1).toLocaleString() + "đ");
+    
+
+        $("#filter-price").click(function () {
+            let min = $("#price-range").slider("values", 0);
+            let max = $("#price-range").slider("values", 1);
+    
+            let url = new URL(window.location.href);
+            url.searchParams.set('min_price', min);
+            url.searchParams.set('max_price', max);
+            window.location.href = url.toString();
+        });
+    });
 });

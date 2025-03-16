@@ -20,6 +20,15 @@ class ProductController extends Controller
         if ($request->has('brand')) {
             $query->where('brand_id', $request->brand);
         }
+        if ($request->has('min_price') && $request->has('max_price')) {
+            $minPrice = (int) $request->min_price;
+            $maxPrice = (int) $request->max_price;
+        
+            $query->whereHas('variants', function ($q) use ($minPrice, $maxPrice) {
+                $q->whereRaw('(product_variants.price - (product_variants.price * products.discount / 100)) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
+            });
+        }
+          
         $products = $query->whereHas('variants')->latest('id')->paginate(10);
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
