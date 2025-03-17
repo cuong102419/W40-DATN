@@ -45,7 +45,6 @@ Route::prefix('/product')->group(function () {
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
-Route::get('/order', [OrderController::class, 'index'])->name('order.index');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
@@ -55,7 +54,6 @@ Route::get('/signin', [AuthenticController::class, 'index'])->name('signin');
 Route::get('/signup', [AuthenticController::class, 'formSignup'])->name('signup');
 Route::post('/signin', [AuthenticController::class, 'signin'])->name('signin.signin');
 Route::post('/signup', [AuthenticController::class, 'signup'])->name('signup.signup');
-
 Route::get('/logout', [AuthenticController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/profile', [AuthenticController::class, 'profile'])->middleware('auth')->name('profile');
 Route::get('/change-password', [AuthenticController::class, 'changePassword'])->middleware('auth')->name('change-password');
@@ -87,7 +85,15 @@ Route::controller(SigninGoogleController::class)->group(function () {
 
 Route::prefix('/checkout')->group(function() {
     Route::post('/create', [OrderController::class, 'create'])->name('order.create');
-    Route::get('/{order}', [OrderController::class, 'detail'])->name('order.detail');
+    Route::get('/{order}', [OrderController::class, 'checkout'])->name('order.checkout');
+});
+
+Route::prefix(('/order'))->group(function() {
+    Route::get('/', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
+    Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
+    Route::put('/cancel/{order}', [OrderController::class, 'cancel'])->middleware('auth')->name('order.cancel');
+
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
