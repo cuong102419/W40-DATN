@@ -74,6 +74,10 @@
                             <th class="text-end">{{ number_format($orderItems->sum('unit_price'), 0, '.', '.') }}đ</th>
                         </tr>
                         <tr>
+                            <th>Giảm giá</th>
+                            <th class="text-end text-success">-{{ number_format($order->discount, 0, '.', '.') }}đ</th>
+                        </tr>
+                        <tr>
                             <td>
                                 <h5 class="text-uppercase">Tổng cộng</h5>
                             </td>

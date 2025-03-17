@@ -16,7 +16,9 @@ class Voucher extends Model
         'product_id',
         'code',
         'value',
+        'type',
         'quantity',
+        'expiration_date',
     ];
 
 
@@ -24,7 +26,7 @@ class Voucher extends Model
     
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(Product::class, 'product_id')->withDefault();
     }
 
 }

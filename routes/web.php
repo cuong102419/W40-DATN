@@ -88,6 +88,8 @@ Route::controller(SigninGoogleController::class)->group(function () {
 Route::prefix('/checkout')->group(function() {
     Route::post('/create', [OrderController::class, 'create'])->name('order.create');
     Route::get('/{order}', [OrderController::class, 'detail'])->name('order.detail');
+
+   
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
@@ -149,5 +151,9 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/payment/{order}', [AdminOrderController::class, 'updatePayment'])->name('admin-order.payment');
         Route::put('/customer-information/{order}', [AdminOrderController::class, 'updateInfo'])->name('admin-order.info');
         Route::put('/status/{order}', [AdminOrderController::class, 'status'])->name('admin-order.status');
+
+         //áp mã
+
+    Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.apply-voucher');
     });
 });

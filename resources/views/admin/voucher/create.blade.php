@@ -31,6 +31,11 @@
                         <span class="text-danger error-quantity"></span>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Ngày hết hạn</label>
+                        <input type="date" name="expiration_date" class="form-control mb-2">
+                        <span class="text-danger error-expiration_date"></span>
+                    </div>
+                    <div class="mb-3">
                         <a href="{{ route('admin-voucher.index') }}" class="btn btn-sm btn-secondary"><i
                                 class="fas fa-arrow-left"></i> Danh sách</a>
                         <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-save me-2"></i> Lưu</button>
@@ -42,7 +47,7 @@
 
     <script>
       $(document).ready(function () {
-    $("#brand-form").on("submit", function (e) {
+    $("#voucher-form").on("submit", function (e) {
         e.preventDefault();
 
         let form = $(this);
@@ -60,6 +65,7 @@
                     $("input[name='code']").val("");
                     $("input[name='value']").val("");
                     $("input[name='quantity']").val("");
+                    $("input[name='expiration_date']").val("");
 
                     toastr.success(response.message);
                 }
@@ -68,7 +74,7 @@
                 console.error(xhr.responseText);
 
                 // Xóa thông báo lỗi cũ
-                $(".error-name, .error-code, .error-value, .error-quantity").text("");
+                $(".error-name, .error-code, .error-value, .error-quantity, .error-expiration_date").text("");
 
                 if (xhr.status === 422) {
                     let errors = xhr.responseJSON.errors;
@@ -76,6 +82,7 @@
                     if (errors.code) $(".error-code").text(errors.code[0]);
                     if (errors.value) $(".error-value").text(errors.value[0]);
                     if (errors.quantity) $(".error-quantity").text(errors.quantity[0]);
+                    if (errors.expiration_date) $(".error-expiration_date").text(errors.expiration_date[0]);
                 }
             }
         });
