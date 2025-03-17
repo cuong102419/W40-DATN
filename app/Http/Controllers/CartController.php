@@ -31,7 +31,7 @@ class CartController extends Controller
                 'quantity' => ['required', 'min:1']
             ]);
 
-            if ($data['quantity'] <= 0) {
+            if ($data['quantity'] == 0 || ctype_digit($data['quantity']) == false) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Số lượng không hợp lệ!'
@@ -48,9 +48,6 @@ class CartController extends Controller
                     'status' => 'error',
                     'message' => 'Số lượng bạn chọn vượt quá số lượng hàng!'
                 ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            } else {
-                $productVariant->quantity -= $data['quantity'];
-                $productVariant->save();
             }
 
             $product = Product::find($productVariant['product_id']);
@@ -90,7 +87,7 @@ class CartController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Thêm vào giỏ hàng thất bại, hãy chọn kích cỡ và màu sắc!'
+                'message' => 'Thêm vào giỏ hàng thất bại!'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -98,16 +95,6 @@ class CartController extends Controller
     public function destroy()
     {
         try {
-            $cart = session('cart', []);
-
-            foreach ($cart as $item) {
-                $productVariant = ProductVariant::find($item['id']);
-                if ($productVariant) {
-                    $productVariant->quantity += $item['quantity'];
-                    $productVariant->save();
-                }
-            }
-
             session()->forget('cart');
 
             return response()->json([
@@ -126,16 +113,6 @@ class CartController extends Controller
     {
         try {
             $cart = session()->get('cart', []);
-
-            $product = collect($cart)->firstWhere('id', $id);
-
-            if ($product) {
-                $productVariant = ProductVariant::find($id);
-                if ($productVariant) {
-                    $productVariant->quantity += $product['quantity'];
-                    $productVariant->save();
-                }
-            }
 
             $cart = array_values(array_filter($cart, function ($item) use ($id) {
                 return $item['id'] != $id;
@@ -158,56 +135,107 @@ class CartController extends Controller
     public function update(Request $request)
     {
         try {
-            $data = $request->quantity;
-            $cart = session()->get('cart', []);
+            if ($request->input('action') === 'update') {
+                $data = $request->quantity;
+                $cart = session()->get('cart', []);
 
-            foreach ($data as $id => $quantity) {
-                if ($quantity <= 0) {
+                foreach ($data as $id => $quantity) {
+                    if ($quantity == 0 || ctype_digit($quantity) == false) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Số lượng không hợp lệ.'
+                        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
+
+                    $productVariant = ProductVariant::find($id);
+
+                    if (!$productVariant) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Không tìm thấy sản phẩm.'
+                        ], Response::HTTP_NOT_FOUND);
+                    }
+
+                    foreach ($cart as $index => $item) {
+                        if ($item['id'] == $id) {
+
+                            if ($quantity > $productVariant->quantity) {
+                                return response()->json([
+                                    'status' => 'error',
+                                    'message' => 'Số lượng không đủ cho mặt hàng.'
+                                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                            }
+
+                            $cart[$index]['quantity'] = $quantity;
+                        }
+
+                    }
+                }
+
+                session()->put('cart', $cart);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Cập nhật giỏ hàng thành công!',
+                ], Response::HTTP_OK);
+            } elseif ($request->input('action') === 'filter') {
+                $data = $request->all();
+
+                if (empty($data['id'])) {
                     return response()->json([
                         'status' => 'error',
-                        'message' => 'Số lượng không hợp lệ.'
+                        'message' => 'Không có sản phẩm nào được chọn.'
                     ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
 
-                $productVariant = ProductVariant::find($id);
+                $cart = session()->get('cart', []);
+                $selectedIds = $data['id'];
+                $newCart = [];
 
-                if (!$productVariant) {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Không tìm thấy sản phẩm.'
-                    ], Response::HTTP_NOT_FOUND);
-                }
+                foreach ($cart as $item) {
+                    if (in_array($item['id'], $selectedIds)) {
+                        if (isset($data['quantity'][$item['id']])) {
+                            $quantity = $data['quantity'][$item['id']];
 
-                foreach ($cart as $index => $item) {
-                    if ($item['id'] == $id) {
-                        $valueQuantity = $quantity - $item['quantity'];
+                            if ($quantity == 0 || !ctype_digit($quantity)) {
+                                return response()->json([
+                                    'status' => 'error',
+                                    'message' => 'Số lượng không hợp lệ.'
+                                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                            }
 
-                        if ($valueQuantity > $productVariant->quantity && $valueQuantity > 0) {
-                            return response()->json([
-                                'status' => 'error',
-                                'message' => 'Số lượng không đủ cho mặt hàng.'
-                            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                            $productVariant = ProductVariant::find($item['id']);
+
+                            if (!$productVariant) {
+                                return response()->json([
+                                    'status' => 'error',
+                                    'message' => 'Không tìm thấy sản phẩm.'
+                                ], Response::HTTP_NOT_FOUND);
+                            }
+
+                            if ($quantity > $productVariant->quantity) {
+                                return response()->json([
+                                    'status' => 'error',
+                                    'message' => 'Số lượng không đủ cho mặt hàng.'
+                                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                            }
+
+                            $item['quantity'] = $quantity;
                         }
 
-                        $cart[$index]['quantity'] = $quantity;
-                        if ($valueQuantity < 0) {
-                            $productVariant->quantity += abs($valueQuantity);
-                        } else {
-                            $productVariant->quantity -= $valueQuantity;
-                        }
-                        $productVariant->save();
-                        break;
+                        $newCart[] = $item;
                     }
-
                 }
+
+                session()->put('cart', $newCart);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => ''
+                ], Response::HTTP_OK);
+
             }
 
-            session()->put('cart', $cart);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Cập nhật giỏ hàng thành công!',
-            ], Response::HTTP_OK);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
