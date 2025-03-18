@@ -18,7 +18,8 @@ class Order extends Model
         'fullname', 
         'email', 
         'phone_number', 
-        'note'
+        'note',
+        'discount_amount'
     ];
 
     public function user() {

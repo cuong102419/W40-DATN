@@ -25,7 +25,7 @@
                                                 </a>
                                                 <div
                                                     class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                                                    @if (Auth::user()->role == 'admin')
+                                                    @if (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin')
                                                         <a href="{{route('dashboard.index')}}"
                                                             class="dropdown-item fas fa-user-shield">Trang quản trị</a>
                                                     @endif

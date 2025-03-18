@@ -21,10 +21,11 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Mã sản phẩm</th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th>Thương hiệu</th>
-                                <td>Danh mục</td>
                                 <th scope="col">Hình ảnh</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Thương hiệu</th>
+                                <th>Danh mục</th>
                                 <th scope="col" style="width: 10%" class="text-center">Hành động</th>
                             </tr>
                         </thead>
@@ -33,9 +34,6 @@
                                 <tr>
                                     <th scope="row">{{ $index + 1}}</th>
                                     <td>{{ $product->sku }}</td>
-                                    <td>{{ $product->name }}</td>
-                                    <td>{{ $product->brand->name }}</td>
-                                    <td>{{ $product->category->name }}</td>
                                     <td>
                                         @if ($product->imageLists->isNotEmpty())
                                             <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="100" alt="">
@@ -43,6 +41,10 @@
                                             Chưa có ảnh nào.
                                         @endif
                                     </td>
+                                    <td>{{ $product->name }}</td>
+                                    <td>{{ $product->variants->sum('quantity') }}</td>
+                                    <td>{{ $product->brand->name }}</td>
+                                    <td>{{ $product->category->name }}</td>
                                     <td>
                                         <div class="d-flex">
                                             <a href="{{ route('admin-product.detail', $product->id) }}"

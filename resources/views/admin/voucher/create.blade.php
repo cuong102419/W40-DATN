@@ -22,7 +22,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Giá trị khuyến mãi</label>
-                        <input type="text" name="value" class="form-control mb-2">
+                        <input type="number" step="0.1" min="0" max="100" name="value" class="form-control mb-2">
                         <span class="text-danger error-value"></span>
                     </div>
                     <div class="mb-3">
