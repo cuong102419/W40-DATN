@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
 {
@@ -98,20 +99,83 @@ class OrderController extends Controller
                 session()->forget('cart');
                 session()->forget('voucher');
 
+
                 return redirect()->route('order.detail', $order->id)->with('success', 'Đặt hàng thành công.');
+
+                return redirect()->route('order.checkout', $order->id)->with('success', 'Đặt hàng thành công.');
+    
+
             }
         }
     }
 
-    public function detail(Order $order)
-    {
+
+    public function checkout(Order $order) {
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
             'MOMO' => 'Ví điện tử MOMO',
             'ATM' => 'Thẻ ngân hàng.',
         ];
         $orderItems = OrderItem::where('order_id', $order->id)->get();
-        return view('client.order.detail', compact('order', 'payment_method', 'orderItems'));
+        return view('client.order.checkout', compact('order', 'payment_method', 'orderItems'));
+    }
+
+    public function list() {
+        $orders = Order::where('user_id', Auth::user()->id)->latest('id')->paginate(5);
+        $status = [
+            'unconfirmed' => ['value' => 'Chờ xác nhận.', 'class' => 'text-secondary'],
+            'confirmed' => ['value' => 'Đã xác nhận.', 'class' => 'text-primary'],
+            'shipping' => ['value' => 'Đang giao hàng.', 'class' => 'text-warning'],
+            'delivered' => ['value' => 'Đã giao hàng.', 'class' => 'text-primary'],
+            'completed' => ['value' => 'Hoàn thành.', 'class' => 'text-success'],
+            'canceled' => ['value' => 'Hủy đơn.', 'class' => 'text-danger'],
+        ];
+        $orderIds = $orders->pluck('id');
+
+        return view('client.order.list', compact('orders', 'status', 'orderIds'));
+    }
+
+    public function detail(Order $order) {
+        $orderItems = OrderItem::where('order_id', $order->id)->get();
+        $status = [
+            'unconfirmed' => ['value' => 'Chờ xác nhận', 'class' => 'text-secondary'],
+            'confirmed' => ['value' => 'Đã xác nhận', 'class' => 'text-primary'],
+            'shipping' => ['value' => 'Đang giao hàng', 'class' => 'text-warning'],
+            'delivered' => ['value' => 'Đã giao hàng', 'class' => 'text-primary'],
+            'completed' => ['value' => 'Hoàn thành', 'class' => 'text-success'],
+            'canceled' => ['value' => 'Đã hủy', 'class' => 'text-danger'],
+        ];
+        $payment_method = [
+            'COD' => 'Thanh toán khi nhận hàng (COD)',
+            'MOMO' => 'Ví điện tử MOMO',
+            'ATM' => 'Thẻ ngân hàng.',
+        ];
+
+        return view('client.order.detail', compact('order', 'orderItems', 'status', 'payment_method'));
+    }
+
+    public function cancel(Order $order) {
+        try {
+            if($order->status != 'unconfirmed') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Không thể hủy đơn hàng.'
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+    
+            $order->status = 'canceled';
+            $order->save();
+    
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Hủy đơn hàng thành công'
+            ], Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Không thể hủy đơn hàng.'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
 

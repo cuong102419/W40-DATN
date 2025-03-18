@@ -29,7 +29,7 @@
                                                         <a href="{{route('dashboard.index')}}"
                                                             class="dropdown-item fas fa-user-shield">Trang quản trị</a>
                                                     @endif
-                                                    <a href="" class="dropdown-item">Đơn hàng</a>
+                                                    <a href="{{ route('order.list') }}" class="dropdown-item">Đơn hàng</a>
                                                     <a href="{{  route('profile')}}" class="dropdown-item">Hồ sơ</a>
                                                     <a href="{{  route('change-password')}}" class="dropdown-item">Đổi mật
                                                         khẩu</a>
