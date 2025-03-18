@@ -30,6 +30,9 @@
                                     <th scope="col">Giá trị khuyến mãi</th>
                                     <th>Số lượng mã</th>
                                     <th scope="col">Ngày bắt đầu</th>
+                                    <th scope="col">Ngày kết thúc</th>
+                                    
+
                                     
                                     <th scope="col" class="text-nowrap text-center" style="width:1px">Hành động</th>
                                 </tr>
@@ -40,8 +43,9 @@
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $voucher->name }}</td>
                                         <td>{{ $voucher->code }}</td>
-                                        <td>{{ $voucher->value }}</td>
+                                        <td class="text-danger"><b>{{ number_format($voucher->value) }}%</b></td>
                                         <td>{{ $voucher->quantity }}</td>
+                                        <td>{{ $voucher->expiration_date }}</td>
                                         <td>{{ $voucher->created_at->format('d-m-Y') }}</td>
                                         
                                         <td>
@@ -64,7 +68,7 @@
                         </table>
                         {{ $vouchers->links() }}
                     @else
-                        <h2>Chưa có thương hiệu nào.</h2>
+                        <h2>Chưa có thương khuyến mãi.</h2>
                     @endif
                 </div>
             </div>

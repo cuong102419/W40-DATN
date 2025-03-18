@@ -115,6 +115,7 @@ class OrderController extends Controller
                 $variant->save();
                 $order->status = 'confirmed';
                 $order->save();
+                ProductVariant::find($item->product_variant_id)->increment('sales_count');
             }
 
             return redirect()->back()->with('success', 'Cập nhật thành công.');

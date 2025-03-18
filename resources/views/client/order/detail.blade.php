@@ -67,7 +67,7 @@
                             @method('PUT')
                             <div class="text-center">
                                 <button onclick="return confirm('Bạn có muốn hủy đơn hàng, nếu hủy bạn sẽ không thể đặt lại.')"
-                                    class="btn btn-theme">Hủy đơn hàng</button>
+                                    class="btn-theme">Hủy đơn hàng</button>
                             </div>
                         </form>
                     </div>
@@ -164,6 +164,9 @@
                                         <span>{{ $order->orderItems->sum('quantity') }} mặt hàng</span>
                                     </div>
                                     <div>
+                                        <span>Giảm giá</span>
+                                    </div>
+                                    <div>
                                         <span>Giao hàng:</span>
                                     </div>
                                     <div>
@@ -172,7 +175,10 @@
                                 </td>
                                 <td class="text-end">
                                     <div>
-                                        <span>{{ number_format($order->orderItems->sum('unit_price'), 0, '.', '.') }}đ</span>
+                                        <span>{{ number_format($order->orderItems->sum(fn($item) => $item->quantity * $item->unit_price), 0, '.', '.') }}đ</span>
+                                    </div>
+                                    <div>
+                                        <span>{{ number_format($order->discount_amount, 0, '.', '.') }}đ</span>
                                     </div>
                                     <div>
                                         <span>chưa biết</span>

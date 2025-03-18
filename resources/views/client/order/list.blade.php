@@ -10,24 +10,32 @@
             <h3 class="text-uppercase text-center">Đơn hàng của bạn</h3>
         </div>
         <div class="row justify-content-center">
-            <div class="w-75 mt-5">
-                @foreach ($orders as $order)
-                    <a href="{{ route('order.detail', $order->id) }}">
-                        <div class="border p-3">
-                            <h5 class="fw-bold">
-                                {{ $order->created_at->format('d \T\H\G m, Y') }} | <span class="text-dark fw-bold">{{ number_format($order->total, 0, '.', '.') }}đ</span>
-                            </h5>
-                            <p class="mb-2">Mã đơn hàng: <span class="fw-semibold">{{ $order->id }}</span></p>
-                            <div class="d-flex align-items-center">
-                                @foreach ($order->orderItems as $item)
-                                    <img src="{{ Storage::url($item->product_variant->product->imageLists->first()->image_url) }}" alt="Ảnh sản phẩm" class="img-fluid ms-2" width="100">
-                                @endforeach
+            @if ($orders->count() > 0)
+                <div class="w-75 mt-5">
+                    @foreach ($orders as $order)
+                        <a href="{{ route('order.detail', $order->id) }}">
+                            <div class="border p-3">
+                                <h5 class="fw-bold">
+                                    {{ $order->created_at->format('d \T\H\G m, Y') }} | <span
+                                        class="text-dark fw-bold">{{ number_format($order->total, 0, '.', '.') }}đ</span>
+                                </h5>
+                                <p class="mb-2">Mã đơn hàng: <span class="fw-semibold">{{ $order->id }}</span></p>
+                                <div class="d-flex align-items-center">
+                                    @foreach ($order->orderItems as $item)
+                                        <img src="{{ Storage::url($item->product_variant->product->imageLists->first()->image_url) }}"
+                                            alt="Ảnh sản phẩm" class="img-fluid ms-2" width="100">
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                @endforeach
-                {{ $orders->links() }}
-            </div>
+                        </a>
+                    @endforeach
+                    {{ $orders->links() }}
+                </div>
+            @else
+                <div class="mt-5">
+                    <h5 class="text-center">Chưa có đơn hàng nào</h5>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

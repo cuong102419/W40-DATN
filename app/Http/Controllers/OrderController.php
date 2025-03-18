@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\ProductVariant;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,11 +15,15 @@ class OrderController extends Controller
     public function index()
     {
         $subTotal = 0;
+        $voucher = 0;
         $cart = session()->get('cart', []);
         foreach ($cart as $item) {
             $subTotal += $item['quantity'] * $item['price'];
         }
-        return view('client.order.index', compact('subTotal'));
+        if(session()->get('voucher')) {
+            $voucher = session()->get('voucher')['value'];
+        }
+        return view('client.order.index', compact('subTotal', 'voucher'));
     }
 
     public function create(Request $request)
@@ -29,7 +35,9 @@ class OrderController extends Controller
             'phone_number' => ['required', 'phone:VN'],
             'email' => ['required', 'email'],
             'note' => ['nullable'],
-            'payment_method' => ['required']
+            'payment_method' => ['required'],
+            'total' => ['required'],
+            'discount_amount' => ['required']
         ], [
             'fullname.required' => 'Không được để trống.',
             'fullname.min' => 'Tối thiểu 4 ký tự.',
@@ -40,17 +48,14 @@ class OrderController extends Controller
             'email.required' => 'Không được để trống.',
             'email.email' => 'Email không hợp lệ.'
         ]);
-
+        
         if (Auth::check()) {
             $data['user_id'] = Auth::user()->id;
         }
 
-        $data['total'] = 0;
-        foreach ($cart as $item) {
-            $data['total'] += $item['quantity'] * $item['price'];
-        }
+        $voucher = session()->get('voucher');
 
-        if($cart) {
+        if ($cart) {
             if ($data['payment_method'] == 'COD') {
                 $order = Order::create($data);
 
@@ -61,15 +66,21 @@ class OrderController extends Controller
                         'quantity' => $item['quantity'],
                         'unit_price' => $item['price']
                     ]);
+
+                }
+
+                if ($voucher) {
+                    Voucher::where('code', $voucher['code'])->decrement('quantity', 1);
                 }
 
                 session()->forget('cart');
+                session()->forget('voucher');
 
                 return redirect()->route('order.checkout', $order->id)->with('success', 'Đặt hàng thành công.');
-    
             }
         }
     }
+
 
     public function checkout(Order $order) {
         $payment_method = [
@@ -137,5 +148,35 @@ class OrderController extends Controller
                 'message' => 'Không thể hủy đơn hàng.'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    public function applyVoucher(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+        ], [
+            'code.required' => 'Vui lòng nhập mã giảm giá.',
+        ]);
+
+        $voucher = Voucher::where('code', $request->code)->first();
+
+        if (!$voucher) {
+            return redirect()->back()->with('error', 'Mã giảm giá không tồn tại.');
+        }
+        if ($voucher->quantity <= 0) {
+            return redirect()->back()->with('error', 'Mã giảm giá đã hết số lượng.');
+        }
+        if ($voucher->expiration_date < now()) {
+            return redirect()->back()->with('error', 'Mã giảm giá đã hết hạn.');
+        }
+
+        session(['voucher' => [
+            'code' => $voucher->code,
+            'value' => $voucher->value,
+            'product_id' => $voucher->product_id
+        ]]);
+
+        return redirect()->back()->with('success', 'Mã giảm giá đã được áp dụng.');
     }
 }

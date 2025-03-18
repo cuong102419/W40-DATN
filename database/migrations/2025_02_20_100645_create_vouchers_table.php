@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id')->nullable()->constrained();
+
             $table->string('name');
-            $table->unsignedBigInteger('product_id')->nullable();
             $table->string('code')->unique();
             $table->double('value');
             $table->integer('quantity');
+            $table->date('expiration_date');
             $table->softDeletes();
             $table->timestamps();
         });

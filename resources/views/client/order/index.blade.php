@@ -9,43 +9,6 @@
     <section class="shopping-checkout-wrap">
         <div class="container">
             <div class="row">
-                <div class="col-12">
-                    <div class="checkout-page-coupon-wrap">
-                        <!--== Start Checkout Coupon Accordion ==-->
-                        <div class="coupon-accordion" id="CouponAccordion">
-                            <div class="card">
-                                <h3>
-                                    <i class="fa fa-info-circle"></i>
-                                    Bạn có mã giảm giá
-                                    <a href="#/" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Click vào đây
-                                        để nhập</a>
-                                </h3>
-                                <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
-                                    <div class="card-body">
-                                        <div class="apply-coupon-wrap mb-60">
-                                            <form action="#" method="post">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <input class="form-control" type="text"
-                                                                placeholder="Mã giảm giá">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <button class="btn-coupon">Áp dụng giảm giá</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--== End Checkout Coupon Accordion ==-->
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-6">
                     <!--== Start Billing Accordion ==-->
                     <div class="checkout-billing-details-wrap">
@@ -102,6 +65,8 @@
                                     <div class="col-md-12">
                                         <input id="payment_method" type="hidden" name="payment_method" class="form-control"
                                             value="">
+                                            <input type="hidden" name="total" value="" >
+                                            <input type="hidden" name="discount_amount" value="{{ $voucher / 100 * $subTotal }}" >
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group mb--0">
@@ -115,6 +80,41 @@
                         </div>
                     </div>
                     <!--== End Billing Accordion ==-->
+
+                    <div class="checkout-page-coupon-wrap mt-5">
+                        <!--== Start Checkout Coupon Accordion ==-->
+                        <div class="coupon-accordion" id="CouponAccordion">
+                            <div class="card">
+                                <div id="couponaccordion">
+                                    <div class="card-body">
+                                        <div class="apply-coupon-wrap mb-60">
+                                            <form action="{{ route('order.apply-voucher') }}" method="POST">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <input class="form-control" type="text" name="code"
+                                                                placeholder="Nhập mã giảm giá" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <button type="submit" class="btn-coupon">Áp dụng</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            @if(session('error'))
+                                                <p class="text-danger mt-2">{{ session('error') }}</p>
+                                            @endif
+                                            @if(session('success'))
+                                                <p class="text-success mt-2">{{ session('success') }}</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--== End Checkout Coupon Accordion ==-->
+                    </div>
                 </div>
                 <div class="col-lg-6">
                     <!--== Start Order Details Accordion ==-->
@@ -157,14 +157,24 @@
                                     </tr>
                                     <tr class="shipping">
                                         <th colspan="2">Shipping</th>
-                                        <td>Giá cố định: 100.000đ</td>
+                                        <td>chưa có</td>
+                                    </tr>
+                                    <tr class="">
+                                        <th colspan="2">Khuyến mại</th>
+                                        <td>
+                                            @if($voucher)
+                                                -{{ $voucher }}% <span>({{ number_format($voucher / 100 * $subTotal,0, '.', '.') }}đ)</span>
+                                            @else
+                                                Không có
+                                            @endif
+                                        </td>
                                     </tr>
                                     <tr class="order-total">
                                         <th colspan="2">
                                             <h5>Thành tiền</h5>
                                         </th>
                                         <td>
-                                            <h5 class="text-danger">{{ number_format($subTotal) }}đ</h5>
+                                            <h5 class="text-danger">{{ number_format($subTotal * (1 - $voucher / 100), 0, '.', '.') }}đ</h5>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -204,7 +214,7 @@
                                             khoản và điều kiện khi mua hàng <span class="required">*</span></label>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn-theme w-100">Thanh toán</button>
+                                <button type="submit" id="checkout-btn" class="btn-theme w-100">Thanh toán</button>
                             </div>
                         </div>
                     </div>

@@ -70,8 +70,8 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <th>Tổng số phụ</th>
-                            <th class="text-end">{{ number_format($orderItems->sum('unit_price'), 0, '.', '.') }}đ</th>
+                            <th>Giảm giá</th>
+                            <td class="text-end">-{{ number_format($order->discount_amount, 0, '.', '.') }}đ</td>
                         </tr>
                         <tr>
                             <td>
@@ -111,6 +111,9 @@
                             <td class="text-end">{{ $order->note }}</td>
                         </tr>
                     </table>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{{ route('home') }}" class="btn-theme">Tiếp tục mua sắm</a>
                 </div>
             </div>
         </div>
