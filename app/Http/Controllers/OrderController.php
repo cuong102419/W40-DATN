@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\ProductVariant;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,14 +14,16 @@ class OrderController extends Controller
 {
     public function index()
     {
-
-        //session()->forget('voucher');
         $subTotal = 0;
+        $voucher = 0;
         $cart = session()->get('cart', []);
         foreach ($cart as $item) {
             $subTotal += $item['quantity'] * $item['price'];
         }
-        return view('client.order.index', compact('subTotal'));
+        if(session()->get('voucher')) {
+            $voucher = session()->get('voucher')['value'];
+        }
+        return view('client.order.index', compact('subTotal', 'voucher'));
     }
 
     public function create(Request $request)
@@ -32,7 +35,9 @@ class OrderController extends Controller
             'phone_number' => ['required', 'phone:VN'],
             'email' => ['required', 'email'],
             'note' => ['nullable'],
-            'payment_method' => ['required']
+            'payment_method' => ['required'],
+            'total' => ['required'],
+            'discount_amount' => ['required']
         ], [
             'fullname.required' => 'Không được để trống.',
             'fullname.min' => 'Tối thiểu 4 ký tự.',
@@ -43,39 +48,12 @@ class OrderController extends Controller
             'email.required' => 'Không được để trống.',
             'email.email' => 'Email không hợp lệ.'
         ]);
-
+        
         if (Auth::check()) {
             $data['user_id'] = Auth::user()->id;
         }
 
-        // Tính tổng giá trị đơn hàng
-        $subTotal = 0;
-        foreach ($cart as $item) {
-            $subTotal += $item['quantity'] * $item['price'];
-        }
-
-        // Lấy mã giảm giá từ session
-        $voucher = session()->get('voucher', null);
-
-        $discount = 0;
-
-
-
-
-        if ($voucher) {
-            foreach ($cart as $item) {
-                if ($item['id'] == $voucher['product_id']) {
-                    $discount = min($item['price'] * $item['quantity'], $voucher['value']);
-                    break;
-                }
-            }
-            $subTotal -= $discount;
-        }
-
-        // Gán giá trị tổng vào data
-        $data['total'] = max($subTotal, 0);
-        $data['discount'] = $discount;
-        $data['voucher_code'] = $voucher['code'] ?? null;
+        $voucher = session()->get('voucher');
 
         if ($cart) {
             if ($data['payment_method'] == 'COD') {
@@ -88,23 +66,17 @@ class OrderController extends Controller
                         'quantity' => $item['quantity'],
                         'unit_price' => $item['price']
                     ]);
+
                 }
 
-                // Nếu có mã giảm giá, giảm số lượng mã
                 if ($voucher) {
                     Voucher::where('code', $voucher['code'])->decrement('quantity', 1);
                 }
 
-                // Xóa session giỏ hàng & mã giảm giá
                 session()->forget('cart');
                 session()->forget('voucher');
 
-
-                return redirect()->route('order.detail', $order->id)->with('success', 'Đặt hàng thành công.');
-
                 return redirect()->route('order.checkout', $order->id)->with('success', 'Đặt hàng thành công.');
-    
-
             }
         }
     }
@@ -187,10 +159,8 @@ class OrderController extends Controller
             'code.required' => 'Vui lòng nhập mã giảm giá.',
         ]);
 
-        // Tìm voucher
         $voucher = Voucher::where('code', $request->code)->first();
 
-        // Kiểm tra nếu không tìm thấy hoặc hết hạn hoặc hết số lượng
         if (!$voucher) {
             return redirect()->back()->with('error', 'Mã giảm giá không tồn tại.');
         }
@@ -201,11 +171,9 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Mã giảm giá đã hết hạn.');
         }
 
-        // Lưu voucher vào session
         session(['voucher' => [
             'code' => $voucher->code,
             'value' => $voucher->value,
-            'type' => $voucher->type,
             'product_id' => $voucher->product_id
         ]]);
 

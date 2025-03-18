@@ -43,7 +43,7 @@
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $voucher->name }}</td>
                                         <td>{{ $voucher->code }}</td>
-                                        <td class="text-danger"><b>{{ number_format($voucher->value) }}đ</b></td>
+                                        <td class="text-danger"><b>{{ number_format($voucher->value) }}%</b></td>
                                         <td>{{ $voucher->quantity }}</td>
                                         <td>{{ $voucher->expiration_date }}</td>
                                         <td>{{ $voucher->created_at->format('d-m-Y') }}</td>

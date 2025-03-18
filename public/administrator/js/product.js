@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 let productContainer = document.getElementById("similar-products");
-                productContainer.innerHTML = ""; // Xóa sản phẩm cũ
+                productContainer.innerHTML = "";
 
                 data.forEach(product => {
                     let productHTML = `

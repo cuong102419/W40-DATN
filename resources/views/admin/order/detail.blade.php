@@ -20,7 +20,7 @@
                             @method('PUT')
 
                             @if ($order->status == 'unconfirmed')
-                                <button type="submit" name="action" value="confirmed" class="btn btn-sm btn-primary"><i class="fas fa-check me-2"></i>Xác nhận</button>
+                                <button onclick="return confirm('Bạn có muốn xác nhận đơn hàng này.')" type="submit" name="action" value="confirmed" class="btn btn-sm btn-primary"><i class="fas fa-check me-2"></i>Xác nhận</button>
                                 <button onclick="return confirm('Bạn có muốn hủy, nếu hủy sẽ không thể hoàn tác lại.')" type="submit" name="action" value="canceled" class="btn btn-sm btn-danger"><i class="fas fa-ban me-2"></i>Hủy</button>
                             @elseif ($order->status == 'confirmed')
                                 <button type="submit" name="action" value="shipping" class="btn btn-sm btn-primary"><i class="fas fa-shipping-fast me-2"></i>Giao hàng</button>
@@ -82,6 +82,13 @@
                                     </td>
                                 </tr>
                             @endforeach
+                            <tr>
+                                <th>Giảm giá</th>
+                                <td colspan="2">
+                                    <span
+                                        class="">{{ number_format($order->discount_amount, 0, '.', '.') }}đ</span>
+                                </td>
+                            </tr>
                             <tr>
                                 <th>Tổng cộng</th>
                                 <td colspan="2">

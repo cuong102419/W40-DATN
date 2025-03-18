@@ -85,11 +85,9 @@ Route::controller(SigninGoogleController::class)->group(function () {
 
 Route::prefix('/checkout')->group(function() {
     Route::post('/create', [OrderController::class, 'create'])->name('order.create');
-
     Route::get('/{order}', [OrderController::class, 'detail'])->name('order.detail');
-
-
     Route::get('/{order}', [OrderController::class, 'checkout'])->name('order.checkout');
+    Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.apply-voucher');
 });
 
 Route::prefix(('/order'))->group(function() {
@@ -97,8 +95,6 @@ Route::prefix(('/order'))->group(function() {
     Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
     Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
     Route::put('/cancel/{order}', [OrderController::class, 'cancel'])->middleware('auth')->name('order.cancel');
-
-
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
@@ -160,9 +156,5 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/payment/{order}', [AdminOrderController::class, 'updatePayment'])->name('admin-order.payment');
         Route::put('/customer-information/{order}', [AdminOrderController::class, 'updateInfo'])->name('admin-order.info');
         Route::put('/status/{order}', [AdminOrderController::class, 'status'])->name('admin-order.status');
-
-         //áp mã
-
-    Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.apply-voucher');
     });
 });
