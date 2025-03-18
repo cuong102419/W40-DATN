@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->double('value');
             $table->integer('quantity');
+            $table->date('expiration_date');
             $table->softDeletes();
             $table->timestamps();
         });

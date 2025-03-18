@@ -58,6 +58,25 @@
                                 </td>
                             </tr>
                         @endforeach
+<<<<<<< HEAD
+                        <tr>
+                            <th>Tổng số phụ</th>
+                            <th class="text-end">{{ number_format($orderItems->sum('unit_price'), 0, '.', '.') }}đ</th>
+                        </tr>
+                        <tr>
+                            <th>Giảm giá</th>
+                            <th class="text-end text-success">-{{ number_format($order->discount, 0, '.', '.') }}đ</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5 class="text-uppercase">Tổng cộng</h5>
+                            </td>
+                            <td class="text-end">
+                                <h5 class="text-danger">{{ number_format($order->total, 0, '.', '.') }}đ</h5>
+                            </td>
+                        </tr>
+=======
+>>>>>>> e1657efb1bb412806b0940f976faa9414899b53f
                     </table>
                 </div>
                 @if ($order->status == 'unconfirmed')
