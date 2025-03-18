@@ -85,11 +85,10 @@ Route::controller(SigninGoogleController::class)->group(function () {
 
 Route::prefix('/checkout')->group(function() {
     Route::post('/create', [OrderController::class, 'create'])->name('order.create');
-<<<<<<< HEAD
+
     Route::get('/{order}', [OrderController::class, 'detail'])->name('order.detail');
 
-   
-=======
+
     Route::get('/{order}', [OrderController::class, 'checkout'])->name('order.checkout');
 });
 
@@ -99,7 +98,7 @@ Route::prefix(('/order'))->group(function() {
     Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
     Route::put('/cancel/{order}', [OrderController::class, 'cancel'])->middleware('auth')->name('order.cancel');
 
->>>>>>> e1657efb1bb412806b0940f976faa9414899b53f
+
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
