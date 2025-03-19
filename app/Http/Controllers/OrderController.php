@@ -49,11 +49,10 @@ class OrderController extends Controller
             'email.email' => 'Email không hợp lệ.'
         ]);
         $data['shipping'] = 100000;
-
         if (Auth::check()) {
             $data['user_id'] = Auth::user()->id;
         }
-
+        
         $voucher = session()->get('voucher');
 
         if ($cart) {
@@ -92,8 +91,7 @@ class OrderController extends Controller
 
                 }
 
-                $total = $order->total + $order->shipping;
-                return $this->vnpay($order->id, $total);
+                return $this->vnpay($order->id, $order->total);
             }
         } else {
             return redirect()->back()->with('error','Không tìm thấy sản phẩm nào.');

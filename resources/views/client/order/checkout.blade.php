@@ -74,6 +74,10 @@
                             <td class="text-end">-{{ number_format($order->discount_amount, 0, '.', '.') }}đ</td>
                         </tr>
                         <tr>
+                            <th>Shipping</th>
+                            <td class="text-end">{{ number_format($order->shipping, 0, '.', '.') }}đ</td>
+                        </tr>
+                        <tr>
                             <td>
                                 <h5 class="text-uppercase">Tổng cộng</h5>
                             </td>
