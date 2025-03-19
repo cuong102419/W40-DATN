@@ -139,11 +139,13 @@
                                         </div>
 
                                     </form>
-                                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                                    <form action="{{ route('wishlist.add', ['product' => $product->id]) }}" method="POST">
                                         @csrf
                                         {{-- Thêm vào yêu thích --}}
                                         <div class="product-wishlist-compare">
-                                            <a href="#"><i class="pe-7s-like"></i> Thêm vào yêu thích</a>
+                                            <button type="submit" class="btn btn-link text-danger p-3">
+                                                <i class="pe-7s-like"></i> Thêm vào yêu thích
+                                            </button>
                                         </div>
                                     </form>
 

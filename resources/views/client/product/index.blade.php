@@ -138,9 +138,15 @@
                                                             </div>
                                                             @endif
 
-                                                            <div class="product-action">
-                                                                <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
-                                                            </div>
+                                                            <form action="{{ route('wishlist.add', ['product' => $product->id]) }}" method="POST">
+                                                                @csrf
+                                                                <div class="product-action">
+                                                                    <button type="submit" class="btn-product-wishlist border-0 bg-transparent">
+                                                                        <i class="fa fa-heart text-danger"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                            
                                                             <a class="banner-link-overlay" href="{{ route('product.detail', $product->id) }}"></a>
                                                         </div>
                                                         <div class="product-info">

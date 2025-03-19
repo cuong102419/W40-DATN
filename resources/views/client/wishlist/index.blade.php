@@ -8,7 +8,7 @@ Sản phẩm yêu thích
 <!--== Start Wishlist Area Wrapper ==-->
 <section class="shopping-wishlist-area">
     <div class="container">
-        @if (session('wishlist'))
+        @if ($wishlists->isNotEmpty())
         <div class="row">
             <div class="col-md-12">
                 <div class="shopping-wishlist-table table-responsive">
@@ -24,44 +24,54 @@ Sản phẩm yêu thích
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (session('wishlist') as $wishlist)
+                            @foreach ($wishlists as $item)
                             <tr class="cart-wishlist-item">
                                 <td class="product-remove">
-                                    <a href="#/"><i class="fa fa-trash-o"></i></a>
+                                    <form action="{{ route('wishlist.remove', $item->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-link text-danger">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </form>
                                 </td>
+                                
                                 <td class="product-thumb">
-                                    <a href="{{ route('product.detail', $wishlist['product_id'] ?? 0) }}">
-                                        <img src="{{ Storage::url($wishlist['image']) }}" width="100" alt="Image-HasTech">
+                                    <a href="{{ route('product.detail', $item->product_id ?? 0) }}">
+                                        <img src="{{ asset('storage/' . $item->image) }}" width="100" alt="Image">
+
                                     </a>
                                 </td>
                                 <td class="product-name">
                                     <div>
                                         <h4 class="fw-bold text-center">
-                                            <a href="{{ route('product.detail', $wishlist['product_id'] ?? 0) }}" class="text-dark">{{ $wishlist['name'] }}</a>
+                                            <a href="{{ route('product.detail', $item->product_id ?? 0) }}">
+                                                {{ $item->product->name ?? 'Sản phẩm không có tên' }}
+                                            </a>
                                         </h4>
-                                        <div class="row justify-content-center">
-                                            <div class="col-auto">
-                                                <span class="fw-bold small">Kích cỡ: {{ $wishlist['size'] ?? 0 }}</span>
-                                            </div>
-                                            <div class="col-auto d-flex align-items-center">
-                                                <span class="fw-bold small">Màu sắc:</span>
-                                                <span class="rounded-circle border border-secondary shadow ms-2" style="width: 22px; height: 22px; background-color: {{ $wishlist['color'] ?? 0 }}; display: inline-block;">
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>
                                 </td>
                                 <td class="product-stock-status">
                                     <span class="stock">Còn hàng</span>
                                 </td>
                                 <td class="product-price">
-                                    <span class="price text-danger"><strong>{{ number_format($wishlist['price']) }}đ</strong></span>
+                                    <span class="price text-danger">
+                                        <strong>{{ !empty($item->price) ? number_format($item->price, 0, ',', '.') . 'đ' : 'Chưa có giá' }}</strong>
+                                    </span>
                                 </td>
                                 <td class="product-action">
-                                    <a class="btn-cart" href="shop-cart.html">Add to cart</a>
+                                    <form id="add-to-cart" action="{{ route('cart.add', ['product' => $item->product_id]) }}" method="POST">
+
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $item->product->id }}">
+                                        <button type="submit" class="btn-cart">Thêm vào giỏ hàng</button>
+                                    </form>
+                                    
                                 </td>
+                                
                             </tr>
                             @endforeach
+                            
                         </tbody>
                     </table>
                 </div>

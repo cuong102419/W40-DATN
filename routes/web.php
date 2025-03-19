@@ -70,12 +70,10 @@ Route::prefix('/cart')->group(function () {
     Route::put('/update', [CartController::class, 'update'])->name('cart.update');
 });
 
-Route::prefix('/wishlist')->group(function () {
-    Route::get('/', [WishlistController::class, 'index'])->name('wishlist.index');
-    Route::post('/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
-    Route::get('/delete', [WishlistController::class, 'destroy'])->name('wishlist.delete');
-    Route::get('/delete/{id}', [WishlistController::class, 'delete'])->name('wishlist.delete.product');
-    
+Route::middleware(['auth'])->group(function () {
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
+    Route::delete('/wishlist/remove/{product}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 });
 
 Route::controller(SigninGoogleController::class)->group(function () {
