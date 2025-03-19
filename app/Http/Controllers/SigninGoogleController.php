@@ -30,7 +30,7 @@ class SigninGoogleController extends Controller
                     return redirect()->route('signin')->with('error', 'Tài khoản của bạn đã bị khóa.');
                 }
 
-                if ($finduser->role == 'admin') {
+                if ($finduser->role == 'admin' || $finduser->role == 'super_admin') {
                     Auth::login($finduser);
 
                     return redirect()->route('dashboard.index')->with('success', 'Đăng nhập thành công.');

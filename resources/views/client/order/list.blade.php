@@ -29,7 +29,9 @@
                             </div>
                         </a>
                     @endforeach
+                    <div class="mt-3">
                     {{ $orders->links() }}
+                    </div>
                 </div>
             @else
                 <div class="mt-5">
