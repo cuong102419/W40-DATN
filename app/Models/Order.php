@@ -20,7 +20,8 @@ class Order extends Model
         'email', 
         'phone_number', 
         'note',
-        'discount_amount'
+        'discount_amount',
+        'shipping'
     ];
 
     public function user() {

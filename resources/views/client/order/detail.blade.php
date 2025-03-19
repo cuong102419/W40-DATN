@@ -191,7 +191,7 @@
                                         <span>{{ number_format($order->discount_amount, 0, '.', '.') }}đ</span>
                                     </div>
                                     <div>
-                                        <span>chưa biết</span>
+                                        <span>{{ number_format($order->shipping, 0, '.', '.') }}đ</span>
                                     </div>
                                     <div>
                                         <span class="fw-bold">{{ number_format($order->total, 0, '.', '.') }}đ</span>
