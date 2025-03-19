@@ -4,69 +4,66 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class WishlistController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        $wishlist = session()->get('wishlist', []);
-        return view('client.wishlist.index');
+        $this->middleware('auth'); // Yêu cầu đăng nhập
     }
+
+    // 🛒 Hiển thị danh sách Wishlist
+    public function index()
+{
+    
+    $wishlists = Wishlist::with('product')->where('user_id', auth()->id())->get();
+    return view('client.wishlist.index', compact('wishlists'));
+}
 
     public function add(Request $request, Product $product)
-    {
-        try {
-            $wishlist = session()->get('wishlist', []);
-            $data = $request->validate([
-                'color' => ['required'],
-                'size' => ['required']
-            ]);
+{
+    $exists = Wishlist::where('user_id', Auth::id())
+        ->where('product_id', $product->id)
+        ->exists();
 
-            $productVariant = ProductVariant::where('product_id', $product->id)
-                ->where('color', $data['color'])
-                ->where('size', $data['size'])
-                ->first();
-
-            if (!$productVariant) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Không tìm thấy sản phẩm với màu sắc và kích cỡ đã chọn!'
-                ], Response::HTTP_NOT_FOUND);
-            }
-
-            $product = Product::find($productVariant['product_id']);
-            $discount = $product->discount;
-            $price = $productVariant->price * (1 - $discount / 100);
-
-            // Kiểm tra sản phẩm đã có trong wishlist chưa
-            $productExists = collect($wishlist)->firstWhere('id', $productVariant->id);
-
-            if (!$productExists) {
-                $wishlist[] = [
-                    'id' => $productVariant->id,
-                    'product_id' => $productVariant->product_id ?? null, // Kiểm tra có tồn tại không
-                    'image' => $product->imageLists->first()->image_url ?? asset('default-image.jpg'), // Tránh lỗi ảnh null
-                    'name' => $product->name,
-                    'color' => $data['color'] ?? null,
-                    'size' => $data['size'] ?? null,
-                    'price' => $price
-                ];
-            }
-
-            session()->put('wishlist', $wishlist);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Đã thêm vào danh sách yêu thích!',
-                'wishlist' => session()->get('wishlist')
-            ], Response::HTTP_OK);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Thêm vào danh sách yêu thích thất bại!'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+    if ($exists) {
+        return redirect()->route('wishlist.index')->with('error', 'Sản phẩm đã có trong danh sách yêu thích!');
     }
+
+    // Lấy biến thể sản phẩm (nếu có)
+    $productVariant = ProductVariant::where('product_id', $product->id)->first();
+
+    // Kiểm tra nếu sản phẩm có biến thể thì lấy giá từ biến thể, nếu không lấy giá gốc
+    $price = $productVariant ? $productVariant->price : $product->price;
+
+    // Kiểm tra giá trị price
+    if (!$price) {
+        return redirect()->route('wishlist.index')->with('error', 'Sản phẩm chưa có giá, không thể thêm vào danh sách yêu thích!');
+    }
+
+    Wishlist::create([
+        'user_id'   => Auth::id(),
+        'product_id' => $product->id,
+        'price'     => $price,
+        'image'     => $product->image ?? asset('default-image.jpg'),
+    ]);
+
+    return redirect()->route('wishlist.index')->with('success', 'Đã thêm vào danh sách yêu thích!');
+}
+public function remove($id)
+{
+    $wishlist = Wishlist::where('id', $id)->where('user_id', auth()->id())->first();
+
+    if (!$wishlist) {
+        return redirect()->route('wishlist.index')->with('error', 'Không tìm thấy sản phẩm!');
+    }
+
+    $wishlist->delete();
+    return redirect()->route('wishlist.index')->with('success', 'Đã xóa khỏi danh sách yêu thích!');
+}
+
 }

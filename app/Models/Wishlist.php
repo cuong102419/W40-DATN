@@ -21,10 +21,12 @@ class Wishlist extends Model
     
     // Liên kết với User
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
     // Liên kết với Product
-    public function product() {
-        return $this->belongsTo(Product::class);
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
     }
+    
 }
