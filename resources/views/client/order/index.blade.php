@@ -65,8 +65,10 @@
                                     <div class="col-md-12">
                                         <input id="payment_method" type="hidden" name="payment_method" class="form-control"
                                             value="">
-                                            <input type="hidden" name="total" value="" >
-                                            <input type="hidden" name="discount_amount" value="{{ $voucher / 100 * $subTotal }}" >
+                                        <input type="hidden" name="total" value="">
+                                        <input type="hidden" name="discount_amount"
+                                            value="{{ $voucher / 100 * $subTotal }}">
+                                        <input type="hidden" name="redirect">
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group mb--0">
@@ -157,13 +159,14 @@
                                     </tr>
                                     <tr class="shipping">
                                         <th colspan="2">Shipping</th>
-                                        <td>chưa có</td>
+                                        <td>Cố định: 100.000đ</td>
                                     </tr>
                                     <tr class="">
                                         <th colspan="2">Khuyến mại</th>
                                         <td>
                                             @if($voucher)
-                                                -{{ $voucher }}% <span>({{ number_format($voucher / 100 * $subTotal,0, '.', '.') }}đ)</span>
+                                                -{{ $voucher }}%
+                                                <span>({{ number_format($voucher / 100 * $subTotal, 0, '.', '.') }}đ)</span>
                                             @else
                                                 Không có
                                             @endif
@@ -174,7 +177,11 @@
                                             <h5>Thành tiền</h5>
                                         </th>
                                         <td>
-                                            <h5 class="text-danger">{{ number_format($subTotal * (1 - $voucher / 100), 0, '.', '.') }}đ</h5>
+                                            @if ($subTotal)
+                                                <h5 class="text-danger">
+                                                    {{ number_format(($subTotal * (1 - $voucher / 100)) + 100000, 0, '.', '.') }}đ
+                                                </h5>
+                                            @endif
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -187,18 +194,16 @@
                                             <label for="payment_cod">Thanh toán khi nhận hàng (COD)</label>
                                         </div>
                                     </div>
-
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <input type="radio" name="payment_method" value="MOMO" id="payment_momo">
-                                            <label for="payment_momo">Ví điện tử MOMO</label>
-                                        </div>
-                                    </div>
-
                                     <div class="card">
                                         <div class="card-header">
                                             <input type="radio" name="payment_method" value="ATM" id="payment_vnpay">
                                             <label for="payment_vnpay">Chuyển khoản ngân hàng</label>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <input type="radio" name="payment_method" value="MOMO" id="payment_momo">
+                                            <label for="payment_momo">Ví điện tử MOMO</label>
                                         </div>
                                     </div>
                                 </div>
@@ -214,7 +219,8 @@
                                             khoản và điều kiện khi mua hàng <span class="required">*</span></label>
                                     </div>
                                 </div>
-                                <button type="submit" id="checkout-btn" class="btn-theme w-100">Thanh toán</button>
+                                <button type="submit" id="checkout-btn" name="redirect" class="btn-theme w-100">Thanh
+                                    toán</button>
                             </div>
                         </div>
                     </div>

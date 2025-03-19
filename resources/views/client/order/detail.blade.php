@@ -146,9 +146,19 @@
                                     <div class="mb-4">
                                         <span class="small">{{ $payment_method[$order->payment_method] }}</span>
                                     </div>
+                                    <div class="mb-4">
+                                        <span
+                                            class="small fw-bold {{ $payment_status[$order->payment_status]['class'] }}">{{ $payment_status[$order->payment_status]['value'] }}</span>
+                                    </div>
                                 </td>
                                 <td class="text-end">
-                                    <span><i class="fa fa-money fa-lg" aria-hidden="true"></i></span>
+                                    <span>
+                                        @if ($order->payment_method == 'COD')
+                                            <i class="fa fa-money fa-lg" aria-hidden="true"></i>
+                                        @else
+                                            <i class="fa fa-credit-card fa-lg" aria-hidden="true"></i>
+                                        @endif
+                                    </span>
                                 </td>
                             </tr>
                             <tr>
