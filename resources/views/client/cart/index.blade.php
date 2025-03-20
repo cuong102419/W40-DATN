@@ -30,8 +30,8 @@
                                         @foreach (session('cart') as $cart)
                                             <tr class="cart-product-item">
                                                 <td>
-                                                    <div class="me-3 ms-3">
-                                                        <input type="checkbox" name="id[]" value="{{ $cart['id'] }}">
+                                                    <div class="me-3">
+                                                        <input type="checkbox" class="cart-checkbox" name="id[]" value="{{ $cart['id'] }}">
                                                     </div>
                                                 </td>
                                                 <td class="product-thumb">
@@ -42,10 +42,10 @@
                                                 </td>
                                                 <td class="product-name">
                                                     <div>
-                                                        <h4 class="fw-bold text-center">
+                                                        <h5 class="fw-bold text-center">
                                                             <a href="{{ route('product.detail', $cart['product_id']) }}"
                                                                 class="text-dark">{{ $cart['name'] }}</a>
-                                                        </h4>
+                                                        </h5>
                                                         <div class="row justify-content-center">
                                                             <div class="col-auto">
                                                                 <span class="fw-bold small">Kích cỡ: {{ $cart['size'] }}</span>
@@ -108,7 +108,7 @@
                                                     <p class="value">Tổng giá:</p>
                                                 </td>
                                                 <td class="">
-                                                    <p class="price">{{ number_format($total) }}đ</p>
+                                                    <p class="price" id="selected-price">0đ</p>
                                                 </td>
                                             </tr>
                                             <tr class="shipping">
@@ -116,7 +116,7 @@
                                                     <p class="value">Vận chuyển:</p>
                                                 </td>
                                                 <td>
-                                                    <p class="price">0</p>
+                                                    <p class="price">100.000đ</p>
                                                 </td>
                                             </tr>
                                             <tr class="order-total">
@@ -124,7 +124,7 @@
                                                     <h6 class="value">Tổng:</h6>
                                                 </td>
                                                 <td>
-                                                    <h6 class="price text-danger">{{ number_format($total) }}đ</h6>
+                                                    <h6 class="price text-danger" id="selected-total">0đ</h6>
                                                 </td>
                                             </tr>
                                         </tbody>

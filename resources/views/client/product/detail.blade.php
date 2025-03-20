@@ -143,7 +143,9 @@
                                         @csrf
                                         {{-- Thêm vào yêu thích --}}
                                         <div class="product-wishlist-compare">
-                                            <a href="#"><i class="pe-7s-like"></i> Thêm vào yêu thích</a>
+                                            <button type="submit" class="text-decoration-none btn btn-link text-danger p-3">
+                                                <i class="pe-7s-like fa-lg"></i> Thêm vào yêu thích
+                                            </button>
                                         </div>
                                     </form>
 

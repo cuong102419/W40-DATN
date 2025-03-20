@@ -60,8 +60,9 @@ class OrderController extends Controller
             'completed' => ['value' => 'Hoàn thành.', 'class' => 'text-success'],
             'canceled' => ['value' => 'Hủy đơn.', 'class' => 'text-danger'],
         ];
+        $day = ucfirst(mb_strtolower($order->created_at->locale('vi')->translatedFormat('l')));        ;
 
-        return view('admin.order.detail', compact('orderItems', 'order', 'payment_status', 'payment_method', 'status'));
+        return view('admin.order.detail', compact('orderItems', 'order', 'payment_status', 'payment_method', 'status', 'day'));
     }
 
     public function updatePayment(Request $request, Order $order)

@@ -94,3 +94,33 @@ $(document).ready(function () {
     });
 
 });
+
+$(document).ready(function () {
+    let checkboxes = $(".cart-checkbox");
+    let selectedTotal = $("#selected-total");
+    let selectedPrice = $("#selected-price");
+    const shippingFee = 100000;
+
+    function updateTotal() {
+        let totalPrice = 0;
+        let hasSelected = false;
+
+        checkboxes.each(function () {
+            if ($(this).prop("checked")) {
+                hasSelected = true;
+                let row = $(this).closest(".cart-product-item");
+                let priceText = row.find(".product-subtotal .price").text().trim();
+                let price = parseInt(priceText.replace(/\D/g, ""));
+                totalPrice += price;
+            }
+        });
+
+        selectedPrice.text(totalPrice.toLocaleString("vi-VN") + "đ");
+
+        let finalTotal = hasSelected ? totalPrice + shippingFee : 0;
+        selectedTotal.text(finalTotal.toLocaleString("vi-VN") + "đ");
+    }
+
+    checkboxes.change(updateTotal);
+});
+
