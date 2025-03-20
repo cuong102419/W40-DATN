@@ -20,6 +20,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,8 +40,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('/product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('product.index');
-    Route::get('/{product}', [ProductController::class, 'detail'])->name('product.detail');
-    Route::get('/{product}', [ProductController::class, 'detail'])->name('product.detail');
+    Route::get('/{product}', [ProductController::class, 'detail'])
+    ->middleware(['check.purchase'])
+    ->name('product.detail');
 });
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
@@ -69,7 +71,10 @@ Route::prefix('/cart')->group(function () {
     Route::get('/delete/{id}', [CartController::class, 'delete'])->name('cart.delete.product');
     Route::put('/update', [CartController::class, 'update'])->name('cart.update');
 });
-
+Route::middleware(['auth', 'check.purchase'])->group(function () {
+    Route::get('/reviews/{product_id}', [ReviewController::class, 'index'])->name('reviews.index');
+    Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
+});
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');

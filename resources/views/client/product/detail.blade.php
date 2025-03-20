@@ -139,13 +139,11 @@
                                         </div>
 
                                     </form>
-                                    <form action="{{ route('wishlist.add', ['product' => $product->id]) }}" method="POST">
+                                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                                         @csrf
                                         {{-- Thêm vào yêu thích --}}
                                         <div class="product-wishlist-compare">
-                                            <button type="submit" class="btn btn-link text-danger p-3">
-                                                <i class="pe-7s-like"></i> Thêm vào yêu thích
-                                            </button>
+                                            <a href="#"><i class="pe-7s-like"></i> Thêm vào yêu thích</a>
                                         </div>
                                     </form>
 
@@ -226,152 +224,291 @@
                                     <div class="reviews-form-area">
                                         <h4 class="title">Write a review</h4>
                                         <div class="reviews-form-content">
-                                            <form action="#">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="for_name">Name</label>
-                                                            <input id="for_name" class="form-control" type="text"
-                                                                placeholder="Enter your name">
+                                            @if(Auth::check()) 
+                                                @if($hasPurchased) 
+                                                    <form action="{{ route('reviews.store') }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="for_name">Name</label>
+                                                                    <input id="for_name" class="form-control" type="text" name="name"
+                                                                        value="{{ Auth::user()->name }}" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="for_email">Email</label>
+                                                                    <input id="for_email" class="form-control" type="email" name="email"
+                                                                        value="{{ Auth::user()->email }}" readonly>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <span class="title">Rating</span>
+                                                                    <div class="review-rating">
+                                                                        <span class="star" data-value="1">&#9733;</span>
+                                                                        <span class="star" data-value="2">&#9733;</span>
+                                                                        <span class="star" data-value="3">&#9733;</span>
+                                                                        <span class="star" data-value="4">&#9733;</span>
+                                                                        <span class="star" data-value="5">&#9733;</span>
+                                                                    </div>
+                                                                    <input type="hidden" name="rating" id="rating-value">
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="for_review-title">Review Title</label>
+                                                                    <input id="for_review-title" class="form-control" type="text"
+                                                                        name="title" placeholder="Give your review a title">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label for="for_comment">Body of Review</label>
+                                                                    <textarea id="for_comment" class="form-control" name="comment"
+                                                                        placeholder="Write your comments here"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-submit-btn">
+                                                                    <button type="submit" class="btn-submit">Post comment</button>
+                                                                </div>
+                                                            </div>
                                                         </div>
+                                                    </form>
+                                                @else
+                                                    <div class="alert alert-warning">
+                                                        You must purchase this product before leaving a review.
                                                     </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="for_email">Email</label>
-                                                            <input id="for_email" class="form-control" type="email"
-                                                                placeholder="john.smith@example.com">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <span class="title">Rating</span>
-                                                            <ul class="review-rating">
-                                                                <li class="fa fa-star-o"></li>
-                                                                <li class="fa fa-star-o"></li>
-                                                                <li class="fa fa-star-o"></li>
-                                                                <li class="fa fa-star-o"></li>
-                                                                <li class="fa fa-star-o"></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="for_review-title">Review Title</label>
-                                                            <input id="for_review-title" class="form-control" type="text"
-                                                                placeholder="Give your review a title">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label for="for_comment">Body of Review (1500)</label>
-                                                            <textarea id="for_comment" class="form-control"
-                                                                placeholder="Write your comments here"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="form-submit-btn">
-                                                            <button type="submit" class="btn-submit">Post comment</button>
-                                                        </div>
-                                                    </div>
+                                                @endif
+                                            @else
+                                                <div class="alert alert-warning">
+                                                    Please <a href="{{ route('login') }}">login</a> to leave a review.
                                                 </div>
-                                            </form>
+                                            @endif
                                         </div>
                                     </div>
-                                    <!--== End Reviews Form Item ==-->
+                                               
+                                    
+                                    
+                                    
 
-                                    <div class="reviews-content-body">
-                                        <!--== Start Reviews Content Item ==-->
-                                        <div class="review-item">
-                                            <ul class="review-rating">
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                            </ul>
-                                            <h3 class="title">Awesome shipping service!</h3>
-                                            <h5 class="sub-title"><span>Nantu Nayal</span> no <span>Sep 30, 2022</span></h5>
-                                            <p>It has survived not only five centuries, but also the leap into electronic
-                                                typesetting, remaining essentially unchanged. It was popularised in the
-                                                1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-                                                and more recently with desktop publishing software like Aldus PageMaker
-                                                including versions of Lorem Ipsum.</p>
-                                            <a href="#/">Report as Inappropriate</a>
-                                        </div>
-                                        <!--== End Reviews Content Item ==-->
 
-                                        <!--== Start Reviews Content Item ==-->
-                                        <div class="review-item">
-                                            <ul class="review-rating">
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star-o"></li>
-                                                <li class="fa fa-star-o"></li>
-                                                <li class="fa fa-star-o"></li>
-                                                <li class="fa fa-star-o"></li>
-                                            </ul>
-                                            <h3 class="title">Low Quality</h3>
-                                            <h5 class="sub-title"><span>Oliv hala</span> no <span>Sep 30, 2022</span></h5>
-                                            <p>My Favorite White Sneakers From Splurge To Save the 1500s is reproduced below
-                                                for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum
-                                                et Malorum" by Cicero are also reproduced in their exact original form,
-                                                accompanied by English versions from the 1914 translation by H. Rackham.</p>
-                                            <a href="#/">Report as Inappropriate</a>
-                                        </div>
-                                        <!--== End Reviews Content Item ==-->
 
-                                        <!--== Start Reviews Content Item ==-->
-                                        <div class="review-item">
-                                            <ul class="review-rating">
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                            </ul>
-                                            <h3 class="title">Excellent services!</h3>
-                                            <h5 class="sub-title"><span>Halk Marron</span> no <span>Sep 30, 2022</span></h5>
-                                            <p>The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a
-                                                line in section 1.10.32.</p>
-                                            <a href="#/">Report as Inappropriate</a>
-                                        </div>
-                                        <!--== End Reviews Content Item ==-->
 
-                                        <!--== Start Reviews Content Item ==-->
-                                        <div class="review-item">
-                                            <ul class="review-rating">
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star-o"></li>
-                                                <li class="fa fa-star-o"></li>
-                                            </ul>
-                                            <h3 class="title">Price is very high</h3>
-                                            <h5 class="sub-title"><span>Musa</span> no <span>Sep 30, 2022</span></h5>
-                                            <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has
-                                                roots in a piece of classical Latin literature from 45 BC, making it over
-                                                2000 years old.</p>
-                                            <a href="#/">Report as Inappropriate</a>
-                                        </div>
-                                        <!--== End Reviews Content Item ==-->
 
-                                        <!--== Start Reviews Content Item ==-->
-                                        <div class="review-item">
-                                            <ul class="review-rating">
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star-o"></li>
-                                            </ul>
-                                            <h3 class="title">Normal</h3>
-                                            <h5 class="sub-title"><span>Muhammad</span> no <span>Sep 30, 2022</span></h5>
-                                            <p>There are many variations of passages of Lorem Ipsum available, but the
-                                                majority have suffered alteration in some form, by injected humour</p>
-                                            <a href="#/">Report as Inappropriate</a>
-                                        </div>
-                                        <!--== End Reviews Content Item ==-->
-                                    </div>
 
+
+
+
+                                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    
                                     <!--== Start Reviews Pagination Item ==-->
                                     <div class="review-pagination">
                                         <span class="pagination-pag">1</span>
