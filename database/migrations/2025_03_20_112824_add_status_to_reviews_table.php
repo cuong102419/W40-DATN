@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('image_lists', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_id')->constrained();
-            
-            $table->string('image_url');
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::table('reviews', function (Blueprint $table) {
+            $table->boolean('status')->default(true);
         });
     }
 
@@ -26,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('image_lists');
+        Schema::table('reviews', function (Blueprint $table) {
+            //
+        });
     }
 };

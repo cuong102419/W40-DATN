@@ -1,4 +1,39 @@
 
+document.addEventListener("DOMContentLoaded", function () {
+    const stars = document.querySelectorAll(".review-rating .star");
+    const ratingInput = document.getElementById("rating-value");
+
+    stars.forEach(star => {
+        star.addEventListener("click", function () {
+            const rating = this.getAttribute("data-value");
+            ratingInput.value = rating;
+
+            // Xóa class "selected" khỏi tất cả sao
+            stars.forEach(s => s.classList.remove("selected"));
+
+            // Thêm class "selected" cho các sao đã chọn
+            for (let i = 0; i < rating; i++) {
+                stars[i].classList.add("selected");
+            }
+        });
+
+        star.addEventListener("mouseover", function () {
+            const rating = this.getAttribute("data-value");
+
+            // Xóa hover cũ
+            stars.forEach(s => s.classList.remove("hover"));
+
+            // Thêm hover cho sao tương ứng
+            for (let i = 0; i < rating; i++) {
+                stars[i].classList.add("hover");
+            }
+        });
+
+        star.addEventListener("mouseleave", function () {
+            stars.forEach(s => s.classList.remove("hover"));
+        });
+    });
+});
 // quantity product
 document.addEventListener("DOMContentLoaded", function () {
     let selectedColor = null;
