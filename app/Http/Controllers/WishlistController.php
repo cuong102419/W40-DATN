@@ -13,10 +13,9 @@ class WishlistController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth'); // Yêu cầu đăng nhập
+        $this->middleware('auth');
     }
 
-    // 🛒 Hiển thị danh sách Wishlist
     public function index()
 {
     
@@ -34,13 +33,10 @@ class WishlistController extends Controller
         return redirect()->route('wishlist.index')->with('error', 'Sản phẩm đã có trong danh sách yêu thích!');
     }
 
-    // Lấy biến thể sản phẩm (nếu có)
     $productVariant = ProductVariant::where('product_id', $product->id)->first();
 
-    // Kiểm tra nếu sản phẩm có biến thể thì lấy giá từ biến thể, nếu không lấy giá gốc
     $price = $productVariant ? $productVariant->price : $product->price;
 
-    // Kiểm tra giá trị price
     if (!$price) {
         return redirect()->route('wishlist.index')->with('error', 'Sản phẩm chưa có giá, không thể thêm vào danh sách yêu thích!');
     }

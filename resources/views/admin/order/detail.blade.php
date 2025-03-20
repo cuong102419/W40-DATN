@@ -90,6 +90,13 @@
                                 </td>
                             </tr>
                             <tr>
+                                <th>Vận chuyển</th>
+                                <td colspan="2">
+                                    <span
+                                        class="">{{ number_format($order->shipping, 0, '.', '.') }}đ</span>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>Tổng cộng</th>
                                 <td colspan="2">
                                     <span
@@ -132,7 +139,7 @@
                             <tr>
                                 <th>Ngày tạo</th>
                                 <td colspan="2">
-                                    <span>{{ $order->created_at->format('d-m-Y') }}</span>
+                                    <span>{{$day}}, {{ $order->created_at->format('d \t\h\á\n\g m, Y') }}</span>
                                 </td>
                             </tr>
                         </table>

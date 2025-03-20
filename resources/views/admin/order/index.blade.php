@@ -41,10 +41,10 @@
                                         </td>
                                         <td>
                                             <span
-                                                class="text-danger fw-bold">{{ number_format($order->total, 0, '.', '.') }}đ</span>
+                                                class="text-dark fw-bold">{{ number_format($order->total, 0, '.', '.') }}đ</span>
                                         </td>
                                         <td>
-                                            {{ $order->created_at->format('d-m-Y') }}
+                                            {{ $order->created_at->format('d \t\h\g m, Y') }}
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('admin-order.detail', $order->id) }}" class="btn text-primary"><i
