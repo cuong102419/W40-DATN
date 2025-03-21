@@ -197,7 +197,7 @@
                                     <div class="card">
                                         <div class="card-header">
                                             <input type="radio" name="payment_method" value="ATM" id="payment_vnpay">
-                                            <label for="payment_vnpay">Chuyển khoản ngân hàng</label>
+                                            <label for="payment_vnpay">Thanh toán thẻ qua VNPay</label>
                                         </div>
                                     </div>
                                     <div class="card">

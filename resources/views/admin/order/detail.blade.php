@@ -15,19 +15,25 @@
                                 class="fas fa-arrow-left me-2"></i>Danh sách</a>
                     </div>
                     <div>
-                        <form action="{{ route('admin-order.status', $order->id) }}" method="post">
+                        <form action="{{ route('admin-order.status', $order->id) }}" method="post" id="confirm-order">
                             @csrf
                             @method('PUT')
-
+                            <input type="hidden" name="action" value="">
                             @if ($order->status == 'unconfirmed')
-                                <button onclick="return confirm('Bạn có muốn xác nhận đơn hàng này.')" type="submit" name="action" value="confirmed" class="btn btn-sm btn-primary"><i class="fas fa-check me-2"></i>Xác nhận</button>
-                                <button onclick="return confirm('Bạn có muốn hủy, nếu hủy sẽ không thể hoàn tác lại.')" type="submit" name="action" value="canceled" class="btn btn-sm btn-danger"><i class="fas fa-ban me-2"></i>Hủy</button>
+                                <button onclick="return confirm('Bạn có muốn xác nhận đơn hàng này.')" type="submit"
+                                    name="action" value="confirmed" class="btn btn-sm btn-primary"><i
+                                        class="fas fa-check me-2"></i>Xác nhận</button>
+                                <button onclick="return confirm('Bạn có muốn hủy, nếu hủy sẽ không thể hoàn tác lại.')"
+                                    type="submit" name="action" value="canceled" class="btn btn-sm btn-danger"><i class="far fa-window-close me-2"></i>Hủy</button>
                             @elseif ($order->status == 'confirmed')
-                                <button type="submit" name="action" value="shipping" class="btn btn-sm btn-primary"><i class="fas fa-shipping-fast me-2"></i>Giao hàng</button>
+                                <button type="submit" name="action" value="shipping" class="btn btn-sm btn-primary"><i
+                                        class="fas fa-shipping-fast me-2"></i>Giao hàng</button>
                             @elseif ($order->status == 'shipping')
-                                <button type="submit" name="action" value="delivered" class="btn btn-sm btn-primary"><i class="fas fa-truck-loading me-2"></i>Hoàn thành giao hàng</button>
+                                <button type="submit" name="action" value="delivered" class="btn btn-sm btn-primary"><i
+                                        class="fas fa-truck-loading me-2"></i>Hoàn thành giao hàng</button>
                             @elseif ($order->status == 'delivered')
-                                <button type="submit" name="action" value="completed" class="btn btn-sm btn-success"><i class="fas fa-check me-2"></i>Hoàn thành</button>
+                                <button type="submit" name="action" value="completed" class="btn btn-sm btn-success"><i
+                                        class="fas fa-check me-2"></i>Hoàn thành</button>
                             @endif
                         </form>
                     </div>
@@ -37,7 +43,7 @@
                         <table class="table">
                             <tr>
                                 <th>Trạng thái đơn hàng</th>
-                                <th>
+                                <th colspan="2">
                                     <span
                                         class="{{ $status[$order->status]['class'] }}">{{ $status[$order->status]['value'] }}</span>
                                 </th>
@@ -78,22 +84,20 @@
                                         </div>
                                     </td>
                                     <td colspan="2">
-                                        <span class="fw-bold">{{ number_format($item->unit_price, 0, '.', '.') }}đ</span>
+                                        <span>{{ number_format($item->unit_price, 0, '.', '.') }}đ</span>
                                     </td>
                                 </tr>
                             @endforeach
                             <tr>
                                 <th>Giảm giá</th>
                                 <td colspan="2">
-                                    <span
-                                        class="">{{ number_format($order->discount_amount, 0, '.', '.') }}đ</span>
+                                    <span class="">{{ number_format($order->discount_amount, 0, '.', '.') }}đ</span>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Vận chuyển</th>
                                 <td colspan="2">
-                                    <span
-                                        class="">{{ number_format($order->shipping, 0, '.', '.') }}đ</span>
+                                    <span class="">{{ number_format($order->shipping, 0, '.', '.') }}đ</span>
                                 </td>
                             </tr>
                             <tr>
@@ -146,28 +150,32 @@
                     </div>
                     <div class="mt-5">
                         <h5>Thông tin khách hàng</h5>
-                        <form action="{{ route('admin-order.info', $order->id) }}" method="post" class="mt-3">
+                        <form id="custom-info" action="{{ route('admin-order.info', $order->id) }}" method="post" class="mt-3">
                             @csrf
                             @method('PUT')
                             <div class="row">
                                 <div class="col">
                                     <label for="" class="form-label">Họ tên</label>
                                     <input type="text" name="fullname" class="form-control" value="{{ $order->fullname }}">
+                                    <span class="text-danger error-fullname mt-2 d-block"></span>
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label">Số điện thoại</label>
                                     <input type="text" name="phone_number" class="form-control"
                                         value="{{ $order->phone_number }}">
+                                    <span class="text-danger error-phone-number mt-2 d-block"></span>
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col">
                                     <label for="" class="form-label">Email</label>
                                     <input type="text" name="email" class="form-control" value="{{ $order->email }}">
+                                    <span class="text-danger error-email mt-2 d-block"></span>
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label">Địa chỉ</label>
                                     <input type="text" name="address" class="form-control" value="{{ $order->address }}">
+                                    <span class="text-danger error-address mt-2 d-block"></span>
                                 </div>
                             </div>
                             <div class="mt-3">
@@ -185,5 +193,11 @@
             </div>
         </div>
     </div>
+    <script>
+        $('#confirm-order button[type="submit"]').click(function () {
+            let actionValue = $(this).val();
+            $('#confirm-order input[name="action"]').val(actionValue);
+        });
+    </script>
     <script src="{{ asset('administrator/js/order.js') }}"></script>
 @endsection

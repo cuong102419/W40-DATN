@@ -83,7 +83,7 @@
                     </tr>
                     <tr>
                         <th>Ngày tạo</th>
-                        <td>{{ $product->created_at->format('d-m-Y') }}</td>
+                        <td>{{ $product->created_at->format('d \T\h\á\n\g m, Y') }}</td>
                     </tr>
                     <tr>
                         <th>Giảm giá</th>
@@ -92,6 +92,14 @@
                     <tr>
                         <th>Sản phẩm nổi bật</th>
                         <td>{{ $product->featured == 0 ? 'Không' : 'Có'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Số lượng tồn kho</th>
+                        <td>{{ $product->variants->sum('quantity') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Số lượt bán</th>
+                        <td>{{ $product->variants->sum('sales_count') }}</td>
                     </tr>
                     <tr>
                         <th colspan="2" class="text-center">Mô tả</th>

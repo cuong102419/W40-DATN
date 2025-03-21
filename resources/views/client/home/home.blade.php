@@ -169,7 +169,7 @@
                     <div class="product-slider-wrap">
                         <div class="swiper-container product-slider-col4-container">
                             <div class="swiper-wrapper">
-                                @foreach ($products as $product)
+                                @foreach ($sellWell as $product)
                                     <div class="swiper-slide">
                                         <!--== Start Product Item ==-->
                                         <div class="product-item">

@@ -16,7 +16,7 @@ class OrderController extends Controller
         $orders = Order::latest('id')->paginate(10);
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
-            'ATM' => "Thanh toán qua thẻ",
+            'ATM' => "Thanh toán qua VNPay",
             'MOMO' => 'Ví điện tử MOMO'
         ];
         $payment_status = [
@@ -43,7 +43,7 @@ class OrderController extends Controller
         $orderItems = OrderItem::where('order_id', $order->id)->get();
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD).',
-            'ATM' => "Thanh toán qua thẻ.",
+            'ATM' => "Thanh toán qua VNPay.",
             'MOMO' => 'Ví điện tử MOMO.'
         ];
         $payment_status = [
@@ -90,10 +90,23 @@ class OrderController extends Controller
             'email' => ['required', 'email'],
             'address' => ['required', 'min:4'],
             'note' => ['nullable']
+        ], [
+            'fullname.required' => 'Không được để trống.',
+            'fullname.min' => 'Tối thiểu 4 ký tự.',
+            'phone_number.required' => 'Không được để trống.',
+            'phone_number.phone' => 'Số không hợp lệ.',
+            'email.required' => 'Không được để trống.',
+            'email.email' => 'Email không hợp lệ.',
+            'address.required' => 'Không được để trống.',
+            'address.min' => 'Tối thiểu 4 ký tự.',
         ]);
+
         $order->update($data);
 
-        return redirect()->back()->with('success', 'Cập nhật thành công.');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật thành công.'
+        ], Response::HTTP_OK);
     }
 
     public function status(Request $request, Order $order)
@@ -102,11 +115,17 @@ class OrderController extends Controller
             foreach ($order->orderItems as $item) {
                 $variant = ProductVariant::find($item->product_variant_id);
                 if (!$variant) {
-                    return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
+                    return response()->json([
+                        'status' =>'error',
+                        'message' => 'Sản phẩm không tồn tại.'
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
 
                 if ($item->quantity > $variant->quantity) {
-                    return redirect()->back()->with('error', 'Số lượng hàng trong kho không đủ.');
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Số lượng hàng trong kho không đủ.'
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }
 
@@ -114,40 +133,56 @@ class OrderController extends Controller
                 $variant = ProductVariant::find($item->product_variant_id);
                 $variant->quantity -= $item->quantity;
                 $variant->save();
-                $order->status = 'confirmed';
-                $order->save();
                 ProductVariant::find($item->product_variant_id)->increment('sales_count');
             }
+            
+            $order->status = 'confirmed';
+            $order->save();
 
-            return redirect()->back()->with('success', 'Cập nhật thành công.');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật thành công.' 
+            ], Response::HTTP_OK);
         }
 
         if ($request->input('action') == 'canceled') {
             $order->status = 'canceled';
             $order->save();
 
-            return redirect()->back()->with('success', 'Cập nhật thành công.');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật thành công.' 
+            ], Response::HTTP_OK);
         }
 
         if ($request->input('action') == 'shipping') {
             $order->status = 'shipping';
             $order->save();
 
-            return redirect()->back()->with('success', 'Cập nhật thành công.');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật thành công.' 
+            ], Response::HTTP_OK);
         }
 
         if ($request->input('action') == 'delivered') {
             $order->status = 'delivered';
             $order->save();
 
-            return redirect()->back()->with('success', 'Cập nhật thành công.');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật thành công.' 
+            ], Response::HTTP_OK);
         }
 
         if ($request->input('action') == 'completed') {
             $order->status = 'completed';
             $order->save();
 
-            return redirect()->back()->with('success', 'Cập nhật thành công.');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật thành công.' 
+            ], Response::HTTP_OK);
         }
     }
 }

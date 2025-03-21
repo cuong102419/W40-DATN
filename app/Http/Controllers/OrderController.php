@@ -109,7 +109,7 @@ class OrderController extends Controller
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
             'MOMO' => 'Ví điện tử MOMO',
-            'ATM' => 'Thẻ ngân hàng.',
+            'ATM' => 'Thanh toán qua VNPay.',
         ];
         $orderItems = OrderItem::where('order_id', $order->id)->get();
         return view('client.order.checkout', compact('order', 'payment_method', 'orderItems'));
@@ -145,7 +145,7 @@ class OrderController extends Controller
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
             'MOMO' => 'Ví điện tử MOMO',
-            'ATM' => 'Thẻ ngân hàng.',
+            'ATM' => 'Thanh toán qua VNPay.',
         ];
         $payment_status = [
             'unpaid' => ['value' => 'Chưa thanh toán', 'class' => 'text-secondary'],

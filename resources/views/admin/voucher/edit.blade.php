@@ -27,17 +27,17 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Giá trị khuyến mãi</label>
-                        <input type="text" name="value" class="form-control mb-2" value="{{ $voucher->value }}">
+                        <input type="number" min="1" max="100" step="0.1" name="value" class="form-control mb-2" value="{{ $voucher->value }}">
                         <span class="text-danger error-value"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Số Lượng</label>
-                        <input type="text" name="quantity" class="form-control mb-2" value="{{ $voucher->quantity }}">
+                        <input type="number" min="1" name="quantity" class="form-control mb-2" value="{{ $voucher->quantity }}">
                         <span class="text-danger error-quantity"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Ngày kết thúc</label>
-                        <input type="text" name="expiration_date" class="form-control mb-2" value="{{ $voucher->expiration_date }}">
+                        <input type="date" name="expiration_date" class="form-control mb-2" value="{{ $voucher->expiration_date }}">
                         <span class="text-danger error-expiration_date"></span>
                     </div>
                     <div class="mb-3">

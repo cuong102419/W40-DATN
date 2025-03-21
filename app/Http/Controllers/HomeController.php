@@ -7,8 +7,11 @@ use App\Models\Product;
 
 class HomeController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $products = Product::whereHas('variants')->where('featured', true)->latest('id')->paginate(10);
-        return view('client.home.home', compact('products'));
+        $sellWell = Product::whereHas('variants')->withSum('variants as sale_count', 'sales_count')->orderByDesc('sale_count')->get();
+
+        return view('client.home.home', compact('products', 'sellWell'));
     }
 }
