@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('vouchers', function (Blueprint $table) {
+            $table->dropForeign(['product_id']); // Xóa khóa ngoại
         $table->dropColumn(['product_id']);
         });
     }
