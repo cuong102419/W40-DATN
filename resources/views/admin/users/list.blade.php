@@ -1,4 +1,9 @@
 @extends('admin/layout/master')
+
+@section('title')
+    Người dùng
+@endsection
+
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -35,7 +40,7 @@
                                         <span class="{{ $status[$user->status]['class'] }} fw-bold">{{ $status[$user->status]['value'] }}</span>
                                     </td>
                                     <td>
-                                        {{ $user->created_at->format('d-m-Y') }}
+                                        {{ $user->created_at->format('d \T\h\á\n\g m, Y') }}
                                     </td>
                                     <td>
                                         <!-- Button trigger modal -->
