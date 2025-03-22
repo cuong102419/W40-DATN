@@ -24,6 +24,7 @@
                                 <th scope="col">Hình ảnh</th>
                                 <th scope="col">Tên sản phẩm</th>
                                 <th>Số lượng</th>
+                                <th>Lượt bán</th>
                                 <th>Thương hiệu</th>
                                 <th>Danh mục</th>
                                 <th scope="col" style="width: 10%" class="text-center">Hành động</th>
@@ -43,6 +44,7 @@
                                     </td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->variants->sum('quantity') }}</td>
+                                    <td>{{ $product->variants->sum('sales_count') }}</td>
                                     <td>{{ $product->brand->name }}</td>
                                     <td>{{ $product->category->name }}</td>
                                     <td>

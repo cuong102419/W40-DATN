@@ -10,37 +10,37 @@
         <div class="row g-4">
             <div class="col-sm-6 col-xl-3">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-line fa-3x text-primary"></i>
+                    <i class="fa fa-shopping-cart fa-3x text-primary"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Today Sale</p>
-                        <h6 class="mb-0">$1234</h6>
+                        <p class="mb-2">Đơn hàng hôm nay</p>
+                        <h6 class="mb-0">{{ $todayOrders }}</h6>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-xl-3">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                    <i class="fa fa-chart-bar fa-3x text-warning"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Total Sale</p>
-                        <h6 class="mb-0">$1234</h6>
+                        <p class="mb-2">Tổng số đơn hàng</p>
+                        <h6 class="mb-0">{{ $totalOrders }}</h6>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-xl-3">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-area fa-3x text-primary"></i>
+                    <i class="fas fa-dollar-sign fa-3x text-danger"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Today Revenue</p>
-                        <h6 class="mb-0">$1234</h6>
+                        <p class="mb-2">Doanh thu hôm nay</p>
+                        <h6 class="mb-0">{{ number_format($todayRevenue, 0, '.', '.') }}đ</h6>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-xl-3">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                    <i class="fa fa-chart-pie fa-3x text-success"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Total Revenue</p>
-                        <h6 class="mb-0">$1234</h6>
+                        <p class="mb-2">Tổng doanh thu</p>
+                        <h6 class="mb-0">{{ number_format($totalRevenue, 0, '.', '.') }}đ</h6>
                     </div>
                 </div>
             </div>
@@ -55,8 +55,7 @@
             <div class="col-sm-12 col-xl-6">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Worldwide Sales</h6>
-                        <a href="">Show All</a>
+                        <h6 class="mb-4"></h6>
                     </div>
                     <canvas id="worldwide-sales"></canvas>
                 </div>
@@ -64,10 +63,16 @@
             <div class="col-sm-12 col-xl-6">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Salse & Revenue</h6>
+                        <h6 class="mb-4">Doanh thu theo ngày</h6>
                         <a href="">Show All</a>
                     </div>
                     <canvas id="salse-revenue"></canvas>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-light rounded h-100 p-4">
+                    <h6 class="mb-4">Tổng số đơn hàng theo trạng thái</h6>
+                    <canvas id="pie-chart"></canvas>
                 </div>
             </div>
         </div>
@@ -273,4 +278,15 @@
     </div>
     <!-- Widgets End -->
 
+    <script>
+        let orderStatus = @json($orderStatus);
+
+        let labels = Object.keys(orderStatus);
+        let data = Object.values(orderStatus);
+
+        let revenueData = @json($revenueDaily);
+
+        let labelsRevenue = Object.keys(revenueData);
+        let dataRevenue = Object.values(revenueData);
+    </script>
 @endsection
