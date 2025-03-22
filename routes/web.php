@@ -71,10 +71,15 @@ Route::prefix('/cart')->group(function () {
     Route::get('/delete/{id}', [CartController::class, 'delete'])->name('cart.delete.product');
     Route::put('/update', [CartController::class, 'update'])->name('cart.update');
 });
+
 Route::middleware(['auth', 'check.purchase'])->group(function () {
     Route::get('/reviews/{product_id}', [ReviewController::class, 'index'])->name('reviews.index');
-    Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::post('/reviews/{product_id}/store', [ReviewController::class, 'store'])->name('reviews.store');
 });
+
+
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
