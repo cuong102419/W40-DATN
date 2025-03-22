@@ -222,66 +222,63 @@
                                             <span class="review-write-btn">Write a review</span>
                                         </div>
                                     </div>
-
                                     <!--== Start Reviews Form Item ==-->
                                     <div class="reviews-form-area">
                                         <h4 class="title">Write a review</h4>
                                         <div class="reviews-form-content">
                                             @if(Auth::check()) 
                                                 @if($hasPurchased) 
-                                                    <form action="{{ route('reviews.store') }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="for_name">Name</label>
-                                                                    <input id="for_name" class="form-control" type="text" name="name"
-                                                                        value="{{ Auth::user()->name }}" readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="for_email">Email</label>
-                                                                    <input id="for_email" class="form-control" type="email" name="email"
-                                                                        value="{{ Auth::user()->email }}" readonly>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <span class="title">Rating</span>
-                                                                    <div class="review-rating">
-                                                                        <span class="star" data-value="1">&#9733;</span>
-                                                                        <span class="star" data-value="2">&#9733;</span>
-                                                                        <span class="star" data-value="3">&#9733;</span>
-                                                                        <span class="star" data-value="4">&#9733;</span>
-                                                                        <span class="star" data-value="5">&#9733;</span>
-                                                                    </div>
-                                                                    <input type="hidden" name="rating" id="rating-value">
-                                                                    
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="for_review-title">Review Title</label>
-                                                                    <input id="for_review-title" class="form-control" type="text"
-                                                                        name="title" placeholder="Give your review a title">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-group">
-                                                                    <label for="for_comment">Body of Review</label>
-                                                                    <textarea id="for_comment" class="form-control" name="comment"
-                                                                        placeholder="Write your comments here"></textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-12">
-                                                                <div class="form-submit-btn">
-                                                                    <button type="submit" class="btn-submit">Post comment</button>
-                                                                </div>
+                                                <form action="{{ route('reviews.store', ['product_id' => $product->id]) }}" method="POST">
+                                                    @csrf
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="for_name">Name</label>
+                                                                <input id="for_name" class="form-control" type="text" name="name"
+                                                                       value="{{ Auth::user()->name }}" readonly>
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="for_email">Email</label>
+                                                                <input id="for_email" class="form-control" type="email" name="email"
+                                                                       value="{{ Auth::user()->email }}" readonly>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <span class="title">Rating</span>
+                                                                <div class="review-rating">
+                                                                    <span class="star" data-value="1">&#9733;</span>
+                                                                    <span class="star" data-value="2">&#9733;</span>
+                                                                    <span class="star" data-value="3">&#9733;</span>
+                                                                    <span class="star" data-value="4">&#9733;</span>
+                                                                    <span class="star" data-value="5">&#9733;</span>
+                                                                </div>
+                                                                <input type="hidden" name="rating" id="rating-value">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="for_review-title">Review Title</label>
+                                                                <input id="for_review-title" class="form-control" type="text"
+                                                                       name="title" placeholder="Give your review a title">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label for="for_comment">Body of Review</label>
+                                                                <textarea id="for_comment" class="form-control" name="comment"
+                                                                          placeholder="Write your comments here"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-submit-btn">
+                                                                <button type="submit" class="btn-submit">Post comment</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                                 @else
                                                     <div class="alert alert-warning">
                                                         You must purchase this product before leaving a review.
@@ -293,7 +290,40 @@
                                                 </div>
                                             @endif
                                         </div>
-                                    </div>     
+                                    </div>   
+                                    <div class="reviews-content-body">
+                                        @forelse($reviews as $review)
+                                        
+                                            <!--== Start Reviews Content Item ==-->
+                                            <div class="review-item">
+                                                <ul class="review-rating">
+                                                    @for($i = 1; $i <= 5; $i++)
+                                                        <li class="fa {{ $i <= $review->rating ? 'fa-star' : 'fa-star-o' }}"></li>
+                                                    @endfor
+                                                </ul>
+                                                <h3 class="title">{{ $review->title }}</h3>
+                                                <h5 class="sub-title">
+                                                    <span>{{ $review->user->name ?? 'Anonymous' }}</span> 
+                                                    no <span>{{ $review->created_at->format('M d, Y') }}</span>
+                                                </h5>
+                                                <p>{{ $review->comment }}</p>
+                                                <a href="#/">Report as Inappropriate</a>
+                                            </div>
+                                            <!--== End Reviews Content Item ==-->
+                                        @empty
+                                            <p>No reviews yet. Be the first to review!</p>
+                                        @endforelse
+                                    </div>
+                                    
+                                    <!--== Start Reviews Pagination Item ==-->
+                                    <div class="review-pagination">
+                                        {{ $reviews->links('pagination::bootstrap-4') }}
+                                    </div>
+                                    <!--== End Reviews Content Item ==-->
+
+                                    <!--== Start Reviews Content Item ==-->
+                                    
+ 
                                     <!--== Start Reviews Pagination Item ==-->
                                     <div class="review-pagination">
                                         <span class="pagination-pag">1</span>
@@ -393,111 +423,4 @@
         let productDiscount = @json($product->discount);
     </script>
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 @endsection

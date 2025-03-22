@@ -12,24 +12,148 @@ class CheckPurchase
 {
     public function handle(Request $request, Closure $next)
     {
+        // dd('Middleware running...');
+
         $user = Auth::user();
         $hasPurchased = false;
 
         if ($user) {
-            $productId = $request->route('product'); // Đảm bảo route nhận đúng ID
-            $hasPurchased = Order::where('user_id', $user->id)
-                ->whereHas('orderItems', function ($query) use ($productId) {
-                    $query->where('product_variant_id', $productId);
-                })
-                ->exists();
+            // Lấy product_id từ route
+            // dd($request->route('product'));
+            $productId = $request->route('product_id') ?? $request->route('product');
+
+       
+            if ($productId) {
+                // dd(Order::where('user_id', $user->id)->get());
+                $hasPurchased = Order::where('user_id', $user->id)
+                    ->where('status', 'confirmed') // Chỉ lấy đơn hàng đã hoàn thành
+                    ->whereHas('orderItems', function ($query) use ($productId) {
+                        $query->where('product_variant_id', $productId);
+                    })
+                    ->exists();
+                
+            }
         }
 
-        // Debug xem middleware có chạy không
         // dd($hasPurchased);
 
         View::share('hasPurchased', $hasPurchased);
 
         return $next($request);
     }
+               
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 }
 

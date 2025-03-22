@@ -39,11 +39,11 @@ class ProductController extends Controller
         if (!$product) {
             return abort(404);
         }
-
+        $reviews = \App\Models\Review::where('product_id', $id)->latest()->paginate(5);
         $products = Product::with('category', 'brand', 'imageLists')->get();
         $product->increment('view');
-
-        return view('client.product.detail', compact('product', 'products'));
+        // dd($reviews);
+        return view('client.product.detail', compact('product', 'products','reviews'));
     }
 
     public function product($id)
