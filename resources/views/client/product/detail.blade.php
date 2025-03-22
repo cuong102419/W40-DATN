@@ -139,6 +139,7 @@
                                         </div>
 
                                     </form>
+
                                     <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
                                         @csrf
                                         {{-- Thêm vào yêu thích --}}
@@ -288,7 +289,7 @@
                                                 @endif
                                             @else
                                                 <div class="alert alert-warning">
-                                                    Please <a href="{{ route('login') }}">login</a> to leave a review.
+                                                    Please <a href="{{ route('signin') }}">login</a> to leave a review.
                                                 </div>
                                             @endif
                                         </div>
