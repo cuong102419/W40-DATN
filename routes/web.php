@@ -95,7 +95,7 @@ Route::prefix('/checkout')->group(function() {
     Route::post('/create', [OrderController::class, 'create'])->name('order.create');
     Route::get('/vnpay', [OrderController::class, 'vnpay_confirm'])->name('order.vnpay-confirm');
     Route::get('/momo/{order}', [OrderController::class, 'momo_confirm'])->name('order.momo-confirm');
-    Route::get('/{order}', [OrderController::class, 'checkout'])->name('order.checkout');
+    Route::get('/{encryptedId}', [OrderController::class, 'checkout'])->name('order.checkout');
     Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.apply-voucher');
 });
 

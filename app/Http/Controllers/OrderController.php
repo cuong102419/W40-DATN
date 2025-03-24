@@ -8,6 +8,7 @@ use App\Models\ProductVariant;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
@@ -75,8 +76,9 @@ class OrderController extends Controller
 
                 session()->forget('cart');
                 session()->forget('voucher');
+                $encryptedId = Crypt::encryptString($order->id);
 
-                return redirect()->route('order.checkout', $order->id)->with('success', 'Đặt hàng thành công.');
+                return redirect()->route('order.checkout', $encryptedId)->with('success', 'Đặt hàng thành công.');
             }
             $data['status'] = 'canceled';
             $data['payment_status'] = 'cancel';
@@ -104,8 +106,11 @@ class OrderController extends Controller
     }
 
 
-    public function checkout(Order $order)
+    public function checkout($encryptedId)
     {
+        $id = Crypt::decryptString($encryptedId);
+        $order = Order::find($id);
+
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
             'MOMO' => 'Ví điện tử MOMO',
