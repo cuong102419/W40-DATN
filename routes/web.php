@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SigninGoogleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
@@ -63,6 +64,13 @@ Route::post('/change-password/{user}', [AuthenticController::class, 'updatePassw
 Route::get('/profile/edit', [UserController::class, 'edit'])->middleware('auth')->name('profile.edit');
 Route::put('/profile/edit', [UserController::class, 'update'])->middleware('auth')->name('profile.update');
 Route::get('/get-similar-products', [ProductController::class, 'getSimilarProducts']);
+
+Route::prefix('/forgot-password')->group(function () {
+    Route::get('/', [ForgotPasswordController::class, 'index'])->name('forgot-password.index');
+    Route::get('/{token}', [ForgotPasswordController::class, 'confirm'])->name('forgot-password.confirm');
+    Route::post('/', [ForgotPasswordController::class, 'forgot'])->name('forgot-password.forgot');
+    Route::put('/{token}', [ForgotPasswordController::class, 'reset'])->name('forgot-password.reset');
+});
 
 Route::prefix('/cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');

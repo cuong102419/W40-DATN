@@ -36,6 +36,8 @@ class SigninGoogleController extends Controller
                     return redirect()->route('dashboard.index')->with('success', 'Đăng nhập thành công.');
                 }
 
+                Auth::login($finduser);
+                
                 return redirect()->route('home')->with('success', 'Đăng nhập thành công.');
             } else {
 

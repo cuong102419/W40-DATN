@@ -30,7 +30,7 @@ class ContactController extends Controller
         ];
 
         // Gửi email
-        Mail::to('ductmph43718@fpt.edu.vn')->send(new ContactMail((array) $request->all()));
+        Mail::to('thaisonboyboy@gmail.com')->send(new ContactMail((array) $request->all()));
 
 
 
