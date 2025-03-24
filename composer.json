@@ -11,7 +11,6 @@
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.18",
         "laravel/tinker": "^2.8",
-        "mews/captcha": "^3.4",
         "php-flasher/flasher-laravel": "^1.15",
         "php-flasher/flasher-toastr-laravel": "^1.15",
         "propaganistas/laravel-phone": "^5.3"
