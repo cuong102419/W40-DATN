@@ -316,7 +316,9 @@ class OrderController extends Controller
             session()->forget('cart');
             session()->forget('voucher');
 
-            return redirect()->route('order.checkout', $order->id)->with('success', 'Tạo đơn hàng thành công.');
+            $encryptedId = Crypt::encryptString($order->id);
+
+            return redirect()->route('order.checkout', $encryptedId)->with('success', 'Tạo đơn hàng thành công.');
         } else {
 
             session()->forget('voucher');
@@ -412,8 +414,9 @@ class OrderController extends Controller
 
             session()->forget('cart');
             session()->forget('voucher');
+            $encryptedId = Crypt::encryptString($order->id);
 
-            return redirect()->route('order.checkout', $order->id)->with('success', 'Tạo đơn hàng thành công.');
+            return redirect()->route('order.checkout', $encryptedId)->with('success', 'Tạo đơn hàng thành công.');
         } else {
 
             session()->forget('voucher');

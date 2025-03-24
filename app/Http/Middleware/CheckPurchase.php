@@ -20,18 +20,21 @@ class CheckPurchase
         if ($user) {
             // Lấy product_id từ route
             // dd($request->route('product'));
-            $productId = $request->route('product_id') ?? $request->route('product');
+            // dd($request->route()->parameters());
 
-       
+            $productId = $request->route('product_id') ?? $request->route('product');
+            // dd($productId);
+
             if ($productId) {
-                // dd(Order::where('user_id', $user->id)->get());
+                // dd(Order::where('user_id', $user->id)->where('status', 'completed')->get());
                 $hasPurchased = Order::where('user_id', $user->id)
-                    ->where('status', 'confirmed') // Chỉ lấy đơn hàng đã hoàn thành
+                    ->where('status', 'completed')
                     ->whereHas('orderItems', function ($query) use ($productId) {
-                        $query->where('product_variant_id', $productId);
+                        $query->whereHas('productVariant', function ($subQuery) use ($productId) {
+                            $subQuery->where('product_id', $productId);
+                        });
                     })
                     ->exists();
-                
             }
         }
 
@@ -41,119 +44,4 @@ class CheckPurchase
 
         return $next($request);
     }
-               
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 }
-
