@@ -173,10 +173,6 @@
                     <div class="product-review-tabs-content">
                         <ul class="nav product-tab-nav" id="ReviewTab" role="tablist">
                             <li role="presentation">
-                                <a class="active" id="information-tab" data-bs-toggle="pill" href="#information" role="tab"
-                                    aria-controls="information" aria-selected="true">Thông tin</a>
-                            </li>
-                            <li role="presentation">
                                 <a id="description-tab" data-bs-toggle="pill" href="#description" role="tab"
                                     aria-controls="description" aria-selected="false">Mô tả</a>
                             </li>
@@ -186,21 +182,6 @@
                             </li>
                         </ul>
                         <div class="tab-content product-tab-content" id="ReviewTabContent">
-                            <div class="tab-pane fade show active" id="information" role="tabpanel"
-                                aria-labelledby="information-tab">
-                                <div class="product-information">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna aliqua. Ut enim adlo minim veniam, quis nostrud
-                                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                        irure dolor in tun tuni reprehenderit in voluptate velit esse cillum dolore eu
-                                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                                        qui officia deserun mollit anim id est laborum. Sed ut perspiciatis unde omnis iste
-                                        natus error sit voluptatem accusantium doloremque laudantium, totam rel aperiam,
-                                        eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
-                                        sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
-                                        fugit, sed quia consequuntur.</p>
-                                </div>
-                            </div>
                             <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description-tab">
                                 <div class="product-description">
                                     <p>{!! $product->description !!}</p>
@@ -423,4 +404,121 @@
         let productDiscount = @json($product->discount);
     </script>
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 @endsection
