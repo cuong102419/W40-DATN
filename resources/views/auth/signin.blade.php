@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="mb-4">
-                <a href="">Quên mật khẩu</a>
+                <a href="{{ route('forgot-password.index') }}">Quên mật khẩu</a>
             </div>
             <button type="submit" class="btn btn-primary py-3 w-100 mb-4 text-uppercase">Đăng nhập</button>
             <p class="text-center mb-0">Bạn chưa có tài khoản? <a href="{{ route('signup') }}">Đăng ký</a></p>

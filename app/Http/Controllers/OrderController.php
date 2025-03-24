@@ -67,7 +67,6 @@ class OrderController extends Controller
                         'quantity' => $item['quantity'],
                         'unit_price' => $item['price']
                     ]);
-
                 }
 
                 if ($voucher) {
@@ -108,16 +107,20 @@ class OrderController extends Controller
 
     public function checkout($encryptedId)
     {
-        $id = Crypt::decryptString($encryptedId);
-        $order = Order::find($id);
+        try {
+            $id = Crypt::decryptString($encryptedId);
+            $order = Order::find($id);
 
-        $payment_method = [
-            'COD' => 'Thanh toán khi nhận hàng (COD)',
-            'MOMO' => 'Ví điện tử MOMO',
-            'ATM' => 'Thanh toán qua VNPay.',
-        ];
-        $orderItems = OrderItem::where('order_id', $order->id)->get();
-        return view('client.order.checkout', compact('order', 'payment_method', 'orderItems'));
+            $payment_method = [
+                'COD' => 'Thanh toán khi nhận hàng (COD)',
+                'MOMO' => 'Ví điện tử MOMO',
+                'ATM' => 'Thanh toán qua VNPay.',
+            ];
+            $orderItems = OrderItem::where('order_id', $order->id)->get();
+            return view('client.order.checkout', compact('order', 'payment_method', 'orderItems'));
+        } catch (\Throwable $th) {
+            abort(404);
+        }
     }
 
     public function list()
@@ -278,10 +281,8 @@ class OrderController extends Controller
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         $returnData = array(
-            'code' => '00'
-            ,
-            'message' => 'success'
-            ,
+            'code' => '00',
+            'message' => 'success',
             'data' => $vnp_Url
         );
         if (isset($_POST['redirect'])) {
@@ -333,7 +334,7 @@ class OrderController extends Controller
         $partnerCode = env('MOMO_PARTNERCODE');
         $accessKey = env('MOMO_ACCESSKEY');
         $secretKey = env('MOMO_SECRETKEY');
-        
+
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $total;
         $orderId = $order_id . '_' . time();
@@ -390,14 +391,15 @@ class OrderController extends Controller
         return $result;
     }
 
-    public function momo_confirm(Request $request, Order $order) {
+    public function momo_confirm(Request $request, Order $order)
+    {
         $data = $request->all();
         if (!$order) {
             session()->forget('voucher');
             return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng.');
         }
 
-        if ($data['resultCode'] == 0 ) {
+        if ($data['resultCode'] == 0) {
             $order->update([
                 'status' => 'unconfirmed',
                 'payment_status' => 'paid'
