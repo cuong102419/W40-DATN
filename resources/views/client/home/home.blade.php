@@ -19,7 +19,7 @@
                         <div class="inner-content">
                             <div class="product-collection-content">
                                 <div class="content">
-                                    <h3 class="title"><a href="shop.html">Sports Shoes</a></h3>
+                                    <h3 class="title"><a href="shop.html">Giày thể thao</a></h3>
                                 </div>
                             </div>
                             <div class="product-collection-thumb"
@@ -35,7 +35,7 @@
                         <div class="inner-content">
                             <div class="product-collection-content">
                                 <div class="content">
-                                    <h3 class="title"><a href="shop.html">Latest Shoes</a></h3>
+                                    <h3 class="title"><a href="shop.html">Giày mới nhất</a></h3>
                                 </div>
                             </div>
                             <div class="product-collection-thumb" data-bg-img="{{ asset('client/img/shop/banner/1.jpg')}}">
@@ -51,7 +51,7 @@
                         <div class="inner-content">
                             <div class="product-collection-content">
                                 <div class="content">
-                                    <h3 class="title"><a href="shop.html">Office Shoes</a></h3>
+                                    <h3 class="title"><a href="shop.html">Giày công sở</a></h3>
                                 </div>
                             </div>
                             <div class="product-collection-thumb" data-bg-img="{{ asset('client/img/shop/banner/2.jpg') }}">
@@ -138,10 +138,10 @@
             <div class="row divider-wrap divider-style1">
                 <div class="col-lg-6">
                     <div class="divider-content" data-title="NEW">
-                        <h4 class="sub-title">Saving 50%</h4>
-                        <h2 class="title">All Online Store</h2>
-                        <p class="desc">Offer Available All Shoes & Products</p>
-                        <a class="btn-theme" href="shop.html">Shop Now</a>
+                        <h4 class="sub-title">Tiết kiệm 50%</h4>
+                        <h2 class="title">Tất cả cửa hàng trực tuyến</h2>
+                        <p class="desc">Khuyến mãi có sẵn tất cả giày dép và sản phẩm</p>
+                        <a class="btn-theme" href="{{ route('product.index') }}">Mua ngay</a>
                     </div>
                 </div>
             </div>
@@ -293,16 +293,14 @@
                             <div class="content">
                                 <div class="meta-post">
                                     <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27,Jun
-                                                2030</a></li>
+                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27 tháng 6 năm 2030</a></li>
                                         <li class="author-info"><i class="fa fa-user"></i><a href="blog.html">Oaklee
                                                 Odom</a></li>
                                     </ul>
                                 </div>
-                                <h4 class="title"><a href="blog-details.html">Lorem ipsum dolor ametcons adipisicing elit
-                                        sed</a>
+                                <h4 class="title"><a href="blog-details.html">Tôi rất hài lòng với sự ưu tú của ametcons</a>
                                 </h4>
-                                <a class="post-btn" href="blog.html">Read More</a>
+                                <a class="post-btn" href="blog.html">Đọc thêm</a>
                             </div>
                         </div>
                     </div>
@@ -319,16 +317,15 @@
                             <div class="content">
                                 <div class="meta-post">
                                     <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27,Jun
-                                                2030</a></li>
+                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27 tháng 6 năm 2030</a></li>
                                         <li class="author-info"><i class="fa fa-user"></i><a href="blog.html">Oaklee
                                                 Odom</a></li>
                                     </ul>
                                 </div>
-                                <h4 class="title"><a href="blog-details.html">Celebrity Daughter Opens About Upto Having Her
-                                        Eye</a>
+                                <h4 class="title"><a href="blog-details.html">Con gái của người nổi tiếng tiết lộ về việc có
+                                    mắt của cô ấy</a>
                                 </h4>
-                                <a class="post-btn" href="blog.html">Read More</a>
+                                <a class="post-btn" href="blog.html">Đọc thêm</a>
                             </div>
                         </div>
                     </div>
@@ -345,15 +342,14 @@
                             <div class="content">
                                 <div class="meta-post">
                                     <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27,Jun
-                                                2030</a></li>
+                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27 tháng 6 năm 2030</a></li>
                                         <li class="author-info"><i class="fa fa-user"></i><a href="blog.html">Oaklee
                                                 Odom</a></li>
                                     </ul>
                                 </div>
-                                <h4 class="title"><a href="blog-details.html">Romantic Love Stories Of Hollywood Popular
-                                        Celebrities</a></h4>
-                                <a class="post-btn" href="blog.html">Read More</a>
+                                <h4 class="title"><a href="blog-details.html">Những câu chuyện tình lãng mạn của 
+                                    người nổi tiếng</a></h4>
+                                <a class="post-btn" href="blog.html">Đọc thêm</a>
                             </div>
                         </div>
                     </div>
@@ -361,6 +357,8 @@
                 </div>
             </div>
         </div>
+
+        
     </section>
     <!--== End Blog Area Wrapper ==-->
 @endsection
