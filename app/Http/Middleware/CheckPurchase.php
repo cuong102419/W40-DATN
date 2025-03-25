@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use App\Models\Order;
+use App\Models\Review;
 
 class CheckPurchase
 {
@@ -26,22 +27,192 @@ class CheckPurchase
             // dd($productId);
 
             if ($productId) {
-                // dd(Order::where('user_id', $user->id)->where('status', 'completed')->get());
-                $hasPurchased = Order::where('user_id', $user->id)
+                $order = Order::where('user_id', $user->id)
                     ->where('status', 'completed')
                     ->whereHas('orderItems', function ($query) use ($productId) {
                         $query->whereHas('productVariant', function ($subQuery) use ($productId) {
                             $subQuery->where('product_id', $productId);
+                            
                         });
                     })
-                    ->exists();
+                    
+                    ->latest('created_at') // Lấy lần mua gần nhất
+                    ->first();
+            
+                $hasPurchased = $order ? true : false;
+                // dd($hasPurchased);
+                if ($hasPurchased) {
+                    // Kiểm tra đã đánh giá chưa cho lần mua gần nhất
+                    $alreadyReviewed = Review::where('user_id', $user->id)
+                        ->where('product_id', $productId)
+                        ->where('created_at', '>=', $order->created_at) // Đánh giá sau khi mua
+                        ->exists();
+            
+                    if ($alreadyReviewed) {
+                        $hasPurchased = false;
+                    }
+                }
             }
         }
-
         // dd($hasPurchased);
+       
 
         View::share('hasPurchased', $hasPurchased);
 
         return $next($request);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 }
