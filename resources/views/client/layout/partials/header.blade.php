@@ -6,7 +6,7 @@
                     <div class="header-top-align">
                         <div class="header-top-align-start">
                             <div class="desc">
-                                <p>World Wide Completely Free Returns and Free Shipping</p>
+                                <p>Miễn phí vận chuyển toàn quốc</p>
                             </div>
                         </div>
                         <div class="header-top-align-end">
@@ -132,4 +132,48 @@
             </div>
         </div>
     </div>
+
+     {{-- <!-- Màn hình loading -->
+     <div id="loading-screen" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <style>
+        /* CSS hiệu ứng loading */
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ccc;
+            border-top-color: #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("a").on("click", function (e) {
+                var url = $(this).attr("href");
+                
+                if (!url || url === "#" || url.startsWith("javascript") || $(this).attr("target") === "_blank") {
+                    return;
+                }
+
+                $("#loading-screen").fadeIn(300);
+                e.preventDefault();
+                
+                setTimeout(function () {
+                    window.location.href = url;
+                }, 1000);
+            });
+        });
+    </script> --}}
+    
 </header>
