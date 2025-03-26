@@ -140,7 +140,7 @@
 
                                     </form>
 
-                                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST">
+                                    <form id="add-wishlist" action="{{ route('wishlist.add', $product->id) }}" method="POST">
                                         @csrf
                                         {{-- Thêm vào yêu thích --}}
                                         <div class="product-wishlist-compare">
