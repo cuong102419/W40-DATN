@@ -29,7 +29,7 @@
                                     @foreach ($wishlists as $item)
                                                             <tr class="cart-wishlist-item">
                                                                 <td class="product-remove">
-                                                                    <form action="{{ route('wishlist.remove', $item->id) }}" method="POST"
+                                                                    <form class="remove-wishlist" action="{{ route('wishlist.remove', $item->id) }}" method="POST"
                                                                         onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
                                                                         @csrf
                                                                         @method('DELETE')
@@ -100,37 +100,5 @@
         </div>
     </section>
     <!--== End Wishlist Area Wrapper ==-->
-
+    <script src="{{ asset('client/js/wishlist.js') }}"></script>
 @endsection
-@push('scripts')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).on('submit', '.add-to-cart-form', function (e) {
-            e.preventDefault();
-            let form = $(this);
-            let button = form.find('.btn-add-to-cart');
-
-            $.ajax({
-                type: "POST",
-                url: form.attr('action'),
-                data: form.serialize(),
-                dataType: "json", // Đảm bảo nhận JSON
-                beforeSend: function () {
-                    button.prop('disabled', true).text('Đang thêm...');
-                },
-                success: function (response) {
-                    alert(response.message);
-                    window.location.href = "{{ route('cart.index') }}"; // Chuyển hướng ngay sau khi thêm
-                },
-                error: function (xhr) {
-                    alert('Có lỗi xảy ra, vui lòng thử lại!');
-                },
-                complete: function () {
-                    button.prop('disabled', false).text('Thêm vào giỏ hàng');
-                }
-            });
-        });
-
-
-    </script>
-@endpush

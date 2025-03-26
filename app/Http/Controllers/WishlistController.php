@@ -40,6 +40,12 @@ class WishlistController extends Controller
      //
     public function add(Request $request, Product $product)
     {
+        if(!auth()->check()){
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích!'
+            ], 401);
+        }
         // Kiểm tra sản phẩm đã có trong danh sách yêu thích chưa
         $exists = Wishlist::where('user_id', Auth::id())
             ->where('product_id', $product->id)
@@ -47,9 +53,10 @@ class WishlistController extends Controller
 
         // Nếu sản phẩm đã có trong danh sách, hiển thị thông báo lỗi
         if ($exists) {
-            return redirect()
-                ->route('wishlist.index')
-                ->with('error', 'Sản phẩm đã có trong danh sách yêu thích!');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sản phẩm đã có trong danh sách yêu thích!'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // Lấy biến thể sản phẩm đầu tiên (nếu có) để lấy giá
@@ -74,9 +81,10 @@ class WishlistController extends Controller
         ]);
 
         // Chuyển hướng về danh sách wishlist và hiển thị thông báo thành công
-        return redirect()
-            ->route('wishlist.index')
-            ->with('success', 'Đã thêm vào danh sách yêu thích!');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Đã thêm vào danh sách yêu thích!'
+        ], Response::HTTP_OK);
     }
 
     //
@@ -92,17 +100,19 @@ class WishlistController extends Controller
 
         // Nếu sản phẩm không tồn tại trong danh sách, hiển thị thông báo lỗi
         if (!$wishlist) {
-            return redirect()
-                ->route('wishlist.index')
-                ->with('error', 'Không tìm thấy sản phẩm!');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sản phẩm không tồn tại trong danh sách yêu thích!'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         // Xóa sản phẩm khỏi wishlist
         $wishlist->delete();
 
         // Chuyển hướng về danh sách wishlist và hiển thị thông báo thành công
-        return redirect()
-            ->route('wishlist.index')
-            ->with('success', 'Đã xóa khỏi danh sách yêu thích!');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Đã xóa khỏi danh sách yêu thích!'
+        ], Response::HTTP_OK);
     }
 }
