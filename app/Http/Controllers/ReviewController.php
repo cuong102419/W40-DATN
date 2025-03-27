@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,12 +12,6 @@ class ReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($productId)
-    {
-        $reviews = Review::where('product_id', $productId)->latest()->get();
-        dd($reviews);
-        return view('client.product.detail', compact('product', 'reviews'));
-    }
 
     public function store(Request $request)
     {
@@ -36,7 +31,6 @@ class ReviewController extends Controller
         ]);
 
         return back()->with('success', 'Đánh giá của bạn đã được gửi.');
-        
     }
 
     /**

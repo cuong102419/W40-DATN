@@ -70,7 +70,9 @@
             <a href="{{ route('admin.user') }}"
                 class="nav-item nav-link {{ request()->routeIs('admin.user') ? 'active' : '' }}"><i
                     class="fas fa-user-cog"></i> Người dùng</a>
-            <a href="table.html" class="nav-item nav-link"><i class="fas fa-comments"></i> Đánh giá</a>
+            <a href="{{ route('admin-review.index') }}" 
+                class="nav-item nav-link {{ request()->routeIs('admin-review.index') ? 'active' : '' }}"><i 
+                    class="fas fa-comments "></i> Đánh giá</a>
         </div>
     </nav>
 </div>

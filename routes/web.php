@@ -22,6 +22,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -42,8 +43,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::prefix('/product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('product.index');
     Route::get('/{product}', [ProductController::class, 'detail'])
-    ->middleware(['check.purchase'])
-    ->name('product.detail');
+        ->middleware(['check.purchase'])
+        ->name('product.detail');
 });
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
@@ -81,12 +82,8 @@ Route::prefix('/cart')->group(function () {
 });
 
 Route::middleware(['auth', 'check.purchase'])->group(function () {
-    Route::get('/reviews/{product_id}', [ReviewController::class, 'index'])->name('reviews.index');
     Route::post('/reviews/{product_id}/store', [ReviewController::class, 'store'])->name('reviews.store');
 });
-
-
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
@@ -99,7 +96,7 @@ Route::controller(SigninGoogleController::class)->group(function () {
     Route::get('auth/google/callback', 'handleGoogleCallback');
 });
 
-Route::prefix('/checkout')->group(function() {
+Route::prefix('/checkout')->group(function () {
     Route::post('/create', [OrderController::class, 'create'])->name('order.create');
     Route::get('/vnpay', [OrderController::class, 'vnpay_confirm'])->name('order.vnpay-confirm');
     Route::get('/momo/{order}', [OrderController::class, 'momo_confirm'])->name('order.momo-confirm');
@@ -107,7 +104,7 @@ Route::prefix('/checkout')->group(function() {
     Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.apply-voucher');
 });
 
-Route::prefix(('/order'))->group(function() {
+Route::prefix(('/order'))->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('order.index');
     Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
     Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
@@ -167,11 +164,15 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/{user}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
     });
 
-    Route::prefix('/order')->group(function() {
+    Route::prefix('/order')->group(function () {
         Route::get('/', [AdminOrderController::class, 'index'])->name('admin-order.index');
         Route::get('/detail/{order}', [AdminOrderController::class, 'detail'])->name('admin-order.detail');
         Route::put('/payment/{order}', [AdminOrderController::class, 'updatePayment'])->name('admin-order.payment');
         Route::put('/customer-information/{order}', [AdminOrderController::class, 'updateInfo'])->name('admin-order.info');
         Route::put('/status/{order}', [AdminOrderController::class, 'status'])->name('admin-order.status');
+    });
+    Route::prefix('/review')->group(function () {
+        Route::get('/', [AdminReviewController::class, 'index'])->name('admin-review.index');
+        Route::put('/admin/reviews/{id}/hide', [AdminReviewController::class, 'hide'])->name('admin-review.hide');
     });
 });
