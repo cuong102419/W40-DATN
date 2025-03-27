@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -49,6 +50,7 @@ Route::prefix('/product')->group(function () {
 
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
+Route::get('/about', [AboutController::class, 'index'])->name('about.index');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');

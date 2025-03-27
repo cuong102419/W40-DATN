@@ -69,7 +69,7 @@
                                             <i class="fa fa-star"></i>
                                         </div>
                                         <div class="review-status">
-                                            <a href="javascript:void(0)">(5 Customer Review)</a>
+                                            <a href="javascript:void(0)">(5 Đánh giá của khách hàng)</a>
                                         </div>
                                     </div>
                                     <form id="add-to-cart" action="{{ route('cart.add', $product->id) }}" method="post">
@@ -154,7 +154,7 @@
 
                                     <div class="product-info-footer">
                                         <div class="social-icons">
-                                            <span>Share</span>
+                                            <span>Chia sẻ</span>
                                             <a href="#"><i class="fa fa-facebook"></i></a>
                                             <a href="#"><i class="fa fa-dribbble"></i></a>
                                             <a href="#"><i class="fa fa-pinterest-p"></i></a>
@@ -192,7 +192,7 @@
                             <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                                 <div class="product-review-content">
                                     <div class="review-content-header">
-                                        <h3>Customer Reviews</h3>
+                                        <h3>Đánh giá của khách hàng</h3>
                                         <div class="review-info">
                                             <ul class="review-rating">
                                                 <li class="fa fa-star"></li>
@@ -201,13 +201,13 @@
                                                 <li class="fa fa-star"></li>
                                                 <li class="fa fa-star-o"></li>
                                             </ul>
-                                            <span class="review-caption">Based on 5 reviews</span>
-                                            <span class="review-write-btn">Write a review</span>
+                                            <span class="review-caption">Dựa trên 5 đánh giá</span>
+                                            <span class="review-write-btn">Viết bài đánh giá</span>
                                         </div>
                                     </div>
                                     <!--== Start Reviews Form Item ==-->
                                     <div class="reviews-form-area">
-                                        <h4 class="title">Write a review</h4>
+                                        <h4 class="title">Viết bài đánh giá</h4>
                                         <div class="reviews-form-content">
                                             @if(Auth::check()) 
                                                 @if($hasPurchased) 
@@ -216,7 +216,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label for="for_name">Name</label>
+                                                                <label for="for_name">Họ và tên</label>
                                                                 <input id="for_name" class="form-control" type="text" name="name"
                                                                        value="{{ Auth::user()->name }}" readonly>
                                                             </div>
@@ -230,7 +230,7 @@
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <span class="title">Rating</span>
+                                                                <span class="title">Xếp hạng</span>
                                                                 <div class="review-rating">
                                                                     <span class="star" data-value="1">&#9733;</span>
                                                                     <span class="star" data-value="2">&#9733;</span>
@@ -243,33 +243,33 @@
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label for="for_review-title">Review Title</label>
+                                                                <label for="for_review-title">Tiêu đề đánh giá</label>
                                                                 <input id="for_review-title" class="form-control" type="text"
-                                                                       name="title" placeholder="Give your review a title">
+                                                                       name="title" placeholder="Đặt tiêu đề cho bài đánh giá của bạn">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label for="for_comment">Body of Review</label>
+                                                                <label for="for_comment">Mô tả Đánh giá </label>
                                                                 <textarea id="for_comment" class="form-control" name="comment"
-                                                                          placeholder="Write your comments here"></textarea>
+                                                                          placeholder="Viết đánh giá của bạn ở đây"></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-12">
                                                             <div class="form-submit-btn">
-                                                                <button type="submit" class="btn-submit">Post comment</button>
+                                                                <button type="submit" class="btn-submit">Đăng bình luận</button>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </form>
                                                 @else
                                                     <div class="alert alert-warning">
-                                                        You must purchase this product before leaving a review.
+                                                        Bạn phải mua sản phẩm này trước khi để lại đánh giá.
                                                     </div>
                                                 @endif
                                             @else
                                                 <div class="alert alert-warning">
-                                                    Please <a href="{{ route('signin') }}">login</a> to leave a review.
+                                                    Vui lòng <a href="{{ route('signin') }}">đăng nhập</a> để lại đánh giá.
                                                 </div>
                                             @endif
                                         </div>
@@ -292,11 +292,11 @@
                                                     no <span>{{ $review->created_at->format('M d, Y') }}</span>
                                                 </h5>
                                                 <p>{{ $review->comment }}</p>
-                                                <a href="#/">Report as Inappropriate</a>
+                                                <a href="#/">Báo cáo là không phù hợp</a>
                                             </div>
                                             <!--== End Reviews Content Item ==-->
                                         @empty
-                                            <p>No reviews yet. Be the first to review!</p>
+                                            <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
                                         @endforelse
                                     </div>
                                     
@@ -313,7 +313,7 @@
                                     <div class="review-pagination">
                                         <span class="pagination-pag">1</span>
                                         <span class="pagination-pag">2</span>
-                                        <span class="pagination-next">Next »</span>
+                                        <span class="pagination-next">Kế tiếp "</span>
                                     </div>
                                     <!--== End Reviews Pagination Item ==-->
                                 </div>
@@ -332,9 +332,9 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title text-center">
-                        <h3 class="title">Similar Product</h3>
+                        <h3 class="title">Sản phẩm tương tự</h3>
                         <div class="desc">
-                            <p>There are many variations of passages of Lorem Ipsum available</p>
+                            <p>Có rất nhiều sản phẩm có sẵn</p>
                         </div>
                     </div>
                 </div>
