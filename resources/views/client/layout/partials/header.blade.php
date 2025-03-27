@@ -119,7 +119,7 @@
                                 </li>
                                 <li><a class="fs-6 fw-bold" href="{{ route('product.index') }}"><span>Sản
                                             phẩm</span></a></li>
-                                <li class=""><a class="fs-6 fw-bold" href="#/"><span>Về chúng tôi</span></a>
+                                <li class=""><a class="fs-6 fw-bold" href="{{ route('about.index') }}"><span>Về chúng tôi</span></a>
                                 </li>
                                 <li><a class="fs-6 fw-bold" href="{{ route('blog.index') }}"><span>Tin tức</span></a>
                                 </li>
