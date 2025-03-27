@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+{{-- {{ dd($reviews) }} --}}
+{{-- @dd($reviews->items()) --}}
     <!--== Start Product Single Area Wrapper ==-->
     <section class="product-area product-single-area">
         <div class="container">
@@ -272,8 +274,10 @@
                                             @endif
                                         </div>
                                     </div>   
+                                    
                                     <div class="reviews-content-body">
-                                        @forelse($reviews as $review)
+                                        
+                                        @forelse($reviews->items() as $review)
                                         
                                             <!--== Start Reviews Content Item ==-->
                                             <div class="review-item">
@@ -405,120 +409,4 @@
     </script>
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 @endsection

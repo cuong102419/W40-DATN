@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
@@ -39,11 +40,15 @@ class ProductController extends Controller
         if (!$product) {
             return abort(404);
         }
-        $reviews = \App\Models\Review::where('product_id', $id)->latest()->paginate(5);
+        $reviews = Review::where('product_id', $id)
+        ->where('status',  true) // Đảm bảo lọc đúng
+        ->with('user') // Load quan hệ để dùng trong view
+        ->latest()
+        ->paginate(5);
         $products = Product::with('category', 'brand', 'imageLists')->get();
         $product->increment('view');
         // dd($reviews);
-        return view('client.product.detail', compact('product', 'products','reviews'));
+        return view('client.product.detail', compact('product', 'products', 'reviews'));
     }
 
     public function product($id)
