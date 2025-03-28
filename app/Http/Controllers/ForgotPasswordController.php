@@ -57,7 +57,7 @@ class ForgotPasswordController extends Controller
         if ($checkUser) {
             return view('auth.reset-password', compact('token'));
         } else {
-            return redirect()->route('signin')->with('error', 'Email đã khôi phục mật khẩu, vui lòng đăng nhập.');
+            abort(404);
         }
     }
 
