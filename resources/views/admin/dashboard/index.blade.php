@@ -10,36 +10,36 @@
         <div class="row g-4">
             <div class="col-sm-6 col-xl-3">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-shopping-cart fa-3x text-primary"></i>
+                    <i class="fas fa-users fa-3x text-primary"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Đơn hàng hôm nay</p>
-                        <h6 class="mb-0">{{ $todayOrders }}</h6>
+                        <p class="mb-2">Tổng số người dùng</p>
+                        <h6 class="mb-0">{{ $totalUsers }}</h6>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-xl-3">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-bar fa-3x text-warning"></i>
+                    <i class="fas fa-clipboard fa-3x text-warning"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Tổng số đơn hàng</p>
+                        <p class="mb-2">Tổng số đơn hàng dã bán</p>
                         <h6 class="mb-0">{{ $totalOrders }}</h6>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-xl-3">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fas fa-dollar-sign fa-3x text-danger"></i>
+                    <i class="fas fa-gift fa-3x text-danger"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Doanh thu hôm nay</p>
-                        <h6 class="mb-0">{{ number_format($todayRevenue, 0, '.', '.') }}đ</h6>
+                        <p class="mb-2">Tổng số lượt bán sản phẩm</p>
+                        <h6 class="mb-0">{{ $totalSales }}</h6>
                     </div>
                 </div>
             </div>
             <div class="col-sm-6 col-xl-3">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-pie fa-3x text-success"></i>
+                    <i class="fas fa-wallet fa-3x text-success"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Tổng doanh thu</p>
+                        <p class="mb-2">Tổng doanh thu trong tháng</p>
                         <h6 class="mb-0">{{ number_format($totalRevenue, 0, '.', '.') }}đ</h6>
                     </div>
                 </div>
@@ -52,24 +52,17 @@
     <!-- Sales Chart Start -->
     <div class="container-fluid pt-4 px-4">
         <div class="row g-4">
-            <div class="col-sm-12 col-xl-6">
-                <div class="bg-light text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-4"></h6>
-                    </div>
-                    <canvas id="worldwide-sales"></canvas>
-                </div>
-            </div>
-            <div class="col-sm-12 col-xl-6">
+            <div class="col-sm-12 col-xl-8">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-4">Doanh thu theo ngày</h6>
-                        <a href="">Show All</a>
+                        <h6>Tổng doanh thu: <span
+                                class="text-danger">{{ number_format($totalRevenue, 0, '.', '.') }}đ</span></h6>
                     </div>
-                    <canvas id="salse-revenue"></canvas>
+                    <canvas id="line-chart"></canvas>
                 </div>
             </div>
-            <div class="col-sm-12 col-xl-6">
+            <div class="col-sm-12 col-xl-4">
                 <div class="bg-light rounded h-100 p-4">
                     <h6 class="mb-4">Tổng số đơn hàng theo trạng thái</h6>
                     <canvas id="pie-chart"></canvas>
@@ -81,202 +74,141 @@
 
 
     <!-- Recent Sales Start -->
-    <div class="container-fluid pt-4 px-4">
-        <div class="bg-light text-center rounded p-4">
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <h6 class="mb-0">Recent Salse</h6>
-                <a href="">Show All</a>
+    <div class="container-fluid mb-3 pt-4 px-4">
+        <div class="row">
+            <div class="col-8">
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Danh sách đơn hàng mới</h6>
+                        <a href="{{ route('admin-order.index') }}">Xem danh sách</a>
+                    </div>
+                    <div class="table-responsive bg-white">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead class="text-center">
+                                <tr class="text-dark">
+                                    <th scope="col">Mã</th>
+                                    <th scope="col">Thông tin</th>
+                                    <th scope="col">Tổng tiền</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Thời gian</th>
+                                    <th scope="col">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody class="small">
+                                @foreach ($quickListOrders as $order)
+                                    <tr>
+                                        <td>{{ $order->id }}</td>
+                                        <td>
+                                            <ul>
+                                                <li>Họ tên: {{ $order->fullname }}</li>
+                                                <li>SĐT: {{ $order->phone_number }}</li>
+                                                <li>Email: {{ $order->email }}</li>
+                                            </ul>
+                                        </td>
+                                        <td>{{ number_format($order->total, 0, '.', '.') }}đ</td>
+                                        <td><span
+                                                class="badge {{ $status[$order->status]['class'] }}">{{ $status[$order->status]['value'] }}</span>
+                                        </td>
+                                        <td>
+                                            {{ $order->created_at->format('d \t\h\á\n\g m, Y') }}
+                                        </td>
+                                        <td style="width:1px" class="text-nowrap">
+                                            <a class="btn btn-sm btn-outline-primary"
+                                                href="{{ route('admin-order.detail', $order->id) }}"><i
+                                                    class="far fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="table-responsive">
-                <table class="table text-start align-middle table-bordered table-hover mb-0">
-                    <thead>
-                        <tr class="text-dark">
-                            <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Invoice</th>
-                            <th scope="col">Customer</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                        <tr>
-                            <td><input class="form-check-input" type="checkbox"></td>
-                            <td>01 Jan 2045</td>
-                            <td>INV-0123</td>
-                            <td>Jhon Doe</td>
-                            <td>$123</td>
-                            <td>Paid</td>
-                            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-sm-12 col-md-6 col-xl-4">
+                <div class="h-100 bg-light rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h6 class="mb-0">Top sản phẩm bán chạy</h6>
+                    </div>
+                    @foreach ($productSale as $sale)
+                        <div class="d-flex align-items-center border-bottom py-3">
+                            <img class=" rounded flex-shrink-0"
+                                src="{{ Storage::url($sale->imageLists->first()->image_url) }}" alt=""
+                                width="60">
+                            <div class="w-100 ms-3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0">{{ $sale->total_sold }} đã bán</h6>
+                                    <small
+                                        class="badge bg-primary">{{ number_format($sale->variants->min()->price, 0, '.', '.') }}đ</small>
+                                </div>
+                                <span>{{ $sale->name }}</span>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-8">
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Top sản phẩm bán trong tháng</h6>
+                        <a href="{{ route('admin-product.index') }}">Xem danh sách</a>
+                    </div>
+                    <div class="table-responsive bg-white">
+                        <table class="table text-start align-middle table-hover mb-0">
+                            <thead class="text-center">
+                                <tr class="text-dark">
+                                    <th scope="col">Mã</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Ảnh</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Giá</th>
+                                </tr>
+                            </thead>
+                            <tbody class="small text-center">
+                                @foreach ($productMonth as $product)
+                                    <tr>
+                                        <td>{{ $product->sku }}</td>
+                                        <td>{{ $product->name }}</td>
+                                        <td class="text-nowrap" style="width:1px">
+                                            <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
+                                                width="80" alt="">
+                                        </td>
+                                        <td>{{ $product->variants->sum('quantity') }}</td>
+                                        <td>{{ number_format($product->variants->min()->price, 0, '.', '.') }}đ</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-xl-4">
+                <div class="h-100 bg-light rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <h6 class="mb-0">Top sản phẩm được quan tâm</h6>
+                    </div>
+                    @foreach ($productView as $view)
+                        <div class="d-flex align-items-center border-bottom py-3">
+                            <img class=" rounded flex-shrink-0"
+                                src="{{ Storage::url($view->imageLists->first()->image_url) }}" alt=""
+                                width="60">
+                            <div class="w-100 ms-3">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-0">{{ $view->view }} <i class="far fa-eye fa-sm text-primary"></i></h6>
+                                    <small
+                                        class="badge bg-primary">{{ number_format($view->variants->min()->price, 0, '.', '.') }}đ</small>
+                                </div>
+                                <span>{{ $view->name }}</span>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
     <!-- Recent Sales End -->
 
-
-    <!-- Widgets Start -->
-
-    <div class="row g-4">
-        <div class="col-sm-12 col-md-6 col-xl-4">
-            <div class="h-100 bg-light rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h6 class="mb-0">Messages</h6>
-                    <a href="">Show All</a>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="{{ asset('administrator/img/user.jpg') }}" alt=""
-                        style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                        <span>Short message goes here...</span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="{{ asset('administrator/img/user.jpg') }}" alt=""
-                        style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                        <span>Short message goes here...</span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="{{ asset('administrator/img/user.jpg') }}"
-                        alt="" style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                        <span>Short message goes here...</span>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center pt-3">
-                    <img class="rounded-circle flex-shrink-0" src="{{ asset('administrator/img/user.jpg') }}"
-                        alt="" style="width: 40px; height: 40px;">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-0">Jhon Doe</h6>
-                            <small>15 minutes ago</small>
-                        </div>
-                        <span>Short message goes here...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6 col-xl-4">
-            <div class="h-100 bg-light rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Calender</h6>
-                    <a href="">Show All</a>
-                </div>
-                <div id="calender"></div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-6 col-xl-4">
-            <div class="h-100 bg-light rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">To Do List</h6>
-                    <a href="">Show All</a>
-                </div>
-                <div class="d-flex mb-2">
-                    <input class="form-control bg-transparent" type="text" placeholder="Enter task">
-                    <button type="button" class="btn btn-primary ms-2">Add</button>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-2">
-                    <input class="form-check-input m-0" type="checkbox">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <span>Short task goes here...</span>
-                            <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-2">
-                    <input class="form-check-input m-0" type="checkbox">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <span>Short task goes here...</span>
-                            <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-2">
-                    <input class="form-check-input m-0" type="checkbox" checked>
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <span><del>Short task goes here...</del></span>
-                            <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center border-bottom py-2">
-                    <input class="form-check-input m-0" type="checkbox">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <span>Short task goes here...</span>
-                            <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="d-flex align-items-center pt-2">
-                    <input class="form-check-input m-0" type="checkbox">
-                    <div class="w-100 ms-3">
-                        <div class="d-flex w-100 align-items-center justify-content-between">
-                            <span>Short task goes here...</span>
-                            <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Widgets End -->
 
     <script>
         let orderStatus = @json($orderStatus);

@@ -58,45 +58,18 @@
         nav: false
     });
 
-    // Worldwide Sales Chart
-    var ctx1 = $("#worldwide-sales").get(0).getContext("2d");
-    var myChart1 = new Chart(ctx1, {
-        type: "bar",
-        data: {
-            labels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
-            datasets: [{
-                label: "USA",
-                data: [15, 30, 55, 65, 60, 80, 95],
-                backgroundColor: "rgba(0, 156, 255, .7)"
-            },
-            {
-                label: "UK",
-                data: [8, 35, 40, 60, 70, 55, 75],
-                backgroundColor: "rgba(0, 156, 255, .5)"
-            },
-            {
-                label: "AU",
-                data: [12, 25, 45, 55, 65, 70, 60],
-                backgroundColor: "rgba(0, 156, 255, .3)"
-            }
-            ]
-        },
-        options: {
-            responsive: true
-        }
-    });
 
     // Salse & Revenue Chart
-    var ctx2 = $("#salse-revenue").get(0).getContext("2d");
-    var myChart2 = new Chart(ctx2, {
+    var ctx3 = $("#line-chart").get(0).getContext("2d");
+    var myChart3 = new Chart(ctx3, {
         type: "line",
         data: {
             labels: labelsRevenue,
             datasets: [{
                 label: "Doanh thu",
                 data: dataRevenue,
-                backgroundColor: "rgba(0, 156, 255, .5)",
-                fill: true
+                backgroundColor: "rgba(0, 157, 255, 0.5)",
+                fill: false
             }
             ]
         },
@@ -114,7 +87,7 @@
             datasets: [{
                 backgroundColor: [
                     "rgba(0, 156, 255, .6)",
-                    "rgba(255, 159, 180, 0.7)"
+                    "rgba(211, 211, 211, 0.7)"
                 ],
                 data: data
             }]
@@ -124,67 +97,6 @@
         }
     });
 
-
-    // Single Line Chart
-    var ctx3 = $("#line-chart").get(0).getContext("2d");
-    var myChart3 = new Chart(ctx3, {
-        type: "line",
-        data: {
-            labels: [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150],
-            datasets: [{
-                label: "Salse",
-                fill: false,
-                backgroundColor: "rgba(0, 156, 255, .3)",
-                data: [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15]
-            }]
-        },
-        options: {
-            responsive: true
-        }
-    });
-
-
-    // Doughnut Chart
-    var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
-    var myChart6 = new Chart(ctx6, {
-        type: "doughnut",
-        data: {
-            labels: ["Italy", "France", "Spain", "USA", "Argentina"],
-            datasets: [{
-                backgroundColor: [
-                    "rgba(0, 156, 255, .7)",
-                    "rgba(0, 156, 255, .6)",
-                    "rgba(0, 156, 255, .5)",
-                    "rgba(0, 156, 255, .4)",
-                    "rgba(0, 156, 255, .3)"
-                ],
-                data: [55, 49, 44, 24, 15]
-            }]
-        },
-        options: {
-            responsive: true
-        }
-    });
-
-
- // Single Bar Chart
-    var ctx4 = $("#bar-chart").get(0).getContext("2d");
-    var myChart4 = new Chart(ctx4, {
-        type: "bar",
-        data: {
-            labels: revenueLabels,
-            datasets: [{
-                label: "Doanh thu",
-                backgroundColor: [
-                    "rgba(0, 156, 255, .7)"
-                ],
-                data: revenueData
-            }]
-        },
-        options: {
-            responsive: true
-        }
-    });
 
 })(jQuery);
 
