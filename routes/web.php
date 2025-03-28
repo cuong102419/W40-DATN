@@ -80,11 +80,9 @@ Route::prefix('/forgot-password')->group(function () {
     Route::put('/{token}', [ForgotPasswordController::class, 'reset'])->name('forgot-password.reset');
 });
 
-<<<<<<< HEAD
 
-=======
+
 Route::get('/verify-email/{email}', [VerifyAccountController::class, 'verify'])->name('verify-email');
->>>>>>> 3b17a57981c3e99e24d7e2f2c09cae7f4eb93983
 
 Route::prefix('/cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
