@@ -86,8 +86,8 @@
             labels: labels,
             datasets: [{
                 backgroundColor: [
-                    "rgba(0, 156, 255, .6)",
-                    "rgba(211, 211, 211, 0.7)"
+                    "rgba(211, 211, 211, 0.7)",
+                    "rgba(0, 156, 255, .6)"
                 ],
                 data: data
             }]
