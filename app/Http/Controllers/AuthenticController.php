@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerifyAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -34,7 +36,7 @@ class AuthenticController extends Controller
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
         ]);
         if (Auth::attempt($data)) {
-            if (Auth::user()->status == 1) {
+            if (Auth::user()->status == 1 && Auth::user()->email_verified_at != null) {
                 $user = Auth::user();
                 if (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin') {
                     return response()->json([
@@ -49,6 +51,12 @@ class AuthenticController extends Controller
                         'role' => $user->role
                     ], Response::HTTP_OK);
                 }
+            } elseif (Auth::user()->email_verified_at == null) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Tài khoản chưa được xác thực, vui lòng kiểm tra email.'
+                ], Response::HTTP_UNAUTHORIZED);
+
             } else {
                 return response()->json([
                     'status' => 'error',
@@ -66,13 +74,14 @@ class AuthenticController extends Controller
     public function signup(Request $request)
     {
         $data = $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'unique:users'],
             'name' => ['required', 'min:4'],
             'password' => ['required', 'min:8'],
             'confirm_password' => ['required', 'min:8', 'same:password']
         ], [
             'email.required' => 'Email không được bỏ trống.',
             'email.email' => 'Email không hợp lệ.',
+            'email.unique' => 'Email đã tồn tại trong hệ thống.',
             'name.required' => 'Họ tên không để trống.',
             'name.min' => 'Họ tên tối thiểu 4 ký tự.',
             'password.required' => 'Mật khẩu không được bỏ trống.',
@@ -83,12 +92,15 @@ class AuthenticController extends Controller
         ]);
         $data['password'] = Hash::make($data['password']);
 
-        User::create($data);
+        $user = User::create($data);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Tạo tài khoản thành công, hãy đăng nhập lại.'
-        ], Response::HTTP_OK);
+        if($user) {
+            Mail::to($user->email)->send(new VerifyAccount($user));
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Tạo tài khoản thành công, kiểm tra email để xác nhận.'
+            ], Response::HTTP_OK);
+        }
     }
 
     public function logout()

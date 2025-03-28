@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,8 +46,8 @@ class SigninGoogleController extends Controller
 
                     'name' => $user->name,
                     'google_id' => $user->id,
-                    'password' => encrypt('123456dummy')
-
+                    'password' => encrypt('123456dummy'),
+                    'email_verified_at' => Carbon::now()->format('Y-m-d H:i:s')
                 ]);
 
                 Auth::login($newUser);
