@@ -64,6 +64,21 @@
                 </div>
             </div>
 
+            <div class="nav-item dropdown">
+                <a href="#"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-blog.index') || request()->routeIs('admin-blog.create') ? 'active' : '' }}"
+                    data-bs-toggle="dropdown"><i class="fas fa-newspaper"></i> Tin
+                    tức</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="{{ route('admin-blog.index') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-blog.index') ? 'active' : '' }}">Danh
+                        sách</a>
+                    <a href="{{ route('admin-blog.create') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-blog.create') ? 'active' : '' }}">Thêm
+                        mới</a>
+                </div>
+            </div>
+
             <a href="{{ route('admin-order.index') }}"
                 class="nav-item nav-link {{ request()->routeIs('admin-order.index') || request()->routeIs('admin-order.detail') ? 'active' : '' }}"><i
                     class="fas fa-receipt"></i> Đơn hàng</a>
