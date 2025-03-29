@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\VoucherController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\VerifyAccountController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Auth;
@@ -50,11 +51,14 @@ Route::prefix('/product')->group(function () {
         ->name('product.detail');
 });
 
+Route::prefix('/blog')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('blog.index'); // Danh sách blog
+    Route::get('/{blog}', [BlogController::class, 'detail'])->name('blog.detail'); // Chi tiết blog
+});
+
 Route::get('/shop', [ProductController::class, 'index'])->name('shop');
 Route::get('/search', [ProductController::class, 'search'])->name('search');
 Route::get('/about', [AboutController::class, 'index'])->name('about.index');
-Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/1', [BlogController::class, 'detail'])->name('blog.detail');
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'sendContact'])->name('contact.send');
 Route::get('/signin', [AuthenticController::class, 'index'])->name('signin');
@@ -75,6 +79,8 @@ Route::prefix('/forgot-password')->group(function () {
     Route::post('/', [ForgotPasswordController::class, 'forgot'])->name('forgot-password.forgot');
     Route::put('/{token}', [ForgotPasswordController::class, 'reset'])->name('forgot-password.reset');
 });
+
+
 
 Route::get('/verify-email/{email}', [VerifyAccountController::class, 'verify'])->name('verify-email');
 
@@ -136,7 +142,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/variant/update/{variant}', [ProductVariantController::class, 'update'])->name('product-variant.update');
         Route::delete('/variant/delete/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variant.delete');
     });
-
+//Danh mục
     Route::prefix('/category')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('admin-category.index');
         Route::get('/create', [CategoryController::class, 'create'])->name('admin-category.create');
@@ -146,6 +152,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])->name('admin-category.delete');
     });
 
+//Nhãn hàng
     Route::prefix('/brand')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('admin-brand.index');
         Route::get('/create', [BrandController::class, 'create'])->name('admin-brand.create');
@@ -155,6 +162,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
 
+//Khuyến mãi
     Route::prefix('/voucher')->group(function () {
         Route::get('/', [VoucherController::class, 'index'])->name('admin-voucher.index');
         Route::get('/create', [VoucherController::class, 'create'])->name('admin-voucher.create');
@@ -162,6 +170,17 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::get('/edit/{voucher}', [VoucherController::class, 'edit'])->name('admin-voucher.edit');
         Route::put('/update/{voucher}', [VoucherController::class, 'update'])->name('admin-voucher.update');
         Route::delete('/delete/{voucher}', [VoucherController::class, 'destroy'])->name('admin-voucher.delete');
+    });
+
+//Tin tức
+    Route::prefix('/blog')->group(function () {
+        Route::get('/', [AdminBlogController::class, 'index'])->name('admin-blog.index');
+        Route::get('/create', [AdminBlogController::class, 'create'])->name('admin-blog.create');
+        Route::post('/store', [AdminBlogController::class, 'store'])->name('admin-blog.store');
+        Route::get('/detail/{blog}', [AdminBlogController::class, 'detail'])->name('admin-blog.detail');
+        Route::get('/edit/{blog}', [AdminBlogController::class, 'edit'])->name('admin-blog.edit');
+        Route::put('/update/{blog}', [AdminBlogController::class, 'update'])->name('admin-blog.update');
+        Route::delete('/delete/{blog}', [AdminBlogController::class, 'destroy'])->name('admin-blog.delete');
     });
 
     Route::prefix('/user')->group(function () {

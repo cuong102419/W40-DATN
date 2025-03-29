@@ -271,94 +271,165 @@
     </section>
     <!--== End Divider Area Wrapper ==-->
 
-    <!--== Start Blog Area Wrapper ==-->
-    <section class="blog-area blog-default-area">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-title text-center">
-                        <h3 class="title">Blog mới nhất</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 col-lg-4">
-                    <!--== Start Blog Item ==-->
-                    <div class="post-item">
-                        <div class="inner-content">
-                            <div class="thumb">
-                                <a href="blog-details.html"><img src="{{ asset('client/img/blog/1.webp')}}" width="370"
-                                        height="260" alt="Image-HasTech"></a>
-                            </div>
-                            <div class="content">
-                                <div class="meta-post">
-                                    <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27 tháng 6 năm 2030</a></li>
-                                        <li class="author-info"><i class="fa fa-user"></i><a href="blog.html">Oaklee
-                                                Odom</a></li>
-                                    </ul>
-                                </div>
-                                <h4 class="title"><a href="blog-details.html">Tôi rất hài lòng với sự ưu tú của ametcons</a>
-                                </h4>
-                                <a class="post-btn" href="blog.html">Đọc thêm</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!--== End Blog Item ==-->
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <!--== Start Blog Item ==-->
-                    <div class="post-item">
-                        <div class="inner-content">
-                            <div class="thumb">
-                                <a href="blog-details.html"><img src="{{ asset('client/img/blog/2.webp')}}" width="370"
-                                        height="260" alt="Image-HasTech"></a>
-                            </div>
-                            <div class="content">
-                                <div class="meta-post">
-                                    <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27 tháng 6 năm 2030</a></li>
-                                        <li class="author-info"><i class="fa fa-user"></i><a href="blog.html">Oaklee
-                                                Odom</a></li>
-                                    </ul>
-                                </div>
-                                <h4 class="title"><a href="blog-details.html">Con gái của người nổi tiếng tiết lộ về việc có
-                                    mắt của cô ấy</a>
-                                </h4>
-                                <a class="post-btn" href="blog.html">Đọc thêm</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!--== End Blog Item ==-->
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <!--== Start Blog Item ==-->
-                    <div class="post-item">
-                        <div class="inner-content">
-                            <div class="thumb">
-                                <a href="blog-details.html"><img src="{{ asset('client/img/blog/3.webp')}}" width="370"
-                                        height="260" alt="Image-HasTech"></a>
-                            </div>
-                            <div class="content">
-                                <div class="meta-post">
-                                    <ul>
-                                        <li class="post-date"><i class="fa fa-calendar"></i><a href="blog.html">27 tháng 6 năm 2030</a></li>
-                                        <li class="author-info"><i class="fa fa-user"></i><a href="blog.html">Oaklee
-                                                Odom</a></li>
-                                    </ul>
-                                </div>
-                                <h4 class="title"><a href="blog-details.html">Những câu chuyện tình lãng mạn của 
-                                    người nổi tiếng</a></h4>
-                                <a class="post-btn" href="blog.html">Đọc thêm</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!--== End Blog Item ==-->
+<!--== Start Blog Area Wrapper ==-->
+<section class="blog-area blog-default-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title text-center">
+                    <h3 class="title">Blog mới nhất</h3>
+                    <p class="subtitle">Cập nhật tin tức, mẹo vặt và xu hướng mới nhất.</p>
                 </div>
             </div>
         </div>
+        <div class="row">
+            @if ($blogs->isNotEmpty())
+                @foreach ($blogs as $blog)
+                    <div class="col-md-6 col-lg-4">
+                        <!--== Start Blog Item ==-->
+                        <div class="post-item">
+                            <div class="thumb">
+                                <a href="{{ route('blog.detail', $blog->id) }}">
+                                    <img src="{{ asset('storage/' . $blog->image_url) }}" class="blog-img" alt="{{ $blog->title }}">
+                                </a>
+                            </div>
+                            <div class="content">
+                                <div class="meta-post">
+                                    <ul>
+                                        <li><i class="fa fa-calendar"></i> {{ $blog->created_at->format('d/m/Y') }}</li>
+                                        <li><i class="fa fa-user"></i> {{ $blog->author }}</li>
+                                    </ul>
+                                </div>
+                                <h4 class="title">
+                                    <a href="{{ route('blog.detail', $blog->id) }}">{{ $blog->title }}</a>
+                                </h4>
+                                <p class="excerpt">{{ Str::limit($blog->content, 100) }}</p>
+                                <a class="btn-theme" href="{{ route('blog.detail', $blog->id) }}">Đọc thêm</a>
+                            </div>
+                        </div>
+                        <!--== End Blog Item ==-->
+                    </div>
+                @endforeach
+            @else
+                <h4 class="text-center text-muted">Chưa có bài viết nào.</h4>
+            @endif
+        </div>
+    </div>
+</section>
+<!--== End Blog Area Wrapper ==-->
 
-        
-    </section>
-    <!--== End Blog Area Wrapper ==-->
+<style>
+    /*== BLOG STYLES ==*/
+    .blog-area {
+        background: #fdf3f0;
+        padding: 60px 0;
+    }
+
+    .section-title .title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #d84315;
+        margin-bottom: 15px;
+    }
+
+    .section-title .subtitle {
+        font-size: 1rem;
+        color: #555;
+        margin-bottom: 30px;
+    }
+
+    .post-item {
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .post-item:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .post-item .thumb img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    .content {
+        padding: 20px;
+        flex-grow: 1;
+    }
+
+    .meta-post ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 10px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #777;
+    }
+
+    .meta-post ul li i {
+        margin-right: 5px;
+        color: #ff5722;
+    }
+
+    .post-item .title {
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin: 10px 0;
+        color: #d84315;
+        transition: color 0.3s;
+    }
+
+    .post-item .title a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .post-item .title a:hover {
+        color: #ff5722;
+    }
+
+    .excerpt {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+
+    .post-btn {
+        display: inline-block;
+        background: #ff5722;
+        color: #fff;
+        padding: 8px 15px;
+        font-size: 14px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .post-btn:hover {
+        background: #e64a19;
+    }
+
+    @media (max-width: 768px) {
+        .section-title .title {
+            font-size: 1.8rem;
+        }
+
+        .post-item .title {
+            font-size: 1.2rem;
+        }
+    }
+</style>
+
+
 @endsection
