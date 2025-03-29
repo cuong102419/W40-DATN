@@ -6,18 +6,17 @@
                     <div class="header-top-align">
                         <div class="header-top-align-start">
                             <div class="desc">
-                                <p>Miễn phí vận chuyển toàn quốc</p>
+                                <p>Vận chuyển toàn quốc nhanh chóng, gọn, lẹ, sản phẩm đến với khách hàng luôn trong tình trạng tốt nhất</p>
                             </div>
                         </div>
                         <div class="header-top-align-end">
                             <div class="header-info-items">
                                 <div class="info-items">
                                     <ul>
-                                        <li class="number"><i class="fa fa-phone"></i><a href="tel://0123456789">+00 123
-                                                456 789</a>
+                                        <li class="number"><i class="fa fa-phone"></i><a href="tel://0123456789">0988.002.157</a>
                                         </li>
                                         <li class="email"><i class="fa fa-envelope"></i><a
-                                                href="mailto://demo@example.com">demo@example.com</a></li>
+                                                href="mailto://demo@example.com">freaksport@gmail.com</a></li>
                                         <li class="account" style="display: flex"><i class="fa fa-user"></i>
                                             {{-- @dd(Auth::user()) --}}
                                             @if (Auth::check())
