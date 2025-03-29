@@ -128,6 +128,13 @@ class OrderController extends Controller
                     ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }
+            
+            if($order->status != 'unconfirmed') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Không thể xác nhận đơn hàng.'
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
 
             foreach ($order->orderItems as $item) {
                 $variant = ProductVariant::find($item->product_variant_id);

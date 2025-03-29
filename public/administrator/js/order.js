@@ -46,6 +46,9 @@ $(document).ready(function() {
                 if(xhr.responseJSON.status === 'error') {
                     toastr.error(xhr.responseJSON.message);
                 }
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
             }
         });
     });
@@ -87,6 +90,33 @@ $(document).ready(function() {
                     if (errors.address) {
                         $(".error-address").text(errors.address[0]);
                     }
+                }
+            }
+        });
+    });
+
+    $('#cancel-order').submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'PUT',
+            data: $(this).serialize(),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if(response.status === 'success') {
+                    toastr.success(response.message);
+                }
+
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            }, 
+            error: function(xhr) {
+                if(xhr.responseJSON.status === 'error') {
+                    toastr.error(xhr.responseJSON.message);
                 }
             }
         });
