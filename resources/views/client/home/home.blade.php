@@ -272,7 +272,7 @@
     <!--== End Divider Area Wrapper ==-->
 
 <!--== Start Blog Area Wrapper ==-->
-<section class="blog-area blog-default-area">
+<section class="blog-area blog-default-area mt-3 mb-5" style="max-width: 1600px; margin: 0 auto;">
     <div class="container">
         <div class="row">
             <div class="col-12">
