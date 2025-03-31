@@ -18,7 +18,8 @@ class UserController extends Controller
         ];
         $role = [
             'admin' => 'Quản trị viên',
-            'user' => 'Người dùng'
+            'user' => 'Người dùng',
+            'super_admin' => 'Quản lý'
         ];
         return view('admin.users.list', compact('users', 'status', 'role'));
     }

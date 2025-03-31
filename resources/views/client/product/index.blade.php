@@ -219,7 +219,7 @@
                         <div class="shop-sidebar-price-range">
                             <h4 class="sidebar-title">Lọc theo giá</h4>
                             <div class="sidebar-price-range">
-                                <input type="text" id="amount" readonly style="border:0; color:#000000; font-weight:bold;">
+                                <input type="text" id="amount" readonly style="border:0; color:#494949; font-weight:bold;">
                                 <div id="price-range"></div>
                                 <button id="filter-price" class="btn btn-primary mt-2">Lọc</button>
                             </div>
