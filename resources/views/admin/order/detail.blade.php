@@ -42,6 +42,10 @@
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
+                                <th>Mã đơn hàng</th>
+                                <td colspan="2">{{ $order->order_code }}</td>
+                            </tr>
+                            <tr>
                                 <th>Trạng thái đơn hàng</th>
                                 <th colspan="2">
                                     <span

@@ -132,6 +132,17 @@ class OrderController extends Controller
     public function list()
     {
         $orders = Order::where('user_id', Auth::user()->id)->latest('id')->paginate(5);
+        $payment_method = [
+            'COD' => 'Thanh toán khi nhận hàng (COD)',
+            'ATM' => "Thanh toán qua VNPay",
+            'MOMO' => 'Ví điện tử MOMO'  
+        ];
+        $payment_status = [
+            'unpaid' => 'Chưa thanh toán',
+            'paid' =>'Đã thanh toán',
+            'refunded' =>'Hoàn trả',
+            'cancel' =>'Hủy thanh toán',
+        ];
         $status = [
             'unconfirmed' => ['value' => 'Chờ xác nhận.', 'class' => 'text-secondary'],
             'confirmed' => ['value' => 'Đã xác nhận.', 'class' => 'text-primary'],
@@ -140,9 +151,8 @@ class OrderController extends Controller
             'completed' => ['value' => 'Hoàn thành.', 'class' => 'text-success'],
             'canceled' => ['value' => 'Hủy đơn.', 'class' => 'text-danger'],
         ];
-        $orderIds = $orders->pluck('id');
 
-        return view('client.order.list', compact('orders', 'status', 'orderIds'));
+        return view('client.order.list', compact('orders', 'status', 'payment_method', 'payment_status'));
     }
 
     public function detail(Order $order)

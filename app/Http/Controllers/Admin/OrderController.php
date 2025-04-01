@@ -21,8 +21,8 @@ class OrderController extends Controller
             'MOMO' => 'Ví điện tử MOMO'
         ];
         $payment_status = [
-            'unpaid' => ['value' => 'Chưa thanh toán.', 'class' => 'text-primary'],
-            'paid' => ['value' => 'Đã thanh toán.', 'class' => 'text-success'],
+            'unpaid' => ['value' => 'Chưa thanh toán.', 'class' => 'text-secondary'],
+            'paid' => ['value' => 'Đã thanh toán.', 'class' => 'text-primary'],
             'refunded' => ['value' => 'Hoàn tiền.', 'class' => 'text-warning'],
             'cancel' => ['value' => 'Hủy thanh toán.', 'class' => 'text-danger']
         ];
