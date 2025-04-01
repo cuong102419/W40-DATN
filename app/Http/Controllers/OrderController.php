@@ -9,6 +9,7 @@ use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
@@ -49,6 +50,11 @@ class OrderController extends Controller
             'email.required' => 'Không được để trống.',
             'email.email' => 'Email không hợp lệ.'
         ]);
+        do {
+            $rand = preg_replace('/[^A-Za-z]/', '', Str::random(3));
+        } while (strlen($rand) < 3);
+        $data['order_code'] = 'FS' . Str::upper($rand) . rand(10000, 99999);
+
         $data['shipping'] = 100000;
         if (Auth::check()) {
             $data['user_id'] = Auth::user()->id;
@@ -93,11 +99,11 @@ class OrderController extends Controller
             }
             if ($data['payment_method'] == 'ATM') {
 
-                return $this->vnpay($order->id, $order->total);
+                return $this->vnpay($order->id, $order->total, $order->order_code);
             }
             if ($data['payment_method'] == 'MOMO') {
 
-                return $this->momo($data, $order->id, $order->total);
+                return $this->momo($data, $order->order_code, $order->total, $order->id);
             }
         } else {
             return redirect()->back()->with('error', 'Không tìm thấy sản phẩm nào.');
@@ -141,6 +147,9 @@ class OrderController extends Controller
 
     public function detail(Order $order)
     {
+        if ($order->user_id != Auth::user()->id) {
+            abort(404);
+        }
         $orderItems = OrderItem::where('order_id', $order->id)->get();
         $status = [
             'unconfirmed' => ['value' => 'Chờ xác nhận', 'class' => 'text-secondary'],
@@ -221,7 +230,7 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'Mã giảm giá đã được áp dụng.');
     }
 
-    public function vnpay($order_id, $total)
+    public function vnpay($order_id, $total, $order_code)
     {
         error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
         date_default_timezone_set('Asia/Ho_Chi_Minh');
@@ -231,7 +240,7 @@ class OrderController extends Controller
         $vnp_TmnCode = "NCWDQX6S";
         $vnp_HashSecret = "JZ35E7TC0I5MW025L9KNN08LOJMPO2PX";
 
-        $vnp_TxnRef = $order_id;
+        $vnp_TxnRef = $order_code . '_' . time();
         $vnp_OrderInfo = 'Thanh toán';
         $vnp_OrderType = 'Freak Sport';
         $vnp_Amount = $total * 100;
@@ -295,7 +304,7 @@ class OrderController extends Controller
     public function vnpay_confirm(Request $request)
     {
         $data = $request->all();
-        $order = Order::find($data['vnp_TxnRef']);
+        $order = Order::where('order_code',$data['vnp_TxnRef'])->firstorFail();
 
         if (!$order) {
             session()->forget('voucher');
@@ -328,7 +337,7 @@ class OrderController extends Controller
         }
     }
 
-    public function momo($data, $order_id, $total)
+    public function momo($data, $order_code, $total, $order_id)
     {
 
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
@@ -339,13 +348,13 @@ class OrderController extends Controller
 
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $total;
-        $orderId = $order_id . '_' . time();
+        $orderId = $order_code . '_' . time();
         $redirectUrl = route('order.momo-confirm', $order_id);
         $ipnUrl = route('order.momo-confirm', $order_id);
         $extraData = "";
 
         $requestId = time() . "";
-        $requestType = "payWithATM";
+        $requestType = "payWithCC";
         //before sign HMAC SHA256 signature
         $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
         $signature = hash_hmac("sha256", $rawHash, $secretKey);

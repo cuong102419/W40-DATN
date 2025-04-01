@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('password');
             $table->boolean('status')->default(true);
-            $table->enum('role', ['super_admin', 'admin', 'user'])->default('user');
+            $table->enum('role', ['manager', 'staff', 'user'])->default('user');
             $table->string('avatar', 100)->nullable();
             $table->text('address')->nullable();
             $table->string('google_id')->nullable();

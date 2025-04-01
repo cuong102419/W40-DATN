@@ -65,9 +65,17 @@
                                                         class="price text-danger"><strong>{{ number_format($cart['price']) }}đ</strong></span>
                                                 </td>
                                                 <td class="product-quantity">
-                                                    <div class="pro-qty">
+                                                    {{-- <div class="pro-qty">
                                                         <input type="text" class="quantity" name="quantity[{{ $cart['id'] }}]"
                                                             title="Quantity" value="{{ $cart['quantity'] }}">
+                                                    </div> --}}
+                                                    <div class="pro-qty">
+                                                        <div class="d-flex">
+                                                            <div class= "dec qty-btn d-flex align-items-center justify-content-center">-</div>
+                                                            <input type="text" class="quantity" title="Quantity" name="quantity[{{ $cart['id'] }}]"
+                                                            value="{{ $cart['quantity'] }}">
+                                                            <div class="inc qty-btn d-flex align-items-center justify-content-center">+</div>
+                                                        </div>
                                                     </div>
                                                 </td>
                                                 <td class="product-subtotal">

@@ -17,7 +17,7 @@
             <div class="row text-center justify-content-center align-items-center">
                 <div class="col-md-auto me-4">
                     <span class="text-muted">Mã đơn hàng:</span><br>
-                    <strong>{{ $order->id }}</strong>
+                    <strong>{{ $order->order_code }}</strong>
                 </div>
                 <div class="col-md-auto border-start border-secondary" style="height: 100px;"></div>
                 <div class="col-md-auto me-4">

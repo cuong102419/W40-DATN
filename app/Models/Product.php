@@ -17,7 +17,9 @@ class Product extends Model
         'description',
         'discount',
         'sku',
-        'featured'
+        'featured',
+        'sales_count',
+        'view'
     ];
 
     public function category()

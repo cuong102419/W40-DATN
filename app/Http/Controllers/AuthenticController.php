@@ -38,7 +38,7 @@ class AuthenticController extends Controller
         if (Auth::attempt($data)) {
             if (Auth::user()->status == 1 && Auth::user()->email_verified_at != null) {
                 $user = Auth::user();
-                if (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin') {
+                if (Auth::user()->role == 'staff' || Auth::user()->role == 'manager') {
                     return response()->json([
                         'status' => 'success',
                         'message' => 'Đăng nhập thành công.',
