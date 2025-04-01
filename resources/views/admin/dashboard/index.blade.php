@@ -21,7 +21,7 @@
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                     <i class="fas fa-clipboard fa-3x text-warning"></i>
                     <div class="ms-3">
-                        <p class="mb-2">Tổng số đơn hàng dã bán</p>
+                        <p class="mb-2">Tổng số đơn hàng đã bán</p>
                         <h6 class="mb-0">{{ $totalOrders }}</h6>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                     <i class="fas fa-wallet fa-3x text-success"></i>
                     <div class="ms-3">
                         <p class="mb-2">Tổng doanh thu trong tháng</p>
-                        <h6 class="mb-0">{{ number_format($totalRevenue, 0, '.', '.') }}đ</h6>
+                        <h6 class="mb-0">{{ number_format($totalRevenueMonth, 0, '.', '.') }}đ</h6>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
             <div class="col-sm-12 col-xl-8">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-4">Doanh thu theo ngày</h6>
+                        <h6 class="mb-4">Doanh thu theo tháng</h6>
                         <h6>Tổng doanh thu: <span
                                 class="text-danger">{{ number_format($totalRevenue, 0, '.', '.') }}đ</span></h6>
                     </div>
@@ -76,14 +76,14 @@
     <!-- Recent Sales Start -->
     <div class="container-fluid mb-3 pt-4 px-4">
         <div class="row">
-            <div class="col-8">
+            <div class="col-sm-12 col-md-6 col-xl-9">
                 <div class="bg-light text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">Danh sách đơn hàng mới</h6>
                         <a href="{{ route('admin-order.index') }}">Xem danh sách</a>
                     </div>
                     <div class="table-responsive bg-white">
-                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                        <table class="table text-start align-middle table-bordered mb-0">
                             <thead class="text-center">
                                 <tr class="text-dark">
                                     <th scope="col">Mã</th>
@@ -91,14 +91,17 @@
                                     <th scope="col">Tổng tiền</th>
                                     <th scope="col">Trạng thái</th>
                                     <th scope="col">Thời gian</th>
-                                    <th scope="col">Hành động</th>
                                 </tr>
                             </thead>
                             <tbody class="small">
                                 @foreach ($quickListOrders as $order)
                                     <tr>
-                                        <td>{{ $order->id }}</td>
                                         <td>
+                                            <a href="{{ route('admin-order.detail', $order->id) }}">
+                                                {{ $order->order_code }}
+                                            </a>
+                                        </td>
+                                        <td style="width:1px" class="text-nowrap">
                                             <ul>
                                                 <li>Họ tên: {{ $order->fullname }}</li>
                                                 <li>SĐT: {{ $order->phone_number }}</li>
@@ -107,15 +110,10 @@
                                         </td>
                                         <td>{{ number_format($order->total, 0, '.', '.') }}đ</td>
                                         <td><span
-                                                class="badge {{ $status[$order->status]['class'] }}">{{ $status[$order->status]['value'] }}</span>
+                                                class="badge {{ $statusOrder[$order->status]['class'] }}">{{ $statusOrder[$order->status]['value'] }}</span>
                                         </td>
                                         <td>
-                                            {{ $order->created_at->format('d \t\h\á\n\g m, Y') }}
-                                        </td>
-                                        <td style="width:1px" class="text-nowrap">
-                                            <a class="btn btn-sm btn-outline-primary"
-                                                href="{{ route('admin-order.detail', $order->id) }}"><i
-                                                    class="far fa-eye"></i></a>
+                                            {{ $order->created_at->format('d \t\h\g m, Y') }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -124,25 +122,31 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6 col-xl-4">
+            <div class="col-sm-12 col-md-6 col-xl-3">
                 <div class="h-100 bg-light rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-2">
                         <h6 class="mb-0">Top sản phẩm bán chạy</h6>
                     </div>
                     @foreach ($productSale as $sale)
-                        <div class="d-flex align-items-center border-bottom py-3">
-                            <img class=" rounded flex-shrink-0"
-                                src="{{ Storage::url($sale->imageLists->first()->image_url) }}" alt=""
-                                width="60">
-                            <div class="w-100 ms-3">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-0">{{ $sale->total_sold }} đã bán</h6>
-                                    <small
-                                        class="badge bg-primary">{{ number_format($sale->variants->min()->price, 0, '.', '.') }}đ</small>
+                        <a href="{{ route('admin-product.detail', $sale->id) }}" class="text-secondary">
+                            <div class="d-flex align-items-center border-bottom py-3">
+                                <img class=" rounded flex-shrink-0"
+                                    src="{{ Storage::url($sale->imageLists->first()->image_url) }}" alt=""
+                                    width="50">
+                                <div class="w-100 ms-3">
+                                    <div>
+                                        <small
+                                            class="badge bg-primary">{{ number_format($sale->variants->min()->price, 0, '.', '.') }}đ</small>
+                                    </div>
+                                    <div>
+                                        <small class="mb-0"><strong>{{ $sale->sales_count }}</strong> đã bán</small>
+                                    </div>
+                                    <div>
+                                        <small>{{ $sale->name }}</small>
+                                    </div>
                                 </div>
-                                <span>{{ $sale->name }}</span>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
@@ -195,7 +199,8 @@
                                 width="60">
                             <div class="w-100 ms-3">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-0">{{ $view->view }} <i class="far fa-eye fa-sm text-primary"></i></h6>
+                                    <h6 class="mb-0">{{ $view->view }} <i class="far fa-eye fa-sm text-primary"></i>
+                                    </h6>
                                     <small
                                         class="badge bg-primary">{{ number_format($view->variants->min()->price, 0, '.', '.') }}đ</small>
                                 </div>
@@ -216,7 +221,7 @@
         let labels = Object.keys(orderStatus);
         let data = Object.values(orderStatus);
 
-        let revenueData = @json($revenueDaily);
+        let revenueData = @json($revenueMonth);
 
         let labelsRevenue = Object.keys(revenueData);
         let dataRevenue = Object.values(revenueData);

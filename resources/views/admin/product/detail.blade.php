@@ -99,7 +99,7 @@
                     </tr>
                     <tr>
                         <th>Số lượt bán</th>
-                        <td>{{ $product->variants->sum('sales_count') }}</td>
+                        <td>{{ $product->sales_count }}</td>
                     </tr>
                     <tr>
                         <th colspan="2" class="text-center">Mô tả</th>

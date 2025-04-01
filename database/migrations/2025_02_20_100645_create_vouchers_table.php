@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->nullable()->constrained();
-
             $table->string('name');
+            $table->enum('type', ['fixed', 'percentage']);
+            $table->enum('kind', ['total', 'shipping']);
             $table->string('code')->unique();
-            $table->double('value');
+            $table->decimal('value', 10, 2);
             $table->integer('quantity');
             $table->date('expiration_date');
             $table->softDeletes();

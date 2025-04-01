@@ -17,7 +17,7 @@ class CheckAuth
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::user()) {
-            if (Auth::user()->role == 'admin' || Auth::user()->role == 'super_admin') {
+            if (Auth::user()->role == 'staff' || Auth::user()->role == 'manager') {
                 return $next($request);
             } else {
                 return redirect()->route('home');

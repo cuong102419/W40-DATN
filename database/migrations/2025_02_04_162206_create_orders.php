@@ -13,20 +13,24 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('admin_id')->nullable()->constrained('users')->nullOnDelete();
 
-            $table->enum('status', ['unconfirmed', 'confirmed', 'shipping ', 'delivered', 'completed', 'canceled'])->default('unconfirmed');
-            $table->double('total');
+            $table->string('order_code', 10)->unique();
+            $table->enum('status', ['unconfirmed', 'confirmed', 'shipping', 'delivered', 'completed', 'canceled', 'returned', 'failed'])->default('unconfirmed');
+            $table->decimal('total', 10, 2);
             $table->string('payment_method');
             $table->enum('payment_status', ['unpaid', 'paid', 'refunded', 'cancel'])->default('unpaid');
             $table->string('address');
-            $table->string('fullname'); 
+            $table->string('fullname');
             $table->string('email');
             $table->string('phone_number');
             $table->text('note')->nullable();
+            $table->double('discount_amount', 10, 2)->default(0);
+            $table->double('shipping', 10, 2)->nullable();
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
-        
     }
 
     /**

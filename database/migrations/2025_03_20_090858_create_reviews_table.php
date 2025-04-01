@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('rating')->default(1);
             $table->string('title', 255);
             $table->text('comment');
+            $table->boolean('status')->default(true);
             $table->timestamps();
 
             // Khóa ngoại

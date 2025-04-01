@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -128,19 +129,12 @@ class OrderController extends Controller
                     ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
             }
-            
-            if($order->status != 'unconfirmed') {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Không thể xác nhận đơn hàng.'
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
 
             foreach ($order->orderItems as $item) {
                 $variant = ProductVariant::find($item->product_variant_id);
                 $variant->quantity -= $item->quantity;
                 $variant->save();
-                ProductVariant::find($item->product_variant_id)->increment('sales_count');
+                Product::where('id', $variant->product_id)->increment('sales_count');
             }
             
             $order->status = 'confirmed';

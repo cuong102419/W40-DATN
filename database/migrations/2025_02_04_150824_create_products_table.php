@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('sku');
             $table->boolean('featured')->default(0);
             $table->integer('view')->default(0);
+            $table->integer('sales_count')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

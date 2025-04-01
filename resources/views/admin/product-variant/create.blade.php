@@ -53,6 +53,7 @@
             $("#form-variant").on("submit", function (e) {
                 e.preventDefault();
 
+                $(".text-danger").text("");
                 let form = $(this);
                 let formData = form.serialize();
 
@@ -64,16 +65,13 @@
                     success: function (response) {
                         console.log(response);
                         if (response.status === "success") {
-                            $("input[name='price']").val("");
-                            $("input[name='quantity']").val("");
-                            $("input[name='size']").val("");
-                            $("input[name='color']").val("");
+                            // $("input[name='price']").val("");
+                            // $("input[name='quantity']").val("");
+                            // $("input[name='size']").val("");
+                            // $("input[name='color']").val("");
 
                             toastr.success(response.message);
-                            setTimeout(() => {
-                                $("#alert-success").fadeOut();
-                                window.location.href = "{{ route('product-variant.index', $product->id) }}";
-                            }, 3000);;
+
                         }
                     }, error: function (xhr) {
                         console.error(xhr.responseText);

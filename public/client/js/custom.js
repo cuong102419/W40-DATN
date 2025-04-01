@@ -214,8 +214,8 @@
 
   // Product Quantity JS
   var proQty = $(".pro-qty");
-  proQty.append('<div class= "dec qty-btn">-</div>');
-  proQty.append('<div class="inc qty-btn">+</div>');
+  // proQty.append('<div class= "dec qty-btn">-</div>');
+  // proQty.append('<div class="inc qty-btn">+</div>');
   $('.qty-btn').on('click', function (e) {
     e.preventDefault();
     var $button = $(this);

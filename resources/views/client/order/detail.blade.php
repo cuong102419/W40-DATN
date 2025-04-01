@@ -8,7 +8,7 @@
     <div class="mt-3 mb-5 container">
         <div class="row">
             <div class="col-7">
-                <h5 class="text-uppercase">Đơn hàng: {{ $order->id }}</h5>
+                <h5 class="text-uppercase">Đơn hàng: {{ $order->order_code }}</h5>
                 <div class="mt-5 border p-4">
                     <div class="d-flex justify-content-between border-bottom pb-4">
                         <div>
@@ -89,7 +89,7 @@
                                 </th>
                                 <td class="text-end">
                                     <div>
-                                        <span class="fw-bold">{{ $order->id }}</span>
+                                        <span class="fw-bold">{{ $order->order_code }}</span>
                                     </div>
                                     @php
                                         $day = mb_strtoupper($order->created_at->locale('vi')->translatedFormat('l'));

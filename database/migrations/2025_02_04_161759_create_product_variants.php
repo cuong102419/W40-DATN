@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('color');
             $table->double('price');
             $table->integer('quantity');
-            $table->integer('sales_count')->default(0);
             $table->softDeletes();
             
             $table->timestamps();

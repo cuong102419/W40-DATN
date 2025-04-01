@@ -21,7 +21,8 @@ class Order extends Model
         'phone_number', 
         'note',
         'discount_amount',
-        'shipping'
+        'shipping',
+        'order_code'
     ];
 
     public function user() {
