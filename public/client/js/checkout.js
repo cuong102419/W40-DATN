@@ -39,6 +39,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
         totalInput.value = getTotalFromDisplay();
 
+        // Lấy tên tỉnh và huyện
+        let provinceName = provinceSelect.options[provinceSelect.selectedIndex].text;
+        let districtName = districtSelect.options[districtSelect.selectedIndex].text;
+
+        // Gửi tên tỉnh và huyện vào các trường tương ứng trong form
+        document.querySelector('input[name="province"]').value = provinceName;
+        document.querySelector('input[name="district"]').value = districtName;
+
         document.getElementById("checkout").submit();
+    });
+
+    const provinceSelect = document.getElementById("province");
+    const districtSelect = document.getElementById("district");
+
+    if (!provinceSelect || !districtSelect) {
+        console.error("Không tìm thấy phần tử #province hoặc #district");
+        return;
+    }
+
+    // Gọi API lấy danh sách tỉnh/thành
+    fetch("https://provinces.open-api.vn/api/p/")
+        .then(res => res.json())
+        .then(data => {
+            data.forEach(province => {
+                let option = new Option(province.name, province.code); // Lấy code để fetch huyện
+                provinceSelect.add(option);
+            });
+        })
+        .catch(err => console.error("Lỗi khi lấy danh sách tỉnh/thành:", err));
+
+    // Khi chọn tỉnh, gọi API để lấy quận/huyện
+    provinceSelect.addEventListener("change", function () {
+        let provinceCode = this.value;
+        districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>'; // Reset dropdown
+
+        if (!provinceCode) return;
+
+        fetch(`https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`)
+            .then(res => res.json())
+            .then(data => {
+                data.districts.forEach(district => {
+                    let option = new Option(district.name, district.name);
+                    districtSelect.add(option);
+                });
+            })
+            .catch(err => console.error("Lỗi khi lấy danh sách quận/huyện:", err));
     });
 });

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->decimal('value', 10, 2);
             $table->integer('quantity');
+            $table->decimal('condition', 10, 2);
+            $table->date('start_date');
             $table->date('expiration_date');
             $table->softDeletes();
             $table->timestamps();

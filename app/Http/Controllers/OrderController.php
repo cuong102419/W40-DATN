@@ -35,7 +35,7 @@ class OrderController extends Controller
             'fullname' => ['required', 'min:4'],
             'address' => ['required', 'min:4'],
             'phone_number' => ['required', 'phone:VN'],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email'],        
             'note' => ['nullable'],
             'payment_method' => ['required'],
             'total' => ['required'],
@@ -50,7 +50,8 @@ class OrderController extends Controller
             'email.required' => 'Không được để trống.',
             'email.email' => 'Email không hợp lệ.'
         ]);
-        do {
+        $data['address'] = $data['address'] . ', ' . $request['district'] . ', ' . $request['province'];   
+         do {
             $rand = preg_replace('/[^A-Za-z]/', '', Str::random(3));
         } while (strlen($rand) < 3);
         $data['order_code'] = 'FS' . Str::upper($rand) . rand(10000, 99999);
@@ -59,7 +60,6 @@ class OrderController extends Controller
         if (Auth::check()) {
             $data['user_id'] = Auth::user()->id;
         }
-
         $voucher = session()->get('voucher');
 
         if ($cart) {
@@ -85,8 +85,7 @@ class OrderController extends Controller
 
                 return redirect()->route('order.checkout', $encryptedId)->with('success', 'Đặt hàng thành công.');
             }
-            $data['status'] = 'canceled';
-            $data['payment_status'] = 'cancel';
+            
             $order = Order::create($data);
 
             foreach ($cart as $item) {
@@ -253,7 +252,7 @@ class OrderController extends Controller
         $vnp_TxnRef = $order_code . '_' . time();
         $vnp_OrderInfo = 'Thanh toán';
         $vnp_OrderType = 'Freak Sport';
-        $vnp_Amount = $total * 100;
+        $vnp_Amount = $total;
         $vnp_Locale = 'vn';
         $vnp_BankCode = '';
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -314,7 +313,8 @@ class OrderController extends Controller
     public function vnpay_confirm(Request $request)
     {
         $data = $request->all();
-        $order = Order::where('order_code',$data['vnp_TxnRef'])->firstorFail();
+        $order_code = explode('_', $data['vnp_TxnRef'])[0];
+        $order = Order::where('order_code', $order_code)->first();
 
         if (!$order) {
             session()->forget('voucher');
