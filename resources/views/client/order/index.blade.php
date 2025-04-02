@@ -30,17 +30,6 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="street-address">Địa chỉ <span class="required"
-                                                    title="required">*</span></label>
-                                            <input id="street-address" name="address" type="text" class="form-control"
-                                                placeholder="Nhập địa chỉ." value="{{ Auth::user()->address ?? '' }}">
-                                            @error('address')
-                                                <span class="text-danger small mt-2">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
                                             <label for="phone">Số điên thoại <span class="required"
                                                     title="required">*</span></label>
                                             <input id="phone" name="phone_number" type="phone" class="form-control"
@@ -63,12 +52,45 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="street-address">Địa chỉ <span class="required"
+                                                    title="required">*</span></label>
+                                            <input id="street-address" name="address" type="text" class="form-control"
+                                                placeholder="Số nhà, tên đường, phường/xã...." value="{{ Auth::user()->address ?? '' }}">
+                                            @error('address')
+                                                <span class="text-danger small mt-2">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="street-address">Quận/Huyện <span class="required"
+                                                    title="required">*</span></label>
+                                           <select name="district" id="district" class="form-select"></select>
+                                            @error('address')
+                                                <span class="text-danger small mt-2">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="street-address">Tỉnh/Thành phố <span class="required"
+                                                    title="required">*</span></label>
+                                           <select name="province" id="province" class="form-select"></select>
+                                            @error('address')
+                                                <span class="text-danger small mt-2">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <input id="payment_method" type="hidden" name="payment_method" class="form-control"
                                             value="">
                                         <input type="hidden" name="total" value="">
                                         <input type="hidden" name="discount_amount"
                                             value="{{ $voucher / 100 * $subTotal }}">
                                         <input type="hidden" name="redirect">
+                                        <input type="hidden" name="province">
+                                        <input type="hidden" name="district">
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group mb--0">

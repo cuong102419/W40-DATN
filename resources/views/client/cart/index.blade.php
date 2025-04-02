@@ -31,7 +31,7 @@
                                             <tr class="cart-product-item">
                                                 <td>
                                                     <div class="me-3">
-                                                        <input type="checkbox" class="cart-checkbox" name="id[]" value="{{ $cart['id'] }}">
+                                                        <input type="checkbox" class="cart-checkbox" checked name="id[]" value="{{ $cart['id'] }}">
                                                     </div>
                                                 </td>
                                                 <td class="product-thumb">

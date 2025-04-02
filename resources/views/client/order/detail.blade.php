@@ -61,17 +61,34 @@
                     </table>
                 </div>
                 @if ($order->status == 'unconfirmed')
-                    <div class="mt-3">
-                        <form id="cancel-order" action="{{ route('order.cancel', $order->id) }}" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="text-center">
-                                <button onclick="return confirm('Bạn có muốn hủy đơn hàng, nếu hủy bạn sẽ không thể đặt lại.')"
-                                    class="btn-theme">Hủy đơn hàng</button>
+                    <div class="coupon-accordion mt-4" id="CouponAccordion">
+                        <div>
+                            <h5>
+                                <a href="#/" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Hủy đơn</a>
+                            </h5>
+                            <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
+                                <div class="card-body">
+                                    <div class="apply-coupon-wrap mb-60">
+                                        <form action="#" method="post">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <textarea class="form-control" type="text"
+                                                            placeholder="Nhập lý do huỷ đơn" name="reason" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button class="btn-theme btn-sm">Gửi</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 @endif
+
             </div>
             <div class="col-5">
                 <div class="mt-5">
@@ -95,29 +112,33 @@
                                         $day = mb_strtoupper($order->created_at->locale('vi')->translatedFormat('l'));
                                     @endphp
                                     <div>
-                                        <span>{{ $day}}, {{ $order->created_at->translatedFormat('d \t\h\g m, Y') }}</span>
+                                        <span>{{ $day }},
+                                            {{ $order->created_at->translatedFormat('d \t\h\g m, Y') }}</span>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" class="border-bottom-0">
+                                <td class="border-bottom-0">
                                     <div class="mt-4">
                                         <h5 class="text-uppercase">Giao hàng</h5>
+                                    </div>
+                                </td>
+                                <td class="text-end border-bottom-0">
+                                    <div class="mt-4">
+                                        <span><i class="fa fa-truck fa-lg" aria-hidden="true"></i></span>
                                     </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="border-bottom-0">
                                     <div>
-                                        <span class="fw-bold">Hãng vận chuyển</span>
-                                    </div>
-                                    <div>
-                                        <span>Ninja Van</span>
+                                        <span class="fw-bold">Hãng vận chuyển:</span>
                                     </div>
                                 </td>
                                 <td class="text-end border-bottom-0">
-                                    <div></div>
-                                    <span><i class="fa fa-truck fa-lg" aria-hidden="true"></i></span>
+                                    <div>
+                                        <img src="{{ asset('client/img/icons/Logo-Ninjavan-H.png') }}" width="90" alt="">
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
