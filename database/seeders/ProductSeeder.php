@@ -18,7 +18,7 @@ class ProductSeeder extends Seeder
             [
                 'category_id'   => 1,
                 'brand_id'      => 1,
-                'name'          => 'Giày Samba ORIGINALS',
+                'name'          => 'Giày Ultraboost 5x',
                 'description'   => '<p>Đôi giày chạy bộ BOOST thế hệ mới có sử dụng chất liệu tái chế.
                                     Chinh phục kỷ lục cá nhân mới thật dễ dàng với đôi giày chạy bộ adidas này. Đế BOOST nhẹ nhất từ trước 
                                     đến nay của chúng tôi hoàn trả năng lượng liên tục trên từng cây số để bạn cảm thấy sung sức từ đầu đến
@@ -39,7 +39,7 @@ class ProductSeeder extends Seeder
             [
                 'category_id'   => 1,
                 'brand_id'      => 1,
-                'name'          => 'Giày Samba OG',
+                'name'          => 'Giày Samba ORIGINALS',
                 'description'   => '<p>SAMBA ORIGINALS
                                     Ra đời trên sân bóng, giày Samba là biểu tượng kinh điển của phong cách đường phố. 
                                     Phiên bản này trung thành với di sản, thể hiện qua thân giày bằng da mềm, dáng thấp,

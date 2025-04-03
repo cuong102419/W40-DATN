@@ -4,28 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Voucher extends Model
 {
     use HasFactory;
-
-    protected $table = 'vouchers'; 
+    use SoftDeletes;
 
     protected $fillable = [
         'name',
+        'type',
+        'kind',
         'code',
         'value',
-        'type',
         'quantity',
+        'condition',
+        'start_date',
         'expiration_date',
     ];
-
-
-    
-    
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id')->withDefault();
-    }
-
 }

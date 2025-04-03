@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained();
             $table->text('reason');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

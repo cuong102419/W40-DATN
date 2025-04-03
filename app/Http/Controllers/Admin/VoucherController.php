@@ -9,24 +9,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class VoucherController extends Controller
 {
-    
+
     public function index()
     {
         $vouchers = Voucher::latest('id')->paginate(10);
         return view('admin.voucher.index', compact('vouchers'));
     }
 
-    
+
     public function create()
     {
         return view('admin.voucher.create');
     }
 
-    
+
     public function store(Request $request)
     {
-
-
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
             'code' => ['required', 'string', 'min:4', 'unique:vouchers,code'],
@@ -49,33 +47,22 @@ class VoucherController extends Controller
             'expiration_date.after_or_equal' => 'Ngày hết hạn phải từ hôm nay trở đi.',
         ]);
 
-        $data = $request->only(['name', 'code', 'value', 'quantity', 'expiration_date']);
         $data['product_id'] = $request->product_id ?? null;
 
         Voucher::create($data);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Thêm khuyến mãi thành công.'
-            ], Response::HTTP_OK);
-        }
-
-        return redirect()->back()->with('success', 'Thêm khuyến mãi thành công.');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Thêm khuyến mãi thành công.'
+        ], Response::HTTP_OK);
     }
 
-    public function show(string $id)
-    {
-        //
-    }
-
-    
     public function edit(Voucher $voucher)
     {
         return view('admin.voucher.edit', compact('voucher'));
     }
 
-    
+
     public function update(Request $request, Voucher $voucher)
     {
         $data = $request->validate([
@@ -88,18 +75,14 @@ class VoucherController extends Controller
 
         $voucher->update($data);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Cập nhật khuyến mãi thành công.'
-                
-            ], Response::HTTP_OK);
-        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật khuyến mãi thành công.'
 
-        return redirect()->back()->with('success', 'Cập nhật khuyến mãi thành công.');
+        ], Response::HTTP_OK);
     }
 
-   
+
     public function destroy(Voucher $voucher)
     {
         $voucher->delete();
