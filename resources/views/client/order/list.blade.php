@@ -29,8 +29,10 @@
                                         <div>
                                             <span
                                                 class="text-dark d-block">{{ $payment_method[$order->payment_method] }}</span>
-                                            <span
-                                                class="d-block fw-bold text-dark">{{ $payment_status[$order->payment_status] }}</span>
+                                            @if ($order->payment_method != 'COD')
+                                                <span
+                                                    class="d-block fw-bold text-dark">{{ $payment_status[$order->payment_status] }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

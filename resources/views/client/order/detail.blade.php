@@ -69,16 +69,23 @@
                             <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
                                 <div class="card-body">
                                     <div class="apply-coupon-wrap mb-60">
-                                        <form action="#" method="post">
+                                        <form id="request-cancel" action="{{ route('order.cancel-request') }}" method="post">
+                                            @csrf
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <textarea class="form-control" type="text"
+                                                        <textarea class="reason form-control" type="text"
                                                             placeholder="Nhập lý do huỷ đơn" name="reason" required></textarea>
+                                                    </div>
+                                                    <div>
+                                                        <input name="order_id" value="{{ $order->id }}" hidden>
+                                                        @if (Auth::check())
+                                                        <input name="user_id" value="{{ Auth::user()->id }}" hidden
+                                                        @endif>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button class="btn-theme btn-sm">Gửi</button>
+                                                    <button type="submit" class="btn-theme btn-sm">Gửi</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -167,10 +174,12 @@
                                     <div class="mb-4">
                                         <span class="small">{{ $payment_method[$order->payment_method] }}</span>
                                     </div>
+                                    @if ($order->payment_method != 'COD')
                                     <div class="mb-4">
                                         <span
                                             class="small fw-bold {{ $payment_status[$order->payment_status]['class'] }}">{{ $payment_status[$order->payment_status]['value'] }}</span>
                                     </div>
+                                    @endif
                                 </td>
                                 <td class="text-end">
                                     <span>
@@ -225,5 +234,5 @@
             </div>
         </div>
     </div>
-    <script src="{{ asset('administrator/js/order.js') }}"></script>
+    <script src="{{ asset('client/js/order.js') }}"></script>
 @endsection

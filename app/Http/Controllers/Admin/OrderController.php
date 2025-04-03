@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Reason;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,6 +43,7 @@ class OrderController extends Controller
     public function detail(Order $order)
     {
         $orderItems = OrderItem::where('order_id', $order->id)->get();
+        $requestOrder = Reason::where('order_id', $order->id)->first();
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD).',
             'ATM' => "Thanh toán qua VNPay.",
@@ -63,7 +65,7 @@ class OrderController extends Controller
         ];
         $day = ucfirst(mb_strtolower($order->created_at->locale('vi')->translatedFormat('l')));        ;
 
-        return view('admin.order.detail', compact('orderItems', 'order', 'payment_status', 'payment_method', 'status', 'day'));
+        return view('admin.order.detail', compact('orderItems', 'order', 'payment_status', 'payment_method', 'status', 'day', 'requestOrder'));
     }
 
     public function updatePayment(Request $request, Order $order)
@@ -147,6 +149,21 @@ class OrderController extends Controller
         }
 
         if ($request->input('action') == 'canceled') {
+            
+            $reason = Reason::where('order_id', $order->id)->first();
+            if($reason) {
+                $order->update([
+                    'status' => 'canceled',
+                    'reason' => $reason->reason
+                ]);
+
+                $reason->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Cập nhật thành công.' 
+                ], Response::HTTP_OK);
+            }
+
             $order->status = 'canceled';
             $order->save();
 

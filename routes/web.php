@@ -25,6 +25,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\ReasonController;
 use App\Http\Controllers\VerifyAccountController;
 use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Auth;
@@ -119,7 +120,7 @@ Route::prefix(('/order'))->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('order.index');
     Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
     Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
-    Route::put('/cancel/{order}', [OrderController::class, 'cancel'])->middleware('auth')->name('order.cancel');
+    Route::post('/cancel', [ReasonController::class, 'request'])->name('order.cancel-request');
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
