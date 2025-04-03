@@ -22,7 +22,8 @@ class Order extends Model
         'note',
         'discount_amount',
         'shipping',
-        'order_code'
+        'order_code',
+        'reason'
     ];
 
     public function user() {
@@ -31,5 +32,9 @@ class Order extends Model
 
     public function orderItems() {
         return $this->hasMany(OrderItem::class, 'order_id');
+    }
+
+    public function reason() {
+        return $this->hasOne(Reason::class);
     }
 }

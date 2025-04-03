@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Reason;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
@@ -63,7 +64,7 @@ class OrderController extends Controller
             'completed' => ['value' => 'Hoàn thành.', 'class' => 'text-success'],
             'canceled' => ['value' => 'Hủy đơn.', 'class' => 'text-danger'],
         ];
-        $day = ucfirst(mb_strtolower($order->created_at->locale('vi')->translatedFormat('l')));        ;
+        $day = ucfirst(mb_strtolower($order->created_at->locale('vi')->translatedFormat('l')));;
 
         return view('admin.order.detail', compact('orderItems', 'order', 'payment_status', 'payment_method', 'status', 'day', 'requestOrder'));
     }
@@ -119,7 +120,7 @@ class OrderController extends Controller
                 $variant = ProductVariant::find($item->product_variant_id);
                 if (!$variant) {
                     return response()->json([
-                        'status' =>'error',
+                        'status' => 'error',
                         'message' => 'Sản phẩm không tồn tại.'
                     ], Response::HTTP_INTERNAL_SERVER_ERROR);
                 }
@@ -138,38 +139,19 @@ class OrderController extends Controller
                 $variant->save();
                 Product::where('id', $variant->product_id)->increment('sales_count');
             }
-            
+
             $order->status = 'confirmed';
             $order->save();
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Cập nhật thành công.' 
-            ], Response::HTTP_OK);
-        }
-
-        if ($request->input('action') == 'canceled') {
-            
             $reason = Reason::where('order_id', $order->id)->first();
-            if($reason) {
-                $order->update([
-                    'status' => 'canceled',
-                    'reason' => $reason->reason
-                ]);
 
+            if ($reason) {
                 $reason->delete();
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Cập nhật thành công.' 
-                ], Response::HTTP_OK);
             }
 
-            $order->status = 'canceled';
-            $order->save();
-
             return response()->json([
                 'status' => 'success',
-                'message' => 'Cập nhật thành công.' 
+                'message' => 'Cập nhật thành công.'
             ], Response::HTTP_OK);
         }
 
@@ -179,7 +161,7 @@ class OrderController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Cập nhật thành công.' 
+                'message' => 'Cập nhật thành công.'
             ], Response::HTTP_OK);
         }
 
@@ -189,7 +171,7 @@ class OrderController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Cập nhật thành công.' 
+                'message' => 'Cập nhật thành công.'
             ], Response::HTTP_OK);
         }
 
@@ -199,8 +181,36 @@ class OrderController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Cập nhật thành công.' 
+                'message' => 'Cập nhật thành công.'
             ], Response::HTTP_OK);
         }
+    }
+
+    public function cancel(Request $request, Order $order)
+    {
+        $adminId = Auth::user()->id;
+
+        $order->update([
+            'admin_id' => $adminId,
+            'status' => 'canceled',
+            'reason' => $request->reason
+        ]);
+
+        if($order->payment_method == 'COD') {
+            $order->update([
+                'payment_status' => 'cancel'
+            ]);
+        }
+
+        $reason = Reason::where('order_id', $order->id)->first();
+
+        if($reason) {
+            $reason->delete();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật thành công.'
+        ], Response::HTTP_OK);
     }
 }

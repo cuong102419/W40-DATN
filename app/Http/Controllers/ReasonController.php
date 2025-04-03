@@ -19,7 +19,9 @@ class ReasonController extends Controller
                 'status' => 'error',
                 'message' => 'Có lỗi xảy ra.'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        } else if($reason == true) {
+        }
+        
+        if($reason == true) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Đơn hàng đã gửi yêu cầu hủy trước đó.'

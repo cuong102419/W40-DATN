@@ -85,7 +85,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <button type="submit" class="btn-theme btn-sm">Gửi</button>
+                                                    <button type="submit" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng.')" class="btn-theme btn-sm">Gửi</button>
                                                 </div>
                                             </div>
                                         </form>
