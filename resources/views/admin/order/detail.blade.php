@@ -41,6 +41,13 @@
                 <div class="bg-white mt-3 p-2">
                     <div class="table-responsive">
                         <table class="table">
+                            @if ($requestOrder)
+                                <tr>
+                                    <th>Yêu cầu hủy đơn</th>
+                                    <td><strong>Lý do: </strong>{{ $requestOrder->reason }}</td>
+                                    <td>{{ $requestOrder->created_at->format('d \T\h\á\n\g m, Y') }}</td>
+                                </tr>
+                            @endif
                             <tr>
                                 <th>Mã đơn hàng</th>
                                 <td colspan="2">{{ $order->order_code }}</td>
