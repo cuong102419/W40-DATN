@@ -95,7 +95,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#cancel-order').submit(function(e) {
+    $('.cancel-order').submit(function(e) {
         e.preventDefault();
 
         $.ajax({

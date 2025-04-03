@@ -23,8 +23,10 @@
                                 <button onclick="return confirm('Bạn có muốn xác nhận đơn hàng này.')" type="submit"
                                     name="action" value="confirmed" class="btn btn-sm btn-primary"><i
                                         class="fas fa-check me-2"></i>Xác nhận</button>
-                                <button onclick="return confirm('Bạn có muốn hủy, nếu hủy sẽ không thể hoàn tác lại.')"
-                                    type="submit" name="action" value="canceled" class="btn btn-sm btn-danger"><i class="far fa-window-close me-2"></i>Hủy</button>
+                                @if (!$requestOrder)
+                                    <a data-bs-toggle="modal" data-bs-target="#reason-cancel"
+                                        class="btn btn-sm btn-danger"><i class="far fa-window-close me-2"></i>Hủy</a>
+                                @endif
                             @elseif ($order->status == 'confirmed')
                                 <button type="submit" name="action" value="shipping" class="btn btn-sm btn-primary"><i
                                         class="fas fa-shipping-fast me-2"></i>Giao hàng</button>
@@ -44,8 +46,23 @@
                             @if ($requestOrder)
                                 <tr>
                                     <th>Yêu cầu hủy đơn</th>
-                                    <td><strong>Lý do: </strong>{{ $requestOrder->reason }}</td>
-                                    <td>{{ $requestOrder->created_at->format('d \T\h\á\n\g m, Y') }}</td>
+                                    <td>
+                                        <div>
+                                            <strong>Lý do hủy đơn: </strong>{{ $requestOrder->reason }}
+                                        </div>
+                                        <div>
+                                            <span>Ngày tạo:
+                                                {{ $requestOrder->created_at->format('d \T\h\á\n\g m, Y') }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <form class="cancel-order" action="{{ route('admin-order.cancel', $order->id) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <input hidden name="reason" value="{{ $requestOrder->reason }}">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có muốn hủy đơn hàng này.')">Xác nhận hủy đơn</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             @endif
                             <tr>
@@ -54,10 +71,15 @@
                             </tr>
                             <tr>
                                 <th>Trạng thái đơn hàng</th>
-                                <th colspan="2">
+                                <th>
                                     <span
                                         class="{{ $status[$order->status]['class'] }}">{{ $status[$order->status]['value'] }}</span>
                                 </th>
+                                <td>
+                                    @if ($order->status == 'returned' || $order->status == 'canceled' || $order->status == 'failed') 
+                                        <span><strong>Lý do: </strong> {{ $order->reason }}</span>
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <th>Sản phẩm</th>
@@ -75,13 +97,15 @@
                                             </div>
                                             <div class="ms-3">
                                                 <div>
-                                                    <span class="fw-bold">{{ $item->product_variant->product->name }}</span>
+                                                    <span
+                                                        class="fw-bold">{{ $item->product_variant->product->name }}</span>
                                                 </div>
                                                 <div>
                                                     <span><strong>Số lượng:</strong> {{ $item->quantity }}</span>
                                                 </div>
                                                 <div>
-                                                    <span><strong>Kích cỡ:</strong> {{ $item->product_variant->size }}</span>
+                                                    <span><strong>Kích cỡ:</strong>
+                                                        {{ $item->product_variant->size }}</span>
                                                 </div>
                                                 <div class="d-flex">
                                                     <div>
@@ -138,9 +162,15 @@
                                             <div>
                                                 <select name="payment_status" class="form-select" id="">
                                                     <option disabled selected>--Chọn--</option>
-                                                    <option value="paid" {{ $order->payment_status == 'paid' ? 'disabled selected' : '' }}>Đã thanh toán</option>
-                                                    <option value="refunded" {{ $order->payment_status == 'refunded' ? 'disabled selected' : '' }}>Hoàn trả</option>
-                                                    <option value="cancel" {{ $order->payment_status == 'cancel' ? 'disabled selected' : '' }}>Đã hủy</option>
+                                                    <option value="paid"
+                                                        {{ $order->payment_status == 'paid' ? 'disabled selected' : '' }}>
+                                                        Đã thanh toán</option>
+                                                    <option value="refunded"
+                                                        {{ $order->payment_status == 'refunded' ? 'disabled selected' : '' }}>
+                                                        Hoàn trả</option>
+                                                    <option value="cancel"
+                                                        {{ $order->payment_status == 'cancel' ? 'disabled selected' : '' }}>
+                                                        Đã hủy</option>
                                                 </select>
                                             </div>
                                             <div class="mt-2">
@@ -154,20 +184,23 @@
                             <tr>
                                 <th>Ngày tạo</th>
                                 <td colspan="2">
-                                    <span>{{$day}}, {{ $order->created_at->format('d \t\h\á\n\g m, Y') }}</span>
+                                    <span>{{ $day }},
+                                        {{ $order->created_at->format('d \t\h\á\n\g m, Y') }}</span>
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="mt-5">
                         <h5>Thông tin khách hàng</h5>
-                        <form id="custom-info" action="{{ route('admin-order.info', $order->id) }}" method="post" class="mt-3">
+                        <form id="custom-info" action="{{ route('admin-order.info', $order->id) }}" method="post"
+                            class="mt-3">
                             @csrf
                             @method('PUT')
                             <div class="row">
                                 <div class="col">
                                     <label for="" class="form-label">Họ tên</label>
-                                    <input type="text" name="fullname" class="form-control" value="{{ $order->fullname }}">
+                                    <input type="text" name="fullname" class="form-control"
+                                        value="{{ $order->fullname }}">
                                     <span class="text-danger error-fullname mt-2 d-block"></span>
                                 </div>
                                 <div class="col">
@@ -180,22 +213,24 @@
                             <div class="row mt-3">
                                 <div class="col">
                                     <label for="" class="form-label">Email</label>
-                                    <input type="text" name="email" class="form-control" value="{{ $order->email }}">
+                                    <input type="text" name="email" class="form-control"
+                                        value="{{ $order->email }}">
                                     <span class="text-danger error-email mt-2 d-block"></span>
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label">Địa chỉ</label>
-                                    <input type="text" name="address" class="form-control" value="{{ $order->address }}">
+                                    <input type="text" name="address" class="form-control"
+                                        value="{{ $order->address }}">
                                     <span class="text-danger error-address mt-2 d-block"></span>
                                 </div>
                             </div>
                             <div class="mt-3">
                                 <label for="" class="form-label">Ghi chú</label>
-                                <textarea class="form-control" name="note" rows="5" name=""
-                                    id="">{{ $order->note}}</textarea>
+                                <textarea class="form-control" name="note" rows="5" name="" id="">{{ $order->note }}</textarea>
                             </div>
                             <div class="mt-3">
-                                <button type="submit" onclick="return confirm('Bạn có muốn cập nhật thông tin khách hàng.')"
+                                <button type="submit"
+                                    onclick="return confirm('Bạn có muốn cập nhật thông tin khách hàng.')"
                                     class="btn btn-sm btn-primary"><i class="fas fa-save me-2"></i>Cập nhật</button>
                             </div>
                         </form>
@@ -204,8 +239,36 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="reason-cancel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="cancel-order" action="{{ route('admin-order.cancel', $order->id) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h6 class="modal-title">Hủy đơn hàng</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div>
+                            <textarea name="reason" class="form-control" id="" cols="20" rows="5"
+                                placeholder="Nhập lý do hủy đơn hàng"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có muốn hủy đơn hàng này.')">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script>
-        $('#confirm-order button[type="submit"]').click(function () {
+        $('#confirm-order button[type="submit"]').click(function() {
             let actionValue = $(this).val();
             $('#confirm-order input[name="action"]').val(actionValue);
         });

@@ -195,6 +195,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/payment/{order}', [AdminOrderController::class, 'updatePayment'])->name('admin-order.payment');
         Route::put('/customer-information/{order}', [AdminOrderController::class, 'updateInfo'])->name('admin-order.info');
         Route::put('/status/{order}', [AdminOrderController::class, 'status'])->name('admin-order.status');
+        Route::put('/cancel/{order}', [AdminOrderController::class, 'cancel'])->name('admin-order.cancel');
     });
     Route::prefix('/review')->group(function () {
         Route::get('/', [AdminReviewController::class, 'index'])->name('admin-review.index');
