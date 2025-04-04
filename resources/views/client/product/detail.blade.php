@@ -310,134 +310,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="reviews-content-body">
-
-
-<style>
-    #loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    visibility: hidden; /* Đặt visibility là hidden */
-}
-
-.hide-loading {
-    visibility: hidden; /* Ẩn loading khi không cần */
-}
-</style>
-<script>
-    $(document).ready(function() {
-    // Khi nhấn vào tab, ẩn màn hình loading
-    $('a[data-bs-toggle="pill"]').on('click', function() {
-        // Kiểm tra xem tab có đang chuyển tới "Đánh giá" không
-        if ($(this).attr('href') == '#reviews') {
-            // Nếu chuyển tới tab đánh giá, không cần loading
-            $("#loading-screen").addClass("hide-loading");
-        } else {
-            // Nếu không phải tab đánh giá, bạn có thể thêm các xử lý khác ở đây nếu cần
-            $("#loading-screen").addClass("hide-loading");
-        }
-    });
-});
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                        
-                                        @forelse($reviews->items() as $review)
+                                    <div class="reviews-content-body">     
+                                                                  
+                                            @forelse($reviews->items() as $review)
                                             <!--== Start Reviews Content Item ==-->
                                             <div class="review-item">
                                                 <ul class="review-rating">
                                                     @for ($i = 1; $i <= 5; $i++)
-                                                        <li
-                                                            class="fa {{ $i <= $review->rating ? 'fa-star' : 'fa-star-o' }}">
-                                                        </li>
+                                                        <li class="fa {{ $i <= $review->rating ? 'fa-star' : 'fa-star-o' }}"></li>
                                                     @endfor
                                                 </ul>
                                                 <h3 class="title">{{ $review->title }}</h3>
@@ -446,12 +326,56 @@
                                                     no <span>{{ $review->created_at->format('M d, Y') }}</span>
                                                 </h5>
                                                 <p>{{ $review->comment }}</p>
+                                        
+                                                <!-- Hiển thị Size và Màu -->
+                                                @if ($review->orderItem && $review->orderItem->variant)
+                                                    <p><strong>Size:</strong> {{ $review->orderItem->variant->size }}</p>
+                                                    <p>
+                                                        <strong>Màu:</strong> 
+                                                        <span class="color-box" style="width: 20px; height: 20px; background-color: {{ $review->orderItem->variant->color }}; border-radius: 50%;"></span>
+                                                    </p>
+                                                @endif
+                                        
                                                 <a href="#/">Báo cáo là không phù hợp</a>
                                             </div>
                                             <!--== End Reviews Content Item ==-->
                                         @empty
                                             <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
-                                        @endforelse
+                                        @endforelse    
+                                        <style>
+                                            #loading-screen {
+                                            position: fixed;
+                                            top: 0;
+                                            left: 0;
+                                            width: 100%;
+                                            height: 100%;
+                                            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            z-index: 9999;
+                                            visibility: hidden; /* Đặt visibility là hidden */
+                                        }
+                                        
+                                        .hide-loading {
+                                            visibility: hidden; /* Ẩn loading khi không cần */
+                                        }
+                                        </style>
+                                        <script>
+                                            $(document).ready(function() {
+                                            // Khi nhấn vào tab, ẩn màn hình loading
+                                            $('a[data-bs-toggle="pill"]').on('click', function() {
+                                                // Kiểm tra xem tab có đang chuyển tới "Đánh giá" không
+                                                if ($(this).attr('href') == '#reviews') {
+                                                    // Nếu chuyển tới tab đánh giá, không cần loading
+                                                    $("#loading-screen").addClass("hide-loading");
+                                                } else {
+                                                    // Nếu không phải tab đánh giá, bạn có thể thêm các xử lý khác ở đây nếu cần
+                                                    $("#loading-screen").addClass("hide-loading");
+                                                }
+                                            });
+                                        });
+                                        </script>                                                                    
                                     </div>
 
                                     <!--== Start Reviews Pagination Item ==-->

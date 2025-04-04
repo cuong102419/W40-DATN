@@ -10,10 +10,9 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Mã đơn hàng</th>  <!-- Thêm cột mã đơn hàng -->
             <th>Sản phẩm</th>
             <th>Người dùng</th>
-            <th>Tiêu đề</th>
             <th>Bình luận</th>
             <th>Xếp hạng</th>
             <th>Trạng thái</th>
@@ -23,10 +22,10 @@
     <tbody>
         @foreach($reviews as $review)
         <tr>
-            <td>{{ $review->id }}</td>
+            <!-- Hiển thị mã đơn hàng -->
+            <td>{{ $review->order->order_code ?? 'N/A' }}</td>  <!-- Lấy mã đơn hàng từ quan hệ Order -->
             <td>{{ $review->product->name ?? 'N/A' }}</td>
             <td>{{ $review->user->name ?? 'N/A' }}</td>
-            <td>{{ $review->title }}</td>
             <td>{{ $review->comment }}</td>
             <td>{{ $review->rating }}/5</td>
             <td>
