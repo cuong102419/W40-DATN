@@ -18,7 +18,6 @@ return new class extends Migration
 
             $table->string('order_code', 10)->unique();
             $table->enum('status', ['unconfirmed', 'confirmed', 'shipping', 'delivered', 'completed', 'canceled', 'returned', 'failed'])->default('unconfirmed');
-            $table->decimal('total', 10, 2);
             $table->string('payment_method');
             $table->enum('payment_status', ['unpaid', 'paid', 'refunded', 'cancel'])->default('unpaid');
             $table->string('address');
@@ -26,6 +25,8 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone_number');
             $table->text('note')->nullable();
+            $table->decimal('total', 10, 2);
+            $table->decimal('total_final', 10, 2);
             $table->double('discount_amount', 10, 2)->default(0);
             $table->double('shipping', 10, 2)->nullable();
             $table->text('reason')->nullable();

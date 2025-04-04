@@ -44,7 +44,7 @@
                                     </td>
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->variants->sum('quantity') }}</td>
-                                    <td>{{ $product->variants->sum('sales_count') }}</td>
+                                    <td>{{ $product->sales_count }}</td>
                                     <td>{{ $product->brand->name }}</td>
                                     <td>{{ $product->category->name }}</td>
                                     <td>

@@ -16,16 +16,47 @@ class OrderController extends Controller
 {
     public function index()
     {
+        $subTotalOg = 0;
         $subTotal = 0;
-        $voucher = 0;
+        $discount = 0;
+        $shipping = 50000;
         $cart = session()->get('cart', []);
+
         foreach ($cart as $item) {
-            $subTotal += $item['quantity'] * $item['price'];
+            $subTotalOg += $item['quantity'] * $item['price'];
         }
-        if (session()->get('voucher')) {
-            $voucher = session()->get('voucher')['value'];
+
+        $subTotal = $subTotalOg;
+
+        if (session()->has('voucher')) {
+            $voucher = session()->get('voucher');
+            if ($voucher['type'] === 'percentage') {
+                if ($voucher['kind'] === 'total') {
+                    $discount = $subTotal * ($voucher['value'] / 100);
+                    if ($discount >= $voucher['max_discount']) {
+                        $subTotal -= $voucher['max_discount'];
+                        $discount = $voucher['max_discount'];
+                    } else {
+                        $subTotal -= $discount;
+                    }
+                } 
+                if ($voucher['kind'] === 'shipping') {
+                    $max_discount = $shipping * ($voucher['value'] / 100);
+                    $shipping -= $max_discount;
+                }
+            } 
+
+            if ($voucher['type'] === 'fixed') {
+                if ($voucher['kind'] === 'total') {
+                    $subTotal -= $voucher['value'];
+                    $discount = $voucher['value'];
+                } 
+                if ($voucher['kind'] === 'shipping') {
+                    $shipping -= $voucher['value'];
+                }
+            }
         }
-        return view('client.order.index', compact('subTotal', 'voucher'));
+        return view('client.order.index', compact('subTotal', 'discount', 'shipping', 'subTotalOg'));
     }
 
     public function create(Request $request)
@@ -35,11 +66,14 @@ class OrderController extends Controller
             'fullname' => ['required', 'min:4'],
             'address' => ['required', 'min:4'],
             'phone_number' => ['required', 'phone:VN'],
-            'email' => ['required', 'email'],        
+            'email' => ['required', 'email'],
             'note' => ['nullable'],
             'payment_method' => ['required'],
             'total' => ['required'],
-            'discount_amount' => ['required']
+            'final_total' => ['required'],
+            'shipping' => ['required'],
+            'discount_amount' => ['required'],
+
         ], [
             'fullname.required' => 'Không được để trống.',
             'fullname.min' => 'Tối thiểu 4 ký tự.',
@@ -50,13 +84,12 @@ class OrderController extends Controller
             'email.required' => 'Không được để trống.',
             'email.email' => 'Email không hợp lệ.'
         ]);
-        $data['address'] = $data['address'] . ', ' . $request['district'] . ', ' . $request['province'];   
-         do {
+        $data['address'] = $data['address'] . ', ' . $request['district'] . ', ' . $request['province'];
+        do {
             $rand = preg_replace('/[^A-Za-z]/', '', Str::random(3));
         } while (strlen($rand) < 3);
         $data['order_code'] = 'FS' . Str::upper($rand) . rand(10000, 99999);
 
-        $data['shipping'] = 100000;
         if (Auth::check()) {
             $data['user_id'] = Auth::user()->id;
         }
@@ -85,7 +118,7 @@ class OrderController extends Controller
 
                 return redirect()->route('order.checkout', $encryptedId)->with('success', 'Đặt hàng thành công.');
             }
-            
+
             $order = Order::create($data);
 
             foreach ($cart as $item) {
@@ -98,11 +131,11 @@ class OrderController extends Controller
             }
             if ($data['payment_method'] == 'ATM') {
 
-                return $this->vnpay($order->id, $order->total, $order->order_code);
+                return $this->vnpay($order->total_final, $order->order_code);
             }
             if ($data['payment_method'] == 'MOMO') {
 
-                return $this->momo($data, $order->order_code, $order->total, $order->id);
+                return $this->momo($data, $order->order_code, $order->total_final, $order->id);
             }
         } else {
             return redirect()->back()->with('error', 'Không tìm thấy sản phẩm nào.');
@@ -134,13 +167,13 @@ class OrderController extends Controller
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
             'ATM' => "Thanh toán qua VNPay",
-            'MOMO' => 'Ví điện tử MOMO'  
+            'MOMO' => 'Ví điện tử MOMO'
         ];
         $payment_status = [
             'unpaid' => 'Chưa thanh toán',
-            'paid' =>'Đã thanh toán',
-            'refunded' =>'Hoàn trả',
-            'cancel' =>'Hủy thanh toán',
+            'paid' => 'Đã thanh toán',
+            'refunded' => 'Hoàn trả',
+            'cancel' => 'Hủy thanh toán',
         ];
         $status = [
             'unconfirmed' => ['value' => 'Chờ xác nhận.', 'class' => 'text-secondary'],
@@ -211,12 +244,15 @@ class OrderController extends Controller
     public function applyVoucher(Request $request)
     {
         $request->validate([
-            'code' => 'required|string',
+            'code' => ['required', 'string'],
+            'total' => ['required']
         ], [
             'code.required' => 'Vui lòng nhập mã giảm giá.',
         ]);
 
         $voucher = Voucher::where('code', $request->code)->first();
+
+        session()->forget('voucher');
 
         if (!$voucher) {
             return redirect()->back()->with('error', 'Mã giảm giá không tồn tại.');
@@ -227,19 +263,28 @@ class OrderController extends Controller
         if ($voucher->expiration_date < now()) {
             return redirect()->back()->with('error', 'Mã giảm giá đã hết hạn.');
         }
+        if ($voucher->start_date > now()) {
+            return redirect()->back()->with('error', 'Mã giảm giá chưa đến ngày áp dụng.');
+        }
+        if ($voucher->min_total > $request->total) {
+            return redirect()->back()->with('error', 'Đơn hàng của bạn không đủ điều kiện sử dụng mã này.');
+        }
 
         session([
             'voucher' => [
                 'code' => $voucher->code,
                 'value' => $voucher->value,
-                'product_id' => $voucher->product_id
+                'type' => $voucher->type,
+                'kind' => $voucher->kind,
+                'min_total' => $voucher->min_total,
+                'max_discount' => $voucher->max_discount
             ]
         ]);
 
         return redirect()->back()->with('success', 'Mã giảm giá đã được áp dụng.');
     }
 
-    public function vnpay($order_id, $total, $order_code)
+    public function vnpay($total, $order_code)
     {
         error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
         date_default_timezone_set('Asia/Ho_Chi_Minh');

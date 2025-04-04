@@ -120,7 +120,7 @@
                                                     <p class="value">Vận chuyển:</p>
                                                 </td>
                                                 <td>
-                                                    <p class="price">100.000đ</p>
+                                                    <p class="price">50.000đ</p>
                                                 </td>
                                             </tr>
                                             <tr class="order-total">

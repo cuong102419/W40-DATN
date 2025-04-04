@@ -99,7 +99,7 @@ $(document).ready(function () {
     let checkboxes = $(".cart-checkbox");
     let selectedTotal = $("#selected-total");
     let selectedPrice = $("#selected-price");
-    const shippingFee = 100000;
+    const shippingFee = 50000;
 
     function updateTotal() {
         let totalPrice = 0;

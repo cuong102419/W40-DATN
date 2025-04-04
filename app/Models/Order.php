@@ -20,6 +20,7 @@ class Order extends Model
         'email', 
         'phone_number', 
         'note',
+        'total_final',
         'discount_amount',
         'shipping',
         'order_code',
