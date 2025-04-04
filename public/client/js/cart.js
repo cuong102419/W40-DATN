@@ -122,5 +122,7 @@ $(document).ready(function () {
     }
 
     checkboxes.change(updateTotal);
+    
+    updateTotal();
 });
 

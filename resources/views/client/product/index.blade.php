@@ -43,7 +43,7 @@
                                 <input type="text" id="amount" readonly
                                     style="border:0; color:#000000; font-weight:bold;">
                                 <div id="price-range"></div>
-                                <button id="filter-price" class="btn btn-primary mt-2">Lọc</button>
+                                <button id="filter-price" class="mt-3 btn btn-theme btn-sm mt-2"><i class="fa fa-filter me-2" aria-hidden="true"></i>Lọc</button>
                             </div>
                         </div>
                     </div>
