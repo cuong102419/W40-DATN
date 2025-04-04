@@ -64,7 +64,7 @@
                     <div class="coupon-accordion mt-4" id="CouponAccordion">
                         <div>
                             <h5>
-                                <a href="#/" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Hủy đơn</a>
+                                <a href="#" class="btn btn-theme btn-sm" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Hủy đơn</a>
                             </h5>
                             <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
                                 <div class="card-body">
@@ -72,9 +72,9 @@
                                         <form id="request-cancel" action="{{ route('order.cancel-request') }}" method="post">
                                             @csrf
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div>
                                                     <div class="form-group">
-                                                        <textarea class="reason form-control" type="text"
+                                                        <textarea class="reason form-control" cols="30" rows="10" type="text"
                                                             placeholder="Nhập lý do huỷ đơn" name="reason" required></textarea>
                                                     </div>
                                                     <div>
@@ -84,7 +84,7 @@
                                                         @endif>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="mt-3">
                                                     <button type="submit" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng.')" class="btn-theme btn-sm">Gửi</button>
                                                 </div>
                                             </div>
@@ -189,6 +189,17 @@
                                             <i class="fa fa-credit-card fa-lg" aria-hidden="true"></i>
                                         @endif
                                     </span>
+                                    @if ($order->payment_method != 'COD' && $order->payment_status == 'unpaid')
+                                        <div class="mt-4">
+                                            <form action="{{ route('order.retry-payment', $order->id) }}" method="post">
+                                                @csrf
+                                                <input type="text" name="order_id" value="{{ $order->id }}" hidden>
+                                                <input type="text" hidden name="redirect">
+                                                <button type="submit" class="btn btn-theme btn-sm">Thanh toán lại</button>
+                                            </form>
+                                        </div>
+                                        
+                                    @endif
                                 </td>
                             </tr>
                             <tr>

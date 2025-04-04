@@ -121,6 +121,7 @@ Route::prefix(('/order'))->group(function () {
     Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
     Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
     Route::post('/cancel', [ReasonController::class, 'request'])->name('order.cancel-request');
+    Route::post(('retry-payment/{order}'), [OrderController::class, 'retryPayment'])->name('order.retry-payment');
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
