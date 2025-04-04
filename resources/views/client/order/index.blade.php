@@ -56,7 +56,8 @@
                                             <label for="street-address">Địa chỉ <span class="required"
                                                     title="required">*</span></label>
                                             <input id="street-address" name="address" type="text" class="form-control"
-                                                placeholder="Số nhà, tên đường, phường/xã...." value="{{ Auth::user()->address ?? '' }}">
+                                                placeholder="Số nhà, tên đường, phường/xã...."
+                                                value="{{ Auth::user()->address ?? '' }}">
                                             @error('address')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror
@@ -66,7 +67,7 @@
                                         <div class="form-group">
                                             <label for="street-address">Quận/Huyện <span class="required"
                                                     title="required">*</span></label>
-                                           <select name="district" id="district" class="form-select"></select>
+                                            <select name="district" id="district" class="form-select"></select>
                                             @error('address')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror
@@ -76,7 +77,7 @@
                                         <div class="form-group">
                                             <label for="street-address">Tỉnh/Thành phố <span class="required"
                                                     title="required">*</span></label>
-                                           <select name="province" id="province" class="form-select"></select>
+                                            <select name="province" id="province" class="form-select"></select>
                                             @error('address')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror
@@ -85,9 +86,12 @@
                                     <div class="col-md-12">
                                         <input id="payment_method" type="hidden" name="payment_method" class="form-control"
                                             value="">
-                                        <input type="hidden" name="total" value="">
+                                        <input type="hidden" name="total" value="{{ $subTotalOg }}">
+                                        <input type="hidden" name="total_final" value="{{  $subTotal}}">
                                         <input type="hidden" name="discount_amount"
-                                            value="{{ $voucher / 100 * $subTotal }}">
+                                            value="{{ $discount }}">
+                                        <input type="hidden" name="shipping"
+                                            value="{{ $shipping }}">
                                         <input type="hidden" name="redirect">
                                         <input type="hidden" name="province">
                                         <input type="hidden" name="district">
@@ -95,8 +99,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group mb--0">
                                             <label for="order-notes">Ghi chú (Không bắt buộc)</label>
-                                            <textarea name="note" id="order-notes" class="form-control"
-                                                placeholder="Thêm ghi chú cho đơn hàng của bạn."></textarea>
+                                            <textarea name="note" id="order-notes" class="form-control" placeholder="Thêm ghi chú cho đơn hàng của bạn."></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -119,6 +122,7 @@
                                                         <div class="form-group">
                                                             <input class="form-control" type="text" name="code"
                                                                 placeholder="Nhập mã giảm giá" required>
+                                                                <input name="total" value="{{ $subTotalOg }}" hidden="">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
@@ -126,10 +130,10 @@
                                                     </div>
                                                 </div>
                                             </form>
-                                            @if(session('error'))
+                                            @if (session('error'))
                                                 <p class="text-danger mt-2">{{ session('error') }}</p>
                                             @endif
-                                            @if(session('success'))
+                                            @if (session('success'))
                                                 <p class="text-success mt-2">{{ session('success') }}</p>
                                             @endif
                                         </div>
@@ -155,8 +159,8 @@
                                 <tbody class="table-body">
                                     @foreach (session('cart', []) as $cart)
                                         <tr class="cart-item">
-                                            <td class="product-image"><img src="{{ Storage::url($cart['image']) }}" width="80"
-                                                    alt=""></td>
+                                            <td class="product-image"><img src="{{ Storage::url($cart['image']) }}"
+                                                    width="80" alt=""></td>
                                             <td class="product-name ps-3">
                                                 {{ $cart['name'] }} <span class="product-quantity">×
                                                     {{ $cart['quantity'] }}</span>
@@ -177,33 +181,26 @@
                                 <tfoot class="table-foot">
                                     <tr class="cart-subtotal">
                                         <th colspan="2">Tổng cộng</th>
-                                        <td>{{ number_format($subTotal) }}đ</td>
+                                        <td>{{ number_format($subTotalOg) }}đ</td>
+                                    </tr>
+                                    <tr class="">
+                                        <th colspan="2">Giảm giá</th>
+                                        <td>
+                                            {{ number_format($discount) }}đ
+                                        </td>
                                     </tr>
                                     <tr class="shipping">
                                         <th colspan="2">Shipping</th>
-                                        <td>Cố định: 100.000đ</td>
-                                    </tr>
-                                    <tr class="">
-                                        <th colspan="2">Khuyến mại</th>
-                                        <td>
-                                            @if($voucher)
-                                                -{{ $voucher }}%
-                                                <span>({{ number_format($voucher / 100 * $subTotal, 0, '.', '.') }}đ)</span>
-                                            @else
-                                                Không có
-                                            @endif
-                                        </td>
+                                        <td>{{ number_format($shipping, 0, '.', '.') }}</td>
                                     </tr>
                                     <tr class="order-total">
                                         <th colspan="2">
                                             <h5>Thành tiền</h5>
                                         </th>
                                         <td>
-                                            @if ($subTotal)
-                                                <h5 class="text-danger">
-                                                    {{ number_format(($subTotal * (1 - $voucher / 100)) + 100000, 0, '.', '.') }}đ
-                                                </h5>
-                                            @endif
+                                            <h5 class="text-danger">
+                                                {{ number_format($subTotal + $shipping, 0, '.', '.') }}đ
+                                            </h5>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -212,19 +209,22 @@
                                 <div id="PaymentMethodAccordion">
                                     <div class="card">
                                         <div class="card-header">
-                                            <input type="radio" name="payment_method" value="COD" id="payment_cod" checked>
+                                            <input type="radio" name="payment_method" value="COD" id="payment_cod"
+                                                checked>
                                             <label for="payment_cod">Thanh toán khi nhận hàng (COD)</label>
                                         </div>
                                     </div>
                                     <div class="card">
                                         <div class="card-header">
-                                            <input type="radio" name="payment_method" value="ATM" id="payment_vnpay">
+                                            <input type="radio" name="payment_method" value="ATM"
+                                                id="payment_vnpay">
                                             <label for="payment_vnpay">Thanh toán thẻ qua VNPay</label>
                                         </div>
                                     </div>
                                     <div class="card">
                                         <div class="card-header">
-                                            <input type="radio" name="payment_method" value="MOMO" id="payment_momo">
+                                            <input type="radio" name="payment_method" value="MOMO"
+                                                id="payment_momo">
                                             <label for="payment_momo">Ví điện tử MOMO</label>
                                         </div>
                                     </div>

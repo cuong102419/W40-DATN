@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->decimal('value', 10, 2);
             $table->integer('quantity');
-            $table->decimal('condition', 10, 2);
+            $table->decimal('min_total', 10, 2);
+            $table->decimal('max_discount', 10, 2);
             $table->date('start_date');
             $table->date('expiration_date');
             $table->softDeletes();

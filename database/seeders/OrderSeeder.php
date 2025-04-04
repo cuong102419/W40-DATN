@@ -17,14 +17,13 @@ class OrderSeeder extends Seeder
         $faker = Faker::create();
 
         // Tạo 50 đơn hàng giả
-        foreach (range(1, 50) as $index) {
+        foreach (range(1, 80) as $index) {
             $orderCreatedAt = now()->subDays(rand(0, 365));
             $orderId = DB::table('orders')->insertGetId([
                 'user_id' => 2,
                 'admin_id' => 1,
                 'order_code' => strtoupper($faker->unique()->bothify('ORD#######')),
                 'status' => $faker->randomElement(['completed', 'canceled']),
-                'total' => $faker->randomFloat(0, 1000000, 5000000),
                 'payment_method' => $faker->randomElement(['ATM', 'COD', 'MOMO']),
                 'payment_status' => $faker->randomElement(['paid','cancel']),
                 'address' => $faker->address,
@@ -32,6 +31,8 @@ class OrderSeeder extends Seeder
                 'email' => $faker->email,
                 'phone_number' => $faker->phoneNumber,
                 'note' => $faker->sentence,
+                'total' => $faker->randomFloat(0, 1000000, 5000000),
+                'total_final' => $faker->randomFloat(0, 1000000, 5000000),
                 'discount_amount' => $faker->randomFloat(0, 0, 100000),
                 'shipping' => $faker->randomFloat(0, 0, 100000),
                 'reason' => $faker->optional()->sentence,

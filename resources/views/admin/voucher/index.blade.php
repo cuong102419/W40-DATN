@@ -43,7 +43,8 @@
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $voucher->name }}</td>
                                         <td>{{ $voucher->code }}</td>
-                                        <td class="text-danger"><b>{{ number_format($voucher->value) }}%</b></td>
+                                        <td class="text-danger"><b>{{ number_format($voucher->value) }}@if ($voucher->type == 'percentage')% @elseđ
+                                        @endif</b></td>
                                         <td>{{ $voucher->quantity }}</td>
                                         <td>{{ $voucher->created_at->format('d \T\h\á\n\g m, Y') }}</td>
                                         <td>{{ Carbon\Carbon::parse($voucher->expiration_date)->format('d \T\h\á\n\g m, Y') }}</td>
