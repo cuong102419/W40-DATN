@@ -20,7 +20,7 @@ class OrderSeeder extends Seeder
         foreach (range(1, 50) as $index) {
             $orderCreatedAt = now()->subDays(rand(0, 365));
             $orderId = DB::table('orders')->insertGetId([
-                'user_id' => rand(2, 3),
+                'user_id' => 2,
                 'admin_id' => 1,
                 'order_code' => strtoupper($faker->unique()->bothify('ORD#######')),
                 'status' => $faker->randomElement(['completed', 'canceled']),

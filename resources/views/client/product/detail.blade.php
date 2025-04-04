@@ -257,12 +257,31 @@
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label for="for_review-title">Tiêu đề đánh giá</label>
-                                                                    <input id="for_review-title" class="form-control"
-                                                                        type="text" name="title"
-                                                                        placeholder="Đặt tiêu đề cho bài đánh giá của bạn">
+                                                                    <label>Loại giày</label>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <input class="form-control"
+                                                                               type="text"
+                                                                               value="{{ $product->name }}"
+                                                                               readonly>
+                                                                    </div>
+                                                                    <label for="">Size</label>
+                                                                    <input class="form-control"
+                                                                           type="text"
+                                                                           value="{{ $variant->size }}"
+                                                                           readonly>
+                                                                    <label>Màu</label>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <span class="color-box"
+                                                                              style="width: 20px; height: 20px; background-color: {{ $variant->color }}; 
+                                                                                     display: inline-block; margin-left: 10px; border: 1px solid #ccc; 
+                                                                                     border-radius: 50%;">
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="hidden" name="title" value="{{ $product->name }}">
                                                                 </div>
                                                             </div>
+                                                            
+                                                            
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="for_comment">Mô tả Đánh giá </label>
@@ -293,6 +312,92 @@
 
                                     <div class="reviews-content-body">
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        
                                         @forelse($reviews->items() as $review)
                                             <!--== Start Reviews Content Item ==-->
                                             <div class="review-item">
