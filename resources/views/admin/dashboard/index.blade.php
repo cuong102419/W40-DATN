@@ -131,7 +131,7 @@
                         <a href="{{ route('admin-product.detail', $sale->id) }}" class="text-secondary">
                             <div class="d-flex align-items-center border-bottom py-3">
                                 <img class=" rounded flex-shrink-0"
-                                    src="{{ Storage::url($sale->imageLists->first()->image_url) }}" alt=""
+                                    src="{{ Storage::url($sale->imageLists->first()->image_url ?? '') }}" alt=""
                                     width="50">
                                 <div class="w-100 ms-3">
                                     <div>
