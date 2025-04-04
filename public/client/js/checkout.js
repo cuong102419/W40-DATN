@@ -3,8 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let privacyCheckbox = document.getElementById("privacy");
     let paymentRadios = document.querySelectorAll("input[name='payment_method']");
     let hiddenPaymentInput = document.getElementById("payment_method");
-    let totalInput = document.querySelector("input[name='total']");
-    let totalDisplay = document.querySelector(".order-total h5.text-danger");
 
     const provinceSelect = document.getElementById("province");
     const districtSelect = document.getElementById("district");
@@ -14,10 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    function getTotalFromDisplay() {
-        return parseInt(totalDisplay.innerText.replace(/\D/g, ''), 10);
-    }
-
+    // Hệ thống thông báo lỗi cho Tỉnh/Quận
     function showError(selectElement, message) {
         let oldError = selectElement.parentElement.querySelector(".text-danger");
         if (oldError) oldError.remove();
@@ -34,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (oldError) oldError.remove();
     }
 
+    // Xử lý thay đổi Tỉnh/Thành phố
     provinceSelect.addEventListener("change", function () {
         let provinceCode = this.value;
         districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
@@ -52,27 +48,19 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(err => console.error("Lỗi khi lấy danh sách quận/huyện:", err));
     });
 
+    // Xử lý khi chọn Quận/Huyện
     districtSelect.addEventListener("change", function () {
         removeError(districtSelect);
     });
 
-    paymentRadios.forEach(radio => {
-        radio.addEventListener("change", function () {
-            hiddenPaymentInput.value = this.value;
-        });
-    });
-
-    let checkedRadio = document.querySelector("input[name='payment_method']:checked");
-    if (checkedRadio) {
-        hiddenPaymentInput.value = checkedRadio.value;
-    }
-
+    // Xử lý sự kiện submit
     submitButton.addEventListener("click", function (event) {
         event.preventDefault();
 
         removeError(provinceSelect);
         removeError(districtSelect);
 
+        // Kiểm tra đồng ý điều khoản
         if (!privacyCheckbox.checked) {
             toastr.error('Bạn cần đồng ý điều khoản và điều kiện mua hàng.');
             return;
@@ -84,7 +72,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        if (provinceSelect.selectedIndex <= 0) {
+        // Kiểm tra tỉnh và quận
+        if (provinceSelect.selectedIndex < 0) {
             showError(provinceSelect, "Vui lòng chọn Tỉnh/Thành phố.");
             return;
         }
@@ -95,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         hiddenPaymentInput.value = selectedPayment.value;
-        totalInput.value = getTotalFromDisplay();
 
         let provinceName = provinceSelect.options[provinceSelect.selectedIndex].text;
         let districtName = districtSelect.options[districtSelect.selectedIndex].text;
@@ -103,9 +91,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector('input[name="province"]').value = provinceName;
         document.querySelector('input[name="district"]').value = districtName;
 
+        // Submit form
         document.getElementById("checkout").submit();
     });
 
+    // Lấy danh sách tỉnh/thành phố
     fetch("https://provinces.open-api.vn/api/p/")
         .then(res => res.json())
         .then(data => {

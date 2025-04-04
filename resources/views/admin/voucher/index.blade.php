@@ -27,6 +27,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Tên khuyến mãi</th>
                                     <th scope="col">Mã khuyến mãi</th>
+                                    <th>Thể loại</th>
                                     <th scope="col">Giá trị khuyến mãi</th>
                                     <th>Số lượng mã</th>
                                     <th scope="col">Ngày bắt đầu</th>
@@ -43,6 +44,7 @@
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $voucher->name }}</td>
                                         <td>{{ $voucher->code }}</td>
+                                        <td>{{ $kind[$voucher->kind] }}</td>
                                         <td class="text-danger"><b>{{ number_format($voucher->value) }}@if ($voucher->type == 'percentage')% @elseđ
                                         @endif</b></td>
                                         <td>{{ $voucher->quantity }}</td>

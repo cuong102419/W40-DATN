@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Checkout;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductVariant;
@@ -9,6 +10,7 @@ use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,18 +41,18 @@ class OrderController extends Controller
                     } else {
                         $subTotal -= $discount;
                     }
-                } 
+                }
                 if ($voucher['kind'] === 'shipping') {
                     $max_discount = $shipping * ($voucher['value'] / 100);
                     $shipping -= $max_discount;
                 }
-            } 
+            }
 
             if ($voucher['type'] === 'fixed') {
                 if ($voucher['kind'] === 'total') {
                     $subTotal -= $voucher['value'];
                     $discount = $voucher['value'];
-                } 
+                }
                 if ($voucher['kind'] === 'shipping') {
                     $shipping -= $voucher['value'];
                 }
@@ -70,7 +72,7 @@ class OrderController extends Controller
             'note' => ['nullable'],
             'payment_method' => ['required'],
             'total' => ['required'],
-            'final_total' => ['required'],
+            'total_final' => ['required'],
             'shipping' => ['required'],
             'discount_amount' => ['required'],
 
@@ -85,6 +87,8 @@ class OrderController extends Controller
             'email.email' => 'Email không hợp lệ.'
         ]);
         $data['address'] = $data['address'] . ', ' . $request['district'] . ', ' . $request['province'];
+        $data['total_final'] = $data['total_final'] + $data['shipping'];
+        $data['total'] = $data['total'] + $data['shipping'];
         do {
             $rand = preg_replace('/[^A-Za-z]/', '', Str::random(3));
         } while (strlen($rand) < 3);
@@ -115,6 +119,8 @@ class OrderController extends Controller
                 session()->forget('cart');
                 session()->forget('voucher');
                 $encryptedId = Crypt::encryptString($order->id);
+                $orderItems = OrderItem::where('order_id', $order->id)->get();
+                Mail::to($request->email)->send(new Checkout($order, $orderItems));
 
                 return redirect()->route('order.checkout', $encryptedId)->with('success', 'Đặt hàng thành công.');
             }
@@ -135,7 +141,7 @@ class OrderController extends Controller
             }
             if ($data['payment_method'] == 'MOMO') {
 
-                return $this->momo($data, $order->order_code, $order->total_final, $order->id);
+                return $this->momo($order->order_code, $order->total_final, $order->id);
             }
         } else {
             return redirect()->back()->with('error', 'Không tìm thấy sản phẩm nào.');
@@ -299,8 +305,7 @@ class OrderController extends Controller
         $vnp_OrderType = 'Freak Sport';
         $vnp_Amount = $total;
         $vnp_Locale = 'vn';
-        $vnp_BankCode = '';
-        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $vnp_IpAddr = env('APP_URL');
         $inputData = array(
             "vnp_Version" => "2.1.0",
             "vnp_TmnCode" => $vnp_TmnCode,
@@ -381,6 +386,8 @@ class OrderController extends Controller
             session()->forget('voucher');
 
             $encryptedId = Crypt::encryptString($order->id);
+            $orderItems = OrderItem::where('order_id', $order->id)->get();
+            Mail::to($order->email)->send(new Checkout($order, $orderItems));
 
             return redirect()->route('order.checkout', $encryptedId)->with('success', 'Tạo đơn hàng thành công.');
         } else {
@@ -392,9 +399,8 @@ class OrderController extends Controller
         }
     }
 
-    public function momo($data, $order_code, $total, $order_id)
+    public function momo($order_code, $total, $order_id)
     {
-
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
 
         $partnerCode = env('MOMO_PARTNERCODE');
@@ -430,7 +436,6 @@ class OrderController extends Controller
         );
         $result = $this->execPostRequest($endpoint, json_encode($data));
         $jsonResult = json_decode($result, true);  // decode json
-
         return redirect()->to($jsonResult['payUrl']);
     }
 
@@ -479,14 +484,28 @@ class OrderController extends Controller
             session()->forget('cart');
             session()->forget('voucher');
             $encryptedId = Crypt::encryptString($order->id);
+            $orderItems = OrderItem::where('order_id', $order->id)->get();
+            Mail::to($order->email)->send(new Checkout($order, $orderItems));
 
             return redirect()->route('order.checkout', $encryptedId)->with('success', 'Tạo đơn hàng thành công.');
         } else {
-
+            $order->update([
+                'status' => 'canceled',
+                'payment_status' => 'cancel'
+            ]);
             session()->forget('voucher');
             session()->forget('cart');
 
             return redirect()->route('home')->with('error', 'Đã hủy đơn hàng.');
+        }
+    }
+
+    public function retryPayment(Request $request, Order $order)
+    {
+        if ($order->payment_method != 'COD') {
+            return $this->vnpay($order->total_final, $order->order_code);
+        } else {
+            return redirect()->route('home')->with('error', 'Không thể thanh toán lại.');
         }
     }
 }

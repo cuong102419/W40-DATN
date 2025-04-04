@@ -62,7 +62,7 @@
                         <span class="text-danger error-start_date"></span>
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Ngày hết hạn</label>
+                        <label class="form-label">Ngày kết thúc</label>
                         <input type="date" name="expiration_date" class="form-control mb-2">
                         <span class="text-danger error-expiration_date"></span>
                     </div>
