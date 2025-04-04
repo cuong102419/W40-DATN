@@ -313,8 +313,40 @@
                                     <div class="reviews-content-body">
 
 
+<style>
+    #loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    visibility: hidden; /* Đặt visibility là hidden */
+}
 
-
+.hide-loading {
+    visibility: hidden; /* Ẩn loading khi không cần */
+}
+</style>
+<script>
+    $(document).ready(function() {
+    // Khi nhấn vào tab, ẩn màn hình loading
+    $('a[data-bs-toggle="pill"]').on('click', function() {
+        // Kiểm tra xem tab có đang chuyển tới "Đánh giá" không
+        if ($(this).attr('href') == '#reviews') {
+            // Nếu chuyển tới tab đánh giá, không cần loading
+            $("#loading-screen").addClass("hide-loading");
+        } else {
+            // Nếu không phải tab đánh giá, bạn có thể thêm các xử lý khác ở đây nếu cần
+            $("#loading-screen").addClass("hide-loading");
+        }
+    });
+});
+</script>
 
 
 
