@@ -189,7 +189,7 @@
                                             <i class="fa fa-credit-card fa-lg" aria-hidden="true"></i>
                                         @endif
                                     </span>
-                                    @if ($order->payment_method != 'COD' && $order->payment_status == 'unpaid')
+                                    {{-- @if ($order->payment_method != 'COD' && $order->payment_status == 'unpaid')
                                         <div class="mt-4">
                                             <form action="{{ route('order.retry-payment', $order->id) }}" method="post">
                                                 @csrf
@@ -199,7 +199,7 @@
                                             </form>
                                         </div>
                                         
-                                    @endif
+                                    @endif --}}
                                 </td>
                             </tr>
                             <tr>
