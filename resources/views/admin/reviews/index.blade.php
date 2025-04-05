@@ -10,11 +10,12 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Mã đơn hàng</th>  <!-- Thêm cột mã đơn hàng -->
+            <th>Mã đơn hàng</th>
             <th>Sản phẩm</th>
             <th>Người dùng</th>
             <th>Bình luận</th>
             <th>Xếp hạng</th>
+            <th>Ngày đánh giá</th> <!-- Cột mới -->
             <th>Trạng thái</th>
             <th>Hành động</th>
         </tr>
@@ -22,12 +23,12 @@
     <tbody>
         @foreach($reviews as $review)
         <tr>
-            <!-- Hiển thị mã đơn hàng -->
-            <td>{{ $review->order->order_code ?? 'N/A' }}</td>  <!-- Lấy mã đơn hàng từ quan hệ Order -->
+            <td>{{ $review->order->order_code ?? 'N/A' }}</td>
             <td>{{ $review->product->name ?? 'N/A' }}</td>
             <td>{{ $review->user->name ?? 'N/A' }}</td>
-            <td>{{ $review->comment }}</td>
+            <td class="comment-column">{{ $review->comment }}</td>
             <td>{{ $review->rating }}/5</td>
+            <td>{{ $review->created_at->format('d/m/Y H:i') }}</td>
             <td>
                 <span class="badge {{ $review->status ?  'bg-success' : 'bg-danger'}}">
                     {{ $review->status ? 'Hiển thị' :  'Đã ẩn' }}
@@ -46,6 +47,16 @@
         @endforeach
     </tbody>
 </table>
+<style>
+    .comment-column {
+    max-width: 300px;
+    max-height: 100px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Hiển thị thanh cuộn khi nội dung quá dài */
+    word-wrap: break-word;
+    white-space: normal;
+    display: block; /* Đảm bảo phần tử có thể scroll được */
+}
+</style>
 
 {{ $reviews->links() }} <!-- Phân trang -->
 @endsection
