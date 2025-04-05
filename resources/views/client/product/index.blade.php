@@ -40,10 +40,10 @@
                         <div class="shop-sidebar-price-range">
                             <h4 class="sidebar-title">Lọc theo giá</h4>
                             <div class="sidebar-price-range">
-                                <input type="text" id="amount" readonly
-                                    style="border:0; color:#000000; font-weight:bold;">
+                                <input type="text" id="amount" readonly style="border:0; color:#000000; font-weight:bold;">
                                 <div id="price-range"></div>
-                                <button id="filter-price" class="mt-3 btn btn-theme btn-sm mt-2"><i class="fa fa-filter me-2" aria-hidden="true"></i>Lọc</button>
+                                <button id="filter-price" class="mt-3 btn btn-theme btn-sm mt-2"><i
+                                        class="fa fa-filter me-2" aria-hidden="true"></i>Lọc</button>
                             </div>
                         </div>
                     </div>
@@ -60,13 +60,11 @@
                                     <nav class="product-nav">
                                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                             <button class="nav-link active" id="nav-grid-tab" data-bs-toggle="tab"
-                                                data-bs-target="#nav-grid" type="button" role="tab"
-                                                aria-controls="nav-grid" aria-selected="true"><i
-                                                    class="fa fa-th"></i></button>
+                                                data-bs-target="#nav-grid" type="button" role="tab" aria-controls="nav-grid"
+                                                aria-selected="true"><i class="fa fa-th"></i></button>
                                             <button class="nav-link" id="nav-list-tab" data-bs-toggle="tab"
-                                                data-bs-target="#nav-list" type="button" role="tab"
-                                                aria-controls="nav-list" aria-selected="false"><i
-                                                    class="fa fa-list"></i></button>
+                                                data-bs-target="#nav-list" type="button" role="tab" aria-controls="nav-list"
+                                                aria-selected="false"><i class="fa fa-list"></i></button>
                                         </div>
                                     </nav>
                                 </div>
@@ -101,8 +99,7 @@
                                                                 <a href="{{ route('product.detail', $product->id) }}">
                                                                     @if ($product->imageLists->isNotEmpty())
                                                                         <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
-                                                                            width="270" height="274"
-                                                                            alt="{{ $product->name }}">
+                                                                            width="270" height="274" alt="{{ $product->name }}">
                                                                     @endif
                                                                 </a>
                                                                 <div class="product-flag">
@@ -147,18 +144,10 @@
                                                     </div>
                                                     <!--== End Product Item ==-->
                                                 </div>
+                                                {{ $products->links() }}
                                             @endforeach
                                         @endif
 
-                                        <div class="col-12">
-                                            <div class="pagination-items">
-                                                <ul class="pagination justify-content-end mb--0">
-                                                    <li><a class="active" href="shop.html">1</a></li>
-                                                    <li><a href="shop-four-columns.html">2</a></li>
-                                                    <li><a href="shop-three-columns.html">3</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
@@ -173,8 +162,7 @@
                                                         <div class="product-thumb">
                                                             <a href="{{ route('product.detail', $product->id) }}">
                                                                 <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
-                                                                    width="322" height="360"
-                                                                    alt="{{ $product->name }}">
+                                                                    width="322" height="360" alt="{{ $product->name }}">
                                                             </a>
 
                                                             @if ($product->discount)
@@ -231,16 +219,8 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            {{ $products->links() }}
                                         @endforeach
-                                        <div class="col-12">
-                                            <div class="pagination-items">
-                                                <ul class="pagination justify-content-end mb--0">
-                                                    <li><a class="active" href="shop.html">1</a></li>
-                                                    <li><a href="shop-four-columns.html">2</a></li>
-                                                    <li><a href="shop-three-columns.html">3</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -252,5 +232,9 @@
     </section>
     <script src="{{ asset('administrator/js/product.js') }}"></script>
     <!--== End Product Area Wrapper ==-->
+<<<<<<< Updated upstream
     
 @endsection
+=======
+@endsection
+>>>>>>> Stashed changes

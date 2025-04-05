@@ -51,7 +51,7 @@ class DashboardController extends Controller
             'canceled' => ['value' => 'Đã hủy', 'class' => 'bg-danger'],
         ];
 
-        $quickListOrders = Order::orderBy('created_at', 'desc')->take(3)->get();
+        $quickListOrders = Order::orderBy('created_at', 'desc')->take(6)->get();
         $productSale = Product::orderBy('sales_count', 'desc')
             ->limit(5)
             ->get();
