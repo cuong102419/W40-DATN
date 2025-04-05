@@ -232,9 +232,4 @@
     </section>
     <script src="{{ asset('administrator/js/product.js') }}"></script>
     <!--== End Product Area Wrapper ==-->
-<<<<<<< Updated upstream
-    
 @endsection
-=======
-@endsection
->>>>>>> Stashed changes
