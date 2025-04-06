@@ -19,7 +19,7 @@ class OrderController extends Controller
         $orders = Order::latest('id')->paginate(10);
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
-            'ATM' => "Thanh toán qua VNPay",
+            'VNPAY' => "Thanh toán qua VNPay",
             'MOMO' => 'Ví điện tử MOMO'
         ];
         $payment_status = [
@@ -47,7 +47,7 @@ class OrderController extends Controller
         $requestOrder = Reason::where('order_id', $order->id)->first();
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD).',
-            'ATM' => "Thanh toán qua VNPay.",
+            'VNPAY' => "Thanh toán qua VNPay.",
             'MOMO' => 'Ví điện tử MOMO.'
         ];
         $payment_status = [
@@ -166,8 +166,10 @@ class OrderController extends Controller
         }
 
         if ($request->input('action') == 'delivered') {
-            $order->status = 'delivered';
-            $order->save();
+            $order->update([
+                'status' => 'delivered',
+                'payment_status' => 'paid'
+            ]);
 
             return response()->json([
                 'status' => 'success',

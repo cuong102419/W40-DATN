@@ -33,18 +33,26 @@
     <div class="offcanvas-body">
         <div class="info-items">
             <ul>
-                <li class="number"><a href="tel://0123456789"><i class="fa fa-phone"></i>+00 123 456 789</a></li>
-                <li class="email"><a href="mailto://demo@example.com"><i class="fa fa-envelope"></i>demo@example.com</a>
+                <li class="number"><a href="tel://0123456789"><i class="fa fa-phone"></i>0986.927.182</a></li>
+                <li class="email"><a href="mailto://demo@example.com"><i
+                            class="fa fa-envelope"></i>cuongmanh1024@gmail.com</a>
                 </li>
                 <li class="account"><a href="#" class="btn btn-link dropdown-toggle text-decoration-none"
-                        data-bs-toggle="dropdown"><i class="fa fa-user dropdown"></i>Account</a>
+                        data-bs-toggle="dropdown"><i class="fa fa-user dropdown"></i>Tài khoản</a>
                     <ul class="dropdown-menu">
-                        <li>
-                            <a href="{{route('dashboard.index')}}" class="dropdown-item fas fa-user-shield">Admin</a>
-                        </li>
-                        <li><a href="#" class="dropdown-item">Profile</a></li>
-                        <li><a href="{{route('signin')}}" class="dropdown-item">Login</a></li>
-                        <li><a href="#" class="dropdown-item">Logout</a></li>
+                        @if (Auth::check())
+                            @if (Auth::user()->role == 'manager' || Auth::user()->role == 'staff')
+                                <li>
+                                    <a href="{{route('dashboard.index')}}" class="dropdown-item fas fa-user-shield">Trang quản
+                                        trị</a>
+                                </li>
+                            @endif
+                            <li><a href="{{ route('profile') }}" class="dropdown-item">Hồ sơ</a></li>
+                            <li><a href="{{route('change-password')}}" class="dropdown-item">Đổi mật khẩu</a></li>
+                            <li><a href="{{ route('logout') }}" class="dropdown-item">Đăng xuất</a></li>
+                        @else
+                            <li><a href="{{ route('signin') }}" class="dropdown-item">Đăng nhập</a></li>
+                       @endif
                     </ul>
                 </li>
             </ul>

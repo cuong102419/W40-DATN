@@ -9,6 +9,32 @@
         <div class="col-12">
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">Danh sách đơn hàng</h6>
+                <div class="row mb-3 justify-content-between">
+                    <div class="col-12 col-sm-4">
+                        <form class="d-none d-md-flex ms-4">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control border-0" type="text"
+                                    placeholder="Tìm kiếm đơn hàng theo mã">
+                                <button type="submit" class="input-group-text bg-primary text-light"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 col-sm-4">
+                        <form action="#" method="post">
+                            <div class="d-flex align-items-center">
+                                <div class="w-75 me-2">
+                                    <select name="" id="" class="form-select form-select-sm">
+                                        <option value="" selected disabled>--Chọn--</option>
+                                        <option value="">Chưa xác nhận</option>
+                                        <option value="">Đã xác nhận</option>
+                                        <option value="">Hủy đơn</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <div class="bg-white p-3">
                     <div class="table-responsive">
                         <table class="table table-striped text-center table-bordered">

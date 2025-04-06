@@ -52,13 +52,15 @@
                                             <a href="{{ route('admin-product.detail', $product->id) }}"
                                                 class="btn text-primary ms-2" title="Chi tiết sản phẩm"><i
                                                     class="fas fa-info-circle fa-lg"></i></a>
-                                            <form action="{{ route('admin-product.delete',$product->id) }}" method="post" class="ms-2">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn text-danger"
-                                                    onclick="return confirm('Bạn có muốn xóa sản phẩm này.')"><i
-                                                        class="fas fa-trash-alt"></i></button>
-                                            </form>
+                                            @if ($product->variants->isEmpty())
+                                                <form action="{{ route('admin-product.delete',$product->id) }}" method="post" class="ms-2">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn text-danger"
+                                                        onclick="return confirm('Bạn có muốn xóa sản phẩm này.')"><i
+                                                            class="fas fa-trash-alt"></i></button>
+                                                </form>                                          
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

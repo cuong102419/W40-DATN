@@ -136,7 +136,7 @@
                                                                             class="price text-danger">{{ number_format($product->variants->min('price') * (1 - $product->discount / 100), 2) }}đ</span>
                                                                     @else
                                                                         <span
-                                                                            class="price-old text-danger">{{ number_format($product->variants->min('price'), 2) }}đ</span>
+                                                                            class="price text-danger">{{ number_format($product->variants->min('price'), 2) }}đ</span>
                                                                     @endif
                                                                 </div>
                                                             </div>
@@ -210,7 +210,7 @@
                                                                         class="price text-danger">{{ number_format($product->variants->min('price') * (1 - $product->discount / 100), 2) }}đ</span>
                                                                 @else
                                                                     <span
-                                                                        class="price-old text-danger">{{ number_format($product->variants->min('price'), 2) }}đ</span>
+                                                                        class="price text-danger">{{ number_format($product->variants->min('price'), 2) }}đ</span>
                                                                 @endif
 
                                                             </div>

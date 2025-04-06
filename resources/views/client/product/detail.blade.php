@@ -23,7 +23,7 @@
                                                 <div class="swiper-slide">
                                                     <a class="lightbox-image" data-fancybox="gallery"
                                                         href="{{ asset('client/img/shop/product-single/1.webp') }}">
-                                                        <img src="{{ Storage::url($image->image_url) }}" width="570"
+                                                        <img src="{{ Storage::url($image->image_url ?? '') }}" width="570"
                                                             height="541" alt="Image-HasTech">
                                                     </a>
                                                 </div>

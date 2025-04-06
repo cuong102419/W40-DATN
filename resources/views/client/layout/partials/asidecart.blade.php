@@ -6,16 +6,16 @@
                 class="fa fa-chevron-right"></i></button>
     </div>
     @if (session('cart'))
-            <div class="offcanvas-body">
-                @php
-                    $totalPrice = collect(session('cart', []))->sum(function ($item) {
-                        return $item['quantity'] * $item['price'];
-                    });
-                @endphp
-                <ul class="aside-cart-product-list">
-                    @foreach (session('cart') as $cart)
-                        <li class="product-list-item">
-                            <a href="{{ route('cart.delete.product', $cart['id']) }}" class="delete-item-cart remove">×</a>
+        <div class="offcanvas-body">
+            @php
+                $totalPrice = collect(session('cart', []))->sum(function ($item) {
+                    return $item['quantity'] * $item['price'];
+                });
+            @endphp
+            <ul class="aside-cart-product-list">
+                @foreach (session('cart') as $cart)
+                    <li class="product-list-item d-flex justify-content-between">
+                        <div>
                             <a href="{{ route('product.detail', $cart['product_id']) }}">
                                 <img src="{{ Storage::url($cart['image']) }}" width="90" height="110" alt="Image-HasTech">
                                 <span class="product-title">{{ $cart['name'] }}</span>
@@ -30,13 +30,22 @@
                                     </span>
                                 </div>
                             </div>
-                        </li>
-                    @endforeach
-                </ul>
-                <p class="cart-total"><span>Tổng:</span><span class="amount fw-bold text-danger">{{ number_format($totalPrice) }}đ</span></p>
-                <a class="btn-theme" data-margin-bottom="10" href="{{ route('cart.index') }}">Xem giỏ hàng</a>
-                <a class="btn-theme" href="{{ route('order.index') }}">Thanh toán</a>
-            </div>
+                        </div>
+                        <form class="delete-item-cart ms-2" action="{{ route('cart.delete.product', $cart['id']) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <div>
+                                <button class="btn btn-lg" type="submit">×</button>
+                            </div>
+                        </form>
+                    </li>
+                @endforeach
+            </ul>
+            <p class="cart-total"><span>Tổng:</span><span
+                    class="amount fw-bold text-danger">{{ number_format($totalPrice) }}đ</span></p>
+            <a class="btn-theme" data-margin-bottom="10" href="{{ route('cart.index') }}">Xem giỏ hàng</a>
+            <a class="btn-theme" href="{{ route('order.index') }}">Thanh toán</a>
+        </div>
     @else
         <div class="mt-3">
             <h5 class="text-center">Chưa có sản phẩm nào.</h5>

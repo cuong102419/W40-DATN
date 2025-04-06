@@ -20,11 +20,11 @@ class OrderSeeder extends Seeder
         foreach (range(1, 80) as $index) {
             $orderCreatedAt = now()->subDays(rand(0, 365));
             $orderId = DB::table('orders')->insertGetId([
-                'user_id' => rand(2, 7),
+                'user_id' => rand(2, 3),
                 'admin_id' => 1,
                 'order_code' => strtoupper($faker->unique()->bothify('ORD#######')),
                 'status' => $faker->randomElement(['completed', 'canceled']),
-                'payment_method' => $faker->randomElement(['ATM', 'COD', 'MOMO']),
+                'payment_method' => $faker->randomElement(['VNPAY', 'COD', 'MOMO']),
                 'payment_status' => $faker->randomElement(['paid','cancel']),
                 'address' => $faker->address,
                 'fullname' => $faker->name,
@@ -45,7 +45,12 @@ class OrderSeeder extends Seeder
                 DB::statement('SET FOREIGN_KEY_CHECKS=0;');
                 DB::table('order_items')->insert([
                     'order_id' => $orderId,
-                    'product_variant_id' => rand(1, 2),// ae tạo khoảng 5 biến thể rồi để vào giá trị max để fake dữ liệu
+                    'product_variant_id' => rand(1, 5),
+                    'product_name' => $faker->name,
+                    'sku' => strtoupper($faker->bothify('SKU#######')),
+                    'image_url' => $faker->imageUrl(),
+                    'size' => rand(35, 45),
+                    'color' => $faker->safeColorName,
                     'quantity' => rand(1, 5),
                     'unit_price' => $faker->randomFloat(0, 1000000, 5000000),
                     'created_at' => $orderCreatedAt,

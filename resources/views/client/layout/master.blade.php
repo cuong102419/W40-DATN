@@ -11,6 +11,7 @@
   <meta name="description" content="Shome - Shoes eCommerce Website Template" />
   <meta name="keywords" content="footwear, shoes, modern, shop, store, ecommerce, responsive, e-commerce" />
   <meta name="author" content="codecarnival" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   
 
   <title>@yield('title')</title>

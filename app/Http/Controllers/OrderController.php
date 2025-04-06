@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Mail\Checkout;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\PendingOrder;
 use App\Models\ProductVariant;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -97,16 +99,34 @@ class OrderController extends Controller
         if (Auth::check()) {
             $data['user_id'] = Auth::user()->id;
         }
+        
+        $orderPending = PendingOrder::create($data);
+
+
+        session('userProfile', [
+            'fullname' => $data['fullname'],
+            'address' => $data['address'],
+            'phone_number' => $data['phone_number'],
+            'email' => $data['email'],
+        ]);
         $voucher = session()->get('voucher');
 
         if ($cart) {
             if ($data['payment_method'] == 'COD') {
                 $order = Order::create($data);
-
                 foreach ($cart as $item) {
+                    $newImage = 'order-item/' . basename(path: $item['image']);
+                    if(Storage::exists($item['image'])) {
+                        Storage::copy($item['image'], $newImage);
+                    }
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_variant_id' => $item['id'],
+                        'image_url' => $newImage,
+                        'product_name' => $item['name'],
+                        'sku' => $item['sku'],
+                        'color' => $item['color'],
+                        'size' => $item['size'],
                         'quantity' => $item['quantity'],
                         'unit_price' => $item['price']
                     ]);
@@ -125,23 +145,13 @@ class OrderController extends Controller
                 return redirect()->route('order.checkout', $encryptedId)->with('success', 'Đặt hàng thành công.');
             }
 
-            $order = Order::create($data);
+            if ($data['payment_method'] == 'VNPAY') {
 
-            foreach ($cart as $item) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_variant_id' => $item['id'],
-                    'quantity' => $item['quantity'],
-                    'unit_price' => $item['price']
-                ]);
-            }
-            if ($data['payment_method'] == 'ATM') {
-
-                return $this->vnpay($order->total_final, $order->order_code);
+                return $this->vnpay($orderPending->total_final, $orderPending->order_code);
             }
             if ($data['payment_method'] == 'MOMO') {
 
-                return $this->momo($order->order_code, $order->total_final, $order->id);
+                return $this->momo($orderPending->order_code, $orderPending->total_final, $orderPending->id);
             }
         } else {
             return redirect()->back()->with('error', 'Không tìm thấy sản phẩm nào.');
@@ -158,7 +168,7 @@ class OrderController extends Controller
             $payment_method = [
                 'COD' => 'Thanh toán khi nhận hàng (COD)',
                 'MOMO' => 'Ví điện tử MOMO',
-                'ATM' => 'Thanh toán qua VNPay.',
+                'VNPAY' => 'Thanh toán qua VNPay.',
             ];
             $orderItems = OrderItem::where('order_id', $order->id)->get();
             return view('client.order.checkout', compact('order', 'payment_method', 'orderItems'));
@@ -172,7 +182,7 @@ class OrderController extends Controller
         $orders = Order::where('user_id', Auth::user()->id)->latest('id')->paginate(5);
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
-            'ATM' => "Thanh toán qua VNPay",
+            'VNPAY' => "Thanh toán qua VNPay",
             'MOMO' => 'Ví điện tử MOMO'
         ];
         $payment_status = [
@@ -210,7 +220,7 @@ class OrderController extends Controller
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
             'MOMO' => 'Ví điện tử MOMO',
-            'ATM' => 'Thanh toán qua VNPay.',
+            'VNPAY' => 'Thanh toán qua VNPay.',
         ];
         $payment_status = [
             'unpaid' => ['value' => 'Chưa thanh toán', 'class' => 'text-secondary'],
@@ -220,31 +230,6 @@ class OrderController extends Controller
         ];
 
         return view('client.order.detail', compact('order', 'orderItems', 'status', 'payment_method', 'payment_status'));
-    }
-
-    public function cancel(Order $order)
-    {
-        try {
-            if ($order->status != 'unconfirmed') {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Không thể hủy đơn hàng.'
-                ], Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-
-            $order->status = 'canceled';
-            $order->save();
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Hủy đơn hàng thành công'
-            ], Response::HTTP_OK);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Không thể hủy đơn hàng.'
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
     }
 
     public function applyVoucher(Request $request)
@@ -303,7 +288,7 @@ class OrderController extends Controller
         $vnp_TxnRef = $order_code . '_' . time();
         $vnp_OrderInfo = 'Thanh toán';
         $vnp_OrderType = 'Freak Sport';
-        $vnp_Amount = $total;
+        $vnp_Amount = $total * 100;
         $vnp_Locale = 'vn';
         $vnp_IpAddr = env('APP_URL');
         $inputData = array(
@@ -364,18 +349,54 @@ class OrderController extends Controller
     {
         $data = $request->all();
         $order_code = explode('_', $data['vnp_TxnRef'])[0];
-        $order = Order::where('order_code', $order_code)->first();
+        $orderPending = PendingOrder::where('order_code', $order_code)->first();
 
-        if (!$order) {
+        if (!$orderPending) {
             session()->forget('voucher');
             return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng.');
         }
 
         if ($data['vnp_ResponseCode'] == 00 && $data['vnp_TransactionStatus'] == 00) {
-            $order->update([
+            $order = Order::create([
+                'user_id' => $orderPending->user_id,
+                'admin_id' => 1,
+                'fake_user' => $orderPending->fake_user,
+                'order_code' => $orderPending->order_code,
                 'status' => 'unconfirmed',
-                'payment_status' => 'paid'
+                'payment_method' => $orderPending->payment_method,
+                'payment_status' => 'paid',
+                'address' => $orderPending->address,
+                'fullname' => $orderPending->fullname,
+                'email' => $orderPending->email,
+                'phone_number' => $orderPending->phone_number,
+                'note' => $orderPending->note,
+                'total' => $orderPending->total,
+                'total_final' => $orderPending->total_final,
+                'discount_amount' => $orderPending->discount_amount,
+                'shipping' => $orderPending->shipping
             ]);
+            
+            $cart = session('cart', []);
+            
+
+            foreach ($cart as $item) {
+                $newImage = 'order-item/' . basename(path: $item['image']);
+                if(Storage::exists($item['image'])) {
+                    Storage::copy($item['image'], $newImage);
+                }
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_variant_id' => $item['id'],
+                    'image_url' => $newImage,
+                    'product_name' => $item['name'],
+                    'sku' => $item['sku'],
+                    'color' => $item['color'],
+                    'size' => $item['size'],
+                    'quantity' => $item['quantity'],
+                    'unit_price' => $item['price']
+                ]);
+            }
+
             $voucher = session()->get('voucher');
 
             if ($voucher) {
@@ -387,15 +408,14 @@ class OrderController extends Controller
 
             $encryptedId = Crypt::encryptString($order->id);
             $orderItems = OrderItem::where('order_id', $order->id)->get();
+            $orderPending->delete();
             Mail::to($order->email)->send(new Checkout($order, $orderItems));
 
             return redirect()->route('order.checkout', $encryptedId)->with('success', 'Tạo đơn hàng thành công.');
         } else {
+            $orderPending->delete();
 
-            session()->forget('voucher');
-            session()->forget('cart');
-
-            return redirect()->route('home')->with('error', 'Đã hủy đơn hàng.');
+            return redirect()->route('order.index')->with('error', 'Đơn hàng đã bị hủy.');
         }
     }
 
@@ -462,19 +482,59 @@ class OrderController extends Controller
         return $result;
     }
 
-    public function momo_confirm(Request $request, Order $order)
+    public function momo_confirm(Request $request, PendingOrder $orderPending)
     {
         $data = $request->all();
-        if (!$order) {
+        if (!$orderPending) {
             session()->forget('voucher');
             return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng.');
         }
 
         if ($data['resultCode'] == 0) {
-            $order->update([
+            // $order->update([
+            //     'status' => 'unconfirmed',
+            //     'payment_status' => 'paid'
+            // ]);
+            $order_code = explode('_', $data['orderId'])[0];
+            $orderPending = PendingOrder::where('order_code', $order_code)->first();
+            dd($orderPending->user_id);
+            $order = Order::create([
+                'user_id' => $orderPending->user_id,
+                'order_code' => $order_code,
                 'status' => 'unconfirmed',
-                'payment_status' => 'paid'
+                'payment_method' => $orderPending->payment_method,
+                'payment_status' => 'paid',
+                'address' => $orderPending->address,
+                'fullname' => $orderPending->fullname,
+                'email' => $orderPending->email,
+                'phone_number' => $orderPending->phone_number,
+                'note' => $orderPending->note,
+                'total' => $orderPending->total,
+                'total_final' => $orderPending->total_final,
+                'discount_amount' => $orderPending->discount_amount,
+                'shipping' => $orderPending->shipping
             ]);
+            
+            $cart = session('cart', []);
+            
+
+            foreach ($cart as $item) {
+                $newImage = 'order-item/' . basename(path: $item['image']);
+                if(Storage::exists($item['image'])) {
+                    Storage::copy($item['image'], $newImage);
+                }
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_variant_id' => $item['id'],
+                    'image_url' => $newImage,
+                    'product_name' => $item['name'],
+                    'sku' => $item['sku'],
+                    'color' => $item['color'],
+                    'size' => $item['size'],
+                    'quantity' => $item['quantity'],
+                    'unit_price' => $item['price']
+                ]);
+            }
             $voucher = session()->get('voucher');
 
             if ($voucher) {
@@ -485,27 +545,24 @@ class OrderController extends Controller
             session()->forget('voucher');
             $encryptedId = Crypt::encryptString($order->id);
             $orderItems = OrderItem::where('order_id', $order->id)->get();
+            $orderPending->delete();
             Mail::to($order->email)->send(new Checkout($order, $orderItems));
 
             return redirect()->route('order.checkout', $encryptedId)->with('success', 'Tạo đơn hàng thành công.');
         } else {
-            $order->update([
-                'status' => 'canceled',
-                'payment_status' => 'cancel'
-            ]);
-            session()->forget('voucher');
-            session()->forget('cart');
+            $orderPending->delete();
 
-            return redirect()->route('home')->with('error', 'Đã hủy đơn hàng.');
+            return redirect()->route('order.index')->with('error', 'Đã hủy đơn hàng.');
         }
     }
 
-    public function retryPayment(Request $request, Order $order)
-    {
-        if ($order->payment_method != 'COD') {
-            return $this->vnpay($order->total_final, $order->order_code);
-        } else {
-            return redirect()->route('home')->with('error', 'Không thể thanh toán lại.');
+    public function completed(Order $order) {
+        if ($order->user_id != Auth::user()->id) {
+            abort(404);
         }
+        $order->update([
+            'status' => 'completed'
+        ]);
+        return redirect()->back()->with('success', 'Đơn hàng đã được hoàn thành.');
     }
 }

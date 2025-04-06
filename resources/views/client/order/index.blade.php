@@ -53,11 +53,9 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="street-address">Địa chỉ <span class="required"
+                                            <label for="street-address">Tỉnh/Thành phố <span class="required"
                                                     title="required">*</span></label>
-                                            <input id="street-address" name="address" type="text" class="form-control"
-                                                placeholder="Số nhà, tên đường, phường/xã...."
-                                                value="{{ Auth::user()->address ?? '' }}">
+                                            <select name="province" id="province" class="form-select"></select>
                                             @error('address')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror
@@ -75,9 +73,11 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="street-address">Tỉnh/Thành phố <span class="required"
+                                            <label for="street-address">Địa chỉ <span class="required"
                                                     title="required">*</span></label>
-                                            <select name="province" id="province" class="form-select"></select>
+                                            <input id="street-address" name="address" type="text" class="form-control"
+                                                placeholder="Số nhà, tên đường, phường/xã...."
+                                                value="{{ Auth::user()->address ?? '' }}">
                                             @error('address')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror
@@ -216,9 +216,9 @@
                                     </div>
                                     <div class="card">
                                         <div class="card-header">
-                                            <input type="radio" name="payment_method" value="ATM"
+                                            <input type="radio" name="payment_method" value="VNPAY"
                                                 id="payment_vnpay">
-                                            <label for="payment_vnpay">Thanh toán thẻ qua VNPay</label>
+                                            <label for="payment_vnpay">Thanh toán qua VNPay</label>
                                         </div>
                                     </div>
                                     <div class="card">

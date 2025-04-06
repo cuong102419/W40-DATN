@@ -27,7 +27,7 @@
                 <div class="col-md-auto border-start border-secondary" style="height: 100px;"></div>
                 <div class="col-md-auto me-4">
                     <span class="text-muted">Tổng cộng:</span><br>
-                    <strong>{{ number_format($order->total, 0, '.', '.') }}đ</strong>
+                    <strong>{{ number_format($order->total_final, 0, '.', '.') }}đ</strong>
                 </div>
                 <div class="col-md-auto border-start border-secondary" style="height: 100px;"></div>
                 <div class="col-md-auto">
@@ -49,18 +49,18 @@
                             <tr>
                                 <td>
                                     <div>
-                                        <span class="fw-bold"><a href="{{ route('product.detail', $item->product_variant->product_id) }}">{{ $item->product_variant->product->name }}</a> ×
+                                        <span class="fw-bold"><a href="{{ route('product.detail', $item->product_variant->product_id) }}">{{ $item->product_name }}</a> ×
                                             {{ $item->quantity }}</span>
                                     </div>
                                     <div>
-                                        <span><strong>Size: </strong>{{ $item->product_variant->size }}</span>
+                                        <span><strong>Size: </strong>{{ $item->size }}</span>
                                     </div>
                                     <div class="d-flex">
                                         <div>
                                             <span class="fw-bold">Màu sắc:</span>
                                         </div>
                                         <div class="rounded-circle border border-secondary shadow mt-2 ms-2"
-                                            style="width: 16px; height: 16px; background-color: {{ $item->product_variant->color }}; display: inline-block;">
+                                            style="width: 16px; height: 16px; background-color: {{ $item->color }}; display: inline-block;">
                                         </div>
                                     </div>
                                 </td>
@@ -82,7 +82,7 @@
                                 <h5 class="text-uppercase">Tổng cộng</h5>
                             </td>
                             <td class="text-end">
-                                <h5 class="text-danger">{{ number_format($order->total, 0, '.', '.') }}đ</h5>
+                                <h5 class="text-danger">{{ number_format($order->total_final, 0, '.', '.') }}đ</h5>
                             </td>
                         </tr>
                     </table>
