@@ -42,14 +42,16 @@
                                             <div class="d-flex">
                                                 <a href="{{ route('admin-brand.edit', $brand->id) }}" class="btn text-primary ms-2"
                                                     title="Sửa"><i class="fas fa-pen"></i></a>
-                                                <form method="post" action="{{ route('admin-brand.delete', $brand->id) }}"
-                                                    class="ms-2">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button title="Xóa" class="btn text-danger"
-                                                        onclick="return confirm('Bạn có chắc muốn xóa.')"><i
-                                                            class="far fa-trash-alt"></i></button>
-                                                </form>
+                                                @if ($brand->products->isEmpty())
+                                                    <form method="post" action="{{ route('admin-brand.delete', $brand->id) }}"
+                                                        class="ms-2">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button title="Xóa" class="btn text-danger"
+                                                            onclick="return confirm('Bạn có chắc muốn xóa.')"><i
+                                                                class="far fa-trash-alt"></i></button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

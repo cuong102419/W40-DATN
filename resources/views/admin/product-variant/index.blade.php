@@ -46,14 +46,16 @@
                                             <div class="d-flex">
                                                 <a href="{{ route('product-variant.edit', [$product->id, $variant->id], ) }}"
                                                     class="btn text-primary ms-2" title="Sửa"><i class="fas fa-pen"></i></a>
-                                                <form action="{{ route('product-variant.delete', $variant->id) }}" method="post"
-                                                    class="ms-2">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn text-danger"
-                                                        onclick="return confirm('Bạn có muốn xóa sản phẩm này.')"><i
-                                                            class="fas fa-trash-alt"></i></button>
-                                                </form>
+                                                @if ($variant->orderItem->isEmpty())
+                                                    <form action="{{ route('product-variant.delete', $variant->id) }}" method="post"
+                                                        class="ms-2">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn text-danger"
+                                                            onclick="return confirm('Bạn có muốn xóa biến thể này.')"><i
+                                                                class="fas fa-trash-alt"></i></button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

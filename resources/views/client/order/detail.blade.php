@@ -8,7 +8,16 @@
     <div class="mt-3 mb-5 container">
         <div class="row">
             <div class="col-7">
-                <h5 class="text-uppercase">Đơn hàng: {{ $order->order_code }}</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="text-uppercase">Đơn hàng: {{ $order->order_code }}</h5>
+                    </div>
+                    @if ($order->status == 'delivered')
+                        <div>
+                            <a href="{{ route('order.completed', $order->id) }}" onclick="return confirm('Vui lòng chỉ xác nhận khi đã nhận hàng thành công.')" class="btn btn-theme btn-sm">Nhận hàng thành công</a>
+                        </div>
+                    @endif
+                </div>
                 <div class="mt-5 border p-4">
                     <div class="d-flex justify-content-between border-bottom pb-4">
                         <div>
@@ -31,7 +40,7 @@
                                     <div class="d-flex">
                                         <a href="{{ route('product.detail', $item->product_variant->product->id) }}"
                                             class="me-3">
-                                            <img src="{{ Storage::url($item->product_variant->product->imageLists->first()->image_url) }}"
+                                            <img class="rounded" src="{{ Storage::url($item->image_url) }}"
                                                 width="200" height="110" alt="">
                                         </a>
                                         <div class="ms-4">
@@ -137,18 +146,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="border-bottom-0">
-                                    <div>
-                                        <span class="fw-bold">Hãng vận chuyển:</span>
-                                    </div>
-                                </td>
-                                <td class="text-end border-bottom-0">
-                                    <div>
-                                        <img src="{{ asset('client/img/icons/Logo-Ninjavan-H.png') }}" width="90" alt="">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>
                                     <div>
                                         <span class="fw-bold">Địa chỉ giao hàng</span>
@@ -189,17 +186,6 @@
                                             <i class="fa fa-credit-card fa-lg" aria-hidden="true"></i>
                                         @endif
                                     </span>
-                                    {{-- @if ($order->payment_method != 'COD' && $order->payment_status == 'unpaid')
-                                        <div class="mt-4">
-                                            <form action="{{ route('order.retry-payment', $order->id) }}" method="post">
-                                                @csrf
-                                                <input type="text" name="order_id" value="{{ $order->id }}" hidden>
-                                                <input type="text" hidden name="redirect">
-                                                <button type="submit" class="btn btn-theme btn-sm">Thanh toán lại</button>
-                                            </form>
-                                        </div>
-                                        
-                                    @endif --}}
                                 </td>
                             </tr>
                             <tr>

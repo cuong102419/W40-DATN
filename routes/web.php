@@ -89,7 +89,7 @@ Route::prefix('/cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
     Route::post('/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::get('/delete', [CartController::class, 'destroy'])->name('cart.delete');
-    Route::get('/delete/{id}', [CartController::class, 'delete'])->name('cart.delete.product');
+    Route::delete('/delete/{id}', [CartController::class, 'delete'])->name('cart.delete.product');
     Route::put('/update', [CartController::class, 'update'])->name('cart.update');
 });
 
@@ -121,7 +121,7 @@ Route::prefix(('/order'))->group(function () {
     Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
     Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
     Route::post('/cancel', [ReasonController::class, 'request'])->name('order.cancel-request');
-    Route::post(('retry-payment/{order}'), [OrderController::class, 'retryPayment'])->name('order.retry-payment');
+    Route::get('/completed/{order}', [OrderController::class, 'completed'])->name('order.completed');
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
@@ -144,7 +144,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/variant/update/{variant}', [ProductVariantController::class, 'update'])->name('product-variant.update');
         Route::delete('/variant/delete/{variant}', [ProductVariantController::class, 'destroy'])->name('product-variant.delete');
     });
-//Danh mục
+    //Danh mục
     Route::prefix('/category')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('admin-category.index');
         Route::get('/create', [CategoryController::class, 'create'])->name('admin-category.create');
@@ -154,7 +154,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/delete/{category}', [CategoryController::class, 'destroy'])->name('admin-category.delete');
     });
 
-//Nhãn hàng
+    //Nhãn hàng
     Route::prefix('/brand')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('admin-brand.index');
         Route::get('/create', [BrandController::class, 'create'])->name('admin-brand.create');
@@ -164,7 +164,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/delete/{brand}', [BrandController::class, 'destroy'])->name('admin-brand.delete');
     });
 
-//Khuyến mãi
+    //Khuyến mãi
     Route::prefix('/voucher')->group(function () {
         Route::get('/', [VoucherController::class, 'index'])->name('admin-voucher.index');
         Route::get('/create', [VoucherController::class, 'create'])->name('admin-voucher.create');
@@ -174,7 +174,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::delete('/delete/{voucher}', [VoucherController::class, 'destroy'])->name('admin-voucher.delete');
     });
 
-//Tin tức
+    //Tin tức
     Route::prefix('/blog')->group(function () {
         Route::get('/', [AdminBlogController::class, 'index'])->name('admin-blog.index');
         Route::get('/create', [AdminBlogController::class, 'create'])->name('admin-blog.create');

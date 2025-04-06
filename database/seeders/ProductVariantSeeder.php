@@ -33,7 +33,43 @@ class ProductVariantSeeder extends Seeder
                 'quantity' => 10,
                 'created_at'    => Carbon::now(),
                 'updated_at'    => Carbon::now(),
-            ]
+            ],
+            [
+                'product_id' => 3,
+                'size' => '39',
+                'color' => '#ffffff',
+                'price' => 2000000,
+                'quantity' => 10,
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
+            ],
+            [
+                'product_id' => 4,
+                'size' => '39',
+                'color' => '#ffffff',
+                'price' => 2000000,
+                'quantity' => 10,
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
+            ],
+            [
+                'product_id' => 5,
+                'size' => '39',
+                'color' => '#ffffff',
+                'price' => 2000000,
+                'quantity' => 10,
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
+            ],
+            [
+                'product_id' => 6,
+                'size' => '39',
+                'color' => '#ffffff',
+                'price' => 2000000,
+                'quantity' => 10,
+                'created_at'    => Carbon::now(),
+                'updated_at'    => Carbon::now(),
+            ],
         ]);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

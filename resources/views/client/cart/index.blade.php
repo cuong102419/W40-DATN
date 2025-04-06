@@ -14,12 +14,12 @@
                     @method('PUT')
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="shopping-cart-form table-responsive">
-
-                                <table class="table text-center">
+                            <div class="shopping-cart-form table-responsive" style="overflow-x: auto;">
+                                <table class="table text-center"  style="font-size: 14px;">
                                     <thead>
                                         <tr>
-                                            <th class="product-thumb" colspan="2"></th>
+                                            <th></th>
+                                            <th></th>
                                             <th class="product-name text-center">Sản phẩm</th>
                                             <th class="product-price">Giá</th>
                                             <th class="product-quantity">Số lượng</th>
@@ -34,9 +34,9 @@
                                                         <input type="checkbox" class="cart-checkbox" checked name="id[]" value="{{ $cart['id'] }}">
                                                     </div>
                                                 </td>
-                                                <td class="product-thumb">
+                                                <td>
                                                     <a href="{{ route('product.detail', $cart['product_id']) }}">
-                                                        <img src="{{ Storage::url($cart['image']) }}" width="100"
+                                                        <img class="rounded" src="{{ Storage::url($cart['image']) }}" width="100"
                                                             alt="Image-HasTech">
                                                     </a>
                                                 </td>
@@ -79,8 +79,13 @@
                                                         class="price text-danger"><strong>{{ number_format($cart['price'] * $cart['quantity']) }}đ</strong></span>
                                                 </td>
                                                 <td class="product-remove">
-                                                    <a href="{{ route('cart.delete.product', $cart['id']) }}"
-                                                        class="delete-item-cart text-danger"><i class="fa fa-trash-o"></i></a>
+                                                        <form class="delete-item-cart" action="{{ route('cart.delete.product', $cart['id']) }}" method="post">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <div>
+                                                                <button class="btn text-danger" type="submit"><i class="fa fa-trash-o"></i></button>
+                                                            </div>
+                                                        </form>
                                                 </td>
                                             </tr>
                                         @endforeach

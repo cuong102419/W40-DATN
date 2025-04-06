@@ -19,12 +19,12 @@
                         <div class="inner-content">
                             <div class="product-collection-content">
                                 <div class="content">
-                                    <h3 class="title"><a href="shop.html">Giày thể thao</a></h3>
+                                    <h3 class="title"><a href="{{ route('product.index') }}">Giày thể thao</a></h3>
                                 </div>
                             </div>
                             <div class="product-collection-thumb"
                                 data-bg-img="{{ asset('client/img/shop/banner/3.webp') }}"></div>
-                            <a class="banner-link-overlay" href="shop.html"></a>
+                            <a class="banner-link-overlay" href="{{ route('product.index') }}"></a>
                         </div>
                     </div>
                     <!--== End Product Collection Item ==-->
@@ -35,12 +35,12 @@
                         <div class="inner-content">
                             <div class="product-collection-content">
                                 <div class="content">
-                                    <h3 class="title"><a href="shop.html">Giày mới nhất</a></h3>
+                                    <h3 class="title"><a href="{{ route('product.index') }}">Giày mới nhất</a></h3>
                                 </div>
                             </div>
                             <div class="product-collection-thumb" data-bg-img="{{ asset('client/img/shop/banner/1.jpg')}}">
                             </div>
-                            <a class="banner-link-overlay" href="shop.html"></a>
+                            <a class="banner-link-overlay" href="{{ route('product.index') }}"></a>
                         </div>
                     </div>
                     <!--== End Product Collection Item ==-->
@@ -51,12 +51,12 @@
                         <div class="inner-content">
                             <div class="product-collection-content">
                                 <div class="content">
-                                    <h3 class="title"><a href="shop.html">Giày công sở</a></h3>
+                                    <h3 class="title"><a href="{{ route('product.index') }}">Giày công sở</a></h3>
                                 </div>
                             </div>
                             <div class="product-collection-thumb" data-bg-img="{{ asset('client/img/shop/banner/2.jpg') }}">
                             </div>
-                            <a class="banner-link-overlay" href="shop.html"></a>
+                            <a class="banner-link-overlay" href="{{ route('product.index') }}"></a>
                         </div>
                     </div>
                     <!--== End Product Collection Item ==-->

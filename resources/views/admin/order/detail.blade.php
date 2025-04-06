@@ -33,9 +33,9 @@
                             @elseif ($order->status == 'shipping')
                                 <button type="submit" name="action" value="delivered" class="btn btn-sm btn-primary"><i
                                         class="fas fa-truck-loading me-2"></i>Hoàn thành giao hàng</button>
-                            @elseif ($order->status == 'delivered')
+                            {{-- @elseif ($order->status == 'delivered')
                                 <button type="submit" name="action" value="completed" class="btn btn-sm btn-success"><i
-                                        class="fas fa-check me-2"></i>Hoàn thành</button>
+                                        class="fas fa-check me-2"></i>Hoàn thành</button> --}}
                             @endif
                         </form>
                     </div>
@@ -91,28 +91,28 @@
                                         <div class="d-flex">
                                             <div>
                                                 <span>
-                                                    <img src="{{ Storage::url($item->product_variant->product->imageLists->first()->image_url) }}"
+                                                    <img src="{{ Storage::url($item->image_url ?? '') }}"
                                                         width="100" alt="">
                                                 </span>
                                             </div>
                                             <div class="ms-3">
                                                 <div>
                                                     <span
-                                                        class="fw-bold">{{ $item->product_variant->product->name }}</span>
+                                                        class="fw-bold">{{ $item->product_name }}</span>
                                                 </div>
                                                 <div>
                                                     <span><strong>Số lượng:</strong> {{ $item->quantity }}</span>
                                                 </div>
                                                 <div>
                                                     <span><strong>Kích cỡ:</strong>
-                                                        {{ $item->product_variant->size }}</span>
+                                                        {{ $item->size }}</span>
                                                 </div>
                                                 <div class="d-flex">
                                                     <div>
                                                         <span class="fw-bold">Màu sắc:</span>
                                                     </div>
                                                     <div class="rounded-circle border border-secondary shadow mt-1 ms-2"
-                                                        style="width: 16px; height: 16px; background-color: {{ $item->product_variant->color }}; display: inline-block;">
+                                                        style="width: 16px; height: 16px; background-color: {{ $item->color }}; display: inline-block;">
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,7 +139,7 @@
                                 <th>Tổng cộng</th>
                                 <td colspan="2">
                                     <span
-                                        class="text-danger fw-bold">{{ number_format($order->total, 0, '.', '.') }}đ</span>
+                                        class="text-danger fw-bold">{{ number_format($order->total_final, 0, '.', '.') }}đ</span>
                                 </td>
                             </tr>
                             <tr>
@@ -154,6 +154,7 @@
                                     </div>
                                 </td>
                                 <td>
+                                    @if ($order->payment_method != 'COD')
                                     <div class="w-75">
                                         <form action="{{ route('admin-order.payment', $order->id) }}" method="post"
                                             id="payment-status">
@@ -179,6 +180,7 @@
                                             </div>
                                         </form>
                                     </div>
+                                    @endif
                                 </td>
                             </tr>
                             <tr>
@@ -199,13 +201,13 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="" class="form-label">Họ tên</label>
-                                    <input type="text" name="fullname" class="form-control"
+                                    <input @if ($order->status != 'unconfirmed') disabled @endif type="text" name="fullname" class="form-control"
                                         value="{{ $order->fullname }}">
                                     <span class="text-danger error-fullname mt-2 d-block"></span>
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label">Số điện thoại</label>
-                                    <input type="text" name="phone_number" class="form-control"
+                                    <input @if ($order->status != 'unconfirmed') disabled @endif type="text" name="phone_number" class="form-control"
                                         value="{{ $order->phone_number }}">
                                     <span class="text-danger error-phone-number mt-2 d-block"></span>
                                 </div>
@@ -213,25 +215,27 @@
                             <div class="row mt-3">
                                 <div class="col">
                                     <label for="" class="form-label">Email</label>
-                                    <input type="text" name="email" class="form-control"
+                                    <input @if ($order->status != 'unconfirmed') disabled @endif type="text" name="email" class="form-control"
                                         value="{{ $order->email }}">
                                     <span class="text-danger error-email mt-2 d-block"></span>
                                 </div>
                                 <div class="col">
                                     <label for="" class="form-label">Địa chỉ</label>
-                                    <input type="text" name="address" class="form-control"
+                                    <input @if ($order->status != 'unconfirmed') disabled @endif type="text" name="address" class="form-control"
                                         value="{{ $order->address }}">
                                     <span class="text-danger error-address mt-2 d-block"></span>
                                 </div>
                             </div>
                             <div class="mt-3">
                                 <label for="" class="form-label">Ghi chú</label>
-                                <textarea class="form-control" name="note" rows="5" name="" id="">{{ $order->note }}</textarea>
+                                <textarea class="form-control" name="note" rows="5" @if ($order->status != 'unconfirmed') disabled @endif name="" id="">{{ $order->note }}</textarea>
                             </div>
                             <div class="mt-3">
-                                <button type="submit"
-                                    onclick="return confirm('Bạn có muốn cập nhật thông tin khách hàng.')"
-                                    class="btn btn-sm btn-primary"><i class="fas fa-save me-2"></i>Cập nhật</button>
+                                @if ($order->status == 'unconfirmed') 
+                                    <button type="submit"
+                                        onclick="return confirm('Bạn có muốn cập nhật thông tin khách hàng.')"
+                                        class="btn btn-sm btn-primary"><i class="fas fa-save me-2"></i>Cập nhật</button>
+                                @endif
                             </div>
                         </form>
                     </div>

@@ -112,10 +112,13 @@ class ProductVariantController extends Controller
             'color.unique' => 'Màu sắc và kích cỡ này đã tồn tại cho sản phẩm này.'
         ]);
 
-        $variant->update($data);
         ProductVariant::where('color', $variant->color)
             ->where('product_id', $variant->product_id)
-            ->update(['price' => $data['price']]);
+            ->update([
+                'price' => $data['price'],
+                'color' => $data['color'],
+            ]);
+        $variant->update($data);
 
         if ($request->ajax()) {
             return response()->json([
@@ -130,8 +133,10 @@ class ProductVariantController extends Controller
     public function destroy(ProductVariant $variant)
     {
         try {
+            if ($variant->orderItem->count() > 0) {
+                return redirect()->back()->with('error', 'Không thể xóa biến thể này vì đã có đơn hàng liên quan.');
+            }
             $variant->delete();
-
             return redirect()->back()->with('success', 'Xóa biến thể thành công.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');

@@ -36,14 +36,16 @@
                                             <div class="d-flex">
                                                 <a href="{{ route('admin-category.edit', $cate->id) }}"
                                                     class="btn text-primary ms-2" title="Sửa"><i class="fas fa-pen"></i></a>
-                                                <form method="post" action="{{ route('admin-category.delete', $cate->id) }}"
-                                                    class="ms-2">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button title="Xóa" class="btn text-danger"
-                                                        onclick="return confirm('Mày có muốn xóa nó.')"><i
-                                                            class="far fa-trash-alt"></i></button>
-                                                </form>
+                                                @if ($cate->products->isEmpty())
+                                                    <form method="post" action="{{ route('admin-category.delete', $cate->id) }}"
+                                                        class="ms-2">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button title="Xóa" class="btn text-danger"
+                                                            onclick="return confirm('Mày có muốn xóa nó.')"><i
+                                                                class="far fa-trash-alt"></i></button>
+                                                    </form>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>

@@ -41,7 +41,7 @@
                                         <!-- Chỉ hiển thị sản phẩm đầu tiên trên mobile -->
                                         @if ($key == 0)
                                             <div class="d-flex me-3">
-                                                <img src="{{ Storage::url($item->product_variant->product->imageLists->first()->image_url) }}"
+                                                <img src="{{ Storage::url($item->image_url) }}"
                                                     alt="Ảnh sản phẩm" class="img-fluid ms-2 rounded" width="100">
                                                 <div class="ms-2">
                                                     <div>

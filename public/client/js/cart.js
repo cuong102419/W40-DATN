@@ -67,31 +67,38 @@ $(document).ready(function () {
         });
     });
 
-    $('.delete-item-cart').click(function (e) {
+    $('.delete-item-cart').submit(function (e) {
         e.preventDefault();
 
+        var url = $(this).attr('action');
+        var method = 'DELETE';
+        var token = $('meta[name="csrf-token"]').attr('content');
+
         $.ajax({
-            url: $(this).attr('href'),
-            type: 'GET',
+            url: url,
+            type: method,
             data: {
-                _token: '{{ csrf_token() }}'
+                _token: token
             },
             success: function (response) {
-                if (response.status == 'success') {
+                if (response.status === 'success') {
                     toastr.success(response.message);
 
                     setTimeout(() => {
                         location.reload();
-                    }, 2000);
+                    }, 1500);
                 }
             },
             error: function (xhr) {
-                if (xhr.responseJSON.status == 'error') {
+                if (xhr.responseJSON && xhr.responseJSON.status === 'error') {
                     toastr.error(xhr.responseJSON.message);
+                } else {
+                    toastr.error('Có lỗi xảy ra khi xóa sản phẩm.');
                 }
             }
         });
     });
+
 
 });
 
@@ -122,7 +129,7 @@ $(document).ready(function () {
     }
 
     checkboxes.change(updateTotal);
-    
+
     updateTotal();
 });
 

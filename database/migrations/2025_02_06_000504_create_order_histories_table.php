@@ -11,18 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('order_histories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained();
-            $table->foreignId('product_variant_id')->constrained()->nullable();
-
-            $table->string('product_name');
-            $table->string('sku');
-            $table->string('image_url');
-            $table->integer('size');
-            $table->string('color');
-            $table->integer('quantity');
-            $table->double('unit_price');
+            $table->foreignId('admin_id')->constrained('users');
+            $table->enum('action', ['receive', 'confirmed', 'shipped', 'delivered', 'canceled', 'returned']);
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('order_histories');
     }
 };
