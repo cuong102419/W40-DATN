@@ -221,7 +221,7 @@
                                         <span>{{ number_format($order->shipping, 0, '.', '.') }}đ</span>
                                     </div>
                                     <div>
-                                        <span class="fw-bold">{{ number_format($order->total, 0, '.', '.') }}đ</span>
+                                        <span class="fw-bold">{{ number_format($order->total_final, 0, '.', '.') }}đ</span>
                                     </div>
                                 </td>
                             </tr>
