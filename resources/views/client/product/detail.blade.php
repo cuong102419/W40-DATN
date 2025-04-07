@@ -200,20 +200,28 @@
                             </div>
                             <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                                 <div class="product-review-content">
+                                    
+
                                     <div class="review-content-header">
                                         <h3>Đánh giá của khách hàng</h3>
                                         <div class="review-info">
                                             <ul class="review-rating">
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star"></li>
-                                                <li class="fa fa-star-o"></li>
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    @if ($i <= floor($averageRating))
+                                                        <li class="fa fa-star"></li>
+                                                    @elseif ($i - $averageRating <= 0.5)
+                                                        <li class="fa fa-star-half-o"></li>
+                                                    @else
+                                                        <li class="fa fa-star-o"></li>
+                                                    @endif
+                                                @endfor
                                             </ul>
-                                            <span class="review-caption">Dựa trên 5 đánh giá</span>
+                                            <span class="review-caption">Dựa trên {{ $totalReviews }} đánh giá</span>
+                                            
                                             <span class="review-write-btn">Viết bài đánh giá</span>
                                         </div>
                                     </div>
+
                                     <!--== Start Reviews Form Item ==-->
                                     <div class="reviews-form-area">
                                         <h4 class="title">Viết bài đánh giá</h4>
@@ -353,7 +361,7 @@
 
                                     <div class="reviews-content-body">     
                                                                   
-                                            @forelse($reviews->items() as $review)
+                                        @forelse($reviews->items() as $review)
                                             <!--== Start Reviews Content Item ==-->
                                             <div class="review-item">
                                                 <ul class="review-rating">
@@ -361,22 +369,24 @@
                                                         <li class="fa {{ $i <= $review->rating ? 'fa-star' : 'fa-star-o' }}"></li>
                                                     @endfor
                                                 </ul>
-                                                <h3 class="title">{{ $review->title }}</h3>
+                                                <h5>{{ $review->product->name ?? 'Sản phẩm không tồn tại' }}</h5>
+                                                
+                                                @if ($review->variant)
+                                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                                        <p style="margin: 0;"><strong>Size:</strong> {{ $review->variant->size }}</p>
+                                                        <p style="margin: 0; display: flex; align-items: center;">
+                                                            <strong style="margin-right: 4px;">Màu:</strong>
+                                                            <span class="color-box" style="width: 20px; height: 20px; background-color: {{ $review->variant->color }}; border-radius: 50%; display: inline-block;"></span>
+                                                        </p>
+                                                    </div>
+                                                @endif
                                                 <h5 class="sub-title">
                                                     <span>{{ $review->user->name ?? 'Anonymous' }}</span>
                                                     no <span>{{ $review->created_at->format('M d, Y') }}</span>
                                                 </h5>
+                                                <h3 class="title">{{ $review->title }}</h3>
                                                 <p>{{ $review->comment }}</p>
-                                        
-                                                <!-- Hiển thị Size và Màu -->
-                                                @if ($review->orderItem && $review->orderItem->variant)
-                                                    <p><strong>Size:</strong> {{ $review->orderItem->variant->size }}</p>
-                                                    <p>
-                                                        <strong>Màu:</strong> 
-                                                        <span class="color-box" style="width: 20px; height: 20px; background-color: {{ $review->orderItem->variant->color }}; border-radius: 50%;"></span>
-                                                    </p>
-                                                @endif
-                                        
+                                                                
                                                 <a href="#/">Báo cáo là không phù hợp</a>
                                             </div>
                                             <!--== End Reviews Content Item ==-->
@@ -395,11 +405,11 @@
                                             justify-content: center;
                                             align-items: center;
                                             z-index: 9999;
-                                            visibility: hidden; /* Đặt visibility là hidden */
+                                            visibility: hidden; 
                                         }
                                         
                                         .hide-loading {
-                                            visibility: hidden; /* Ẩn loading khi không cần */
+                                            visibility: hidden; 
                                         }
                                         </style>
                                         <script>
@@ -531,3 +541,125 @@
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

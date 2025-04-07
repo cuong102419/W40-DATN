@@ -9,9 +9,22 @@ use Illuminate\Http\Request;
 class AdminReviewController extends Controller
 {
     // Danh sách tất cả các đánh giá
-    public function index() {
-        $reviews = Review::with(['user', 'product'])->latest()->paginate(10);
-        return view('admin.reviews.index', compact('reviews'));
+    public function index(Request $request) {
+        $query = Review::with(['order', 'product', 'user']);
+
+    if ($request->filled('order_code')) {
+        $query->whereHas('order', function ($q) use ($request) {
+            $q->where('order_code', 'like', '%' . $request->order_code . '%');
+        });
+    }
+
+    if ($request->filled('review_date')) {
+        $query->whereDate('created_at', $request->review_date);
+    }
+
+    $reviews = $query->latest()->paginate(10);
+
+    return view('admin.reviews.index', compact('reviews'));
     }
 
     // Ẩn hoặc hiện đánh giá

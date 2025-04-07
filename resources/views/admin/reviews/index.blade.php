@@ -6,7 +6,18 @@
 @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
 @endif
-
+<form action="{{ route('admin-review.index') }}" method="GET" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="order_code" class="form-control" placeholder="Tìm theo mã đơn hàng..." value="{{ request('order_code') }}">
+    </div>
+    <div class="col-md-4">
+        <input type="date" name="review_date" class="form-control" value="{{ request('review_date') }}">
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        <a href="{{ route('admin-review.index') }}" class="btn btn-secondary">Reset</a>
+    </div>
+</form>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -48,14 +59,17 @@
     </tbody>
 </table>
 <style>
-    .comment-column {
+.comment-column {
     max-width: 300px;
-    max-height: 100px; /* Giới hạn chiều cao */
-    overflow-y: auto; /* Hiển thị thanh cuộn khi nội dung quá dài */
+    max-height: 100px;
+    overflow-y: auto;
     word-wrap: break-word;
     white-space: normal;
-    display: block; /* Đảm bảo phần tử có thể scroll được */
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
 }
+
 </style>
 
 {{ $reviews->links() }} <!-- Phân trang -->
