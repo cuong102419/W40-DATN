@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,11 +19,17 @@ class ReviewController extends Controller
      {
          $request->validate([
              'product_id' => 'required|exists:products,id',
+             'product_variant_id' => 'required|exists:product_variants,id',
              'order_id' => 'required|exists:orders,id',
              'rating' => 'required|integer|min:1|max:5',
              'title' => 'required|string|max:255',
              'comment' => 'required|string|max:1500',
          ]);
+     
+         // ✅ Thêm đoạn này ngay sau validate
+         if (!$request->filled('order_id') || !$request->filled('product_variant_id')) {
+             return back()->with('error', 'Thiếu thông tin sản phẩm hoặc đơn hàng.');
+         }
      
          $user = Auth::user();
      
@@ -31,9 +38,7 @@ class ReviewController extends Controller
              ->where('user_id', $user->id)
              ->where('status', 'completed')
              ->whereHas('orderItems', function ($query) use ($request) {
-                 $query->whereHas('productVariant', function ($q) use ($request) {
-                     $q->where('product_id', $request->product_id);
-                 });
+                 $query->where('product_variant_id', $request->product_variant_id);
              })
              ->first();
      
@@ -41,9 +46,9 @@ class ReviewController extends Controller
              return back()->with('error', 'Bạn không thể đánh giá sản phẩm này cho đơn hàng đã chọn.');
          }
      
-         // Kiểm tra đã đánh giá đơn hàng này chưa
+         // Kiểm tra đã đánh giá chưa
          $alreadyReviewed = Review::where('user_id', $user->id)
-             ->where('product_id', $request->product_id)
+             ->where('product_variant_id', $request->product_variant_id)
              ->where('order_id', $request->order_id)
              ->exists();
      
@@ -55,6 +60,7 @@ class ReviewController extends Controller
          Review::create([
              'user_id' => $user->id,
              'product_id' => $request->product_id,
+             'product_variant_id' => $request->product_variant_id,
              'order_id' => $request->order_id,
              'rating' => $request->rating,
              'title' => $request->title,
@@ -65,12 +71,29 @@ class ReviewController extends Controller
      }
      
 
+
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $orderId = $request->input('order_id');
+
+        // Lấy danh sách sản phẩm đã mua trong đơn hàng này (kèm biến thể)
+        $orderItems = OrderItem::with(['productVariant.product'])
+            ->where('order_id', $orderId)
+            ->whereHas('order', fn($q) => $q->where('user_id', Auth::id())->where('status', 'completed'))
+            ->get();
+
+        // Bỏ những item đã đánh giá rồi
+        $orderItems = $orderItems->filter(function ($item) use ($orderId) {
+            return !Review::where('user_id', Auth::id())
+                ->where('order_id', $orderId)
+                ->where('product_variant_id', $item->product_variant_id)
+                ->exists();
+        });
+
+        return view('reviews.create', compact('orderItems', 'orderId'));
     }
 
 

@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use App\Models\Order;
+use App\Models\OrderItem;
 
 class ProductController extends Controller
 {
@@ -39,56 +40,64 @@ class ProductController extends Controller
     {
         $product = Product::with('category', 'brand', 'imageLists')->find($id);
         $nextProduct = Product::where('id', '>', $id)->orderBy('id', 'asc')->first();
-
+    
         if (!$product) {
             return abort(404);
         }
-
+    
         $user = Auth::user();
         $order = null;
         $variant = null;
-
+        $orderItems = collect(); // Khởi tạo rỗng
+        $hasPurchased = false;
+    
         if ($user) {
-            $order = Order::where('user_id', $user->id)
-                ->where('status', 'completed')
-                ->whereHas('orderItems', function ($query) use ($id) {
-                    $query->whereHas('productVariant', function ($subQuery) use ($id) {
-                        $subQuery->where('product_id', $id);
-                    });
+            // Lấy tất cả các OrderItem mà user đã mua có chứa product này
+            $orderItems = OrderItem::with('productVariant')
+                ->whereHas('order', function ($q) use ($user) {
+                    $q->where('user_id', $user->id)
+                      ->where('status', 'completed');
                 })
-                ->with('orderItems.productVariant')
-                ->latest()
-                ->first();
-
-            if ($order) {
-                // Lấy variant đầu tiên liên quan đến sản phẩm
-                $variant = $order->orderItems->firstWhere(function ($item) use ($id) {
-                    return $item->productVariant->product_id == $id;
-                })?->productVariant;
-            }
+                ->whereHas('productVariant', function ($q) use ($id) {
+                    $q->where('product_id', $id);
+                })
+                ->get();
+    
+            $hasPurchased = $orderItems->isNotEmpty();
+    
+            // Lọc các orderItems mà user chưa review biến thể đó (bỏ kiểm tra theo order_id)
+            $filteredOrderItems = $orderItems->filter(function ($item) use ($user) {
+                return !Review::where('user_id', $user->id)
+                    ->where('product_variant_id', $item->product_variant_id)
+                    ->exists();
+            });
+    
+            $orderItems = $filteredOrderItems; // Gán lại danh sách đã lọc
+            $order = $filteredOrderItems->first()?->order;
+            $variant = $filteredOrderItems->first()?->productVariant;
         }
-
-        $hasPurchased = $order !== null;
-
+    
         $reviews = Review::where('product_id', $id)
             ->where('status', true)
-            ->with(['user', 'variant']) // Load thêm variant để view hiển thị size/màu
+            ->with(['user', 'variant'])
             ->latest()
             ->paginate(5);
-
+    
         $products = Product::with('category', 'brand', 'imageLists')->get();
-
+    
         $product->increment('view');
-
+    
         return view('client.product.detail', compact(
             'product',
             'products',
             'reviews',
             'order',
             'variant',
+            'orderItems', //Truyền biến này vào view
             'hasPurchased'
         ));
     }
+    
 
 
     public function product($id)
