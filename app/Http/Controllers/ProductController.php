@@ -76,8 +76,14 @@ class ProductController extends Controller
             $order = $filteredOrderItems->first()?->order;
             $variant = $filteredOrderItems->first()?->productVariant;
         }
+        $allReviews = Review::where('product_id', $id)
+        ->where('status', true)
+        ->get();
     
+        $averageRating = round($allReviews->avg('rating'), 1);
+        $totalReviews = $allReviews->count();
         $reviews = Review::where('product_id', $id)
+        
             ->where('status', true)
             ->with(['user', 'variant'])
             ->latest()
@@ -94,7 +100,9 @@ class ProductController extends Controller
             'order',
             'variant',
             'orderItems', //Truyền biến này vào view
-            'hasPurchased'
+            'hasPurchased',
+            'averageRating', 
+            'totalReviews'
         ));
     }
     
