@@ -65,21 +65,16 @@ class ProductController extends Controller
     
             $hasPurchased = $orderItems->isNotEmpty();
     
-            // Lấy order đầu tiên để dùng chung cho hidden input nếu cần
-            $order = $orderItems->first()?->order;
-    
-            // Lấy variant đầu tiên để hiển thị mặc định nếu muốn
+            // Lọc các orderItems mà user chưa review biến thể đó (bỏ kiểm tra theo order_id)
             $filteredOrderItems = $orderItems->filter(function ($item) use ($user) {
                 return !Review::where('user_id', $user->id)
-                    ->where('order_id', $item->order_id)
                     ->where('product_variant_id', $item->product_variant_id)
                     ->exists();
             });
-            
+    
             $orderItems = $filteredOrderItems; // Gán lại danh sách đã lọc
             $order = $filteredOrderItems->first()?->order;
             $variant = $filteredOrderItems->first()?->productVariant;
-            
         }
     
         $reviews = Review::where('product_id', $id)
@@ -102,6 +97,7 @@ class ProductController extends Controller
             'hasPurchased'
         ));
     }
+    
 
 
     public function product($id)

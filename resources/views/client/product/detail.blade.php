@@ -228,7 +228,7 @@
                                                         <div class="alert alert-danger">{{ session('error') }}</div>
                                                     @endif
 
-                                                    @foreach ($orderItems as $item)
+                                                    @foreach ($orderItems as $index => $item)
                                                         @php
                                                             $variant = $item->productVariant;
                                                             $product = $variant->product;
@@ -259,14 +259,14 @@
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
                                                                             <span class="title">Xếp hạng</span>
-                                                                            <div class="review-rating">
+                                                                            <div class="review-rating" data-index="{{ $index }}">
                                                                                 <span class="star" data-value="1">&#9733;</span>
                                                                                 <span class="star" data-value="2">&#9733;</span>
                                                                                 <span class="star" data-value="3">&#9733;</span>
                                                                                 <span class="star" data-value="4">&#9733;</span>
                                                                                 <span class="star" data-value="5">&#9733;</span>
                                                                             </div>
-                                                                            <input type="hidden" name="rating" id="rating-value">
+                                                                            <input type="hidden" name="rating" id="rating-value-{{ $index }}">
                                                                         </div>
                                                                     </div>
 
@@ -289,9 +289,9 @@
                                                                             </div>
 
                                                                             {{-- Hidden inputs --}}
+                                                                            <input type="hidden" name="product_variant_id" value="{{ $item->product_variant->id }}">
+                                                                            <input type="hidden" name="product_id" value="{{ $item->productVariant->product_id }}">
                                                                             <input type="hidden" name="order_id" value="{{ $item->order_id }}">
-                                                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                                            <input type="hidden" name="product_variant_id" value="{{ $variant->id }}">
                                                                         </div>
                                                                     </div>
 
@@ -327,6 +327,26 @@
                                                         Vui lòng <a href="{{ route('signin') }}">đăng nhập</a> để lại đánh giá.
                                                     </div>
                                                 @endif
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function () {
+                                                    document.querySelectorAll('.review-rating').forEach(function (ratingDiv) {
+                                                        const index = ratingDiv.dataset.index;
+                                                        const stars = ratingDiv.querySelectorAll('.star');
+                                                        const hiddenInput = document.getElementById('rating-value-' + index);
+            
+                                                        stars.forEach(function (star) {
+                                                            star.addEventListener('click', function () {
+                                                                const value = this.dataset.value;
+                                                                hiddenInput.value = value;
+            
+                                                                stars.forEach(function (s) {
+                                                                    s.style.color = s.dataset.value <= value ? 'gold' : '#ccc';
+                                                                });
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                                </script>
                                         </div>
                                     </div>
                                     
