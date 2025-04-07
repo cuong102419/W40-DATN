@@ -135,8 +135,8 @@
                                     width="50">
                                 <div class="w-100 ms-3">
                                     <div>
-                                        <small
-                                            class="badge bg-primary">{{ number_format($sale->variants->min()->price, 0, '.', '.') }}đ</small>
+                                        {{-- <small
+                                            class="badge bg-primary">{{ number_format($sale->variants->min()->price, 0, '.', '.') }}đ</small> --}}
                                     </div>
                                     <div>
                                         <small class="mb-0"><strong>{{ $sale->sales_count }}</strong> đã bán</small>

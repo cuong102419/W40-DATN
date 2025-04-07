@@ -13,206 +13,37 @@ class CheckPurchase
 {
     public function handle(Request $request, Closure $next)
     {
-        // dd('Middleware running...');
-
         $user = Auth::user();
         $hasPurchased = false;
 
         if ($user) {
-            // Lấy product_id từ route
-            // dd($request->route('product'));
-            // dd($request->route()->parameters());
-
             $productId = $request->route('product_id') ?? $request->route('product');
-            // dd($productId);
 
             if ($productId) {
-                $order = Order::where('user_id', $user->id)
+                // Đếm số lượng đơn hàng đã mua sản phẩm này
+                $orders = Order::where('user_id', $user->id)
                     ->where('status', 'completed')
                     ->whereHas('orderItems', function ($query) use ($productId) {
                         $query->whereHas('productVariant', function ($subQuery) use ($productId) {
                             $subQuery->where('product_id', $productId);
-                            
                         });
                     })
-                    
-                    ->latest('created_at') // Lấy lần mua gần nhất
-                    ->first();
-            
-                $hasPurchased = $order ? true : false;
-                // dd($hasPurchased);
-                if ($hasPurchased) {
-                    // Kiểm tra đã đánh giá chưa cho lần mua gần nhất
-                    $alreadyReviewed = Review::where('user_id', $user->id)
-                        ->where('product_id', $productId)
-                        ->where('created_at', '>=', $order->created_at) // Đánh giá sau khi mua
-                        ->exists();
-            
-                    if ($alreadyReviewed) {
-                        $hasPurchased = false;
-                    }
-                }
+                    ->pluck('id'); // Lấy ra danh sách order_id
+
+                $totalPurchases = $orders->count();
+
+                // Đếm số lần đã đánh giá sản phẩm này trong các đơn hàng
+                $totalReviews = Review::where('user_id', $user->id)
+                    ->where('product_id', $productId)
+                    ->whereIn('order_id', $orders)
+                    ->count();
+
+                $hasPurchased = $totalReviews < $totalPurchases;
             }
         }
-        // dd($hasPurchased);
-       
 
         View::share('hasPurchased', $hasPurchased);
 
         return $next($request);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 }
