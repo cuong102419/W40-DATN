@@ -48,7 +48,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::prefix('/product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('product.index');
     Route::get('/{product}', [ProductController::class, 'detail'])
-        ->middleware(['check.purchase'])
         ->name('product.detail');
 });
 

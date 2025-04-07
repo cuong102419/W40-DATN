@@ -219,28 +219,37 @@
                                         <h4 class="title">Viết bài đánh giá</h4>
                                         <div class="reviews-form-content">
                                             @if (Auth::check())
-                                                @if ($hasPurchased)
-                                                    <form
-                                                        action="{{ route('reviews.store', ['product_id' => $product->id]) }}"
-                                                        method="POST">
+                                                @if ($hasPurchased && $order && $variant)
+                                                @if (session('success'))
+                                                    <div class="alert alert-success">{{ session('success') }}</div>
+                                                @endif
+
+                                                @if (session('error'))
+                                                    <div class="alert alert-danger">{{ session('error') }}</div>
+                                                @endif
+
+                                                    <form action="{{ route('reviews.store', ['product_id' => $product->id]) }}" method="POST">
                                                         @csrf
                                                         <div class="row">
+                                                            {{-- Tên --}}
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="for_name">Họ và tên</label>
-                                                                    <input id="for_name" class="form-control"
-                                                                        type="text" name="name"
-                                                                        value="{{ Auth::user()->name }}" readonly>
+                                                                    <input id="for_name" class="form-control" type="text" name="name"
+                                                                           value="{{ Auth::user()->name }}" readonly>
                                                                 </div>
                                                             </div>
+                                    
+                                                            {{-- Email --}}
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label for="for_email">Email</label>
-                                                                    <input id="for_email" class="form-control"
-                                                                        type="email" name="email"
-                                                                        value="{{ Auth::user()->email }}" readonly>
+                                                                    <input id="for_email" class="form-control" type="email" name="email"
+                                                                           value="{{ Auth::user()->email }}" readonly>
                                                                 </div>
                                                             </div>
+                                    
+                                                            {{-- Xếp hạng --}}
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <span class="title">Xếp hạng</span>
@@ -251,47 +260,52 @@
                                                                         <span class="star" data-value="4">&#9733;</span>
                                                                         <span class="star" data-value="5">&#9733;</span>
                                                                     </div>
-                                                                    <input type="hidden" name="rating"
-                                                                        id="rating-value">
+                                                                    <input type="hidden" name="rating" id="rating-value">
                                                                 </div>
                                                             </div>
+                                    
+                                                            {{-- Thông tin sản phẩm --}}
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
                                                                     <label>Loại giày</label>
-                                                                    <div class="d-flex align-items-center">
-                                                                        <input class="form-control"
-                                                                               type="text"
-                                                                               value="{{ $product->name }}"
-                                                                               readonly>
-                                                                    </div>
+                                                                    <input class="form-control" type="text" value="{{ $product->name }}" readonly>
+                                    
                                                                     <label for="">Size</label>
-                                                                    <input class="form-control"
-                                                                           type="text"
-                                                                           value="{{ $variant->size }}"
-                                                                           readonly>
+                                                                    <input class="form-control" type="text" value="{{ $variant->size }}" readonly>
+                                    
                                                                     <label>Màu</label>
                                                                     <div class="d-flex align-items-center">
                                                                         <span class="color-box"
-                                                                              style="width: 20px; height: 20px; background-color: {{ $variant->color }}; 
-                                                                                     display: inline-block; margin-left: 10px; border: 1px solid #ccc; 
+                                                                              style="width: 20px; height: 20px; background-color: {{ $variant->color }};
+                                                                                     display: inline-block; margin-left: 10px; border: 1px solid #ccc;
                                                                                      border-radius: 50%;">
                                                                         </span>
                                                                     </div>
+                                    
+                                                                    {{-- Hidden inputs --}}
                                                                     <input type="hidden" name="title" value="{{ $product->name }}">
+                                                                    <input type="hidden" name="order_id" value="{{ $order->id }}"> 
+                                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                                    <input type="hidden" name="variant_id" value="{{ $variant->id }}">
                                                                 </div>
                                                             </div>
-                                                            
-                                                            
+                                    
+                                                            {{-- Mô tả --}}
                                                             <div class="col-md-12">
                                                                 <div class="form-group">
-                                                                    <label for="for_comment">Mô tả Đánh giá </label>
-                                                                    <textarea id="for_comment" class="form-control" name="comment" placeholder="Viết đánh giá của bạn ở đây"></textarea>
+                                                                    <label for="for_title">Tiêu đề</label>
+                                                                    <input type="text" id="for_title" name="title" class="form-control" required>
+
+                                                                    <label for="for_comment">Mô tả Đánh giá</label>
+                                                                    <textarea id="for_comment" class="form-control" name="comment"
+                                                                              placeholder="Viết đánh giá của bạn ở đây"></textarea>
                                                                 </div>
                                                             </div>
+                                    
+                                                            {{-- Nút gửi --}}
                                                             <div class="col-md-12">
                                                                 <div class="form-submit-btn">
-                                                                    <button type="submit" class="btn-submit">Đăng bình
-                                                                        luận</button>
+                                                                    <button type="submit" class="btn-submit">Đăng bình luận</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -303,12 +317,12 @@
                                                 @endif
                                             @else
                                                 <div class="alert alert-warning">
-                                                    Vui lòng <a href="{{ route('signin') }}">đăng nhập</a> để lại đánh
-                                                    giá.
+                                                    Vui lòng <a href="{{ route('signin') }}">đăng nhập</a> để lại đánh giá.
                                                 </div>
                                             @endif
                                         </div>
                                     </div>
+                                    
 
                                     <div class="reviews-content-body">     
                                                                   

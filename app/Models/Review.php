@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Review extends Model
 {
     use HasFactory;
-    
-    protected $fillable = ['user_id', 'product_id', 'rating', 'title', 'comment', 'status'];
+
+    protected $fillable = ['user_id', 'product_id', 'rating', 'title', 'comment', 'status','order_id','variant_id'];
 
     // Quan hệ với User
     public function user()
@@ -21,5 +21,13 @@ class Review extends Model
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
+    public function variant()
+    {
+        return $this->belongsTo(ProductVariant::class, 'variant_id');
     }
 }
