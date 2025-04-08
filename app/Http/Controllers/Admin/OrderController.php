@@ -35,6 +35,10 @@ class OrderController extends Controller
             'delivered' => ['value' => 'Đã giao hàng.', 'class' => 'text-primary'],
             'completed' => ['value' => 'Hoàn thành.', 'class' => 'text-success'],
             'canceled' => ['value' => 'Hủy đơn.', 'class' => 'text-danger'],
+            'failed' => ['value' => 'Thất bại.', 'class' => 'text-danger'],
+            'returning' => ['value' => 'Đang hoàn hàng.', 'class' => 'text-warning'],
+            'returned' => ['value' => 'Đơn hoàn trả.', 'class' => 'text-warning'],
+
         ];
 
 
@@ -44,7 +48,7 @@ class OrderController extends Controller
     public function detail(Order $order)
     {
         $orderItems = OrderItem::where('order_id', $order->id)->get();
-        $requestOrder = Reason::where('order_id', $order->id)->first();
+        $requestOrder = Reason::where('order_id', $order->id)->where('type', 'cancel')->latest('id')->first();
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD).',
             'VNPAY' => "Thanh toán qua VNPay.",
@@ -63,8 +67,12 @@ class OrderController extends Controller
             'delivered' => ['value' => 'Đã giao hàng.', 'class' => 'text-primary'],
             'completed' => ['value' => 'Hoàn thành.', 'class' => 'text-success'],
             'canceled' => ['value' => 'Hủy đơn.', 'class' => 'text-danger'],
+            'failed' => ['value' => 'Thất bại.', 'class' => 'text-danger'],
+            'returning' => ['value' => 'Đang hoàn hàng.', 'class' => 'text-warning'],
+            'returned' => ['value' => 'Đơn hoàn trả.', 'class' => 'text-warning'],
         ];
-        $day = ucfirst(mb_strtolower($order->created_at->locale('vi')->translatedFormat('l')));;
+        $day = ucfirst(mb_strtolower($order->created_at->locale('vi')->translatedFormat('l')));
+        ;
 
         return view('admin.order.detail', compact('orderItems', 'order', 'payment_status', 'payment_method', 'status', 'day', 'requestOrder'));
     }
@@ -135,9 +143,10 @@ class OrderController extends Controller
 
             foreach ($order->orderItems as $item) {
                 $variant = ProductVariant::find($item->product_variant_id);
-                $variant->quantity -= $item->quantity;
-                $variant->save();
-                Product::where('id', $variant->product_id)->increment('sales_count');
+                if ($variant) {
+                    $variant->quantity -= $item->quantity;
+                    $variant->save();
+                }
             }
 
             $order->status = 'confirmed';
@@ -170,6 +179,13 @@ class OrderController extends Controller
                 'status' => 'delivered',
                 'payment_status' => 'paid'
             ]);
+            
+            foreach ($order->orderItems as $item) {
+                $variant = ProductVariant::find($item->product_variant_id);
+                if ($variant) {
+                    Product::where('id', $variant->product_id)->increment('sales_count');
+                }            
+            }
 
             return response()->json([
                 'status' => 'success',
@@ -177,8 +193,8 @@ class OrderController extends Controller
             ], Response::HTTP_OK);
         }
 
-        if ($request->input('action') == 'completed') {
-            $order->status = 'completed';
+        if ($request->input('action') == 'redeliver') {
+            $order->status = 'shipping';
             $order->save();
 
             return response()->json([
@@ -186,6 +202,25 @@ class OrderController extends Controller
                 'message' => 'Cập nhật thành công.'
             ], Response::HTTP_OK);
         }
+
+        if ($request->input('action') == 'returned') {
+            $order->status = 'returned';
+            $order->save();
+            foreach ($order->orderItems as $item) {
+                $variant = ProductVariant::find($item->product_variant_id);
+                if ($variant) {
+                    $variant->quantity += $item->quantity;
+                    $variant->save();
+                }
+                Product::where('id', $variant->product_id)->decrement('sales_count');
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Cập nhật thành công.'
+            ], Response::HTTP_OK);
+        }
+
     }
 
     public function cancel(Request $request, Order $order)
@@ -195,10 +230,10 @@ class OrderController extends Controller
         $order->update([
             'admin_id' => $adminId,
             'status' => 'canceled',
-            'reason' => $request->reason
+            'reason_cancel' => $request->reason
         ]);
 
-        if($order->payment_method == 'COD') {
+        if ($order->payment_method == 'COD') {
             $order->update([
                 'payment_status' => 'cancel'
             ]);
@@ -206,8 +241,40 @@ class OrderController extends Controller
 
         $reason = Reason::where('order_id', $order->id)->first();
 
-        if($reason) {
+        if ($reason) {
             $reason->delete();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật thành công.'
+        ], Response::HTTP_OK);
+    }
+
+    public function failed(Request $request, Order $order)
+    {
+        $order->update([
+            'status' => 'failed',
+            'reason_failed' => $request->reason
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật thành công.'
+        ], Response::HTTP_OK);
+    }
+
+    public function returned(Request $request, Order $order)
+    {
+        $order->update([
+            'status' => 'returning',
+            'reason_returned' => $request->reason
+        ]);
+
+        if ($order->payment_method == 'COD') {
+            $order->update([
+                'payment_status' => 'cancel'
+            ]);
         }
 
         return response()->json([

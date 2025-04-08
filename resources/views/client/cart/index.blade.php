@@ -23,7 +23,7 @@
                                             <th class="product-name text-center">Sản phẩm</th>
                                             <th class="product-price">Giá</th>
                                             <th class="product-quantity">Số lượng</th>
-                                            <th colspan="2" class="product-subtotal">Tổng</th>
+                                            <th class="product-subtotal">Tổng</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -78,7 +78,7 @@
                                                     <span
                                                         class="price text-danger"><strong>{{ number_format($cart['price'] * $cart['quantity']) }}đ</strong></span>
                                                 </td>
-                                                <td class="product-remove">
+                                                {{-- <td class="product-remove">
                                                         <form class="delete-item-cart" action="{{ route('cart.delete.product', $cart['id']) }}" method="post">
                                                             @csrf
                                                             @method('DELETE')
@@ -86,17 +86,16 @@
                                                                 <button class="btn text-danger" type="submit"><i class="fa fa-trash-o"></i></button>
                                                             </div>
                                                         </form>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endforeach
                                     </tbody>
                                     <tr class="actions">
                                         <td class="border-0" colspan="6">
-                                            <button type="submit" name="action" value="update" class="update-cart">Cập nhật giỏ hàng</button>
-                                            <a href="{{ route('cart.delete') }}" class="clear-cart btn-theme"
-                                                id="clear-cart">Xóa giỏ hàng</a>
-                                            <a href="{{ route('product.index') }}" class="btn-theme btn-flat">Tiếp tục mua
-                                                sắm</a>
+                                                <button type="submit" name="action" value="update" class="update-cart">Cập nhật giỏ hàng</button>
+                                                <a href="{{ route('cart.delete') }}" class="btn-theme btn-flat clear cart">Xóa giỏ hàng</a>
+                                                <a href="{{ route('product.index') }}" class="btn-theme btn-flat">Tiếp tục mua
+                                                    sắm</a>
                                         </td>
                                     </tr>
                                 </table>
@@ -156,6 +155,7 @@
     </section>
     <script>
         var orderIndexUrl = "{{ route('order.index') }}";
+        window.cartRoute = "{{ route('cart.index') }}";
     </script>
     <!--== End Blog Area Wrapper ==-->
 @endsection

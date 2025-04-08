@@ -16,9 +16,8 @@ class OrderSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Tạo 50 đơn hàng giả
         foreach (range(1, 80) as $index) {
-            $orderCreatedAt = now()->subDays(rand(0, 365));
+            $orderCreatedAt = now()->subDays(rand(0, 730));
             $orderId = DB::table('orders')->insertGetId([
                 'user_id' => rand(2, 3),
                 'admin_id' => 1,
@@ -35,7 +34,6 @@ class OrderSeeder extends Seeder
                 'total_final' => $faker->randomFloat(0, 1000000, 5000000),
                 'discount_amount' => $faker->randomFloat(0, 0, 100000),
                 'shipping' => $faker->randomFloat(0, 0, 100000),
-                'reason' => $faker->optional()->sentence,
                 'created_at' => $orderCreatedAt,
                 'updated_at' => $orderCreatedAt,
             ]);

@@ -532,6 +532,7 @@
         </div>
     </section>
     <!--== End Product Area Wrapper ==-->
+    
     <script>
         var cartIndexUrl = "{{ route('cart.index') }}";
         let productDiscount = @json($product->discount);

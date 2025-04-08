@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ReasonController extends Controller
 {
-    public function request(Request $request) {
+    public function cancel(Request $request) {
         $data = $request->all();
         $order = Order::find($data['order_id']);
-        $reason = Reason::where('order_id', $order->id)->exists();
+        $reason = Reason::where('order_id', $order->id)->where('type', 'cancel')->exists();
         
         if ($order->status != 'unconfirmed') {
             return response()->json([
@@ -27,7 +27,7 @@ class ReasonController extends Controller
                 'message' => 'Đơn hàng đã gửi yêu cầu hủy trước đó.'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
+        $data['type'] = 'cancel';
         Reason::create($data);
         return response()->json([
             'status' => 'success',

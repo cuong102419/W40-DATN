@@ -110,7 +110,7 @@ Route::controller(SigninGoogleController::class)->group(function () {
 Route::prefix('/checkout')->group(function () {
     Route::post('/create', [OrderController::class, 'create'])->name('order.create');
     Route::get('/vnpay', [OrderController::class, 'vnpay_confirm'])->name('order.vnpay-confirm');
-    Route::get('/momo/{order}', [OrderController::class, 'momo_confirm'])->name('order.momo-confirm');
+    Route::get('/momo', [OrderController::class, 'momo_confirm'])->name('order.momo-confirm');
     Route::get('/{encryptedId}', [OrderController::class, 'checkout'])->name('order.checkout');
     Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.apply-voucher');
 });
@@ -119,7 +119,7 @@ Route::prefix(('/order'))->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('order.index');
     Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
     Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
-    Route::post('/cancel', [ReasonController::class, 'request'])->name('order.cancel-request');
+    Route::post('/cancel', [ReasonController::class, 'cancel'])->name('order.cancel-request');
     Route::get('/completed/{order}', [OrderController::class, 'completed'])->name('order.completed');
 });
 
@@ -196,6 +196,8 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/customer-information/{order}', [AdminOrderController::class, 'updateInfo'])->name('admin-order.info');
         Route::put('/status/{order}', [AdminOrderController::class, 'status'])->name('admin-order.status');
         Route::put('/cancel/{order}', [AdminOrderController::class, 'cancel'])->name('admin-order.cancel');
+        Route::put('/failed/{order}', [AdminOrderController::class, 'failed'])->name('admin-order.failed');
+        Route::put('/return/{order}', [AdminOrderController::class, 'returned'])->name('admin-order.returned');
     });
     Route::prefix('/review')->group(function () {
         Route::get('/', [AdminReviewController::class, 'index'])->name('admin-review.index');

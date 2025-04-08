@@ -6,6 +6,7 @@ use App\Mail\Checkout;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\PendingOrder;
+use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
@@ -99,7 +100,7 @@ class OrderController extends Controller
         if (Auth::check()) {
             $data['user_id'] = Auth::user()->id;
         }
-        
+
         $orderPending = PendingOrder::create($data);
 
 
@@ -116,7 +117,7 @@ class OrderController extends Controller
                 $order = Order::create($data);
                 foreach ($cart as $item) {
                     $newImage = 'order-item/' . basename(path: $item['image']);
-                    if(Storage::exists($item['image'])) {
+                    if (Storage::exists($item['image'])) {
                         Storage::copy($item['image'], $newImage);
                     }
                     OrderItem::create([
@@ -151,7 +152,7 @@ class OrderController extends Controller
             }
             if ($data['payment_method'] == 'MOMO') {
 
-                return $this->momo($orderPending->order_code, $orderPending->total_final, $orderPending->id);
+                return $this->momo($orderPending->order_code, $orderPending->total_final);
             }
         } else {
             return redirect()->back()->with('error', 'Không tìm thấy sản phẩm nào.');
@@ -164,7 +165,7 @@ class OrderController extends Controller
         try {
             $id = Crypt::decryptString($encryptedId);
             $order = Order::find($id);
-
+            session()->forget('order_code');
             $payment_method = [
                 'COD' => 'Thanh toán khi nhận hàng (COD)',
                 'MOMO' => 'Ví điện tử MOMO',
@@ -216,6 +217,9 @@ class OrderController extends Controller
             'delivered' => ['value' => 'Đã giao hàng', 'class' => 'text-primary'],
             'completed' => ['value' => 'Hoàn thành', 'class' => 'text-success'],
             'canceled' => ['value' => 'Đã hủy', 'class' => 'text-danger'],
+            'failed' => ['value' => 'Thất bại.', 'class' => 'text-danger'],
+            'returning' => ['value' => 'Đang hoàn hàng.', 'class' => 'text-warning'],
+            'returned' => ['value' => 'Đơn hoàn trả.', 'class' => 'text-warning'],
         ];
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
@@ -375,13 +379,13 @@ class OrderController extends Controller
                 'discount_amount' => $orderPending->discount_amount,
                 'shipping' => $orderPending->shipping
             ]);
-            
+
             $cart = session('cart', []);
-            
+
 
             foreach ($cart as $item) {
                 $newImage = 'order-item/' . basename(path: $item['image']);
-                if(Storage::exists($item['image'])) {
+                if (Storage::exists($item['image'])) {
                     Storage::copy($item['image'], $newImage);
                 }
                 OrderItem::create([
@@ -419,7 +423,7 @@ class OrderController extends Controller
         }
     }
 
-    public function momo($order_code, $total, $order_id)
+    public function momo($order_code, $total)
     {
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
 
@@ -430,8 +434,8 @@ class OrderController extends Controller
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $total;
         $orderId = $order_code . '_' . time();
-        $redirectUrl = route('order.momo-confirm', $order_id);
-        $ipnUrl = route('order.momo-confirm', $order_id);
+        $redirectUrl = route('order.momo-confirm');
+        $ipnUrl = route('order.momo-confirm');
         $extraData = "";
 
         $requestId = time() . "";
@@ -482,22 +486,18 @@ class OrderController extends Controller
         return $result;
     }
 
-    public function momo_confirm(Request $request, PendingOrder $orderPending)
+    public function momo_confirm(Request $request)
     {
         $data = $request->all();
-        if (!$orderPending) {
-            session()->forget('voucher');
-            return redirect()->route('home')->with('error', 'Không tìm thấy đơn hàng.');
+        $order_code = explode('_', $data['orderId'])[0];
+        $orderPending = PendingOrder::where('order_code', $order_code)->first();
+        if(session()->has('order_code')) {
+            $order = Order::where('order_code', session('order_code'))->first();
+            $encryptedId = Crypt::encryptString($order->id);
+            return redirect()->route('order.checkout', $encryptedId);
         }
 
         if ($data['resultCode'] == 0) {
-            // $order->update([
-            //     'status' => 'unconfirmed',
-            //     'payment_status' => 'paid'
-            // ]);
-            $order_code = explode('_', $data['orderId'])[0];
-            $orderPending = PendingOrder::where('order_code', $order_code)->first();
-            dd($orderPending->user_id);
             $order = Order::create([
                 'user_id' => $orderPending->user_id,
                 'order_code' => $order_code,
@@ -514,13 +514,13 @@ class OrderController extends Controller
                 'discount_amount' => $orderPending->discount_amount,
                 'shipping' => $orderPending->shipping
             ]);
-            
+
             $cart = session('cart', []);
-            
+
 
             foreach ($cart as $item) {
                 $newImage = 'order-item/' . basename(path: $item['image']);
-                if(Storage::exists($item['image'])) {
+                if (Storage::exists($item['image'])) {
                     Storage::copy($item['image'], $newImage);
                 }
                 OrderItem::create([
@@ -547,6 +547,7 @@ class OrderController extends Controller
             $orderItems = OrderItem::where('order_id', $order->id)->get();
             $orderPending->delete();
             Mail::to($order->email)->send(new Checkout($order, $orderItems));
+            session(['order_code' => $order->order_code]);
 
             return redirect()->route('order.checkout', $encryptedId)->with('success', 'Tạo đơn hàng thành công.');
         } else {
@@ -556,7 +557,8 @@ class OrderController extends Controller
         }
     }
 
-    public function completed(Order $order) {
+    public function completed(Order $order)
+    {
         if ($order->user_id != Auth::user()->id) {
             abort(404);
         }

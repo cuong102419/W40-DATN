@@ -29,7 +29,7 @@ return array(
     | "sweetalert" : composer require php-flasher/flasher-sweetalert-laravel
     | "pnotify"    : composer require php-flasher/flasher-pnotify-laravel
     */
-    'default' => 'flasher',
+    'default' => 'toastr',
 
     /*
     |---------------------------------------------------------------------------

@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->nullable();
             $table->foreignId('order_id')->constrained();
+            $table->enum('type', ['return', 'cancel']);
             $table->text('reason');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->text('admin_note')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

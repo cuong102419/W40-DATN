@@ -80,7 +80,7 @@ class VoucherController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
-            'code' => ['required', 'string', 'min:4', 'unique:vouchers,code', Rule::unique('vouchers', 'code')->ignore($voucher->id),],
+            'code' => ['required', 'string', 'min:4', Rule::unique('vouchers')->ignore($voucher->id)],
             'type' => ['required'],
             'kind' => ['required'],
             'value' => ['required', 'numeric', 'min:0'],

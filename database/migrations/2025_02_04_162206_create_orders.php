@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('fake_user')->nullable();
 
             $table->string('order_code', 10)->unique();
-            $table->enum('status', ['unconfirmed', 'confirmed', 'shipping', 'delivered', 'completed', 'canceled', 'returned', 'failed'])->default('unconfirmed');
+            $table->enum('status', ['unconfirmed', 'confirmed', 'shipping', 'delivered', 'completed',
+                        'canceled', 'failed', 'returning', 'returned'])->default('unconfirmed');
             $table->string('payment_method');
             $table->enum('payment_status', ['unpaid', 'paid', 'refunded', 'cancel'])->default('unpaid');
             $table->string('address');
@@ -30,7 +31,9 @@ return new class extends Migration
             $table->decimal('total_final', 10, 2);
             $table->double('discount_amount', 10, 2)->default(0);
             $table->double('shipping', 10, 2)->nullable();
-            $table->text('reason')->nullable();
+            $table->text('reason_cancel')->nullable();
+            $table->text('reason_failed')->nullable();
+            $table->text('reason_returned')->nullable();
             $table->timestamps();
         });
     }
