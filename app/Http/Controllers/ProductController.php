@@ -32,7 +32,25 @@ class ProductController extends Controller
                 $q->whereRaw('(product_variants.price - (product_variants.price * products.discount / 100)) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
             });
         }
-
+        // Sắp xếp (sort by)
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'popularity':
+                    $query->orderBy('sales_count', 'desc');
+                    break;
+                case 'rating':
+                    $query->withAvg('reviews', 'rating')
+                        ->orderBy('reviews_avg_rating', 'desc');
+                    break;
+                case 'newness':
+                    $query->orderBy('created_at', 'desc');
+                    break;
+                default:
+                    $query->latest('id');
+            }
+        } else {
+            $query->latest('id'); // Default sort
+        }
         $products = $query->whereHas('variants')->latest('id')->paginate(10);
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
@@ -40,59 +58,59 @@ class ProductController extends Controller
     {
         $product = Product::with('category', 'brand', 'imageLists')->find($id);
         $nextProduct = Product::where('id', '>', $id)->orderBy('id', 'asc')->first();
-    
+
         if (!$product) {
             return abort(404);
         }
-    
+
         $user = Auth::user();
         $order = null;
         $variant = null;
         $orderItems = collect(); // Khởi tạo rỗng
         $hasPurchased = false;
-    
+
         if ($user) {
             // Lấy tất cả các OrderItem mà user đã mua có chứa product này
             $orderItems = OrderItem::with('productVariant')
                 ->whereHas('order', function ($q) use ($user) {
                     $q->where('user_id', $user->id)
-                      ->where('status', 'completed');
+                        ->where('status', 'completed');
                 })
                 ->whereHas('productVariant', function ($q) use ($id) {
                     $q->where('product_id', $id);
                 })
                 ->get();
-    
+
             $hasPurchased = $orderItems->isNotEmpty();
-    
+
             // Lọc các orderItems mà user chưa review biến thể đó (bỏ kiểm tra theo order_id)
             $filteredOrderItems = $orderItems->filter(function ($item) use ($user) {
                 return !Review::where('user_id', $user->id)
                     ->where('product_variant_id', $item->product_variant_id)
                     ->exists();
             });
-    
+
             $orderItems = $filteredOrderItems; // Gán lại danh sách đã lọc
             $order = $filteredOrderItems->first()?->order;
             $variant = $filteredOrderItems->first()?->productVariant;
         }
         $allReviews = Review::where('product_id', $id)
-        ->where('status', true)
-        ->get();
-    
+            ->where('status', true)
+            ->get();
+
         $averageRating = round($allReviews->avg('rating'), 1);
         $totalReviews = $allReviews->count();
         $reviews = Review::where('product_id', $id)
-        
+
             ->where('status', true)
             ->with(['user', 'variant'])
             ->latest()
             ->paginate(5);
-    
+
         $products = Product::with('category', 'brand', 'imageLists')->get();
-    
+
         $product->increment('view');
-    
+
         return view('client.product.detail', compact(
             'product',
             'products',
@@ -101,11 +119,11 @@ class ProductController extends Controller
             'variant',
             'orderItems', //Truyền biến này vào view
             'hasPurchased',
-            'averageRating', 
+            'averageRating',
             'totalReviews'
         ));
     }
-    
+
 
 
     public function product($id)
@@ -128,3 +146,24 @@ class ProductController extends Controller
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

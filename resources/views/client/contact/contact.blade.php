@@ -5,12 +5,15 @@
 @endsection
 
 @section('content')
-    <div class="contact-section">
-        <div class="container">
+    <div class="contact-section position-relative">
+        <!-- Hình nền co giãn theo kích thước -->
+        <img src="https://photo2.tinhte.vn/data/attachment-files/2023/02/6314655_hoka-13.jpg"
+             class="bg-img" alt="background">
+
+        <div class="container position-relative" style="z-index: 1;">
             <h2 class="text-center mb-4 text-white">Liên Hệ Với Chúng Tôi</h2>
 
             <div class="row justify-content-center">
-
                 <div class="col-md-6">
                     @if(session('success'))
                         <div class="alert alert-success">
@@ -26,8 +29,8 @@
                                 <input type="text" class="form-control" id="name" name="name" required>
                             </div>
                             <div class="mb-3">
-                                <label for="tel" class="form-label fw-bold text-white">Số điện thoại</label>
-                                <input type="number" class="form-control" id="tel" name="tel" required>
+                                <label for="phone" class="form-label fw-bold text-white">Số điện thoại</label>
+                                <input type="number" class="form-control" id="phone" name="phone" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label fw-bold text-white">Email</label>
@@ -44,7 +47,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-md-6">
                     <div class="contact-map">
                         <iframe
@@ -58,18 +60,20 @@
 
     <style>
         .contact-section {
-            background: url('https://photo2.tinhte.vn/data/attachment-files/2023/02/6314655_hoka-13.jpg') no-repeat center center/cover;
-
+            position: relative;
+            overflow: hidden;
+            padding: 50px 0;
         }
 
-        .contact-section::before {
-            content: "";
+        .bg-img {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.0);
+            object-fit: contain; 
+            z-index: 0;
+            opacity: 0.8;
         }
 
         .contact-form {
@@ -78,7 +82,6 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
         }
 
         .contact-map {
@@ -86,7 +89,6 @@
             backdrop-filter: blur(10px);
             padding: 10px;
             border-radius: 10px;
-            position: relative;
         }
 
         .btn-custom {
@@ -114,6 +116,4 @@
             box-shadow: none;
         }
     </style>
-
-
 @endsection

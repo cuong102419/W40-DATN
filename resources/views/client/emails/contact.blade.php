@@ -8,6 +8,7 @@
 <body>
     <h2>Thông tin liên hệ mới</h2>
     <p><strong>Họ và tên:</strong> {{ $data['name'] }}</p>
+    <p><strong>Số điện thoại:</strong> {{ $data['phone'] }}</p>
     <p><strong>Email:</strong> {{ $data['email'] }}</p>
     <p><strong>Nội dung:</strong></p>
     <p>{{ $data['message'] }}</p>
