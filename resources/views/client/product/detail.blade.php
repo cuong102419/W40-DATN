@@ -183,30 +183,28 @@
                     <div class="product-review-tabs-content">
                         <ul class="nav product-tab-nav" id="ReviewTab" role="tablist">
                             <li role="presentation">
-                                <a id="description-tab" data-bs-toggle="pill" href="#description" role="tab"
-                                    aria-controls="description" aria-selected="false">Mô tả</a>
+                                <a id="description-tab" class="nav-link active" data-bs-toggle="pill" href="#description" role="tab"
+                                    aria-controls="description" aria-selected="true">Mô tả</a>
                             </li>
                             <li role="presentation">
-                                <a id="reviews-tab" data-bs-toggle="pill" href="#reviews" role="tab"
+                                <a id="reviews-tab" class="nav-link" data-bs-toggle="pill" href="#reviews" role="tab"
                                     aria-controls="reviews" aria-selected="false">Đánh giá<span>(05)</span></a>
                             </li>
                         </ul>
                         <div class="tab-content product-tab-content" id="ReviewTabContent">
-                            <div class="tab-pane fade" id="description" role="tabpanel"
-                                aria-labelledby="description-tab">
+                            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
                                 <div class="product-description">
                                     <p>{!! $product->description !!}</p>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                                 <div class="product-review-content">
-                                    
-
                                     <div class="review-content-header">
                                         <h3>Đánh giá của khách hàng</h3>
                                         <div class="review-info">
                                             <ul class="review-rating">
                                                 @for ($i = 1; $i <= 5; $i++)
+                        
                                                     @if ($i <= floor($averageRating))
                                                         <li class="fa fa-star"></li>
                                                     @elseif ($i - $averageRating <= 0.5)

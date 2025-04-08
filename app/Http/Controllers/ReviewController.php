@@ -15,60 +15,60 @@ class ReviewController extends Controller
      * Display a listing of the resource.
      */
 
-     public function store(Request $request)
-     {
-         $request->validate([
-             'product_id' => 'required|exists:products,id',
-             'product_variant_id' => 'required|exists:product_variants,id',
-             'order_id' => 'required|exists:orders,id',
-             'rating' => 'required|integer|min:1|max:5',
-             'title' => 'required|string|max:255',
-             'comment' => 'required|string|max:1500',
-         ]);
-     
-         // ✅ Thêm đoạn này ngay sau validate
-         if (!$request->filled('order_id') || !$request->filled('product_variant_id')) {
-             return back()->with('error', 'Thiếu thông tin sản phẩm hoặc đơn hàng.');
-         }
-     
-         $user = Auth::user();
-     
-         // Kiểm tra đơn hàng có thuộc về user và chứa sản phẩm đó không
-         $order = Order::where('id', $request->order_id)
-             ->where('user_id', $user->id)
-             ->where('status', 'completed')
-             ->whereHas('orderItems', function ($query) use ($request) {
-                 $query->where('product_variant_id', $request->product_variant_id);
-             })
-             ->first();
-     
-         if (!$order) {
-             return back()->with('error', 'Bạn không thể đánh giá sản phẩm này cho đơn hàng đã chọn.');
-         }
-     
-         // Kiểm tra đã đánh giá chưa
-         $alreadyReviewed = Review::where('user_id', $user->id)
-             ->where('product_variant_id', $request->product_variant_id)
-             ->where('order_id', $request->order_id)
-             ->exists();
-     
-         if ($alreadyReviewed) {
-             return back()->with('error', 'Bạn đã đánh giá sản phẩm này cho đơn hàng này rồi.');
-         }
-     
-         // Tạo đánh giá
-         Review::create([
-             'user_id' => $user->id,
-             'product_id' => $request->product_id,
-             'product_variant_id' => $request->product_variant_id,
-             'order_id' => $request->order_id,
-             'rating' => $request->rating,
-             'title' => $request->title,
-             'comment' => $request->comment,
-         ]);
-     
-         return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi.');
-     }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'product_variant_id' => 'required|exists:product_variants,id',
+            'order_id' => 'required|exists:orders,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'title' => 'required|string|max:255',
+            'comment' => 'required|string|max:1500',
+        ]);
+    
+        // Thêm đoạn này ngay sau validate
+        if (!$request->filled('order_id') || !$request->filled('product_variant_id')) {
+            return back()->with('error', 'Thiếu thông tin sản phẩm hoặc đơn hàng.');
+        }
+    
+        $user = Auth::user();
+    
+        // Kiểm tra đơn hàng có thuộc về user và chứa sản phẩm đó không
+        $order = Order::where('id', $request->order_id)
+            ->where('user_id', $user->id)
+            ->where('status', 'completed')
+            ->whereHas('orderItems', function ($query) use ($request) {
+                $query->where('product_variant_id', $request->product_variant_id);
+            })
+            ->first();
+    
+        if (!$order) {
+            return back()->with('error', 'Bạn không thể đánh giá sản phẩm này cho đơn hàng đã chọn.');
+        }
+    
+        // Kiểm tra đã đánh giá chưa
+        $alreadyReviewed = Review::where('user_id', $user->id)
+            ->where('product_variant_id', $request->product_variant_id)
+            ->where('order_id', $request->order_id)
+            ->exists();
+    
+        if ($alreadyReviewed) {
+            return back()->with('error', 'Bạn đã đánh giá sản phẩm này cho đơn hàng này rồi.');
+        }
+    
+        // Tạo đánh giá
+        Review::create([
+            'user_id' => $user->id,
+            'product_id' => $request->product_id,
+            'product_variant_id' => $request->product_variant_id,
+            'order_id' => $request->order_id,
+            'rating' => $request->rating,
+            'title' => $request->title,
+            'comment' => $request->comment,
+        ]);
+    
+        return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi.');
+    }
      
 
 
