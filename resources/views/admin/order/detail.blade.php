@@ -33,9 +33,15 @@
                             @elseif ($order->status == 'shipping')
                                 <button type="submit" name="action" value="delivered" class="btn btn-sm btn-primary"><i
                                         class="fas fa-truck-loading me-2"></i>Hoàn thành giao hàng</button>
-                            {{-- @elseif ($order->status == 'delivered')
-                                <button type="submit" name="action" value="completed" class="btn btn-sm btn-success"><i
-                                        class="fas fa-check me-2"></i>Hoàn thành</button> --}}
+                                        <a data-bs-toggle="modal" data-bs-target="#reason-fail"
+                                        class="btn btn-sm btn-danger"><i class="far fa-window-close me-2"></i>Giao hàng thất bại</a>
+                            @elseif ($order->status == 'failed')
+                                <button type="submit" name="action" value="redeliver " class="btn btn-sm btn-success"><i class="fas fa-sync me-2"></i>Giao hàng lại</button>
+                                {{-- <button type="submit" name="action" value="returning" class="btn btn-sm btn-primary"><i class="fas fa-undo me-2"></i>Hoàn hàng</button> --}}
+                                <a data-bs-toggle="modal" data-bs-target="#reason-return"
+                                        class="btn btn-sm btn-primary"><i class="fas fa-undo me-2"></i>Hoàn hàng</a>
+                            @elseif ($order->status == 'returning')
+                                <button type="submit" name="action" value="returned" class="btn btn-sm btn-primary"><i class="fas fa-check me-2"></i>Hoàn hàng thành công</button>
                             @endif
                         </form>
                     </div>
@@ -76,8 +82,12 @@
                                         class="{{ $status[$order->status]['class'] }}">{{ $status[$order->status]['value'] }}</span>
                                 </th>
                                 <td>
-                                    @if ($order->status == 'returned' || $order->status == 'canceled' || $order->status == 'failed') 
-                                        <span><strong>Lý do: </strong> {{ $order->reason }}</span>
+                                    @if ($order->status == 'canceled') 
+                                        <span><strong>Lý do: </strong> {{ $order->reason_cancel }}</span>
+                                    @elseif ($order->status == 'failed')
+                                        <span><strong>Lý do: </strong> {{ $order->reason_failed }}</span>
+                                    @elseif ($order->status == 'returning' || $order->status == 'returned')
+                                        <span><strong>Lý do: </strong> {{ $order->reason_returned }}</span>
                                     @endif
                                 </td>
                             </tr>
@@ -92,7 +102,7 @@
                                             <div>
                                                 <span>
                                                     <img src="{{ Storage::url($item->image_url ?? '') }}"
-                                                        width="100" alt="">
+                                                        width="100" class="rounded" alt="">
                                                 </span>
                                             </div>
                                             <div class="ms-3">
@@ -249,23 +259,64 @@
                 <form class="cancel-order" action="{{ route('admin-order.cancel', $order->id) }}" method="post">
                     @csrf
                     @method('PUT')
-                    <!-- Modal Header -->
                     <div class="modal-header">
                         <h6 class="modal-title">Hủy đơn hàng</h6>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
-                    <!-- Modal body -->
                     <div class="modal-body">
                         <div>
                             <textarea name="reason" class="form-control" id="" cols="20" rows="5"
                                 placeholder="Nhập lý do hủy đơn hàng"></textarea>
                         </div>
                     </div>
-
-                    <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có muốn hủy đơn hàng này.')">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="reason-fail">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="fail-order" action="{{ route('admin-order.failed', $order->id) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h6 class="modal-title">Giao hàng thất bại</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <textarea name="reason" class="form-control" id="" cols="20" rows="5"
+                                placeholder="Nhập lý do giao hàng thất bại"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc chắn đơn hàng thất bại.')">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="reason-return">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="return-order" action="{{ route('admin-order.returned', $order->id) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h6 class="modal-title">Hoàn trả sản phẩm về</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <textarea name="reason" class="form-control" id="" cols="20" rows="5"
+                                placeholder="Nhập lý do hoàn trả"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Bạn có chắc muốn hoàn đơn.')">Xác nhận</button>
                     </div>
                 </form>
             </div>

@@ -1,33 +1,5 @@
 $(document).ready(function () {
-    $('#clear-cart').click(function (e) {
-        e.preventDefault();
-
-        $.ajax({
-            url: $(this).attr('href'),
-            type: 'GET',
-            data: {
-                _token: '{{ csrf_token() }}'
-            },
-            success: function (response) {
-                if (response.status == 'success') {
-                    toastr.success(response.message);
-
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
-                }
-            },
-            error: function (xhr) {
-                if (xhr.responseJSON.status == 'error') {
-                    toastr.error(xhr.responseJSON.message);
-                }
-            }
-        })
-    })
-
     let clickedAction = '';
-
-
     $('#update-cart button[type=submit]').click(function () {
         clickedAction = $(this).val();
     });
@@ -69,6 +41,7 @@ $(document).ready(function () {
 
     $('.delete-item-cart').submit(function (e) {
         e.preventDefault();
+        console.log("Form delete đã được submit!");
 
         var url = $(this).attr('action');
         var method = 'DELETE';
@@ -98,8 +71,6 @@ $(document).ready(function () {
             }
         });
     });
-
-
 });
 
 $(document).ready(function () {
@@ -132,4 +103,13 @@ $(document).ready(function () {
 
     updateTotal();
 });
+
+
+
+
+
+
+
+
+
 

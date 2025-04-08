@@ -24,10 +24,12 @@
                             <div class="d-flex align-items-center">
                                 <div class="w-75 me-2">
                                     <select name="" id="" class="form-select form-select-sm">
-                                        <option value="" selected disabled>--Chọn--</option>
+                                        <option value="" selected>Tất cả</option>
                                         <option value="">Chưa xác nhận</option>
                                         <option value="">Đã xác nhận</option>
-                                        <option value="">Hủy đơn</option>
+                                        <option value="">Hoàn thành</option>
+                                        <option value="">Đơn đã hủy</option>
+                                        <option value="">Đơn hoàn trả</option>
                                     </select>
                                 </div>
                                 <button class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button>
@@ -37,7 +39,7 @@
                 </div>
                 <div class="bg-white p-3">
                     <div class="table-responsive">
-                        <table class="table table-striped text-center table-bordered">
+                        <table class="table table-striped text-center">
                             <thead>
                                 <tr>
                                     <th>Mã đơn hàng</th>

@@ -37,7 +37,7 @@
                                     <td>{{ $product->sku }}</td>
                                     <td>
                                         @if ($product->imageLists->isNotEmpty())
-                                            <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="100" alt="">
+                                            <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" class="rounded" width="100" alt="">
                                         @else
                                             Chưa có ảnh nào.
                                         @endif

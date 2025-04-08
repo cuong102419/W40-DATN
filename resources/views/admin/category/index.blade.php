@@ -42,7 +42,7 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button title="Xóa" class="btn text-danger"
-                                                            onclick="return confirm('Mày có muốn xóa nó.')"><i
+                                                            onclick="return confirm('Bạn có chắc muốn xóa.')"><i
                                                                 class="far fa-trash-alt"></i></button>
                                                     </form>
                                                 @endif

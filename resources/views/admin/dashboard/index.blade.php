@@ -176,7 +176,7 @@
                                         <td>{{ $product->name }}</td>
                                         <td class="text-nowrap" style="width:1px">
                                             <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
-                                                width="80" alt="">
+                                                width="80" alt="" class="rounded">
                                         </td>
                                         <td>{{ $product->variants->sum('quantity') }}</td>
                                         <td>{{ number_format($product->variants->min()->price, 0, '.', '.') }}đ</td>

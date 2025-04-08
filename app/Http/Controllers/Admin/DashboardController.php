@@ -17,8 +17,8 @@ class DashboardController extends Controller
         $totalUsers = User::where('role', '=', 'user')->count();
         $totalOrders = Order::where('status', '!=', 'canceled')->count();
         $totalSales = Product::sum('sales_count');
-        $totalRevenueMonth = Order::where('payment_status', 'paid')->whereMonth('created_at', Carbon::now()->month)->sum('total');
-        $totalRevenue = Order::where('payment_status', 'paid')->sum('total');
+        $totalRevenueMonth = Order::where('status', 'completed')->whereMonth('created_at', Carbon::now()->month)->sum('total_final');
+        $totalRevenue = Order::where('status', 'completed')->sum('total_final');
 
         $revenueMonth = Order::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(total) as revenue")
             ->where('payment_status', 'paid')
@@ -49,6 +49,9 @@ class DashboardController extends Controller
             'delivered' => ['value' => 'Đã giao hàng', 'class' => 'bg-primary'],
             'completed' => ['value' => 'Hoàn thành', 'class' => 'bg-success'],
             'canceled' => ['value' => 'Đã hủy', 'class' => 'bg-danger'],
+            'failed' => ['value' => 'Thất bại.', 'class' => 'bg-danger'],
+            'returning' => ['value' => 'Đang hoàn hàng.', 'class' => 'bg-warning'],
+            'returned' => ['value' => 'Đơn hoàn trả.', 'class' => 'bg-warning'],
         ];
 
         $quickListOrders = Order::orderBy('created_at', 'desc')->take(6)->get();

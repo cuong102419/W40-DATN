@@ -24,7 +24,9 @@ class Order extends Model
         'discount_amount',
         'shipping',
         'order_code',
-        'reason'
+        'reason_cancel',
+        'reason_failed',
+        'reason_returned',
     ];
 
     public function user() {
