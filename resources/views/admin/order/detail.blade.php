@@ -23,7 +23,7 @@
                                 <button onclick="return confirm('Bạn có muốn xác nhận đơn hàng này.')" type="submit"
                                     name="action" value="confirmed" class="btn btn-sm btn-primary"><i
                                         class="fas fa-check me-2"></i>Xác nhận</button>
-                                @if (!$requestOrder)
+                                @if (!$requestCancel)
                                     <a data-bs-toggle="modal" data-bs-target="#reason-cancel"
                                         class="btn btn-sm btn-danger"><i class="far fa-window-close me-2"></i>Hủy</a>
                                 @endif
@@ -49,24 +49,45 @@
                 <div class="bg-white mt-3 p-2">
                     <div class="table-responsive">
                         <table class="table">
-                            @if ($requestOrder)
+                            @if ($requestCancel)
                                 <tr>
                                     <th>Yêu cầu hủy đơn</th>
                                     <td>
                                         <div>
-                                            <strong>Lý do hủy đơn: </strong>{{ $requestOrder->reason }}
+                                            <strong>Lý do: </strong>{{ $requestCancel->reason }}
                                         </div>
                                         <div>
                                             <span>Ngày tạo:
-                                                {{ $requestOrder->created_at->format('d \T\h\á\n\g m, Y') }}</span>
+                                                {{ $requestCancel->created_at->format('d \T\h\á\n\g m, Y') }}</span>
                                         </div>
                                     </td>
                                     <td>
                                         <form class="cancel-order" action="{{ route('admin-order.cancel', $order->id) }}" method="post">
                                             @csrf
                                             @method('PUT')
-                                            <input hidden name="reason" value="{{ $requestOrder->reason }}">
+                                            <input hidden name="reason" value="{{ $requestCancel->reason }}">
                                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bạn có muốn hủy đơn hàng này.')">Xác nhận hủy đơn</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @elseif ($requestReturn)
+                                <tr>
+                                    <th>Yêu cầu hoàn trả</th>
+                                    <td>
+                                        <div>
+                                            <strong>Lý do: </strong>{{ $requestReturn->reason }}
+                                        </div>
+                                        <div>
+                                            <span>Ngày tạo:
+                                                {{ $requestReturn->created_at->format('d \T\h\á\n\g m, Y') }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <form class="return-order" action="{{ route('admin-order.return-confirm', $order->id) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <input hidden name="reason" value="{{ $requestReturn->reason }}">
+                                            <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Bạn có muốn hoàn đơn hàng này.')">Xác nhận hoàn đơn</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -164,7 +185,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    @if ($order->payment_method != 'COD')
+                                    @if ($order->status == 'returned' && $order->payment_status != 'refunded')
                                     <div class="w-75">
                                         <form action="{{ route('admin-order.payment', $order->id) }}" method="post"
                                             id="payment-status">
@@ -179,9 +200,6 @@
                                                     <option value="refunded"
                                                         {{ $order->payment_status == 'refunded' ? 'disabled selected' : '' }}>
                                                         Hoàn trả</option>
-                                                    <option value="cancel"
-                                                        {{ $order->payment_status == 'cancel' ? 'disabled selected' : '' }}>
-                                                        Đã hủy</option>
                                                 </select>
                                             </div>
                                             <div class="mt-2">

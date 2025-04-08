@@ -48,7 +48,8 @@ class OrderController extends Controller
     public function detail(Order $order)
     {
         $orderItems = OrderItem::where('order_id', $order->id)->get();
-        $requestOrder = Reason::where('order_id', $order->id)->where('type', 'cancel')->latest('id')->first();
+        $requestCancel = Reason::where('order_id', $order->id)->where('type', 'cancel')->where('status', 'pending')->first();
+        $requestReturn = Reason::where('order_id', $order->id)->where('type', 'return')->where('status', 'pending')->first();
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD).',
             'VNPAY' => "Thanh toán qua VNPay.",
@@ -74,7 +75,7 @@ class OrderController extends Controller
         $day = ucfirst(mb_strtolower($order->created_at->locale('vi')->translatedFormat('l')));
         ;
 
-        return view('admin.order.detail', compact('orderItems', 'order', 'payment_status', 'payment_method', 'status', 'day', 'requestOrder'));
+        return view('admin.order.detail', compact('orderItems', 'order', 'payment_status', 'payment_method', 'status', 'day', 'requestCancel', 'requestReturn'));
     }
 
     public function updatePayment(Request $request, Order $order)
@@ -242,7 +243,9 @@ class OrderController extends Controller
         $reason = Reason::where('order_id', $order->id)->first();
 
         if ($reason) {
-            $reason->delete();
+            $reason->update([
+                'status' => 'approved',
+            ]);
         }
 
         return response()->json([
@@ -274,6 +277,26 @@ class OrderController extends Controller
         if ($order->payment_method == 'COD') {
             $order->update([
                 'payment_status' => 'cancel'
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật thành công.'
+        ], Response::HTTP_OK);
+    }
+
+    public function return_confirm(Request $request, Order $order) {
+        $order->update([
+            'status' => 'returning',
+            'reason_returned' => $request->reason
+        ]);
+
+        $reason = Reason::where('order_id', $order->id)->first();
+
+        if ($reason) {
+            $reason->update([
+                'status' => 'approved',
             ]);
         }
 
