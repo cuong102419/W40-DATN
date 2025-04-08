@@ -12,10 +12,11 @@
                     <div>
                         <h5 class="text-uppercase">Đơn hàng: {{ $order->order_code }}</h5>
                     </div>
-                    @if ($order->status == 'delivered')
-                        <div>
-                            <a href="{{ route('order.completed', $order->id) }}" onclick="return confirm('Vui lòng chỉ xác nhận khi đã nhận hàng thành công.')" class="btn btn-theme btn-sm">Nhận hàng thành công</a>
-                        </div>
+                    @if ($order->status == 'delivered')          
+                        <form action="{{ route('order.completed', $order->id) }}" method="POST" onsubmit="return confirm('Bạn chắc chắn đã nhận được hàng?')">
+                            @csrf
+                            <button type="submit" class="btn btn-theme btn-sm">Nhận hàng thành công</button>
+                        </form>        
                     @endif
                 </div>
                 <div class="mt-5 border p-4">
@@ -83,8 +84,42 @@
                                             <div class="row">
                                                 <div>
                                                     <div class="form-group">
-                                                        <textarea class="reason form-control" cols="30" rows="10" type="text"
+                                                        <textarea class="reason form-control" cols="30" rows="5" type="text"
                                                             placeholder="Nhập lý do huỷ đơn" name="reason" required></textarea>
+                                                    </div>
+                                                    <div>
+                                                        <input name="order_id" value="{{ $order->id }}" hidden>
+                                                        @if (Auth::check())
+                                                        <input name="user_id" value="{{ Auth::user()->id }}" hidden
+                                                        @endif>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <button type="submit" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng.')" class="btn-theme btn-sm">Gửi</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @elseif ($order->status == 'delivered')
+                    <div class="coupon-accordion mt-4" id="CouponAccordion">
+                        <div>
+                            <h5>
+                                <a href="#" class="btn btn-theme btn-sm" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Yêu cầu hoàn trả</a>
+                            </h5>
+                            <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
+                                <div class="card-body">
+                                    <div class="apply-coupon-wrap mb-60">
+                                        <form id="request-return" action="{{ route('order.return-request') }}" method="post">
+                                            @csrf
+                                            <div class="row">
+                                                <div>
+                                                    <div class="form-group">
+                                                        <textarea class="reason form-control" cols="30" rows="5" type="text"
+                                                            placeholder="Nhập lý do hoàn trả" name="reason" required></textarea>
                                                     </div>
                                                     <div>
                                                         <input name="order_id" value="{{ $order->id }}" hidden>

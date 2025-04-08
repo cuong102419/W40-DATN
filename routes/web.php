@@ -120,7 +120,8 @@ Route::prefix(('/order'))->group(function () {
     Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
     Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
     Route::post('/cancel', [ReasonController::class, 'cancel'])->name('order.cancel-request');
-    Route::get('/completed/{order}', [OrderController::class, 'completed'])->name('order.completed');
+    Route::post('/return', [ReasonController::class, 'returned'])->name('order.return-request');
+    Route::post('/completed/{order}', [OrderController::class, 'completed'])->name('order.completed');
 });
 
 Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
@@ -198,6 +199,8 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/cancel/{order}', [AdminOrderController::class, 'cancel'])->name('admin-order.cancel');
         Route::put('/failed/{order}', [AdminOrderController::class, 'failed'])->name('admin-order.failed');
         Route::put('/return/{order}', [AdminOrderController::class, 'returned'])->name('admin-order.returned');
+        Route::put('/return-confirm/{order}', [AdminOrderController::class, 'return_confirm'])->name('admin-order.return-confirm');
+
     });
     Route::prefix('/review')->group(function () {
         Route::get('/', [AdminReviewController::class, 'index'])->name('admin-review.index');
