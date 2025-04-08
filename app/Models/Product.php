@@ -32,11 +32,17 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function imageLists() {
+    public function imageLists()
+    {
         return $this->hasMany(ImageList::class, 'product_id');
     }
 
-    public function variants() {
+    public function variants()
+    {
         return $this->hasMany(ProductVariant::class, 'product_id');
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

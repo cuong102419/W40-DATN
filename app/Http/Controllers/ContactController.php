@@ -19,18 +19,20 @@ class ContactController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'phone'=> 'required|string|max:12',
             'email' => 'required|email',
             'message' => 'required|string',
         ]);
 
         $data = [
             'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
             'email' => $request->input('email'),
             'message' => $request->input('message'),
         ];
 
         // Gửi email
-        Mail::to('thaisonboyboy@gmail.com')->send(new ContactMail((array) $request->all()));
+        Mail::to('hoangntph44858@fpt.edu.vn')->send(new ContactMail((array) $request->all()));
 
 
 

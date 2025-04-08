@@ -11,9 +11,19 @@
             <div class="row justify-content-between">
                 <div class="col-xl-3">
                     <div class="shop-sidebar">
+                        <div class="shop-sidebar-price-range" style="padding: 30px">
+                            <h4 class="sidebar-title">Lọc theo giá</h4>
+                            <div class="sidebar-price-range">
+                                <input type="text" id="amount" readonly style="border:0;background-color:#fafafa; color:#000000; font-weight:bold;">
+                                <div id="price-range"></div>
+                                <button id="filter-price" class="mt-3 btn btn-theme btn-sm mt-2" style=" font-size: 14px;;margin-left: 115px;width: 95px; height: 40px; padding: 10px;"><i
+                                 class="fa fa-filter me-2" aria-hidden="true"></i>Lọc</button>
+                            </div>
+                        </div>
                         <div class="shop-sidebar-category">
                             <h4 class="sidebar-title">Danh mục</h4>
                             <ul>
+                                <a href="{{ route('product.index') }}">All</a>
                                 @foreach ($categories as $category)
                                     <li>
                                         <a href="{{ route('product.index', ['category' => $category->id]) }}">
@@ -27,6 +37,7 @@
                             <h4 class="sidebar-title">Thương hiệu</h4>
                             <div class="sidebar-brand">
                                 <ul class="brand-list mb--0">
+                                    <a href="{{ route('product.index') }}">All</a>
                                     @foreach ($brands as $brand)
                                         <li>
                                             <a href="{{ route('product.index', ['brand' => $brand->id]) }}">
@@ -37,15 +48,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="shop-sidebar-price-range">
-                            <h4 class="sidebar-title">Lọc theo giá</h4>
-                            <div class="sidebar-price-range">
-                                <input type="text" id="amount" readonly style="border:0; color:#000000; font-weight:bold;">
-                                <div id="price-range"></div>
-                                <button id="filter-price" class="mt-3 btn btn-theme btn-sm mt-2"><i
-                                        class="fa fa-filter me-2" aria-hidden="true"></i>Lọc</button>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="col-xl-9">
@@ -70,16 +73,32 @@
                                 </div>
                                 <div class="shop-top-right">
                                     <div class="shop-sort">
-                                        <span>Sort By :</span>
-                                        <select class="form-select" aria-label="Sort select example">
-                                            <option selected>Default</option>
-                                            <option value="1">Popularity</option>
-                                            <option value="2">Average Rating</option>
-                                            <option value="3">Newsness</option>
-                                            <option value="4">Price Low to High</option>
-                                        </select>
+                                        <form method="GET" action="{{ route('product.index') }}">
+                                            {{-- Giữ lại các filter hiện tại --}}
+                                            @if(request()->has('category'))
+                                                <input type="hidden" name="category" value="{{ request()->category }}">
+                                            @endif
+                                            @if(request()->has('brand'))
+                                                <input type="hidden" name="brand" value="{{ request()->brand }}">
+                                            @endif
+                                            @if(request()->has('min_price'))
+                                                <input type="hidden" name="min_price" value="{{ request()->min_price }}">
+                                            @endif
+                                            @if(request()->has('max_price'))
+                                                <input type="hidden" name="max_price" value="{{ request()->max_price }}">
+                                            @endif
+                                
+                                            <span>Sort By :</span>
+                                            <select name="sort" class="form-select d-inline-block w-auto" onchange="this.form.submit()">
+                                                <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Mặc định</option>
+                                                <option value="popularity" {{ request('sort') == 'popularity' ? 'selected' : '' }}>Phổ biến</option>
+                                                <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Đánh giá cao</option>
+                                                <option value="newness" {{ request('sort') == 'newness' ? 'selected' : '' }}>Mới nhất</option>
+                                            </select>
+                                        </form>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="col-12">
