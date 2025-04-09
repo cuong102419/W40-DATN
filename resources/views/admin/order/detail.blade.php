@@ -185,7 +185,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    @if ($order->status == 'returned' && $order->payment_status == 'paid')
+                                    @if (($order->status == 'returned' || $order->status == 'canceled') && $order->payment_status == 'paid')
                                     <div class="w-75">
                                         <form action="{{ route('admin-order.payment', $order->id) }}" method="post"
                                             id="payment-status">
