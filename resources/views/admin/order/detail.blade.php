@@ -31,10 +31,10 @@
                                 <button type="submit" name="action" value="shipping" class="btn btn-sm btn-primary"><i
                                         class="fas fa-shipping-fast me-2"></i>Giao hàng</button>
                             @elseif ($order->status == 'shipping')
+                                <a data-bs-toggle="modal" data-bs-target="#reason-fail"
+                                        class="btn btn-sm btn-danger"><i class="far fa-window-close me-2"></i>Giao hàng thất bại</a>
                                 <button type="submit" name="action" value="delivered" class="btn btn-sm btn-primary"><i
                                         class="fas fa-truck-loading me-2"></i>Hoàn thành giao hàng</button>
-                                        <a data-bs-toggle="modal" data-bs-target="#reason-fail"
-                                        class="btn btn-sm btn-danger"><i class="far fa-window-close me-2"></i>Giao hàng thất bại</a>
                             @elseif ($order->status == 'failed')
                                 <button type="submit" name="action" value="redeliver " class="btn btn-sm btn-success"><i class="fas fa-sync me-2"></i>Giao hàng lại</button>
                                 {{-- <button type="submit" name="action" value="returning" class="btn btn-sm btn-primary"><i class="fas fa-undo me-2"></i>Hoàn hàng</button> --}}
@@ -185,26 +185,18 @@
                                     </div>
                                 </td>
                                 <td>
-                                    @if ($order->status == 'returned' && $order->payment_status != 'refunded')
+                                    @if ($order->status == 'returned' && $order->payment_status == 'paid')
                                     <div class="w-75">
                                         <form action="{{ route('admin-order.payment', $order->id) }}" method="post"
                                             id="payment-status">
                                             @csrf
                                             @method('PUT')
                                             <div>
-                                                <select name="payment_status" class="form-select" id="">
-                                                    <option disabled selected>--Chọn--</option>
-                                                    <option value="paid"
-                                                        {{ $order->payment_status == 'paid' ? 'disabled selected' : '' }}>
-                                                        Đã thanh toán</option>
-                                                    <option value="refunded"
-                                                        {{ $order->payment_status == 'refunded' ? 'disabled selected' : '' }}>
-                                                        Hoàn trả</option>
-                                                </select>
+                                                <input hidden name="payment_status" value="refunded" class="form-select" id="">       
                                             </div>
                                             <div class="mt-2">
-                                                <button type="submit" class="btn btn-sm btn-primary"><i
-                                                        class="fas fa-save me-2"></i>Cập nhật</button>
+                                                <button type="submit" onclick="return confirm('Bạn có chắc muốn hoàn tiền đơn hàng này.')" class="btn btn-sm btn-primary"><i
+                                                        class="fas fa-undo-alt me-2"></i>Hoàn tiền</button>
                                             </div>
                                         </form>
                                     </div>

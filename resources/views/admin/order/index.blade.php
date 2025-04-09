@@ -11,25 +11,30 @@
                 <h6 class="mb-4">Danh sách đơn hàng</h6>
                 <div class="row mb-3 justify-content-between">
                     <div class="col-12 col-sm-4">
-                        <form class="d-none d-md-flex ms-4">
+                        <form class="d-none d-md-flex ms-4" action="{{ route('admin-order.index') }}" method="get">
                             <div class="input-group input-group-sm">
-                                <input class="form-control border-0" type="text"
+                                <input class="form-control border-0" name="keyword" type="text"
                                     placeholder="Tìm kiếm đơn hàng theo mã">
-                                <button type="submit" class="input-group-text bg-primary text-light"><i class="fas fa-search"></i></button>
+                                <button type="submit" class="input-group-text bg-primary text-light"><i
+                                        class="fas fa-search"></i></button>
                             </div>
                         </form>
                     </div>
                     <div class="col-12 col-sm-4">
-                        <form action="#" method="post">
+                        <form action="{{ route('admin-order.index') }}" method="get">
                             <div class="d-flex align-items-center">
                                 <div class="w-75 me-2">
-                                    <select name="" id="" class="form-select form-select-sm">
-                                        <option value="" selected>Tất cả</option>
-                                        <option value="">Chưa xác nhận</option>
-                                        <option value="">Đã xác nhận</option>
-                                        <option value="">Hoàn thành</option>
-                                        <option value="">Đơn đã hủy</option>
-                                        <option value="">Đơn hoàn trả</option>
+                                    <select name="status" id="" class="form-select form-select-sm">
+                                        <option value="" {{ request('status') == '' ? 'selected' : '' }}>Tất cả</option>
+                                        <option value="unconfirmed" {{ request('status') == 'unconfirmed' ? 'selected' : '' }}>Chưa xác nhận</option>
+                                        <option value="confirmed" {{ request('status') == 'confirmed' ? 'selected' : '' }}>Đã
+                                            xác nhận</option>
+                                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>
+                                            Hoàn thành</option>
+                                        <option value="canceled" {{ request('status') == 'canceled' ? 'selected' : '' }}>Đơn
+                                            đã hủy</option>
+                                        <option value="returned" {{ request('status') == 'returned' ||  request('status') == 'returning' ? 'selected' : '' }}>Đơn
+                                            hoàn trả</option>
                                     </select>
                                 </div>
                                 <button class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button>

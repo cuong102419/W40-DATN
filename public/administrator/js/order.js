@@ -46,9 +46,6 @@ $(document).ready(function() {
                 if(xhr.responseJSON.status === 'error') {
                     toastr.error(xhr.responseJSON.message);
                 }
-                setTimeout(() => {
-                    location.reload();
-                }, 1500);
             }
         });
     });
