@@ -26,6 +26,15 @@
                             <h3 class="{{ $status[$order->status]['class'] }} text-uppercase">
                                 {{ $status[$order->status]['value'] }}
                             </h3 class="{{ $status[$order->status]['class'] }} text-uppercase">
+                            <div>
+                                @if ($order->status == 'canceled')
+                                    <span>{{ $order->reason_cancel }}</span>
+                                @elseif ($order->status == 'returned' || $order->status == 'returning')
+                                    <span>{{ $order->reason_returned }}</span>
+                                @elseif ($order->status == 'failed')
+                                    <span>{{ $order->reason_failed }}</span>
+                                @endif
+                            </div>
                         </div>
                         <div>
                             Ngày tạo:
@@ -129,7 +138,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="mt-3">
-                                                    <button type="submit" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng.')" class="btn-theme btn-sm">Gửi</button>
+                                                    <button type="submit" onclick="return confirm('Bạn có chắc muốn hoàn trả sản phẩm.')" class="btn-theme btn-sm">Gửi</button>
                                                 </div>
                                             </div>
                                         </form>

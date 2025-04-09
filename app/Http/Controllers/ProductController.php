@@ -146,24 +146,3 @@ class ProductController extends Controller
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

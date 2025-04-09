@@ -16,7 +16,17 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::latest('id')->paginate(10);
+        $query = Order::query();
+
+        if ($keyword = request()->keyword) {
+            $query->where('order_code', 'like', "%$keyword%");
+        }
+
+        if ($status = request()->status) {
+            $query->where('status', $status);
+        }
+
+        $orders = $query->latest('id')->paginate(10);
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD)',
             'VNPAY' => "Thanh toán qua VNPay",
@@ -40,7 +50,6 @@ class OrderController extends Controller
             'returned' => ['value' => 'Đơn hoàn trả.', 'class' => 'text-warning'],
 
         ];
-
 
         return view('admin.order.index', compact('orders', 'payment_method', 'payment_status', 'status'));
     }
@@ -180,12 +189,12 @@ class OrderController extends Controller
                 'status' => 'delivered',
                 'payment_status' => 'paid'
             ]);
-            
+
             foreach ($order->orderItems as $item) {
                 $variant = ProductVariant::find($item->product_variant_id);
                 if ($variant) {
                     Product::where('id', $variant->product_id)->increment('sales_count');
-                }            
+                }
             }
 
             return response()->json([
@@ -213,7 +222,7 @@ class OrderController extends Controller
                     $variant->quantity += $item->quantity;
                     $variant->save();
                 }
-                Product::where('id', $variant->product_id)->decrement('sales_count');
+                // Product::where('id', $variant->product_id)->decrement('sales_count');
             }
 
             return response()->json([
@@ -286,7 +295,8 @@ class OrderController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function return_confirm(Request $request, Order $order) {
+    public function return_confirm(Request $request, Order $order)
+    {
         $order->update([
             'status' => 'returning',
             'reason_returned' => $request->reason
