@@ -188,6 +188,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::prefix('/user')->group(function () {
         Route::get('/', [AdminUserController::class, 'listUser'])->name('admin.user');
         Route::put('/{user}', [AdminUserController::class, 'edit'])->name('admin.user.edit');
+        Route::put('verify/{user}', [AdminUserController::class, 'verify'])->name('admin.user.verify');
     });
 
     Route::prefix('/order')->group(function () {

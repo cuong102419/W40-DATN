@@ -14,7 +14,7 @@
                         </a>
                     </div>
                 </div>
-                <div class=" table-responsive">
+                <div class=" table-responsive bg-white ps-3 pe-3">
                     <table class="table mt-4 table-striped">
                         <thead>
                             <tr class="text-center">
@@ -37,14 +37,19 @@
                                         {{ $role[$user->role] }}
                                     </td>
                                     <td>
-                                        <span class="{{ $status[$user->status]['class'] }} fw-bold">{{ $status[$user->status]['value'] }}</span>
+                                        @if ($user->email_verified_at)
+                                            <span class="{{ $status[$user->status]['class'] }} fw-bold">{{ $status[$user->status]['value'] }}</span>
+                                        @else
+                                            <span class="text-primary fw-bold">Chưa xác nhận</span>
+                                        @endif
                                     </td>
                                     <td>
                                         {{ $user->created_at->format('d \T\h\á\n\g m, Y') }}
                                     </td>
                                     <td>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn text-primary" title="Edit"
+                                        @if ($user->email_verified_at)
+                                                <!-- Button trigger modal -->
+                                            <button type="button" class="btn text-primary" title="Edit"
                                             data-bs-toggle="modal" data-bs-target="#exampleModal{{ $index }}">
                                             <i class="fa fa-pen"></i>
                                         </button>
@@ -98,6 +103,12 @@
                                                 </div>
                                             </form>
                                         </div>
+                                        @else
+                                            <form action="{{ route('admin.user.verify', $user->id) }}" method="post">@csrf
+                                                @method('PUT')
+                                                <button type="submit" onclick="return confirm('Bạn có muốn xác nhận tài khoản này!')" class="btn text-primary btn-sm"><i class="fas fa-lg fa-check"></i></button></button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
