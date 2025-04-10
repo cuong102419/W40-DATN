@@ -11,7 +11,14 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::latest('id')->paginate(10);
+        $query = Category::query();
+
+        if ($keyword = request()->keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%');
+        }
+
+       
+        $categories = $query->latest('id')->paginate(10);
         return view('admin.category.index', compact('categories'));
     }
 
@@ -76,5 +83,4 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', 'Xóa không thành công!');
         }
     }
-
 }

@@ -9,16 +9,23 @@
         <div class="col-12">
             <div class="bg-light rounded min vh-100 p-4">
                 <h6 class="mb-4">Danh sách danh mục</h6>
-                @if (session('success'))
-                    <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="row">
+                    <div class="col-md-4">
+                        <form method="GET" action="{{ route('admin-brand.index') }}">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control border-0" name="keyword" type="text"
+                                    placeholder="Tìm kiếm thương hiệu theo tên">
+                                <button type="submit" class="input-group-text bg-primary text-light"><i
+                                        class="fas fa-search"></i></button>
+                            </div>
+                        </form>
                     </div>
-                @endif
-                <div class="text-end">
-                    <a href="{{ route('admin-brand.create') }}" class="btn btn-sm btn-primary"><i
-                            class="fas fa-plus me-2"></i>Tạo mới</a>
+                    <div class="col-md-8 text-end">
+                        <a href="{{ route('admin-brand.create') }}" class="btn btn-sm btn-primary"><i
+                                class="fas fa-plus me-2"></i>Tạo mới</a>
+                    </div>
                 </div>
+
                 <div class="table-responsive mt-3">
                     @if ($brands->isNotEmpty())
                         <table class="table table-striped">
@@ -40,10 +47,12 @@
                                         <td>{{ $brand->created_at->format('d-m-Y') }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('admin-brand.edit', $brand->id) }}" class="btn text-primary ms-2"
-                                                    title="Sửa"><i class="fas fa-pen"></i></a>
+                                                <a href="{{ route('admin-brand.edit', $brand->id) }}"
+                                                    class="btn text-primary ms-2" title="Sửa"><i
+                                                        class="fas fa-pen"></i></a>
                                                 @if ($brand->products->isEmpty())
-                                                    <form method="post" action="{{ route('admin-brand.delete', $brand->id) }}"
+                                                    <form method="post"
+                                                        action="{{ route('admin-brand.delete', $brand->id) }}"
                                                         class="ms-2">
                                                         @csrf
                                                         @method('DELETE')
