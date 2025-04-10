@@ -19,7 +19,7 @@
                                     <div>
                                         <h6 class="fw-bold">
                                             Mã đơn: {{ $order->order_code }} | Thành tiền: <span
-                                                class="fw-bold text-danger">{{ number_format($order->total, 0, '.', '.') }}đ</span>
+                                                class="fw-bold text-danger">{{ number_format($order->total_final, 0, '.', '.') }}đ</span>
                                         </h6>
                                         <span class="mb-2">Ngày tạo:
                                             {{ $order->created_at->format('d \T\h\á\n\g m, Y') }}</span>
@@ -52,7 +52,7 @@
                                                             <strong>Số lượng:</strong> {{ $item->quantity }}
                                                         </small>
                                                         <small class="text-dark d-block">
-                                                            <strong>Kích cỡ:</strong> {{ $item->product_variant->size }}
+                                                            <strong>Kích cỡ:</strong> {{ $item->size }}
                                                         </small>
                                                     </div>
                                                     <div class="d-flex">
@@ -60,7 +60,7 @@
                                                             <small class="text-dark fw-bold">Màu sắc:</small>
                                                         </div>
                                                         <div class="rounded-circle border border-secondary shadow mt-2 ms-2"
-                                                            style="width: 16px; height: 16px; background-color: {{ $item->product_variant->color }};">
+                                                            style="width: 16px; height: 16px; background-color: {{ $item->color }};">
                                                         </div>
                                                     </div>
                                                 </div>
