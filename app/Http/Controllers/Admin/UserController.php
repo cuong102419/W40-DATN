@@ -12,15 +12,13 @@ class UserController extends Controller
 {
     public function listUser()
     {
-        $users = User::latest('id')->where('id', '!=', Auth::user()->id)->paginate(10);
+        $users = User::latest('id')->where('role','user')->paginate(10);
         $status = [
             1 => ['value' => 'Hoạt động', 'class' => 'text-success'],
             0 => ['value' => 'Vô hiệu hóa', 'class' => 'text-danger']
         ];
         $role = [
-            'admin' => 'Quản trị viên',
             'user' => 'Người dùng',
-            'super_admin' => 'Quản lý'
         ];
         return view('admin.users.list', compact('users', 'status', 'role'));
     }
@@ -35,7 +33,7 @@ class UserController extends Controller
         }
     }
 
-    public function verify(Request $request, User $user) {
+    public function verify(User $user) {
         if (!$user->email_verified_at) {
             $user->email_verified_at = Carbon::now()->format('d-m-Y H:i:s');
             $user->save();

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\AuthenticController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\ReasonController;
 use App\Http\Controllers\VerifyAccountController;
 use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\CheckManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -203,160 +205,13 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/return-confirm/{order}', [AdminOrderController::class, 'return_confirm'])->name('admin-order.return-confirm');
 
     });
+
     Route::prefix('/review')->group(function () {
         Route::get('/', [AdminReviewController::class, 'index'])->name('admin-review.index');
         Route::put('/admin/reviews/{id}/hide', [AdminReviewController::class, 'hide'])->name('admin-review.hide');
     });
+    
+    Route::prefix('/staff')->middleware([CheckManager::class])->group(function () {
+        Route::get('/staff', [StaffController::class, 'index'])->name('admin-staff.index');
+    });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
