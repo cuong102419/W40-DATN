@@ -17,24 +17,33 @@ class CheckPurchase
         $hasPurchased = false;
 
         if ($user) {
-            $productId = $request->route('product_id') ?? $request->route('product');
-
-            if ($productId) {
+            $productVariantId = $request->input('product_variant_id') ?? $request->route('variant');
+            // dd([
+            //     'user_id' => $user->id,
+            //     'product_variant_id' => $productVariantId,
+            // ]);
+            if ($productVariantId) {
+                
                 // Đếm số lượng đơn hàng đã mua sản phẩm này
                 $orders = Order::where('user_id', $user->id)
                     ->where('status', 'completed')
-                    ->whereHas('orderItems', function ($query) use ($productId) {
-                        $query->whereHas('productVariant', function ($subQuery) use ($productId) {
-                            $subQuery->where('product_id', $productId);
+                    ->whereHas('orderItems', function ($query) use ($productVariantId) {
+                        $query->whereHas('product_variant', function ($query) use ($productVariantId) {
+                            $query->where('product_variant_id', $productVariantId);
                         });
                     })
                     ->pluck('id'); // Lấy ra danh sách order_id
-
+                    // dd([
+                    //     'user_id' => $user->id,
+                    //     'product_variant_id' => $productVariantId,
+                    //     'order_ids' => $orders,
+                    // ]);
                 $totalPurchases = $orders->count();
+                
 
                 // Đếm số lần đã đánh giá sản phẩm này trong các đơn hàng
                 $totalReviews = Review::where('user_id', $user->id)
-                    ->where('product_id', $productId)
+                    ->where('product_variant_id', $productVariantId)
                     ->whereIn('order_id', $orders)
                     ->count();
 
@@ -47,3 +56,7 @@ class CheckPurchase
         return $next($request);
     }
 }
+
+
+
+

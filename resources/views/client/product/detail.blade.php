@@ -236,7 +236,7 @@
 
                                                     @foreach ($orderItems as $index => $item)
                                                         @php
-                                                            $variant = $item->productVariant;
+                                                            $variant = $item->product_variant;
                                                             $product = $variant->product;
                     
                                                         @endphp
@@ -295,8 +295,8 @@
                                                                             </div>
 
                                                                             {{-- Hidden inputs --}}
-                                                                            <input type="hidden" name="product_variant_id" value="{{ $item->product_variant->id }}">
-                                                                            <input type="hidden" name="product_id" value="{{ $item->productVariant->product_id }}">
+                                                                            <input type="hidden" name="product_variant_id" value="{{ $item->product_variant_id }}">
+                                                                            <input type="hidden" name="product_id" value="{{ $item->product_variant->product_id }}">
                                                                             <input type="hidden" name="order_id" value="{{ $item->order_id }}">
                                                                         </div>
                                                                     </div>
@@ -540,3 +540,6 @@
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 
 @endsection
+
+
+
