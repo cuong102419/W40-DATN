@@ -30,8 +30,9 @@ class OrderItem extends Model
     }
     protected $table = 'order_items';
 
-    public function productVariant()
-    {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id');
-    }
+
 }
+
+
+
+
