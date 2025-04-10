@@ -16,7 +16,14 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('imageLists')->latest('id')->paginate(10);
+        $query = Product::query();
+
+        if($keyword = request()->keyword) {
+            $query->where('name', 'like', "%$keyword%")
+                  ->orWhere('sku', 'like', "%$keyword%");
+        }
+
+        $products = $query->with('imageLists')->latest('id')->paginate(10);
 
         return view('admin.product.index', compact('products'));
     }

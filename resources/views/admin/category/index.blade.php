@@ -9,9 +9,21 @@
         <div class="col-12">
             <div class="bg-light rounded min vh-100 p-4">
                 <h6 class="mb-4">Danh sách danh mục</h6>
-                <div class="text-end">
-                    <a href="{{ route('admin-category.create') }}" class="btn btn-sm btn-primary"><i
-                            class="fas fa-plus me-2"></i>Tạo mới</a>
+                <div class="row">
+                    <div class="col-md-4">
+                        <form method="GET" action="{{ route('admin-category.index') }}">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control border-0" name="keyword" type="text"
+                                    placeholder="Tìm kiếm danh mục theo tên">
+                                <button type="submit" class="input-group-text bg-primary text-light"><i
+                                        class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class=" col-md-8 text-end">
+                        <a href="{{ route('admin-category.create') }}" class="btn btn-sm btn-primary"><i
+                                class="fas fa-plus me-2"></i>Tạo mới</a>
+                    </div>
                 </div>
                 <div class="table-responsive mt-3">
                     @if ($categories->isNotEmpty())
@@ -35,9 +47,11 @@
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('admin-category.edit', $cate->id) }}"
-                                                    class="btn text-primary ms-2" title="Sửa"><i class="fas fa-pen"></i></a>
+                                                    class="btn text-primary ms-2" title="Sửa"><i
+                                                        class="fas fa-pen"></i></a>
                                                 @if ($cate->products->isEmpty())
-                                                    <form method="post" action="{{ route('admin-category.delete', $cate->id) }}"
+                                                    <form method="post"
+                                                        action="{{ route('admin-category.delete', $cate->id) }}"
                                                         class="ms-2">
                                                         @csrf
                                                         @method('DELETE')
@@ -60,4 +74,5 @@
             </div>
         </div>
     </div>
+
 @endsection
