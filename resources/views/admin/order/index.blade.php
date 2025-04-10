@@ -82,7 +82,7 @@
                                         </td>
                                         <td>
                                             <span
-                                                class="text-dark fw-bold">{{ number_format($order->total, 0, '.', '.') }}đ</span>
+                                                class="text-dark fw-bold">{{ number_format($order->total_final, 0, '.', '.') }}đ</span>
                                         </td>
                                         <td class="text-start">
                                             {{ $order->created_at->format('d \t\h\g m, Y') }}
