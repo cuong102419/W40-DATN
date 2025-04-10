@@ -71,12 +71,12 @@ class ProductController extends Controller
 
         if ($user) {
             // Lấy tất cả các OrderItem mà user đã mua có chứa product này
-            $orderItems = OrderItem::with('productVariant')
+            $orderItems = OrderItem::with('product_variant')
                 ->whereHas('order', function ($q) use ($user) {
                     $q->where('user_id', $user->id)
                         ->where('status', 'completed');
                 })
-                ->whereHas('productVariant', function ($q) use ($id) {
+                ->whereHas('product_variant', function ($q) use ($id) {
                     $q->where('product_id', $id);
                 })
                 ->get();
@@ -92,7 +92,7 @@ class ProductController extends Controller
 
             $orderItems = $filteredOrderItems; // Gán lại danh sách đã lọc
             $order = $filteredOrderItems->first()?->order;
-            $variant = $filteredOrderItems->first()?->productVariant;
+            $variant = $filteredOrderItems->first()?->product_variant;
         }
         $allReviews = Review::where('product_id', $id)
             ->where('status', true)

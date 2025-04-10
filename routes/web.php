@@ -95,9 +95,9 @@ Route::prefix('/cart')->group(function () {
 });
 
 Route::middleware(['auth', 'check.purchase'])->group(function () {
-    Route::post('/reviews/{product_id}/store', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
+    
 });
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
