@@ -48,7 +48,7 @@
                             <tr>
                                 <td>
                                     <div class="d-flex">
-                                        <a href="{{ route('product.detail', $item->product_variant->product->id) }}"
+                                        <a href="{{ route('product.detail', ['id' => $item->product_variant->product_id, 'slug' => Str::slug($item->product_name)]) }}"
                                             class="me-3">
                                             <img class="rounded" src="{{ Storage::url($item->image_url) }}"
                                                 width="200" height="110" alt="">

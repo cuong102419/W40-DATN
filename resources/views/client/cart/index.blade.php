@@ -35,7 +35,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ route('product.detail', $cart['product_id']) }}">
+                                                    <a href="{{ route('product.detail', ['id' => $cart['product_id'], 'slug' => Str::slug($cart['name'])]) }}">
                                                         <img class="rounded" src="{{ Storage::url($cart['image']) }}" width="100"
                                                             alt="Image-HasTech">
                                                     </a>
@@ -43,7 +43,7 @@
                                                 <td class="product-name">
                                                     <div>
                                                         <h5 class="fw-bold text-center">
-                                                            <a href="{{ route('product.detail', $cart['product_id']) }}"
+                                                            <a href="{{ route('product.detail', ['id' => $cart['product_id'], 'slug' => Str::slug($cart['name'])]) }}"
                                                                 class="text-dark">{{ $cart['name'] }}</a>
                                                         </h5>
                                                         <div class="row justify-content-center">

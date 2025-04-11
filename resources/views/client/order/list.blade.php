@@ -46,7 +46,7 @@
                                                 <div class="ms-2">
                                                     <div>
                                                         <small class="text-dark fw-bold d-block">
-                                                            {{ $item->product_variant->product->name }}
+                                                            {{ $item->name }}
                                                         </small>
                                                         <small class="text-dark d-block">
                                                             <strong>Số lượng:</strong> {{ $item->quantity }}
@@ -70,18 +70,18 @@
                                         <!-- Hiển thị sản phẩm thứ 2 trở đi trên màn hình lớn -->
                                         @if ($key == 1)
                                             <div class="d-none d-md-flex me-3">
-                                                <img src="{{ Storage::url($item->product_variant->product->imageLists->first()->image_url) }}"
+                                                <img src="{{ Storage::url($item->image_url) }}"
                                                     alt="Ảnh sản phẩm" class="img-fluid ms-2 rounded" width="100">
                                                 <div class="ms-2">
                                                     <div>
                                                         <small class="text-dark fw-bold d-block">
-                                                            {{ $item->product_variant->product->name }}
+                                                            {{ $item->name }}
                                                         </small>
                                                         <small class="text-dark d-block">
                                                             <strong>Số lượng:</strong> {{ $item->quantity }}
                                                         </small>
                                                         <small class="text-dark d-block">
-                                                            <strong>Kích cỡ:</strong> {{ $item->product_variant->size }}
+                                                            <strong>Kích cỡ:</strong> {{ $item->size }}
                                                         </small>
                                                     </div>
                                                     <div class="d-flex">
@@ -89,7 +89,7 @@
                                                             <small class="text-dark fw-bold">Màu sắc:</small>
                                                         </div>
                                                         <div class="rounded-circle border border-secondary shadow mt-2 ms-2"
-                                                            style="width: 16px; height: 16px; background-color: {{ $item->product_variant->color }};">
+                                                            style="width: 16px; height: 16px; background-color: {{ $item->color }};">
                                                         </div>
                                                     </div>
                                                 </div>
