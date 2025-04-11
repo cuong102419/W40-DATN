@@ -492,7 +492,7 @@
                                                                 class="fa fa-random"></i></a>
                                                     </div>
                                                     <a class="banner-link-overlay"
-                                                        href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}"></a>
+                                                        href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}"></a>//
                                                 </div>
                                                 <div class="product-info">
                                                     <div class="category">

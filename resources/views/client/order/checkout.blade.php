@@ -49,7 +49,7 @@
                             <tr>
                                 <td>
                                     <div>
-                                        <span class="fw-bold"><a href="{{ route('product.detail', $item->product_variant->product_id) }}">{{ $item->product_name }}</a> ×
+                                        <span class="fw-bold"><a href="{{ route('product.detail', ['id' => $item->product_variant->product_id, 'slug' => Str::slug($item->product_name)]) }}">{{ $item->product_name }}</a> ×
                                             {{ $item->quantity }}</span>
                                     </div>
                                     <div>

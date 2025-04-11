@@ -5,6 +5,9 @@
         <button class="btn-aside-cart-close" data-bs-dismiss="offcanvas" aria-label="Close">Giỏ hàng<i
                 class="fa fa-chevron-right"></i></button>
     </div>
+    @php
+        use Illuminate\Support\Str;
+    @endphp
     @if (session('cart'))
         <div class="offcanvas-body">
             @php
@@ -16,11 +19,13 @@
                 @foreach (session('cart') as $cart)
                     <li class="product-list-item d-flex justify-content-between">
                         <div>
-                            <a href="{{ route('product.detail', $cart['product_id']) }}">
-                                <img src="{{ Storage::url($cart['image']) }}" width="90" height="110" alt="Image-HasTech">
+                            <a href="{{ route('product.detail', ['id' => $cart['product_id'], 'slug' => Str::slug($cart['name'])]) }}">
+                                <img src="{{ Storage::url($cart['image']) }}" width="90" height="110"
+                                    alt="Image-HasTech">
                                 <span class="product-title">{{ $cart['name'] }}</span>
                             </a>
-                            <span class="product-price">{{ $cart['quantity'] }} × {{ number_format($cart['price']) }}đ</span>
+                            <span class="product-price">{{ $cart['quantity'] }} ×
+                                {{ number_format($cart['price']) }}đ</span>
                             <div class="d-flex">
                                 <span class="small me-3">Kích cỡ: {{ $cart['size'] }}</span>
                                 <span class="small me-1">Màu:</span>
@@ -31,7 +36,8 @@
                                 </div>
                             </div>
                         </div>
-                        <form class="delete-item-cart ms-2" action="{{ route('cart.delete.product', $cart['id']) }}" method="post">
+                        <form class="delete-item-cart ms-2" action="{{ route('cart.delete.product', $cart['id']) }}"
+                            method="post">
                             @csrf
                             @method('DELETE')
                             <div>
