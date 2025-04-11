@@ -37,15 +37,23 @@
                                         <span>Nhân viên</span>
                                     </td>
                                     <td>
-                                        <span class=" fw-bold {{$status[$staff->status]['class']}}">{{ $status[$staff->status]['value'] }}</span>
+                                        <span
+                                            class=" fw-bold {{ $status[$staff->status]['class'] }}">{{ $status[$staff->status]['value'] }}</span>
                                     </td>
                                     <td>
                                         {{ $staff->created_at->format('d \T\h\á\n\g m, Y') }}
                                     </td>
                                     <td>
-                                        <form action="" method="post">
-                                            <button class="btn text-danger" type="submit"><i class="fas fa-ban"></i></button>
-                                            <button class="btn text-primary" type="submit"><i class="fas fa-unlock-alt"></i></button>
+                                        <form action="{{ route('admin-staff.status', $staff->id) }}" method="post">
+                                            @csrf
+                                            @method('PATCH')
+                                            @if ($staff->status == 1)
+                                                <button class="btn text-danger" name="action" value="ban"
+                                                    type="submit" onclick="return confirm('Bạn có muốn khóa tài khoản nây.')"><i class="fas fa-ban"></i></button>
+                                            @else
+                                                <button class="btn text-primary" name="action" value="unban"
+                                                    type="submit" onclick="return confirm('Bạn có muốn mo khoa tài khoản nây.')"><i class="fas fa-unlock-alt"></i></button>
+                                            @endif
                                         </form>
                                     </td>
                                 </tr>

@@ -18,4 +18,20 @@ class StaffController extends Controller
 
         return view('admin.staff.index', compact('staffs', 'status'));
     }
+    
+    public function status(Request $request, User $user) {
+        $action = $request->input('action');
+        if($action == 'ban') {
+            $user->status = 0;
+            $user->save();
+        }
+
+        if ($action == 'unban') { 
+            $user->status = 1;
+            $user->save();
+        }
+
+        return redirect()->back()->with('success', 'Cập nhật trạng thái tài khoản thành công.');
+
+    }
 }

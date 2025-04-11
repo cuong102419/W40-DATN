@@ -212,6 +212,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     });
     
     Route::prefix('/staff')->middleware([CheckManager::class])->group(function () {
-        Route::get('/staff', [StaffController::class, 'index'])->name('admin-staff.index');
+        Route::get('/', [StaffController::class, 'index'])->name('admin-staff.index');
+        Route::patch('/status/{user}', [StaffController::class, 'status'])->name('admin-staff.status');
     });
 });
