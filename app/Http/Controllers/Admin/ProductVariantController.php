@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use Illuminate\Http\Request;
@@ -133,8 +134,10 @@ class ProductVariantController extends Controller
     public function destroy(ProductVariant $variant)
     {
         try {
-            if ($variant->orderItem->count() > 0) {
-                return redirect()->back()->with('error', 'Không thể xóa biến thể này vì đã có đơn hàng liên quan.');
+            $orderItems = OrderItem::where('product_variant_id', $variant->id)->get();
+            foreach ($orderItems as $item) {
+                $item->product_variant_id = null;
+                $item->save();
             }
             $variant->delete();
             return redirect()->back()->with('success', 'Xóa biến thể thành công.');

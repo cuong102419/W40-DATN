@@ -476,7 +476,7 @@
                                         <div class="product-item">
                                             <div class="inner-content">
                                                 <div class="product-thumb">
-                                                    <a href="{{ route('product.detail', $product->id) }}">
+                                                    <a href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">
                                                         <img src="{{ Storage::url($product->imageLists->first()?->image_url) }}"
                                                             width="270" height="274" alt="{{ $product->name }}">
                                                     </a>
@@ -492,7 +492,7 @@
                                                                 class="fa fa-random"></i></a>
                                                     </div>
                                                     <a class="banner-link-overlay"
-                                                        href="{{ route('product.detail', $product->id) }}"></a>
+                                                        href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}"></a>
                                                 </div>
                                                 <div class="product-info">
                                                     <div class="category">
@@ -504,7 +504,7 @@
                                                     </div>
                                                     <h4 class="title">
                                                         <a
-                                                            href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a>
+                                                            href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">{{ $product->name }}</a>
                                                     </h4>
                                                     <div class="prices">
                                                         <span

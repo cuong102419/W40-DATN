@@ -10,17 +10,17 @@
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">Danh sách đơn hàng</h6>
                 <div class="row mb-3 justify-content-between">
-                    <div class="col-12 col-sm-4">
+                    <div class="col-md-4 col-sm-3">
                         <form class="d-none d-md-flex ms-4" action="{{ route('admin-order.index') }}" method="get">
                             <div class="input-group input-group-sm">
-                                <input class="form-control border-0" name="keyword" type="text"
-                                    placeholder="Tìm kiếm đơn hàng theo mã">
+                                <input class="form-control" name="keyword" type="text"
+                                    placeholder="Tìm kiếm đơn hàng theo mã" value="{{ request('keyword') }}">
                                 <button type="submit" class="input-group-text bg-primary text-light"><i
                                         class="fas fa-search"></i></button>
                             </div>
                         </form>
                     </div>
-                    <div class="col-12 col-sm-4">
+                    <div class="col-md-4 col-sm-3">
                         <form action="{{ route('admin-order.index') }}" method="get">
                             <div class="d-flex align-items-center">
                                 <div class="w-75 me-2">

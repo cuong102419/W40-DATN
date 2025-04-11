@@ -27,7 +27,7 @@
                     </div>
                     <div class="mt-3">
                         <label for="" class="form-label">Kiểu giá trị</label>
-                        <select name="type" class="form-select mb-2">
+                        <select name="type" id="type" class="form-select mb-2">
                             <option value="percentage" {{ $voucher->type == 'percentage' ? 'selected' : '' }}>Giảm giá theo phần trăm</option>
                             <option value="fixed" {{ $voucher->type == 'fixed' ? 'selected' : '' }}>Giảm giá theo số tiền</option>
                         </select>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="mt-3">
                         <label for="" class="form-label">Loại khuyến mại</label>
-                        <select name="kind" class="form-select mb-2">
+                        <select name="kind" id="kind" class="form-select mb-2">
                             <option value="shipping" {{ $voucher->kind == 'shipping' ? 'selected' : '' }}>Phí vận chuyển</option>
                             <option value="total" {{ $voucher->kind == 'total' ? 'selected' : '' }}>Giảm giá đơn hàng</option>
                         </select>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Giá trị khuyến mãi</label>
-                        <input type="number" step="0.1" name="value" value="{{ $voucher->value }}" class="form-control mb-2">
+                        <input type="number" step="0.1" id="value" name="value" value="{{ $voucher->value }}" class="form-control mb-2">
                         <span class="text-danger error-value"></span>
                     </div>
                     <div class="mt-3">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Giảm giá tối đa</label>
-                        <input type="number" step="0.1"  value="{{ $voucher->max_discount }}" name="max_discount" class="form-control mb-2">
+                        <input type="number" id="max_discount" step="0.1"  value="{{ $voucher->max_discount }}" name="max_discount" class="form-control mb-2">
                         <span class="text-danger error-max-discount"></span>
                     </div>
                     <div class="mt-3">
@@ -125,4 +125,5 @@
             });
         });
     </script>
+    <script src="{{ asset('administrator/js/voucher.js')  }}"></script>
 @endsection

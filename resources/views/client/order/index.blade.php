@@ -56,9 +56,6 @@
                                             <label for="street-address">Tỉnh/Thành phố <span class="required"
                                                     title="required">*</span></label>
                                             <select name="province" id="province" class="form-select"></select>
-                                            @error('address')
-                                                <span class="text-danger small mt-2">{{ $message }}</span>
-                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -66,9 +63,6 @@
                                             <label for="street-address">Quận/Huyện <span class="required"
                                                     title="required">*</span></label>
                                             <select name="district" id="district" class="form-select"></select>
-                                            @error('address')
-                                                <span class="text-danger small mt-2">{{ $message }}</span>
-                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-md-12">
