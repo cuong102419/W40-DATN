@@ -96,7 +96,6 @@ Route::prefix('/cart')->group(function () {
 
 Route::middleware(['auth', 'check.purchase'])->group(function () {
     Route::post('/reviews/store', [ReviewController::class, 'store'])->name('reviews.store');
-    
 });
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
@@ -206,6 +205,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
 
     });
 
+    
     Route::prefix('/review')->group(function () {
         Route::get('/', [AdminReviewController::class, 'index'])->name('admin-review.index');
         Route::put('/admin/reviews/{id}/hide', [AdminReviewController::class, 'hide'])->name('admin-review.hide');

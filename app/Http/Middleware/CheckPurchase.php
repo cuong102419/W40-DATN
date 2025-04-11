@@ -17,37 +17,28 @@ class CheckPurchase
         $hasPurchased = false;
 
         if ($user) {
-            $productVariantId = $request->input('product_variant_id') ?? $request->route('variant');
-            // dd([
-            //     'user_id' => $user->id,
-            //     'product_variant_id' => $productVariantId,
-            // ]);
-            if ($productVariantId) {
-                
-                // Đếm số lượng đơn hàng đã mua sản phẩm này
-                $orders = Order::where('user_id', $user->id)
+            $variantId = $request->input('product_variant_id');
+            $orderId = $request->input('order_id');
+
+            if ($variantId && $orderId) {
+                // Kiểm tra đơn hàng thuộc về user và có chứa variant này
+                $order = Order::where('id', $orderId)
+                    ->where('user_id', $user->id)
                     ->where('status', 'completed')
-                    ->whereHas('orderItems', function ($query) use ($productVariantId) {
-                        $query->whereHas('product_variant', function ($query) use ($productVariantId) {
-                            $query->where('product_variant_id', $productVariantId);
-                        });
+                    ->whereHas('orderItems', function ($query) use ($variantId) {
+                        $query->where('product_variant_id', $variantId);
                     })
-                    ->pluck('id'); // Lấy ra danh sách order_id
-                    // dd([
-                    //     'user_id' => $user->id,
-                    //     'product_variant_id' => $productVariantId,
-                    //     'order_ids' => $orders,
-                    // ]);
-                $totalPurchases = $orders->count();
-                
+                    ->first();
 
-                // Đếm số lần đã đánh giá sản phẩm này trong các đơn hàng
-                $totalReviews = Review::where('user_id', $user->id)
-                    ->where('product_variant_id', $productVariantId)
-                    ->whereIn('order_id', $orders)
-                    ->count();
+                if ($order) {
+                    // Kiểm tra đã review chưa
+                    $hasReviewed = Review::where('user_id', $user->id)
+                        ->where('order_id', $orderId)
+                        ->where('product_variant_id', $variantId)
+                        ->exists();
 
-                $hasPurchased = $totalReviews < $totalPurchases;
+                    $hasPurchased = !$hasReviewed;
+                }
             }
         }
 
@@ -55,7 +46,11 @@ class CheckPurchase
 
         return $next($request);
     }
+
 }
+
+
+
 
 
 

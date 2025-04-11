@@ -23,8 +23,8 @@
                                                 <div class="swiper-slide">
                                                     <a class="lightbox-image" data-fancybox="gallery"
                                                         href="{{ asset('client/img/shop/product-single/1.webp') }}">
-                                                        <img src="{{ Storage::url($image->image_url ?? '') }}" width="570"
-                                                            height="541" alt="Image-HasTech">
+                                                        <img src="{{ Storage::url($image->image_url ?? '') }}"
+                                                            width="570" height="541" alt="Image-HasTech">
                                                     </a>
                                                 </div>
                                             @endforeach
@@ -136,10 +136,14 @@
                                             <div class="qty-wrap">
                                                 <div class="pro-qty">
                                                     <div class="d-flex">
-                                                        <div class= "dec qty-btn d-flex align-items-center justify-content-center">-</div>
+                                                        <div
+                                                            class= "dec qty-btn d-flex align-items-center justify-content-center">
+                                                            -</div>
                                                         <input type="text" title="Quantity" name="quantity"
                                                             value="1">
-                                                        <div class="inc qty-btn d-flex align-items-center justify-content-center">+</div>
+                                                        <div
+                                                            class="inc qty-btn d-flex align-items-center justify-content-center">
+                                                            +</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -183,16 +187,19 @@
                     <div class="product-review-tabs-content">
                         <ul class="nav product-tab-nav" id="ReviewTab" role="tablist">
                             <li role="presentation">
-                                <a id="description-tab" class="nav-link active" data-bs-toggle="pill" href="#description" role="tab"
-                                    aria-controls="description" aria-selected="true">Mô tả</a>
+                                <a id="description-tab" class="nav-link active" data-bs-toggle="pill"
+                                    href="#description" role="tab" aria-controls="description"
+                                    aria-selected="true">Mô tả</a>
                             </li>
                             <li role="presentation">
-                                <a id="reviews-tab" class="nav-link" data-bs-toggle="pill" href="#reviews" role="tab"
-                                    aria-controls="reviews" aria-selected="false">Đánh giá<span>(05)</span></a>
+                                <a id="reviews-tab" class="nav-link" data-bs-toggle="pill" href="#reviews"
+                                    role="tab" aria-controls="reviews" aria-selected="false">Đánh
+                                    giá<span>(05)</span></a>
                             </li>
                         </ul>
                         <div class="tab-content product-tab-content" id="ReviewTabContent">
-                            <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                            <div class="tab-pane fade show active" id="description" role="tabpanel"
+                                aria-labelledby="description-tab">
                                 <div class="product-description">
                                     <p>{!! $product->description !!}</p>
                                 </div>
@@ -204,7 +211,6 @@
                                         <div class="review-info">
                                             <ul class="review-rating">
                                                 @for ($i = 1; $i <= 5; $i++)
-                        
                                                     @if ($i <= floor($averageRating))
                                                         <li class="fa fa-star"></li>
                                                     @elseif ($i - $averageRating <= 0.5)
@@ -215,7 +221,7 @@
                                                 @endfor
                                             </ul>
                                             <span class="review-caption">Dựa trên {{ $totalReviews }} đánh giá</span>
-                                            
+
                                             <span class="review-write-btn">Viết bài đánh giá</span>
                                         </div>
                                     </div>
@@ -238,145 +244,171 @@
                                                         @php
                                                             $variant = $item->product_variant;
                                                             $product = $variant->product;
-                    
+
                                                         @endphp
-                                                            <form action="{{ route('reviews.store', ['product_id' => $product->id]) }}" method="POST">
-                                                                @csrf
-                                                                <div class="row">
-                                                                    {{-- Tên --}}
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label for="for_name">Họ và tên</label>
-                                                                            <input id="for_name" class="form-control" type="text" name="name"
-                                                                                value="{{ Auth::user()->name }}" readonly>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {{-- Email --}}
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label for="for_email">Email</label>
-                                                                            <input id="for_email" class="form-control" type="email" name="email"
-                                                                                value="{{ Auth::user()->email }}" readonly>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {{-- Xếp hạng --}}
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <span class="title">Xếp hạng</span>
-                                                                            <div class="review-rating" data-index="{{ $index }}">
-                                                                                <span class="star" data-value="1">&#9733;</span>
-                                                                                <span class="star" data-value="2">&#9733;</span>
-                                                                                <span class="star" data-value="3">&#9733;</span>
-                                                                                <span class="star" data-value="4">&#9733;</span>
-                                                                                <span class="star" data-value="5">&#9733;</span>
-                                                                            </div>
-                                                                            <input type="hidden" name="rating" id="rating-value-{{ $index }}">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {{-- Thông tin sản phẩm --}}
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label>Loại giày</label>
-                                                                            <input class="form-control" type="text" value="{{ $product->name }}" readonly>
-
-                                                                            <label for="">Size</label>
-                                                                            <input class="form-control" type="text" value="{{ $variant->size }}" readonly>
-
-                                                                            <label>Màu</label>
-                                                                            <div class="d-flex align-items-center">
-                                                                                <span class="color-box"
-                                                                                    style="width: 20px; height: 20px; background-color: {{ $variant->color }};
-                                                                                        display: inline-block; margin-left: 10px; border: 1px solid #ccc;
-                                                                                        border-radius: 50%;">
-                                                                                </span>
-                                                                            </div>
-
-                                                                            {{-- Hidden inputs --}}
-                                                                            <input type="hidden" name="product_variant_id" value="{{ $item->product_variant_id }}">
-                                                                            <input type="hidden" name="product_id" value="{{ $item->product_variant->product_id }}">
-                                                                            <input type="hidden" name="order_id" value="{{ $item->order_id }}">
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {{-- Mô tả --}}
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label for="for_title">Tiêu đề</label>
-                                                                            <input type="text" id="for_title" name="title" class="form-control" required>
-
-                                                                            <label for="for_comment">Mô tả Đánh giá</label>
-                                                                            <textarea id="for_comment" class="form-control" name="comment"
-                                                                                placeholder="Viết đánh giá của bạn ở đây"></textarea>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {{-- Nút gửi --}}
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-submit-btn">
-                                                                            <button type="submit" class="btn-submit">Đăng bình luận</button>
-                                                                        </div>
+                                                        <form
+                                                            action="{{ route('reviews.store', ['product_id' => $product->id]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <div class="row">
+                                                                {{-- Tên --}}
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="for_name">Họ và tên</label>
+                                                                        <input id="for_name" class="form-control"
+                                                                            type="text" name="name"
+                                                                            value="{{ Auth::user()->name }}" readonly>
                                                                     </div>
                                                                 </div>
-                                                            </form>
 
+                                                                {{-- Email --}}
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="for_email">Email</label>
+                                                                        <input id="for_email" class="form-control"
+                                                                            type="email" name="email"
+                                                                            value="{{ Auth::user()->email }}" readonly>
+                                                                    </div>
+                                                                </div>
+
+                                                                {{-- Xếp hạng --}}
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <span class="title">Xếp hạng</span>
+                                                                        <div class="review-rating"
+                                                                            data-index="{{ $index }}">
+                                                                            <span class="star"
+                                                                                data-value="1">&#9733;</span>
+                                                                            <span class="star"
+                                                                                data-value="2">&#9733;</span>
+                                                                            <span class="star"
+                                                                                data-value="3">&#9733;</span>
+                                                                            <span class="star"
+                                                                                data-value="4">&#9733;</span>
+                                                                            <span class="star"
+                                                                                data-value="5">&#9733;</span>
+                                                                        </div>
+                                                                        <input type="hidden" name="rating"
+                                                                            id="rating-value-{{ $index }}">
+                                                                    </div>
+                                                                </div>
+
+                                                                {{-- Thông tin sản phẩm --}}
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label>Loại giày</label>
+                                                                        <input class="form-control" type="text"
+                                                                            value="{{ $product->name }}" readonly>
+
+                                                                        <label for="">Size</label>
+                                                                        <input class="form-control" type="text"
+                                                                            value="{{ $item->size }}" readonly>
+
+                                                                        <label>Màu</label>
+                                                                        <div class="d-flex align-items-center">
+                                                                            <span class="color-box"
+                                                                                style="width: 20px; height: 20px; background-color: {{ $item->color }};
+                                                                                        display: inline-block; margin-left: 10px; border: 1px solid #ccc;
+                                                                                        border-radius: 50%;">
+                                                                            </span>
+                                                                        </div>
+
+                                                                        {{-- Hidden inputs --}}
+                                                                        <input type="hidden" name="product_variant_id"
+                                                                            value="{{ $item->product_variant_id }}">
+                                                                        <input type="hidden" name="product_id"
+                                                                            value="{{ $item->product_variant->product_id }}">
+                                                                        <input type="hidden" name="order_id"
+                                                                            value="{{ $item->order_id }}">
+                                                                    </div>
+                                                                </div>
+
+                                                                {{-- Mô tả --}}
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label for="for_title">Tiêu đề</label>
+                                                                        <input type="text" id="for_title"
+                                                                            name="title" class="form-control" required>
+
+                                                                        <label for="for_comment">Mô tả Đánh giá</label>
+                                                                        <textarea id="for_comment" class="form-control" name="comment" placeholder="Viết đánh giá của bạn ở đây"></textarea>
+                                                                    </div>
+                                                                </div>
+
+                                                                {{-- Nút gửi --}}
+                                                                <div class="col-md-12">
+                                                                    <div class="form-submit-btn">
+                                                                        <button type="submit" class="btn-submit">Đăng
+                                                                            bình luận</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
                                                     @endforeach
                                                 @else
                                                     <div class="alert alert-warning">
                                                         Bạn phải mua sản phẩm này trước khi để lại đánh giá.
                                                     </div>
                                                 @endif
-                                                @else
-                                                    <div class="alert alert-warning">
-                                                        Vui lòng <a href="{{ route('signin') }}">đăng nhập</a> để lại đánh giá.
-                                                    </div>
-                                                @endif
-                                                <script>
-                                                    document.addEventListener('DOMContentLoaded', function () {
-                                                    document.querySelectorAll('.review-rating').forEach(function (ratingDiv) {
+                                            @else
+                                                <div class="alert alert-warning">
+                                                    Vui lòng <a href="{{ route('signin') }}">đăng nhập</a> để lại đánh
+                                                    giá.
+                                                </div>
+                                            @endif
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function() {
+                                                    document.querySelectorAll('.review-rating').forEach(function(ratingDiv) {
                                                         const index = ratingDiv.dataset.index;
                                                         const stars = ratingDiv.querySelectorAll('.star');
                                                         const hiddenInput = document.getElementById('rating-value-' + index);
-            
-                                                        stars.forEach(function (star) {
-                                                            star.addEventListener('click', function () {
+
+                                                        stars.forEach(function(star) {
+                                                            star.addEventListener('click', function() {
                                                                 const value = this.dataset.value;
                                                                 hiddenInput.value = value;
-            
-                                                                stars.forEach(function (s) {
-                                                                    s.style.color = s.dataset.value <= value ? 'gold' : '#ccc';
+
+                                                                stars.forEach(function(s) {
+                                                                    s.style.color = s.dataset.value <= value ? 'gold' :
+                                                                        '#ccc';
                                                                 });
                                                             });
                                                         });
                                                     });
                                                 });
-                                                </script>
+                                            </script>
                                         </div>
                                     </div>
-                                    
 
-                                    <div class="reviews-content-body">     
-                                                                  
+
+                                    <div class="reviews-content-body">
+
                                         @forelse($reviews->items() as $review)
                                             <!--== Start Reviews Content Item ==-->
                                             <div class="review-item">
                                                 <ul class="review-rating">
                                                     @for ($i = 1; $i <= 5; $i++)
-                                                        <li class="fa {{ $i <= $review->rating ? 'fa-star' : 'fa-star-o' }}"></li>
+                                                        <li
+                                                            class="fa {{ $i <= $review->rating ? 'fa-star' : 'fa-star-o' }}">
+                                                        </li>
                                                     @endfor
                                                 </ul>
                                                 <h5>{{ $review->product->name ?? 'Sản phẩm không tồn tại' }}</h5>
-                                                
-                                                @if ($review->variant)
-                                                    <div style="display: flex; align-items: center; gap: 12px;">
-                                                        <p style="margin: 0;"><strong>Size:</strong> {{ $review->variant->size }}</p>
-                                                        <p style="margin: 0; display: flex; align-items: center;">
-                                                            <strong style="margin-right: 4px;">Màu:</strong>
-                                                            <span class="color-box" style="width: 20px; height: 20px; background-color: {{ $review->variant->color }}; border-radius: 50%; display: inline-block;"></span>
-                                                        </p>
-                                                    </div>
+
+                                                @php
+                                                    // Lấy thông tin từ order_items theo review
+                                                    $item = \App\Models\OrderItem::where('order_id', $review->order_id)
+                                                        ->where('product_variant_id', $review->product_variant_id)
+                                                        ->first();
+                                                @endphp
+                                                @if ($item)
+                                                <div style="display: flex; align-items: center; gap: 12px;">
+                                                    <p style="margin: 0;"><strong>Size:</strong> {{ $item->size }}</p>
+                                                    <p style="margin: 0; display: flex; align-items: center;">
+                                                        <strong style="margin-right: 4px;">Màu:</strong>
+                                                        <span class="color-box" style="width: 20px; height: 20px; background-color: {{ $item->color }}; border-radius: 50%; display: inline-block;"></span>
+                                                    </p>
+                                                </div>
                                                 @endif
                                                 <h5 class="sub-title">
                                                     <span>{{ $review->user->name ?? 'Anonymous' }}</span>
@@ -384,47 +416,47 @@
                                                 </h5>
                                                 <h3 class="title">{{ $review->title }}</h3>
                                                 <p>{{ $review->comment }}</p>
-                                                                
+
                                                 <a href="#/">Báo cáo là không phù hợp</a>
                                             </div>
                                             <!--== End Reviews Content Item ==-->
                                         @empty
                                             <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
-                                        @endforelse    
+                                        @endforelse
                                         <style>
                                             #loading-screen {
-                                            position: fixed;
-                                            top: 0;
-                                            left: 0;
-                                            width: 100%;
-                                            height: 100%;
-                                            background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
-                                            display: flex;
-                                            justify-content: center;
-                                            align-items: center;
-                                            z-index: 9999;
-                                            visibility: hidden; 
-                                        }
-                                        
-                                        .hide-loading {
-                                            visibility: hidden; 
-                                        }
+                                                position: fixed;
+                                                top: 0;
+                                                left: 0;
+                                                width: 100%;
+                                                height: 100%;
+                                                background: linear-gradient(135deg, #f5f5f5, #e0e0e0);
+                                                display: flex;
+                                                justify-content: center;
+                                                align-items: center;
+                                                z-index: 9999;
+                                                visibility: hidden;
+                                            }
+
+                                            .hide-loading {
+                                                visibility: hidden;
+                                            }
                                         </style>
                                         <script>
                                             $(document).ready(function() {
-                                            // Khi nhấn vào tab, ẩn màn hình loading
-                                            $('a[data-bs-toggle="pill"]').on('click', function() {
-                                                // Kiểm tra xem tab có đang chuyển tới "Đánh giá" không
-                                                if ($(this).attr('href') == '#reviews') {
-                                                    // Nếu chuyển tới tab đánh giá, không cần loading
-                                                    $("#loading-screen").addClass("hide-loading");
-                                                } else {
-                                                    // Nếu không phải tab đánh giá, bạn có thể thêm các xử lý khác ở đây nếu cần
-                                                    $("#loading-screen").addClass("hide-loading");
-                                                }
+                                                // Khi nhấn vào tab, ẩn màn hình loading
+                                                $('a[data-bs-toggle="pill"]').on('click', function() {
+                                                    // Kiểm tra xem tab có đang chuyển tới "Đánh giá" không
+                                                    if ($(this).attr('href') == '#reviews') {
+                                                        // Nếu chuyển tới tab đánh giá, không cần loading
+                                                        $("#loading-screen").addClass("hide-loading");
+                                                    } else {
+                                                        // Nếu không phải tab đánh giá, bạn có thể thêm các xử lý khác ở đây nếu cần
+                                                        $("#loading-screen").addClass("hide-loading");
+                                                    }
+                                                });
                                             });
-                                        });
-                                        </script>                                                                    
+                                        </script>
                                     </div>
 
                                     <!--== Start Reviews Pagination Item ==-->
@@ -476,7 +508,8 @@
                                         <div class="product-item">
                                             <div class="inner-content">
                                                 <div class="product-thumb">
-                                                    <a href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">
+                                                    <a
+                                                        href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">
                                                         <img src="{{ Storage::url($product->imageLists->first()?->image_url) }}"
                                                             width="270" height="274" alt="{{ $product->name }}">
                                                     </a>
@@ -532,7 +565,7 @@
         </div>
     </section>
     <!--== End Product Area Wrapper ==-->
-    
+
     <script>
         var cartIndexUrl = "{{ route('cart.index') }}";
         let productDiscount = @json($product->discount);
@@ -540,6 +573,9 @@
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 
 @endsection
+
+
+
 
 
 
