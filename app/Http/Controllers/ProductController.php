@@ -54,9 +54,9 @@ class ProductController extends Controller
         $products = $query->whereHas('variants')->latest('id')->paginate(10);
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
-    public function detail($id)
+    public function detail($id, $slug)
     {
-        $product = Product::with('category', 'brand', 'imageLists')->find($id);
+        $product = Product::with('category', 'brand', 'imageLists')->where('slug', $slug)->find($id);
         $nextProduct = Product::where('id', '>', $id)->orderBy('id', 'asc')->first();
 
         if (!$product) {

@@ -19,7 +19,7 @@
                     <a href="{{ route('admin-voucher.create') }}" class="btn btn-sm btn-primary"><i
                             class="fas fa-plus me-2"></i>Tạo mới</a>
                 </div>
-                <div class="table-responsive mt-3">
+                <div class="table-responsive mt-3 bg-white p-3">
                     @if ($vouchers->isNotEmpty())
                         <table class="table table-striped">
                             <thead>

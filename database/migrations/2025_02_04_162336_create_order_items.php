@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained();
-            $table->foreignId('product_variant_id')->constrained()->nullable();
+            $table->foreignId('product_variant_id')->nullable()->constrained();
 
             $table->string('product_name');
             $table->string('sku');

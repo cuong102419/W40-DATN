@@ -83,7 +83,7 @@
                         <div class="product-item">
                             <div class="inner-content">
                                 <div class="product-thumb">
-                                    <a href="{{ route('product.detail', $product->id) }}">
+                                    <a href="{{ route('product.detail', ['id' => $product->id, 'slug' =>$product->slug]) }}">
                                         @if ($product->imageLists->isNotEmpty())
                                             <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="270"
                                                 height="274" alt="{{ $product->name }}">
@@ -99,18 +99,18 @@
                                     <div class="product-action">
                                         <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
                                     </div>
-                                    <a class="banner-link-overlay" href="{{route('product.detail', $product->id)}}"></a>
+                                    <a class="banner-link-overlay" href="{{route('product.detail', ['id' => $product->id, 'slug' =>$product->slug])}}"></a>
                                 </div>
                                 <div class="product-info">
                                     <div class="category">
                                         <ul>
                                             <li><a
-                                                    href="{{route('product.detail', $product->id)}}">{{ $product->category->name ?? 'Uncategorized' }}</a>
+                                                    href="{{route('product.detail', ['id' => $product->id, 'slug' =>$product->slug])}}">{{ $product->category->name ?? 'Uncategorized' }}</a>
                                             </li>
                                         </ul>
                                     </div>
                                     <h4 class="title"><a
-                                            href="{{ route('product.detail',$product->id) }}">{{ $product->name }}</a>
+                                            href="{{ route('product.detail',['id' => $product->id, 'slug' =>$product->slug]) }}">{{ $product->name }}</a>
                                     </h4>
                                     <div class="prices">
                                         @if ($product->discount > 0)
@@ -175,7 +175,7 @@
                                         <div class="product-item">
                                             <div class="inner-content">
                                                 <div class="product-thumb">
-                                                    <a href="{{ route('product.detail', $product->id) }}">
+                                                    <a href="{{ route('product.detail', ['id' => $product->id, 'slug' =>$product->slug]) }}">
                                                         @if ($product->imageLists->isNotEmpty())
                                                             <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
                                                                 width="270" height="274" alt="{{ $product->name }}">
@@ -191,13 +191,13 @@
                                                     <div class="product-action">
                                                         <a class="btn-product-wishlist" href="#"><i class="fa fa-heart"></i></a>
                                                     </div>
-                                                    <a class="banner-link-overlay" href="{{route('product.detail', $product->id)}}"></a>
+                                                    <a class="banner-link-overlay" href="{{route('product.detail', ['id' => $product->id, 'slug' =>$product->slug])}}"></a>
                                                 </div>
                                                 <div class="product-info">
                                                     <div class="category">
                                                         <ul>
                                                             <li><a
-                                                                    href="{{route('product.detail', $product->id)}}">{{ $product->category->name ?? 'Uncategorized' }}</a>
+                                                                    href="{{route('product.detail', ['id' => $product->id, 'slug' =>$product->slug])}}">{{ $product->category->name ?? 'Uncategorized' }}</a>
                                                             </li>
                                                         </ul>
                                                     </div>

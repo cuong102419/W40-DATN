@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class ProductSeeder extends Seeder
                 'category_id' => 1,
                 'brand_id' => 1,
                 'name' => 'Giày Ultraboost 5x',
+                'slug' => Str::slug('Giày Ultraboost 5x'),
                 'description' => '<p>Đôi giày chạy bộ BOOST thế hệ mới có sử dụng chất liệu tái chế.
                                     Chinh phục kỷ lục cá nhân mới thật dễ dàng với đôi giày chạy bộ adidas này. Đế BOOST nhẹ nhất từ trước 
                                     đến nay của chúng tôi hoàn trả năng lượng liên tục trên từng cây số để bạn cảm thấy sung sức từ đầu đến
@@ -40,6 +42,7 @@ class ProductSeeder extends Seeder
                 'category_id' => 1,
                 'brand_id' => 1,
                 'name' => 'Giày Samba ORIGINALS',
+                'slug' => Str::slug('Giày Samba ORIGINALS'),
                 'description' => '<p>SAMBA ORIGINALS
                                     Ra đời trên sân bóng, giày Samba là biểu tượng kinh điển của phong cách đường phố. 
                                     Phiên bản này trung thành với di sản, thể hiện qua thân giày bằng da mềm, dáng thấp,
@@ -57,6 +60,7 @@ class ProductSeeder extends Seeder
                 'category_id' => 1,
                 'brand_id' => 3,
                 'name' => 'Giày Puma Speedcat Leather',
+                'slug' => Str::slug('Giày Puma Speedcat Leather'),
                 'description' => '<p>Speedcat mang tính biểu tượng được tái sinh trên đường phố. 
                                     Da cao cấp và thiết kế táo bạo kết hợp di sản đua xe thể thao với phong cách hiện đại. 
                                     Thương hiệu được sơn và dập nổi mang lại thái độ không thể nhầm lẫn dưới chân, trong khi lớp 
@@ -73,6 +77,7 @@ class ProductSeeder extends Seeder
                 'category_id' => 1,
                 'brand_id' => 2,
                 'name' => 'Nike Vomero 18',
+                'slug' => Str::slug('Nike Vomero 18'),
                 'description' => '<p>Đệm tối đa trong Vomero mang lại cảm giác thoải mái khi chạy hàng ngày. Chuyến đi mềm mại nhất, 
                                     đệm nhất của chúng tôi có bọt ZoomX nhẹ xếp chồng lên trên bọt ReactX nhạy cảm ở đế giữa. Thêm vào đó, kiểu kéo được 
                                     thiết kế lại mang lại sự chuyển đổi mượt mà từ gót chân sang ngón chân.</p>',
@@ -88,6 +93,7 @@ class ProductSeeder extends Seeder
                 'category_id' => 1,
                 'brand_id' => 2,
                 'name' => 'Nike Court Vision thấp',
+                'slug' => Str::slug('Nike Court Vision thấp'),
                 'description' => '<p>Yêu thích vẻ ngoài cổ điển của bóng rổ thập niên 80 nhưng có một thứ gì đó với văn hóa nhịp độ nhanh của trò chơi ngày nay?
                                     Gặp gỡ tầm nhìn của tòa án thấp. Một bản phối lại cổ điển, phần trên sắc nét và lớp phủ được khâu giữ nguyên linh hồn của phong cách ban đầu. 
                                     Cổ áo sang trọng, cắt thấp giữ cho nó bóng bẩy và thoải mái cho thế giới của bạn.</p>',
@@ -102,7 +108,8 @@ class ProductSeeder extends Seeder
             [
                 'category_id' => 2,
                 'brand_id' => 3,
-                'name' => '	Nike Luka .77 PF',
+                'name' => 'Nike Luka .77 PF',
+                'slug' => Str::slug('Nike Luka .77 PF'),
                 'description' => '<p>Được thiết kế để trở nên khó khăn như trò chơi của Luka, Luka .77 được chế tạo để giúp bạn thống trị
                                     trên các sân ngoài trời gồ ghề. Lưới có độ mài mòn cao và đế ngoài bằng cao su bền đứng vững với bê tông và đường nhựa. 
                                     Đệm Snappy Air Zoom và bọt mật độ kép nhạy cảm giúp bạn thoải mái, vì vậy bạn luôn sẵn sàng cho bất cứ nơi nào trò chơi đưa bạn.</p>',         

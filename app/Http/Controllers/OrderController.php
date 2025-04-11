@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
+use function Laravel\Prompts\error;
+
 class OrderController extends Controller
 {
     public function index()
@@ -101,6 +103,8 @@ class OrderController extends Controller
             $data['user_id'] = Auth::user()->id;
         }
 
+
+
         $orderPending = PendingOrder::create($data);
 
 
@@ -119,6 +123,12 @@ class OrderController extends Controller
                     $newImage = 'order-item/' . basename(path: $item['image']);
                     if (Storage::exists($item['image'])) {
                         Storage::copy($item['image'], $newImage);
+                    }
+                    $variant = ProductVariant::find($item['id']);
+                    if(!$variant) {
+                        return redirect()->back()->with('error', 'Không tìm thấy sản phẩm.');
+                        $order->delete();
+                        break;
                     }
                     OrderItem::create([
                         'order_id' => $order->id,
@@ -264,7 +274,11 @@ class OrderController extends Controller
         if ($voucher->min_total > $request->total) {
             return redirect()->back()->with('error', 'Đơn hàng của bạn không đủ điều kiện sử dụng mã này.');
         }
-
+        if ($voucher['type'] == 'percentage') {
+            if ($voucher['value'] > 100 || $voucher['value'] < 0) {
+                return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ.');
+            }
+        }
         session([
             'voucher' => [
                 'code' => $voucher->code,
@@ -419,7 +433,7 @@ class OrderController extends Controller
         } else {
             $orderPending->delete();
 
-            return redirect()->route('order.index')->with('error', 'Đơn hàng đã bị hủy.');
+            return redirect()->route('order.index')->with('error', 'Thanh toán không thành công.');
         }
     }
 
@@ -553,7 +567,7 @@ class OrderController extends Controller
         } else {
             $orderPending->delete();
 
-            return redirect()->route('order.index')->with('error', 'Đã hủy đơn hàng.');
+            return redirect()->route('order.index')->with('error', 'Thanh toán thất bại.');
         }
     }
 

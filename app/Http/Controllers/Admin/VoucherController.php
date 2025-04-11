@@ -30,6 +30,9 @@ class VoucherController extends Controller
 
     public function store(Request $request)
     {
+        if ($request['type'] == 'fixed' || $request['kind'] == 'shipping') {
+            $request['max_discount'] = 0;
+        }
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
             'code' => ['required', 'string', 'min:4', 'unique:vouchers,code'],
@@ -60,7 +63,7 @@ class VoucherController extends Controller
             'expiration_date.required' => 'Ngày hết hạn không được để trống.',
             'expiration_date.date' => 'Ngày hết hạn không hợp lệ.',
             'expiration_date.after_or_equal' => 'Ngày hết hạn phải từ hôm nay trở đi.',
-        ]);
+        ]);      
 
         Voucher::create($data);
 

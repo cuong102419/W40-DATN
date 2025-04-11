@@ -48,7 +48,15 @@
                                 </ul>
                             </div>
                         </div>
-                        
+                        <div class="shop-sidebar-price-range">
+                            <h4 class="sidebar-title">Lọc theo giá</h4>
+                            <div class="sidebar-price-range">
+                                <input type="text" id="amount" readonly
+                                    style="border:0; color:#000000; font-weight:bold;">
+                                <div id="price-range"></div>
+                                <button id="filter-price" class="mt-3 btn btn-theme btn-sm mt-2"><i class="fa fa-filter me-2" aria-hidden="true"></i>Lọc</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-xl-9">
@@ -115,7 +123,7 @@
                                                     <div class="product-item">
                                                         <div class="inner-content">
                                                             <div class="product-thumb">
-                                                                <a href="{{ route('product.detail', $product->id) }}">
+                                                                <a href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">
                                                                     @if ($product->imageLists->isNotEmpty())
                                                                         <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
                                                                             width="270" height="274" alt="{{ $product->name }}">
@@ -133,18 +141,18 @@
 
                                                                 </div>
                                                                 <a class="banner-link-overlay"
-                                                                    href="{{ route('product.detail', $product->id) }}"></a>
+                                                                    href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}"></a>
                                                             </div>
                                                             <div class="product-info">
                                                                 <div class="category">
                                                                     <ul>
                                                                         <li><a
-                                                                                href="{{ route('product.detail', $product->id) }}">{{ $product->category->name ?? 'Uncategorized' }}</a>
+                                                                                href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">{{ $product->category->name ?? 'Uncategorized' }}</a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
                                                                 <h4 class="title"><a
-                                                                        href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a>
+                                                                        href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">{{ $product->name }}</a>
                                                                 </h4>
                                                                 <div class="prices">
                                                                     @if ($product->discount)
@@ -179,7 +187,7 @@
                                                 <div class="product-item product-list-item">
                                                     <div class="inner-content">
                                                         <div class="product-thumb">
-                                                            <a href="{{ route('product.detail', $product->id) }}">
+                                                            <a href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">
                                                                 <img src="{{ Storage::url($product->imageLists->first()->image_url) }}"
                                                                     width="322" height="360" alt="{{ $product->name }}">
                                                             </a>
@@ -206,7 +214,7 @@
                                                             </form>
 
                                                             <a class="banner-link-overlay"
-                                                                href="{{ route('product.detail', $product->id) }}"></a>
+                                                                href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}"></a>
                                                         </div>
                                                         <div class="product-info">
                                                             <div class="category">
@@ -217,7 +225,7 @@
                                                                 </ul>
                                                             </div>
                                                             <h4 class="title"><a
-                                                                    href="{{ route('product.detail', $product->id) }}">{{ $product->name }}</a>
+                                                                    href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">{{ $product->name }}</a>
                                                             </h4>
                                                             <div class="prices">
 
