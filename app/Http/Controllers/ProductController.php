@@ -87,6 +87,7 @@ class ProductController extends Controller
             $filteredOrderItems = $orderItems->filter(function ($item) use ($user) {
                 return !Review::where('user_id', $user->id)
                     ->where('product_variant_id', $item->product_variant_id)
+                    ->where('order_id', $item->order_id) // ✅ thêm dòng này
                     ->exists();
             });
 

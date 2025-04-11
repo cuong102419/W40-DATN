@@ -30,4 +30,39 @@ class Review extends Model
     {
         return $this->belongsTo(ProductVariant::class, 'product_variant_id');
     }
+    public function orderItem()
+    {
+        return $this->hasOne(OrderItem::class, 'product_variant_id', 'product_variant_id')
+            ->where('order_id', $this->order_id);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
