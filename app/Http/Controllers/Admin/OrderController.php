@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderHistory;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Reason;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -58,7 +60,7 @@ class OrderController extends Controller
     {
         $orderItems = OrderItem::where('order_id', $order->id)->get();
         $requestCancel = Reason::where('order_id', $order->id)->where('type', 'cancel')->where('status', 'pending')->first();
-        $requestReturn = Reason::where('order_id', $order->id)->where('type', 'return')->where('status', 'pending')->first();
+        $requestReturn = Reason::where('order_id', $order->id)->where('type', 'return')->first();
         $payment_method = [
             'COD' => 'Thanh toán khi nhận hàng (COD).',
             'VNPAY' => "Thanh toán qua VNPay.",
@@ -92,6 +94,15 @@ class OrderController extends Controller
         if ($request['payment_status']) {
             $order['payment_status'] = $request['payment_status'];
             $order->save();
+
+            OrderHistory::create([
+                'order_id' => $order->id,
+                'admin_id' => Auth::user()->id,
+                'action' => 'refunded',
+                'note' => 'Cập nhật trạng thái thanh toán hoàn tiền lại khách hàng.',
+                'changed_at' => Carbon::now()
+            ]);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Cập nhật thành công.'
@@ -124,6 +135,14 @@ class OrderController extends Controller
         ]);
 
         $order->update($data);
+
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'admin_id' => Auth::user()->id,
+            'action' => 'info',
+            'note' => 'Cập nhật thông tin khách hàng trên đơn hàng.',
+            'changed_at' => Carbon::now()
+        ]);
 
         return response()->json([
             'status' => 'success',
@@ -162,6 +181,14 @@ class OrderController extends Controller
             $order->status = 'confirmed';
             $order->save();
 
+            OrderHistory::create([
+                'order_id' => $order->id,
+                'admin_id' => Auth::user()->id,
+                'action' => 'confirmed',
+                'note' => 'Xác nhận đơn hàng.',
+                'changed_at' => Carbon::now()
+            ]);
+
             $reason = Reason::where('order_id', $order->id)->first();
 
             if ($reason) {
@@ -178,6 +205,14 @@ class OrderController extends Controller
             $order->status = 'shipping';
             $order->save();
 
+            OrderHistory::create([
+                'order_id' => $order->id,
+                'admin_id' => Auth::user()->id,
+                'action' => 'shipping',
+                'note' => 'Cập nhật trạng thái đơn hàng "đang giao".',
+                'changed_at' => Carbon::now()
+            ]);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Cập nhật thành công.'
@@ -188,6 +223,14 @@ class OrderController extends Controller
             $order->update([
                 'status' => 'delivered',
                 'payment_status' => 'paid'
+            ]);
+
+            OrderHistory::create([
+                'order_id' => $order->id,
+                'admin_id' => Auth::user()->id,
+                'action' => 'delivered',
+                'note' => 'Cập nhật trạng thái đơn hàng "giao thành công".',
+                'changed_at' => Carbon::now()
             ]);
 
             foreach ($order->orderItems as $item) {
@@ -207,6 +250,14 @@ class OrderController extends Controller
             $order->status = 'shipping';
             $order->save();
 
+            OrderHistory::create([
+                'order_id' => $order->id,
+                'admin_id' => Auth::user()->id,
+                'action' => 'redeliver',
+                'note' => 'Cập nhật trạng thái đơn hàng "giao lại".',
+                'changed_at' => Carbon::now()
+            ]);
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Cập nhật thành công.'
@@ -216,13 +267,21 @@ class OrderController extends Controller
         if ($request->input('action') == 'returned') {
             $order->status = 'returned';
             $order->save();
+
+            OrderHistory::create([
+                'order_id' => $order->id,
+                'admin_id' => Auth::user()->id,
+                'action' => 'returned',
+                'note' => 'Cập nhật trạng thái đơn hàng "hoàn trả thành công".',
+                'changed_at' => Carbon::now()
+            ]);
+
             foreach ($order->orderItems as $item) {
                 $variant = ProductVariant::find($item->product_variant_id);
                 if ($variant) {
                     $variant->quantity += $item->quantity;
                     $variant->save();
                 }
-                // Product::where('id', $variant->product_id)->decrement('sales_count');
             }
 
             return response()->json([
@@ -241,6 +300,14 @@ class OrderController extends Controller
             'admin_id' => $adminId,
             'status' => 'canceled',
             'reason_cancel' => $request->reason
+        ]);
+
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'admin_id' => Auth::user()->id,
+            'action' => 'canceled',
+            'note' => 'Hủy đơn hàng.',
+            'changed_at' => Carbon::now()
         ]);
 
         if ($order->payment_method == 'COD') {
@@ -270,6 +337,14 @@ class OrderController extends Controller
             'reason_failed' => $request->reason
         ]);
 
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'admin_id' => Auth::user()->id,
+            'action' => 'failed',
+            'note' => 'Cập nhật trạng thái đơn hàng "giao hàng thất bại".',
+            'changed_at' => Carbon::now()
+        ]);
+
         return response()->json([
             'status' => 'success',
             'message' => 'Cập nhật thành công.'
@@ -281,6 +356,14 @@ class OrderController extends Controller
         $order->update([
             'status' => 'returning',
             'reason_returned' => $request->reason
+        ]);
+
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'admin_id' => Auth::user()->id,
+            'action' => 'returning_shipper',
+            'note' => 'Tạo yêu cầu hoàn lại đơn hàng.',
+            'changed_at' => Carbon::now()
         ]);
 
         if ($order->payment_method == 'COD') {
@@ -302,6 +385,14 @@ class OrderController extends Controller
             'reason_returned' => $request->reason
         ]);
 
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'admin_id' => Auth::user()->id,
+            'action' => 'returning_custom',
+            'note' => 'Xác nhận yêu cầu hoàn trả từ khách hàng.',
+            'changed_at' => Carbon::now()
+        ]);
+        
         $reason = Reason::where('order_id', $order->id)->first();
 
         if ($reason) {
@@ -309,6 +400,31 @@ class OrderController extends Controller
                 'status' => 'approved',
             ]);
         }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cập nhật thành công.'
+        ], Response::HTTP_OK);
+    }
+
+    public function cancel_return(Request $request, Reason $requestReturn) {
+        $requestReturn->update([
+            'status' => 'rejected',
+            'admin_note' => $request->reason
+        ]);
+
+        $order = Order::find($requestReturn->order_id);
+        $order->update([
+            'status' => 'completed'
+        ]);
+
+        OrderHistory::create([
+            'order_id' => $order->id,
+            'admin_id' => Auth::user()->id,
+            'action' => 'cancel-return',
+            'note' => 'Từ chối yêu cầu hoàn trả từ khách hàng.',
+            'changed_at' => Carbon::now()
+        ]);
 
         return response()->json([
             'status' => 'success',

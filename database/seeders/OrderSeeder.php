@@ -20,7 +20,6 @@ class OrderSeeder extends Seeder
             $orderCreatedAt = now()->subDays(rand(0, 730));
             $orderId = DB::table('orders')->insertGetId([
                 'user_id' => rand(2, 3),
-                'admin_id' => 1,
                 'order_code' => strtoupper($faker->unique()->bothify('ORD#######')),
                 'status' => $faker->randomElement(['completed', 'canceled']),
                 'payment_method' => $faker->randomElement(['VNPAY', 'COD', 'MOMO']),

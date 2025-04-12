@@ -4,6 +4,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HistoryController;
 use App\Http\Controllers\Admin\ImageListController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -202,7 +203,8 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/failed/{order}', [AdminOrderController::class, 'failed'])->name('admin-order.failed');
         Route::put('/return/{order}', [AdminOrderController::class, 'returned'])->name('admin-order.returned');
         Route::put('/return-confirm/{order}', [AdminOrderController::class, 'return_confirm'])->name('admin-order.return-confirm');
-
+        Route::put('/cancel-return/{requestReturn}', [AdminOrderController::class, 'cancel_return'])->name('admin-order.cancel-return');
+        Route::get('/{order}/history', [HistoryController::class, 'index'])->name('admin-order.history');
     });
 
     

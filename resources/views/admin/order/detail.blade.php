@@ -13,6 +13,7 @@
                     <div>
                         <a href="{{ route('admin-order.index') }}" class="btn btn-secondary btn-sm"><i
                                 class="fas fa-arrow-left me-2"></i>Danh sách</a>
+                        <a href="{{ route('admin-order.history', $order->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-history me-2"></i>Lịch sử</a>
                     </div>
                     <div>
                         <form action="{{ route('admin-order.status', $order->id) }}" method="post" id="confirm-order">
@@ -70,7 +71,7 @@
                                         </form>
                                     </td>
                                 </tr>
-                            @elseif ($requestReturn)
+                            @elseif ($requestReturn && $requestReturn->status == 'pending')
                                 <tr>
                                     <th>Yêu cầu hoàn trả</th>
                                     <td>
@@ -88,7 +89,25 @@
                                             @method('PUT')
                                             <input hidden name="reason" value="{{ $requestReturn->reason }}">
                                             <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Bạn có muốn hoàn đơn hàng này.')">Xác nhận hoàn đơn</button>
+                                            <a data-bs-toggle="modal" data-bs-target="#cancel-return" class="btn btn-sm btn-danger">Từ chối</a>
                                         </form>
+                                    </td>
+                                </tr>
+                            @elseif ($requestReturn && $requestReturn->status == 'rejected')
+                                <tr>
+                                    <th>Yêu cầu hoàn trả</th>
+                                    <td>
+                                        {{-- <div>
+                                            <strong>Lý do: </strong>{{ $requestReturn->reason }}
+                                        </div>
+                                        <div>
+                                            <span>Ngày tạo:
+                                                {{ $requestReturn->created_at->format('d \T\h\á\n\g m, Y') }}</span>
+                                        </div> --}}
+                                        <span class="text-danger fw-bold">Từ chối</span>
+                                    </td>
+                                    <td>
+                                        <span><strong>Lý do từ chối:</strong> {{ $requestReturn->admin_note }}</span>
                                     </td>
                                 </tr>
                             @endif
@@ -332,6 +351,31 @@
             </div>
         </div>
     </div>
+    @if ($requestReturn)
+        <div class="modal fade" id="cancel-return">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form class="cancel-return" action="{{ route('admin-order.cancel-return', $requestReturn->id) }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-header">
+                            <h6 class="modal-title">Từ chối hoàn trả</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                <textarea name="reason" class="form-control" id="" cols="20" rows="5"
+                                    placeholder="Nhập lý do từ chối"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Bạn có chắc từ chối.')">Xác nhận</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
     <script>
         $('#confirm-order button[type="submit"]').click(function() {
             let actionValue = $(this).val();

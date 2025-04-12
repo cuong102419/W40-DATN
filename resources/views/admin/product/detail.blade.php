@@ -16,7 +16,7 @@
         </div>
         <div class="row">
             <div class="table-reponsive bg-white">
-                <table class="table table-bordered mt-3">
+                <table class="table mt-3">
                     <tr>
                         <th colspan="2" class="text-center">
                             Ảnh

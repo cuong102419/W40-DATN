@@ -12,11 +12,17 @@
                     <div>
                         <h5 class="text-uppercase">Đơn hàng: {{ $order->order_code }}</h5>
                     </div>
+
                     @if ($order->status == 'delivered')          
                         <form action="{{ route('order.completed', $order->id) }}" method="POST" onsubmit="return confirm('Bạn chắc chắn đã nhận được hàng?')">
                             @csrf
                             <button type="submit" class="btn btn-theme btn-sm">Nhận hàng thành công</button>
-                        </form>        
+                        </form>
+                    @elseif (!is_null($reason) && $reason->type == 'return' && $reason->status == 'rejected')
+                        <div class="mt-4">
+                            <h6>Yêu cầu hoàn trả bị từ chối</h6>
+                            <span><strong>Lý do:</strong> {{ $reason->admin_note }}</span>
+                        </div>
                     @endif
                 </div>
                 <div class="mt-5 border p-4">
@@ -48,24 +54,21 @@
                             <tr>
                                 <td>
                                     <div class="d-flex">
-                                        <a href="{{ route('product.detail', ['id' => $item->product_variant->product_id, 'slug' => Str::slug($item->product_name)]) }}"
-                                            class="me-3">
                                             <img class="rounded" src="{{ Storage::url($item->image_url) }}"
                                                 width="200" height="110" alt="">
-                                        </a>
                                         <div class="ms-4">
-                                            <h4 class="product-title">{{ $item->product_variant->product->name }}</h4>
+                                            <h4 class="product-title">{{ $item->product_name }}</h4>
                                             <div>
-                                                <span>Mã sản phẩm: {{ $item->product_variant->product->sku }}</span>
+                                                <span>Mã sản phẩm: {{ $item->sku }}</span>
                                             </div>
                                             <div>
-                                                <span class=" me-3">Kích cỡ: {{ $item->product_variant->size }}</span>
+                                                <span class=" me-3">Kích cỡ: {{ $item->size }}</span>
                                             </div>
                                             <div class="d-flex">
                                                 <span class=" me-1">Màu:</span>
                                                 <div class="mt-1">
                                                     <span class="rounded-circle border border-secondary shadow "
-                                                        style="width: 18px; height: 18px; background-color: {{ $item->product_variant->color }}; display: inline-block;">
+                                                        style="width: 18px; height: 18px; background-color: {{ $item->color }}; display: inline-block;">
                                                     </span>
                                                 </div>
                                             </div>
