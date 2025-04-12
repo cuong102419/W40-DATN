@@ -1,7 +1,7 @@
 @extends('client.layout.master')
 
 @section('title')
-    Freak Sport
+    Giày thể thao chất
 @endsection
 
 @section('content')

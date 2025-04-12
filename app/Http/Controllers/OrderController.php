@@ -8,6 +8,7 @@ use App\Models\OrderItem;
 use App\Models\PendingOrder;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Reason;
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -117,6 +118,13 @@ class OrderController extends Controller
         $voucher = session()->get('voucher');
 
         if ($cart) {
+            foreach ($cart as $item) {
+                $variant = ProductVariant::find($item['id']);
+                if (!$variant) {
+                    return redirect()->back()->with('error', 'Sản phẩm không tồn tại.');
+                }
+            }
+
             if ($data['payment_method'] == 'COD') {
                 $order = Order::create($data);
                 foreach ($cart as $item) {
@@ -125,10 +133,8 @@ class OrderController extends Controller
                         Storage::copy($item['image'], $newImage);
                     }
                     $variant = ProductVariant::find($item['id']);
-                    if(!$variant) {
+                    if (!$variant) {
                         return redirect()->back()->with('error', 'Không tìm thấy sản phẩm.');
-                        $order->delete();
-                        break;
                     }
                     OrderItem::create([
                         'order_id' => $order->id,
@@ -243,7 +249,9 @@ class OrderController extends Controller
             'cancel' => ['value' => 'Hủy thanh toán', 'class' => 'text-danger'],
         ];
 
-        return view('client.order.detail', compact('order', 'orderItems', 'status', 'payment_method', 'payment_status'));
+        $reason = Reason::where('order_id', $order->id)->first();
+
+        return view('client.order.detail', compact('order', 'orderItems', 'status', 'payment_method', 'payment_status', 'reason'));
     }
 
     public function applyVoucher(Request $request)
@@ -505,7 +513,7 @@ class OrderController extends Controller
         $data = $request->all();
         $order_code = explode('_', $data['orderId'])[0];
         $orderPending = PendingOrder::where('order_code', $order_code)->first();
-        if(session()->has('order_code')) {
+        if (session()->has('order_code')) {
             $order = Order::where('order_code', session('order_code'))->first();
             $encryptedId = Crypt::encryptString($order->id);
             return redirect()->route('order.checkout', $encryptedId);

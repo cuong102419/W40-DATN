@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained();
             $table->foreignId('admin_id')->constrained('users');
-            $table->enum('action', ['receive', 'confirmed', 'shipped', 'delivered', 'canceled', 'returned']);
+            $table->string('action');
             $table->text('note')->nullable();
+            $table->timestamp('changed_at')->nullable();
             $table->timestamps();
         });
     }
