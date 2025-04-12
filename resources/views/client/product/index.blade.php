@@ -48,7 +48,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="shop-sidebar-price-range">
+                        {{-- <div class="shop-sidebar-price-range">
                             <h4 class="sidebar-title">Lọc theo giá</h4>
                             <div class="sidebar-price-range">
                                 <input type="text" id="amount" readonly
@@ -56,7 +56,7 @@
                                 <div id="price-range"></div>
                                 <button id="filter-price" class="mt-3 btn btn-theme btn-sm mt-2"><i class="fa fa-filter me-2" aria-hidden="true"></i>Lọc</button>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div class="col-xl-9">

@@ -29,7 +29,7 @@ class OrderController extends Controller
         $discount = 0;
         $shipping = 50000;
         $cart = session()->get('cart', []);
-
+        $userInfo = session()->get('userProfile');
         foreach ($cart as $item) {
             $subTotalOg += $item['quantity'] * $item['price'];
         }
@@ -64,7 +64,7 @@ class OrderController extends Controller
                 }
             }
         }
-        return view('client.order.index', compact('subTotal', 'discount', 'shipping', 'subTotalOg'));
+        return view('client.order.index', compact('subTotal', 'discount', 'shipping', 'subTotalOg', 'userInfo'));
     }
 
     public function create(Request $request)
@@ -104,17 +104,25 @@ class OrderController extends Controller
             $data['user_id'] = Auth::user()->id;
         }
 
-
+        if (!session()->has('userProfile')) {
+            session()->put('userProfile', [
+                'user_id' => str_replace('-', '', Str::uuid()->toString()),
+                'fullname' => $data['fullname'],
+                'address' => $request->address,
+                'phone_number' => $data['phone_number'],
+                'email' => $data['email'],
+            ]);
+        } else {
+            session()->put('userProfile', [
+                'fullname' => $data['fullname'],
+                'address' => $request->address,
+                'phone_number' => $data['phone_number'],
+                'email' => $data['email'],
+            ]);
+        }
 
         $orderPending = PendingOrder::create($data);
 
-
-        session('userProfile', [
-            'fullname' => $data['fullname'],
-            'address' => $data['address'],
-            'phone_number' => $data['phone_number'],
-            'email' => $data['email'],
-        ]);
         $voucher = session()->get('voucher');
 
         if ($cart) {
@@ -127,6 +135,7 @@ class OrderController extends Controller
 
             if ($data['payment_method'] == 'COD') {
                 $order = Order::create($data);
+
                 foreach ($cart as $item) {
                     $newImage = 'order-item/' . basename(path: $item['image']);
                     if (Storage::exists($item['image'])) {
@@ -404,7 +413,6 @@ class OrderController extends Controller
 
             $cart = session('cart', []);
 
-
             foreach ($cart as $item) {
                 $newImage = 'order-item/' . basename(path: $item['image']);
                 if (Storage::exists($item['image'])) {
@@ -538,7 +546,6 @@ class OrderController extends Controller
             ]);
 
             $cart = session('cart', []);
-
 
             foreach ($cart as $item) {
                 $newImage = 'order-item/' . basename(path: $item['image']);
