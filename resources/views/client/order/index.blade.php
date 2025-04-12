@@ -22,7 +22,7 @@
                                             <label for="l_name">Họ tên <span class="required"
                                                     title="required">*</span></label>
                                             <input id="l_name" name="fullname" type="text" class="form-control"
-                                                placeholder="Nhập họ tên." value="{{ Auth::user()->name ?? '' }}">
+                                                placeholder="Nhập họ tên." value="{{$userInfo['fullname'] ?? Auth::user()->name ?? ''  }}">
                                             @error('fullname')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror
@@ -34,7 +34,7 @@
                                                     title="required">*</span></label>
                                             <input id="phone" name="phone_number" type="phone" class="form-control"
                                                 placeholder="Nhập số điện thoại."
-                                                value="{{ Auth::user()->phone_number ?? '' }}">
+                                                value="{{ $userInfo['phone_number'] ?? Auth::user()->phone_number ?? '' }}">
                                             @error('phone_number')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror
@@ -45,7 +45,7 @@
                                             <label for="email">Địa chỉ email <span class="required"
                                                     title="required">*</span></label>
                                             <input id="email" name="email" type="email" class="form-control"
-                                                placeholder="Nhập email." value="{{ Auth::user()->email ?? '' }}">
+                                                placeholder="Nhập email." value="{{ $userInfo['email'] ?? Auth::user()->email ?? '' }}">
                                             @error('email')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror
@@ -71,7 +71,7 @@
                                                     title="required">*</span></label>
                                             <input id="street-address" name="address" type="text" class="form-control"
                                                 placeholder="Số nhà, tên đường, phường/xã...."
-                                                value="{{ Auth::user()->address ?? '' }}">
+                                                value="{{ $userInfo['address'] ?? Auth::user()->address ?? '' }}">
                                             @error('address')
                                                 <span class="text-danger small mt-2">{{ $message }}</span>
                                             @enderror

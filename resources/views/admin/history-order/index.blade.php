@@ -29,7 +29,7 @@
                                         <tr>
                                             <td class="text-center">{{  $history->changed_at->format('H:i, d \t\h\á\n\g m, Y')  }}</td>
                                             <td><span class="text-primary">{{ $history->user->email }}</span></td>
-                                            <td><span class="text-primary">{{ $history->user->role }}</span></td>
+                                            <td><span class="{{$role[$history->user->role]['class']}} fw-bold">{{ $role[$history->user->role]['value'] }}</span></td>
                                             <td><span>{{ $history->note }}</span></td>
                                             
                                         </tr>
