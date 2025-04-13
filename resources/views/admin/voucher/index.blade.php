@@ -66,8 +66,8 @@
                                                 @endif
                                             </b></td>
                                         <td>{{ $voucher->quantity }}</td>
-                                        <td>{{ $voucher->created_at->format('d \T\h\á\n\g m, Y') }}</td>
-                                        <td>{{ Carbon\Carbon::parse($voucher->expiration_date)->format('d \T\h\á\n\g m, Y') }}
+                                        <td>{{ Carbon\Carbon::parse($voucher->start_date)->format('d \t\h\á\n\g m, Y') }}</td>
+                                        <td>{{ Carbon\Carbon::parse($voucher->expiration_date)->format('d \t\h\á\n\g m, Y') }}
                                         </td>
                                         <td>
                                             <div class="d-flex">
