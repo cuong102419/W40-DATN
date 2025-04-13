@@ -24,9 +24,21 @@ class ProductController extends Controller
                 ->orWhere('sku', 'like', "%$keyword%");
         }
 
+        if($brandId = request()->brand_id){
+            $query->where('brand_id', $brandId);
+        }
+
+        if($categoryId = request()->category_id){
+            $query->where('category_id', $categoryId);
+        }
+       
         $products = $query->with('imageLists')->latest('id')->paginate(10);
 
-        return view('admin.product.index', compact('products'));
+
+        $brands = Brand::all();
+        $categories = Category::all();
+    
+        return view('admin.product.index', compact('products', 'brands', 'categories'));
     }
 
     public function create()
@@ -142,4 +154,21 @@ class ProductController extends Controller
 
         return $count ? "{$slug}-{$count}" : $slug;
     }
+
+    public function filterProducts(Request $request)
+{
+    $brandId = $request->input('brand_id');
+    $categoryId = $request->input('category_id');
+
+    $products = Product::query()
+        ->when($brandId, function ($query) use ($brandId) {
+            $query->where('brand_id', $brandId);
+        })
+        ->when($categoryId, function ($query) use ($categoryId) {
+            $query->where('category_id', $categoryId);
+        })
+        ->get();
+
+    return view('products.index', compact('products'));
+}
 }
