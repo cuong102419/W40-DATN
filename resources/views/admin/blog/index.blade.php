@@ -10,17 +10,27 @@
             <div class="bg-light rounded p-4">
                 <h6 class="mb-4">Danh sách bài viết</h6>
 
-                @if (session('success'))
-                    <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+                <div class="row">
+                    <div class="col-md-6">
+                        <form method="GET" action="{{ route('admin-blog.index') }}">
+                            <div class="d-flex align-items-center">
+                                <div class="me-2">
+                                    <label for="date">Chọn ngày:</label>
+                                    <input type="date" class="form-control form-control-sm" name="date" id="date"
+                                        value="{{ request('date') }}">
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-primary mt-3"><i class="fas fa-filter"></i> Lọc</button>
+                                </div>
+                            </div>
+                        </form>
 
-                <div class="text-end">
-                    <a href="{{ route('admin-blog.create') }}" class="btn btn-sm btn-primary">
-                        <i class="fas fa-plus me-2"></i> Thêm bài viết mới
-                    </a>
+                    </div>
+                    <div class="text-end col-md-6">
+                        <a href="{{ route('admin-blog.create') }}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus me-2"></i>Thêm mới
+                        </a>
+                    </div>
                 </div>
 
                 <div class="table-responsive mt-3">
@@ -44,7 +54,8 @@
                                         <td>{{ $blog->author }}</td>
                                         <td>
                                             @if ($blog->image_url)
-                                                <img src="{{ asset('storage/' . $blog->image_url) }}" width="100" class="rounded">
+                                                <img src="{{ asset('storage/' . $blog->image_url) }}" width="100"
+                                                    class="rounded">
                                             @else
                                                 <span class="text-muted">Không có ảnh</span>
                                             @endif
@@ -52,13 +63,14 @@
                                         <td>{{ $blog->created_at->format('d/m/Y') }}</td>
                                         <td class="text-center">
                                             <div class="d-flex justify-content-center">
-                                                <a href="{{ route('admin-blog.edit', $blog->id) }}" class="btn btn-warning btn-sm me-2" title="Sửa">
+                                                <a href="{{ route('admin-blog.edit', $blog->id) }}"
+                                                    class="btn btn-warning btn-sm me-2" title="Sửa">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <form method="POST" action="{{ route('admin-blog.delete', $blog->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Xóa" 
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Xóa"
                                                         onclick="return confirm('Bạn có chắc muốn xóa bài viết này?')">
                                                         <i class="far fa-trash-alt"></i>
                                                     </button>
@@ -78,4 +90,3 @@
         </div>
     </div>
 @endsection
-    
