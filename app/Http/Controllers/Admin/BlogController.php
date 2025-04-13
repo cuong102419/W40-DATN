@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Expr\New_;
+use PhpParser\Node\Stmt\Block;
 use Symfony\Component\HttpFoundation\Response;
 
 class BlogController extends Controller
@@ -13,8 +15,20 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        
+    $query = Blog::query();
+
+    if ($request->filled('date')) {
+        $query->whereDate('created_at', $request->date);
+    }
+
+    $blogs = $query->orderBy('created_at', 'desc')->paginate(10);
+
+   return view('admin.blog.index', compact('blogs'));
+
         $blogs = Blog::latest()->paginate(10);
         return view('admin.blog.index', compact('blogs'));
     }

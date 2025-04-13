@@ -10,9 +10,18 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function listUser()
+    public function listUser(Request $request)
     {
-        $users = User::latest('id')->where('role','user')->paginate(10);
+        
+        $query = User::query();
+
+        if ($request->status === 'confirmed') {
+            $query->whereNotNull('email_verified_at');
+        } elseif ($request->status === 'unconfirmed') {
+            $query->whereNull('email_verified_at');
+        }
+
+        $users = $query->latest('id')->where('role', 'user')->paginate(10);
         $status = [
             1 => ['value' => 'Hoạt động', 'class' => 'text-success'],
             0 => ['value' => 'Vô hiệu hóa', 'class' => 'text-danger']
@@ -33,7 +42,8 @@ class UserController extends Controller
         }
     }
 
-    public function verify(User $user) {
+    public function verify(User $user)
+    {
         if (!$user->email_verified_at) {
             $user->email_verified_at = Carbon::now()->format('d-m-Y H:i:s');
             $user->save();
