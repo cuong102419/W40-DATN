@@ -11,13 +11,33 @@ use Symfony\Component\HttpFoundation\Response;
 class VoucherController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $vouchers = Voucher::latest('id')->paginate(10);
+        // $vouchers = Voucher::latest('id')->paginate(10);
         $kind = [
             'total' => 'Giảm theo tổng đơn hàng',
             'shipping' => 'Giảm phí vận chuyển',
         ];
+
+        
+        $query = Voucher::query(); 
+
+        if ($request->has(['start_date', 'end_date'])) {
+            $request->validate([
+                'start_date' => 'required|date',
+                'end_date'   => 'required|date|after_or_equal:start_date',
+            ]);
+    
+            $start = $request->start_date;
+            $end = $request->end_date;
+    
+            $query->whereDate('start_date', '>=', $start)
+                     ->whereDate('expiration_date', '<=', $end);
+        }
+    
+        $vouchers = $query->latest('id')->paginate(10);
+    
+
         return view('admin.voucher.index', compact('vouchers', 'kind'));
     }
 
@@ -63,7 +83,7 @@ class VoucherController extends Controller
             'expiration_date.required' => 'Ngày hết hạn không được để trống.',
             'expiration_date.date' => 'Ngày hết hạn không hợp lệ.',
             'expiration_date.after_or_equal' => 'Ngày hết hạn phải từ hôm nay trở đi.',
-        ]);      
+        ]);
 
         Voucher::create($data);
 
@@ -112,7 +132,7 @@ class VoucherController extends Controller
             'expiration_date.date' => 'Ngày hết hạn không hợp lệ.',
             'expiration_date.after_or_equal' => 'Ngày hết hạn phải từ hôm nay trở đi.',
         ]);
-        
+
         $voucher->update($data);
 
         return response()->json([

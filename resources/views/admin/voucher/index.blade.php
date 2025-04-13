@@ -9,15 +9,31 @@
         <div class="col-12">
             <div class="bg-light rounded min vh-100 p-4">
                 <h6 class="mb-4">Danh sách khuyến mãi</h6>
-                @if (session('success'))
-                    <div id="alert-success" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <form action="{{ route('admin-voucher.index') }}" method="get">
+                            <div class="d-flex">
+                                <div class="me-2 d-flex align-items-center">
+                                    <div>
+                                        <label for="start">Từ ngày:</label>
+                                        <input type="date" class="form-control form-control-sm" name="start_date"
+                                            id="start" required value="{{ request('start_date') }}">
+                                    </div>
+                                    <div class="ms-2">
+                                        <label for="end">Đến ngày:</label>
+                                        <input type="date" class="form-control form-control-sm" name="end_date" value="{{ request('end_date') }}" id="end" required>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-end">
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                @endif
-                <div class="text-end">
-                    <a href="{{ route('admin-voucher.create') }}" class="btn btn-sm btn-primary"><i
-                            class="fas fa-plus me-2"></i>Tạo mới</a>
+                    <div class="text-end d-flex align-items-end">
+                        <a href="{{ route('admin-voucher.create') }}" class="btn btn-sm btn-primary"><i
+                                class="fas fa-plus me-2"></i>Tạo mới</a>
+                    </div>
                 </div>
                 <div class="table-responsive mt-3 bg-white p-3">
                     @if ($vouchers->isNotEmpty())
@@ -32,9 +48,9 @@
                                     <th>Số lượng mã</th>
                                     <th scope="col">Ngày bắt đầu</th>
                                     <th scope="col">Ngày kết thúc</th>
-                                    
 
-                                    
+
+
                                     <th scope="col" class="text-nowrap text-center" style="width:1px">Hành động</th>
                                 </tr>
                             </thead>
@@ -45,16 +61,21 @@
                                         <td>{{ $voucher->name }}</td>
                                         <td>{{ $voucher->code }}</td>
                                         <td>{{ $kind[$voucher->kind] }}</td>
-                                        <td class="text-danger"><b>{{ number_format($voucher->value) }}@if ($voucher->type == 'percentage')% @elseđ
-                                        @endif</b></td>
+                                        <td class="text-danger"><b>{{ number_format($voucher->value) }}@if ($voucher->type == 'percentage')
+                                                    % @elseđ
+                                                @endif
+                                            </b></td>
                                         <td>{{ $voucher->quantity }}</td>
                                         <td>{{ $voucher->created_at->format('d \T\h\á\n\g m, Y') }}</td>
-                                        <td>{{ Carbon\Carbon::parse($voucher->expiration_date)->format('d \T\h\á\n\g m, Y') }}</td>
+                                        <td>{{ Carbon\Carbon::parse($voucher->expiration_date)->format('d \T\h\á\n\g m, Y') }}
+                                        </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('admin-voucher.edit', $voucher->id) }}" class="btn text-primary ms-2"
-                                                    title="Sửa"><i class="fas fa-pen"></i></a>
-                                                <form method="post" action="{{ route('admin-voucher.delete', $voucher->id) }}"
+                                                <a href="{{ route('admin-voucher.edit', $voucher->id) }}"
+                                                    class="btn text-primary ms-2" title="Sửa"><i
+                                                        class="fas fa-pen"></i></a>
+                                                <form method="post"
+                                                    action="{{ route('admin-voucher.delete', $voucher->id) }}"
                                                     class="ms-2">
                                                     @csrf
                                                     @method('DELETE')
@@ -70,7 +91,7 @@
                         </table>
                         {{ $vouchers->links() }}
                     @else
-                        <h2>Chưa có thương khuyến mãi.</h2>
+                        <h2>Chưa có khuyến mãi nào.</h2>
                     @endif
                 </div>
             </div>
