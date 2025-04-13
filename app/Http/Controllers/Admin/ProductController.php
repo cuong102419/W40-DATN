@@ -155,20 +155,4 @@ class ProductController extends Controller
         return $count ? "{$slug}-{$count}" : $slug;
     }
 
-    public function filterProducts(Request $request)
-{
-    $brandId = $request->input('brand_id');
-    $categoryId = $request->input('category_id');
-
-    $products = Product::query()
-        ->when($brandId, function ($query) use ($brandId) {
-            $query->where('brand_id', $brandId);
-        })
-        ->when($categoryId, function ($query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        })
-        ->get();
-
-    return view('products.index', compact('products'));
-}
 }
