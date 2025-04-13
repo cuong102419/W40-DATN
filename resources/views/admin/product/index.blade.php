@@ -19,8 +19,31 @@
                                 <button type="submit" class="input-group-text bg-primary text-light"><i
                                         class="fas fa-search"></i></button>
                             </div>
+                        </form><br>
+
+                        <form action="{{ route('admin-product.index') }}" method="get">
+                            <div class="d-flex align-items-center">
+                                <div class="w-75 me-2 input-group-sm">
+                                    <select class="form-select" name="brand_id">
+                                        <option value="">Chọn thương hiệu</option>
+                                        @foreach($brands as $brand)
+                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                        @endforeach
+                                    </select><br>
+                                
+                                    <select class="form-select" name="category_id">
+                                        <option value="">Chọn danh mục</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <button class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button>
+                            </div>
                         </form>
+
                     </div>
+
                     <div class="col-md-8 text-end">
                         <a href="{{ route('admin-product.create') }}" class="btn btn-sm btn-primary"><i
                                 class="fas fa-plus me-1"></i>Thêm mới</a>
