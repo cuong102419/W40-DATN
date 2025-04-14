@@ -10,6 +10,17 @@
             <div class="bg-light rounded p-4">
                 <h6 class="mb-4">Danh sách bài viết</h6>
 
+                <div class="col-md-4">
+                    <form method="GET" action="{{ route('admin-blog.index') }}">
+                        <div class="input-group input-group-sm">
+                            <input class="form-control border-0" name="keyword" type="text"
+                                placeholder="Tìm kiếm tên tiêu đề - Tên tác giả" value="{{ request('keyword') }}">
+                            <button type="submit" class="input-group-text bg-primary text-light"><i
+                                    class="fas fa-search"></i></button>
+                        </div>
+                    </form><br>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6">
                         <form method="GET" action="{{ route('admin-blog.index') }}">
