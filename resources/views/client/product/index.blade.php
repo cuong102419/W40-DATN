@@ -177,7 +177,10 @@ Sản phẩm
                                             <div class="inner-content">
                                                 <div class="product-thumb">
                                                     <a href="{{ route('product.detail', ['id' => $product->id, 'slug' => $product->slug]) }}">
+                                                        {{-- <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="322" height="360" alt="{{ $product->name }}"> --}}
+                                                        @if ($product->imageLists->isNotEmpty())
                                                         <img src="{{ Storage::url($product->imageLists->first()->image_url) }}" width="322" height="360" alt="{{ $product->name }}">
+                                                        @endif
                                                     </a>
 
                                                     @if ($product->discount)
