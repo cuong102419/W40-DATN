@@ -211,6 +211,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::prefix('/review')->group(function () {
         Route::get('/', [AdminReviewController::class, 'index'])->name('admin-review.index');
         Route::put('/admin/reviews/{id}/hide', [AdminReviewController::class, 'hide'])->name('admin-review.hide');
+        Route::get('/admin/reviews/{id}', [AdminReviewController::class, 'show'])->name('admin-review.show');
     });
     
     Route::prefix('/staff')->middleware([CheckManager::class])->group(function () {
