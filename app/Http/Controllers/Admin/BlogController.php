@@ -18,18 +18,19 @@ class BlogController extends Controller
     public function index(Request $request)
     {
 
-        
-    $query = Blog::query();
+        $keyword = $request->input('keyword');
 
-    if ($request->filled('date')) {
-        $query->whereDate('created_at', $request->date);
-    }
+        $query = Blog::query();
+        if ($keyword) {
+            $query->where('title', 'LIKE', "%{$keyword}%")
+                ->orWhere('author', 'LIKE', "%{$keyword}%");
+        }
 
-    $blogs = $query->orderBy('created_at', 'desc')->paginate(10);
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
 
-   return view('admin.blog.index', compact('blogs'));
-
-        $blogs = Blog::latest()->paginate(10);
+        $blogs = $query->latest('id')->paginate(10);
         return view('admin.blog.index', compact('blogs'));
     }
 
