@@ -54,7 +54,8 @@ class ProductController extends Controller
         $products = $query->whereHas('variants')->latest('id')->paginate(10);
         return view('client.product.index', compact('products', 'categories', 'brands'));
     }
-    public function detail($id, $slug)
+
+    public function detail(Request $request, $id, $slug)
     {
         $product = Product::with('category', 'brand', 'imageLists')->where('slug', $slug)->find($id);
         $nextProduct = Product::where('id', '>', $id)->orderBy('id', 'asc')->first();
@@ -63,6 +64,8 @@ class ProductController extends Controller
             return abort(404);
         }
 
+        $ratingFilter = $request->query('rating');
+
         $user = Auth::user();
         $order = null;
         $variant = null;
@@ -70,7 +73,6 @@ class ProductController extends Controller
         $hasPurchased = false;
 
         if ($user) {
-            // Lấy tất cả các OrderItem mà user đã mua có chứa product này
             $orderItems = OrderItem::with('product_variant')
                 ->whereHas('order', function ($q) use ($user) {
                     $q->where('user_id', $user->id)
@@ -83,30 +85,34 @@ class ProductController extends Controller
 
             $hasPurchased = $orderItems->isNotEmpty();
 
-            // Lọc các orderItems mà user chưa review biến thể đó (bỏ kiểm tra theo order_id)
             $filteredOrderItems = $orderItems->filter(function ($item) use ($user) {
                 return !Review::where('user_id', $user->id)
                     ->where('product_variant_id', $item->product_variant_id)
-                    ->where('order_id', $item->order_id) // ✅ thêm dòng này
+                    ->where('order_id', $item->order_id)
                     ->exists();
             });
 
-            $orderItems = $filteredOrderItems; // Gán lại danh sách đã lọc
+            $orderItems = $filteredOrderItems;
             $order = $filteredOrderItems->first()?->order;
             $variant = $filteredOrderItems->first()?->product_variant;
         }
+
         $allReviews = Review::where('product_id', $id)
             ->where('status', true)
             ->get();
 
         $averageRating = round($allReviews->avg('rating'), 1);
         $totalReviews = $allReviews->count();
-        $reviews = Review::where('product_id', $id)
 
+        $reviews = Review::where('product_id', $id)
             ->where('status', true)
+            ->when($ratingFilter, function ($query) use ($ratingFilter) {
+                $query->where('rating', $ratingFilter);
+            })
             ->with(['user', 'variant'])
             ->latest()
-            ->paginate(5);
+            ->paginate(5)
+            ->appends(['rating' => $ratingFilter]);
 
         $products = Product::with('category', 'brand', 'imageLists')->get();
 
@@ -118,20 +124,20 @@ class ProductController extends Controller
             'reviews',
             'order',
             'variant',
-            'orderItems', //Truyền biến này vào view
+            'orderItems',
             'hasPurchased',
             'averageRating',
-            'totalReviews'
+            'totalReviews',
+            'ratingFilter'
         ));
     }
-
-
 
     public function product($id)
     {
         $product = Product::with('variants')->find($id);
         return view('product-detail', compact('product'));
     }
+
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');

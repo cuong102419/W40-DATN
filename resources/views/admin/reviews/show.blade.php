@@ -26,10 +26,53 @@
             <p><strong>Nội dung:</strong> {{ $review->comment }}</p>
 
             
-
+            <p>
+                <strong>Trạng thái:</strong>
+                @if ($review->status)
+                    <span class="badge bg-success">Hiển thị</span>
+                @else
+                    <span class="badge bg-danger">Đang ẩn</span>
+                @endif
+            </p>
+            
             <p><strong>Ngày đánh giá:</strong> {{ $review->created_at->format('d/m/Y H:i') }}</p>
         </div>
     </div>
 
     <a href="{{ route('admin-review.index') }}" class="btn btn-secondary mt-3">Quay lại</a>
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
