@@ -7,9 +7,28 @@
             <a href="{{ route('dashboard.index') }}"
                 class="nav-item nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}"><i
                     class="fas fa-chart-bar"></i> Dashboard</a>
+                    
             <a href="{{ route('admin-order.index') }}"
                 class="nav-item nav-link {{ request()->routeIs('admin-order.index') || request()->routeIs('admin-order.detail') ? 'active' : '' }}"><i
                     class="fas fa-receipt"></i> Đơn hàng</a>
+
+            @if (Auth::user()->role == 'manager')
+                <div class="nav-item dropdown">
+                    <a href="#"
+                        class="nav-link dropdown-toggle {{ request()->routeIs('admin.user') ? 'active' : '' }}"
+                        data-bs-toggle="dropdown"><i class="fas fa-user-cog"></i> Người dùng</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="{{ route('admin.user') }}"
+                            class="dropdown-item {{ request()->routeIs('admin.user') ? 'active' : '' }}">Khách hàng</a>
+                        <a href="{{ route('admin-staff.index') }}" class="dropdown-item">Nhân viên</a>
+                    </div>
+                </div>
+            @else
+                <a href="{{ route('admin.user') }}"
+                    class="nav-item nav-link {{ request()->routeIs('admin.user') ? 'active' : '' }}"><i
+                        class="fas fa-user-cog"></i> Người dùng</a>
+            @endif
+
             <div class="nav-item dropdown">
                 <a href="#"
                     class="nav-link dropdown-toggle {{ request()->routeIs('admin-category.index') || request()->routeIs('admin-category.create') ? 'active' : '' }}"
@@ -23,6 +42,7 @@
                         mới</a>
                 </div>
             </div>
+
             <div class="nav-item dropdown">
                 <a href="#"
                     class="nav-link dropdown-toggle {{ request()->routeIs('admin-brand.index') || request()->routeIs('admin-brand.create') ? 'active' : '' }}"
@@ -37,6 +57,7 @@
                         mới</a>
                 </div>
             </div>
+
             <div class="nav-item dropdown">
                 <a href="#"
                     class="nav-link dropdown-toggle {{ request()->routeIs('admin-product.index') || request()->routeIs('admin-product.create') ? 'active' : '' }}"
@@ -81,23 +102,6 @@
                         mới</a>
                 </div>
             </div>
-
-            @if (Auth::user()->role == 'manager')
-                <div class="nav-item dropdown">
-                    <a href="#"
-                        class="nav-link dropdown-toggle {{ request()->routeIs('admin.user') ? 'active' : '' }}"
-                        data-bs-toggle="dropdown"><i class="fas fa-user-cog"></i> Người dùng</a>
-                    <div class="dropdown-menu bg-transparent border-0">
-                        <a href="{{ route('admin.user') }}"
-                            class="dropdown-item {{ request()->routeIs('admin.user') ? 'active' : '' }}">Khách hàng</a>
-                        <a href="{{ route('admin-staff.index') }}" class="dropdown-item">Nhân viên</a>
-                    </div>
-                </div>
-            @else
-                <a href="{{ route('admin.user') }}"
-                    class="nav-item nav-link {{ request()->routeIs('admin.user') ? 'active' : '' }}"><i
-                        class="fas fa-user-cog"></i> Người dùng</a>
-            @endif
 
             <a href="{{ route('admin-review.index') }}"
                 class="nav-item nav-link {{ request()->routeIs('admin-review.index') ? 'active' : '' }}"><i

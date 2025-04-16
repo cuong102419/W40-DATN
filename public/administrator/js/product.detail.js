@@ -1,4 +1,39 @@
+// no reload 
+$(document).ready(function () {
+    $('#rating').on('change', function () {
+        let rating = $(this).val();
+        $.ajax({
+            url: window.location.href.split('?')[0], 
+            type: 'GET',
+            data: { rating: rating },
+            beforeSend: function () {
+                $('#review-list').html('<p>Đang tải đánh giá...</p>');
+            },
+            success: function (data) {
+                let html = $(data).find('#review-list').html();
+                $('#review-list').html(html);
+            },
+            error: function () {
+                $('#review-list').html('<p>Không thể tải đánh giá. Vui lòng thử lại sau.</p>');
+            }
+        });
+    });
+})
 
+//--------------------------------------------------
+$(document).ready(function() {
+    // Khi nhấn vào tab, ẩn màn hình loading
+    $('a[data-bs-toggle="pill"]').on('click', function() {
+        // Kiểm tra xem tab có đang chuyển tới "Đánh giá" không
+        if ($(this).attr('href') == '#reviews') {
+            // Nếu chuyển tới tab đánh giá, không cần loading
+            $("#loading-screen").addClass("hide-loading");
+        } else {
+            // Nếu không phải tab đánh giá, bạn có thể thêm các xử lý khác ở đây nếu cần
+            $("#loading-screen").addClass("hide-loading");
+        }
+    });
+});
 document.addEventListener("DOMContentLoaded", function () {
     const stars = document.querySelectorAll(".review-rating .star");
     const ratingInput = document.getElementById("rating-value");
@@ -34,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
 // quantity product
 document.addEventListener("DOMContentLoaded", function () {
     let selectedColor = null;
@@ -84,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
 });
+
 // --------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
     let selectedColor = null;
@@ -223,3 +260,21 @@ $(document).ready(function () {
         });
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -208,22 +208,38 @@
                                 <div class="product-review-content">
                                     <div class="review-content-header">
                                         <h3>Đánh giá của khách hàng</h3>
-                                        <div class="review-info">
-                                            <ul class="review-rating">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    @if ($i <= floor($averageRating))
-                                                        <li class="fa fa-star"></li>
-                                                    @elseif ($i - $averageRating <= 0.5)
-                                                        <li class="fa fa-star-half-o"></li>
-                                                    @else
-                                                        <li class="fa fa-star-o"></li>
-                                                    @endif
-                                                @endfor
-                                            </ul>
-                                            <span class="review-caption">Dựa trên {{ $totalReviews }} đánh giá</span>
-
+                                        
+                                        <div class="review-info d-flex align-items-center justify-content-between flex-wrap" style="gap: 16px;">
+                                            <div class="d-flex align-items-center" style="gap: 12px;">
+                                                <ul class="review-rating mb-0">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($i <= floor($averageRating))
+                                                            <li class="fa fa-star"></li>
+                                                        @elseif ($i - $averageRating <= 0.5)
+                                                            <li class="fa fa-star-half-o"></li>
+                                                        @else
+                                                            <li class="fa fa-star-o"></li>
+                                                        @endif
+                                                    @endfor
+                                                </ul>
+                                                <span class="review-caption mb-0" style="margin-top: 15px; margin-left: -10px;" >Dựa trên {{ $totalReviews }} đánh giá</span>
+                                            </div>
+                                        
+                                            <form id="filter-rating-form" class="mb-3">
+                                                <label for="rating">Lọc theo số sao:</label>
+                                                <select name="rating" id="rating" class="form-select" style="width: 150px; display: inline-block;">
+                                                    <option value="">Tất cả</option>
+                                                    @for ($i = 5; $i >= 1; $i--)
+                                                        <option value="{{ $i }}" {{ request('rating') == $i ? 'selected' : '' }}>
+                                                            {{ $i }} sao
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                            </form>                                            
+                                            
                                             <span class="review-write-btn">Viết bài đánh giá</span>
                                         </div>
+                                        
                                     </div>
 
                                     <!--== Start Reviews Form Item ==-->
@@ -381,9 +397,10 @@
                                     </div>
 
 
-                                    <div class="reviews-content-body">
+                                    <div class="reviews-content-body" id="review-list">
 
                                         @forelse($reviews->items() as $review)
+                                        
                                             <!--== Start Reviews Content Item ==-->
                                             <div class="review-item">
                                                 <ul class="review-rating">
@@ -417,7 +434,7 @@
                                                 <h3 class="title">{{ $review->title }}</h3>
                                                 <p>{{ $review->comment }}</p>
 
-                                                <a href="#/">Báo cáo là không phù hợp</a>
+                                                
                                             </div>
                                             <!--== End Reviews Content Item ==-->
                                         @empty
@@ -442,23 +459,11 @@
                                                 visibility: hidden;
                                             }
                                         </style>
-                                        <script>
-                                            $(document).ready(function() {
-                                                // Khi nhấn vào tab, ẩn màn hình loading
-                                                $('a[data-bs-toggle="pill"]').on('click', function() {
-                                                    // Kiểm tra xem tab có đang chuyển tới "Đánh giá" không
-                                                    if ($(this).attr('href') == '#reviews') {
-                                                        // Nếu chuyển tới tab đánh giá, không cần loading
-                                                        $("#loading-screen").addClass("hide-loading");
-                                                    } else {
-                                                        // Nếu không phải tab đánh giá, bạn có thể thêm các xử lý khác ở đây nếu cần
-                                                        $("#loading-screen").addClass("hide-loading");
-                                                    }
-                                                });
-                                            });
-                                        </script>
+                                      
                                     </div>
 
+                                
+                                    
                                     <!--== Start Reviews Pagination Item ==-->
                                     <div class="review-pagination">
                                         {{ $reviews->links('pagination::bootstrap-4') }}
@@ -573,6 +578,20 @@
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
