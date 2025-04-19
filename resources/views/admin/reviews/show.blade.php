@@ -34,7 +34,24 @@
                         <p><strong>Tiêu đề:</strong> <span class="text-muted">{{ $review->title }}</span></p>
                         <p><strong>Nội dung:</strong> <span class="text-muted">{{ $review->comment }}</span></p>
                     </div>
-
+                    @if ($review->images)
+                        <div class="mb-3">
+                            <p><strong>Hình ảnh đánh giá:</strong></p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                @foreach (json_decode($review->images) as $image)
+                                    <img src="{{ Storage::url($image) }}" alt="Hình ảnh đánh giá"
+                                        style="max-width: 150px; border-radius: 5px; border: 1px solid #ccc; cursor: pointer;"
+                                        onclick="openImageModal(this.src)">
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                    <div id="imageModal" onclick="closeImageModal()"
+                        style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; 
+                       background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center;">
+                        <img id="modalImage" src="" alt="Zoom ảnh"
+                            style="max-width: 90%; max-height: 90%; border-radius: 8px;">
+                    </div>
                     <div class="mb-3">
                         <p><strong>Trạng thái:</strong>
                             @if ($review->status)
@@ -54,7 +71,7 @@
                     <a href="{{ route('admin-review.index') }}" class="btn btn-outline-secondary">
                         <i class="fa fa-arrow-left me-1"></i> Quay lại
                     </a>
-
             </div>
         </div>
     @endsection
+    <script src="{{ asset('administrator/js/product.detail.js') }}"></script>

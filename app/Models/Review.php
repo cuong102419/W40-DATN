@@ -9,8 +9,10 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'product_id', 'rating', 'title', 'comment', 'status','order_id','product_variant_id'];
-
+    protected $fillable = ['user_id', 'product_id', 'rating', 'title', 'comment', 'status','order_id','product_variant_id','images'];
+    protected $casts = [
+        'images' => 'array', // Chuyển đổi cột images thành array khi lấy ra
+    ];
     // Quan hệ với User
     public function user()
     {

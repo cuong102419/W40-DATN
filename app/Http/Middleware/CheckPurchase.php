@@ -15,36 +15,46 @@ class CheckPurchase
     {
         $user = Auth::user();
         $hasPurchased = false;
+        $unreviewedVariants = [];
 
         if ($user) {
-            $variantId = $request->input('product_variant_id');
+           
             $orderId = $request->input('order_id');
 
-            if ($variantId && $orderId) {
+            if ($orderId) {
                 // Kiểm tra đơn hàng thuộc về user và có chứa variant này
                 $order = Order::where('id', $orderId)
                     ->where('user_id', $user->id)
                     ->where('status', 'completed')
-                    ->whereHas('orderItems', function ($query) use ($variantId) {
-                        $query->where('product_variant_id', $variantId);
-                    })
                     ->first();
 
-                if ($order) {
-                    // Kiểm tra đã review chưa
-                    $hasReviewed = Review::where('user_id', $user->id)
-                        ->where('order_id', $orderId)
-                        ->where('product_variant_id', $variantId)
-                        ->exists();
 
-                    $hasPurchased = !$hasReviewed;
+                if ($order) {
+                    // Lấy tất cả các orderItems và kiểm tra xem có bị đánh giá chưa
+                    $orderItems = $order->orderItems;
+                    foreach ($orderItems as $orderItem) {
+                        $variantId = $orderItem->product_variant_id;
+
+                        // Kiểm tra đã review chưa cho mỗi biến thể
+                        $hasReviewed = Review::where('user_id', $user->id)
+                            ->where('order_id', $orderId)
+                            ->where('product_variant_id', $variantId)
+                            ->exists();
+
+                        // Nếu chưa đánh giá, thêm vào danh sách sản phẩm chưa được đánh giá
+                        if (count($unreviewedVariants) > 0) {
+                            $hasPurchased = true;
+                        }
+                    }
                 }
             }
         }
 
-        View::share('hasPurchased', $hasPurchased);
+        // Chia sẻ biến hasPurchased vào tất cả các view
+            View::share('hasPurchased', $hasPurchased);
+            View::share('unreviewedVariants', $unreviewedVariants);
 
-        return $next($request);
+            return $next($request);
     }
 
 }
