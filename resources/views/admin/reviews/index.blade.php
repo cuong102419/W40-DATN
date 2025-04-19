@@ -6,16 +6,24 @@
 @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
 @endif
-<form action="{{ route('admin-review.index') }}" method="GET" class="row g-3 mb-4">
+<form action="{{ route('admin-review.index') }}" method="GET" class="row align-items-end g-3 mb-4 p-3 shadow-sm rounded border bg-light">
+    <!-- Tìm theo mã đơn hàng -->
     <div class="col-md-4">
-        <input type="text" name="order_code" class="form-control" placeholder="Tìm theo mã đơn hàng..." value="{{ request('order_code') }}">
+        <label for="order_code" class="form-label fw-semibold">Mã đơn hàng</label>
+        <input type="text" name="order_code" class="form-control" placeholder="Nhập mã đơn hàng..." value="{{ request('order_code') }}">
     </div>
-    <div class="col-md-3"> 
+
+    <!-- Tìm theo ngày đánh giá -->
+    <div class="col-md-3">
+        <label for="review_date" class="form-label fw-semibold">Ngày đánh giá</label>
         <input type="date" name="review_date" class="form-control" value="{{ request('review_date') }}">
     </div>
-    <div class="col-md-2"> 
+
+    <!-- Tìm theo số sao -->
+    <div class="col-md-2">
+        <label for="rating" class="form-label fw-semibold">Số sao</label>
         <select name="rating" class="form-select">
-            <option value="">Tất cả số sao</option>
+            <option value="">Tất cả</option>
             @for ($i = 5; $i >= 1; $i--)
                 <option value="{{ $i }}" {{ request('rating') == $i ? 'selected' : '' }}>
                     {{ $i }} sao
@@ -23,14 +31,18 @@
             @endfor
         </select>
     </div>
-    
-    <div class="col-md-1"  style="width: 100px;"> 
-        <button type="submit" class="btn btn-primary btn-sm w-100">Tìm kiếm</button>
+
+    <!-- Nút Tìm kiếm -->
+    <div class="col-md-1 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100">Lọc</button>
     </div>
-    <div class="col-md-1"> 
-        <a href="{{ route('admin-review.index') }}" class="btn btn-secondary btn-sm w-100">Reset</a>
+
+    <!-- Nút Reset -->
+    <div class="col-md-1 d-flex align-items-end">
+        <a href="{{ route('admin-review.index') }}" class="btn btn-outline-secondary w-100">Reset</a>
     </div>
 </form>
+
 
 
 <table class="table table-striped">
@@ -81,18 +93,93 @@
     </tbody>
 </table>
 <style>
-.comment-column {
-    max-width: 300px;
-    max-height: 100px;
-    overflow-y: auto;
-    word-wrap: break-word;
-    white-space: normal;
-    padding-right: 5px;
-    scrollbar-width: thin;
-    scrollbar-color: #ccc transparent;
-}
+    table.table {
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
 
+    table.table thead th {
+        background-color: #f8f9fa;
+        text-align: center;
+        vertical-align: middle;
+        padding: 12px;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    table.table tbody td {
+        background-color: #ffffff;
+        vertical-align: middle;
+        padding: 12px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .table-striped tbody tr:nth-child(odd) td {
+        background-color: #f4f6f9;
+    }
+
+    .fa-star, .fa-star-o {
+        margin-right: 2px;
+        font-size: 16px;
+    }
+
+    .btn-sm {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+        border-radius: 4px;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+        border-radius: 12px;
+    }
+
+    .comment-column {
+        max-width: 300px;
+        max-height: 100px;
+        overflow-y: auto;
+        word-wrap: break-word;
+        white-space: normal;
+        padding-right: 5px;
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+    }
+
+    .form-control, .form-select {
+        border-radius: 6px;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5c636a;
+    }
+
+    h2 {
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
 </style>
+
 
 {{ $reviews->links() }} <!-- Phân trang -->
 @endsection
