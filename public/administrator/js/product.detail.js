@@ -1,3 +1,73 @@
+
+// image review
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[type="file"][name="images[]"]').forEach(function(input) {
+        input.addEventListener('change', function(event) {
+            // Lấy id của input, ví dụ: for_images_2 -> 2
+            const inputId = input.id;
+            const index = inputId.split('_').pop(); // lấy số cuối cùng
+            const previewContainer = document.getElementById('preview-' + index);
+            previewContainer.innerHTML = ''; // Clear cũ
+
+            const files = event.target.files;
+
+            if (files.length > 3) {
+                alert("Chỉ được chọn tối đa 3 ảnh.");
+                input.value = ''; // Reset input
+                return;
+            }
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.height = '100px';
+                    img.style.marginRight = '10px';
+                    img.style.borderRadius = '6px';
+                    img.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+                    previewContainer.appendChild(img);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    });
+});
+// click imagee
+function openImageModal(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    modal.style.display = 'flex';
+    modalImg.src = src;
+}
+
+function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+    document.getElementById('modalImage').src = '';
+}
+// rating
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.review-rating').forEach(function(ratingDiv) {
+        const index = ratingDiv.dataset.index;
+        const stars = ratingDiv.querySelectorAll('.star');
+        const hiddenInput = document.getElementById('rating-value-' + index);
+
+        stars.forEach(function(star) {
+            star.addEventListener('click', function() {
+                const value = this.dataset.value;
+                hiddenInput.value = value;
+
+                stars.forEach(function(s) {
+                    s.style.color = s.dataset.value <= value ? 'gold' :
+                        '#ccc';
+                });
+            });
+        });
+    });
+});
 // no reload 
 $(document).ready(function () {
     $('#rating').on('change', function () {

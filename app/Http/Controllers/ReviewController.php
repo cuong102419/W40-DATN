@@ -24,15 +24,16 @@ class ReviewController extends Controller
             'rating' => 'required|integer|min:1|max:5',
             'title' => 'required|string|max:255',
             'comment' => 'required|string|max:1500',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
         ]);
-    
+
         // Thêm đoạn này ngay sau validate
         if (!$request->filled('order_id') || !$request->filled('product_variant_id')) {
             return back()->with('error', 'Thiếu thông tin sản phẩm hoặc đơn hàng.');
         }
-    
+
         $user = Auth::user();
-    
+
         // Kiểm tra đơn hàng có thuộc về user và chứa sản phẩm đó không
         $order = Order::where('id', $request->order_id)
             ->where('user_id', $user->id)
@@ -41,21 +42,35 @@ class ReviewController extends Controller
                 $query->where('product_variant_id', $request->product_variant_id);
             })
             ->first();
-    
+
         if (!$order) {
             return back()->with('error', 'Bạn không thể đánh giá sản phẩm này cho đơn hàng đã chọn.');
         }
-    
+
         // Kiểm tra đã đánh giá chưa
         $alreadyReviewed = Review::where('user_id', $user->id)
             ->where('product_variant_id', $request->product_variant_id)
             ->where('order_id', $request->order_id)
             ->exists();
-    
+
         if ($alreadyReviewed) {
             return back()->with('error', 'Bạn đã đánh giá sản phẩm này cho đơn hàng này rồi.');
         }
-    
+        // Xử lý hình ảnh nếu có
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            $images = $request->file('images');
+
+            // Kiểm tra số lượng ảnh không vượt quá 3
+            if (count($images) > 3) {
+                return back()->with('error', 'Bạn chỉ được tải lên tối đa 3 ảnh.');
+            }
+
+            foreach ($images as $image) {
+                $path = $image->store('reviews', 'public'); 
+                $imagePaths[] = $path;
+            }
+        }
         // Tạo đánh giá
         Review::create([
             'user_id' => $user->id,
@@ -65,11 +80,12 @@ class ReviewController extends Controller
             'rating' => $request->rating,
             'title' => $request->title,
             'comment' => $request->comment,
+            'images' => json_encode($imagePaths), // Lưu các đường dẫn ảnh dưới dạng JSON
         ]);
-    
+
         return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi.');
     }
-     
+
 
 
     /**

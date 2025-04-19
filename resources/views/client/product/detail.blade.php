@@ -208,8 +208,9 @@
                                 <div class="product-review-content">
                                     <div class="review-content-header">
                                         <h3>Đánh giá của khách hàng</h3>
-                                        
-                                        <div class="review-info d-flex align-items-center justify-content-between flex-wrap" style="gap: 16px;">
+
+                                        <div class="review-info d-flex align-items-center justify-content-between flex-wrap"
+                                            style="gap: 16px;">
                                             <div class="d-flex align-items-center" style="gap: 12px;">
                                                 <ul class="review-rating mb-0">
                                                     @for ($i = 1; $i <= 5; $i++)
@@ -222,24 +223,28 @@
                                                         @endif
                                                     @endfor
                                                 </ul>
-                                                <span class="review-caption mb-0" style="margin-top: 15px; margin-left: -10px;" >Dựa trên {{ $totalReviews }} đánh giá</span>
+                                                <span class="review-caption mb-0"
+                                                    style="margin-top: 15px; margin-left: -10px;">Dựa trên
+                                                    {{ $totalReviews }} đánh giá</span>
                                             </div>
-                                        
+
                                             <form id="filter-rating-form" class="mb-3">
                                                 <label for="rating">Lọc theo số sao:</label>
-                                                <select name="rating" id="rating" class="form-select" style="width: 150px; display: inline-block;">
+                                                <select name="rating" id="rating" class="form-select"
+                                                    style="width: 150px; display: inline-block;">
                                                     <option value="">Tất cả</option>
                                                     @for ($i = 5; $i >= 1; $i--)
-                                                        <option value="{{ $i }}" {{ request('rating') == $i ? 'selected' : '' }}>
+                                                        <option value="{{ $i }}"
+                                                            {{ request('rating') == $i ? 'selected' : '' }}>
                                                             {{ $i }} sao
                                                         </option>
                                                     @endfor
                                                 </select>
-                                            </form>                                            
-                                            
+                                            </form>
+
                                             <span class="review-write-btn">Viết bài đánh giá</span>
                                         </div>
-                                        
+
                                     </div>
 
                                     <!--== Start Reviews Form Item ==-->
@@ -264,7 +269,7 @@
                                                         @endphp
                                                         <form
                                                             action="{{ route('reviews.store', ['product_id' => $product->id]) }}"
-                                                            method="POST">
+                                                            method="POST" enctype="multipart/form-data">
                                                             @csrf
                                                             <div class="row">
                                                                 {{-- Tên --}}
@@ -328,7 +333,15 @@
                                                                                         border-radius: 50%;">
                                                                             </span>
                                                                         </div>
-
+                                                                        <div class="form-group">
+                                                                            <label for="for_images">Tải lên hình ảnh sản
+                                                                                phẩm bạn đã nhận (tối đa 3 ảnh)</label>
+                                                                            <input type="file" name="images[]"
+                                                                                class="form-control image-input"
+                                                                                id="for_images_{{ $index }}" multiple>
+                                                                            <div class="image-preview mt-2"
+                                                                                id="preview-{{ $index }}"></div>
+                                                                        </div>
                                                                         {{-- Hidden inputs --}}
                                                                         <input type="hidden" name="product_variant_id"
                                                                             value="{{ $item->product_variant_id }}">
@@ -372,27 +385,7 @@
                                                     giá.
                                                 </div>
                                             @endif
-                                            <script>
-                                                document.addEventListener('DOMContentLoaded', function() {
-                                                    document.querySelectorAll('.review-rating').forEach(function(ratingDiv) {
-                                                        const index = ratingDiv.dataset.index;
-                                                        const stars = ratingDiv.querySelectorAll('.star');
-                                                        const hiddenInput = document.getElementById('rating-value-' + index);
-
-                                                        stars.forEach(function(star) {
-                                                            star.addEventListener('click', function() {
-                                                                const value = this.dataset.value;
-                                                                hiddenInput.value = value;
-
-                                                                stars.forEach(function(s) {
-                                                                    s.style.color = s.dataset.value <= value ? 'gold' :
-                                                                        '#ccc';
-                                                                });
-                                                            });
-                                                        });
-                                                    });
-                                                });
-                                            </script>
+                                            
                                         </div>
                                     </div>
 
@@ -400,7 +393,6 @@
                                     <div class="reviews-content-body" id="review-list">
 
                                         @forelse($reviews->items() as $review)
-                                        
                                             <!--== Start Reviews Content Item ==-->
                                             <div class="review-item">
                                                 <ul class="review-rating">
@@ -419,27 +411,51 @@
                                                         ->first();
                                                 @endphp
                                                 @if ($item)
-                                                <div style="display: flex; align-items: center; gap: 12px;">
-                                                    <p style="margin: 0;"><strong>Size:</strong> {{ $item->size }}</p>
-                                                    <p style="margin: 0; display: flex; align-items: center;">
-                                                        <strong style="margin-right: 4px;">Màu:</strong>
-                                                        <span class="color-box" style="width: 20px; height: 20px; background-color: {{ $item->color }}; border-radius: 50%; display: inline-block;"></span>
-                                                    </p>
-                                                </div>
+                                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                                        <p style="margin: 0;"><strong>Size:</strong> {{ $item->size }}
+                                                        </p>
+                                                        <p style="margin: 0; display: flex; align-items: center;">
+                                                            <strong style="margin-right: 4px;">Màu:</strong>
+                                                            <span class="color-box"
+                                                                style="width: 20px; height: 20px; background-color: {{ $item->color }}; border-radius: 50%; display: inline-block;"></span>
+                                                        </p>
+                                                    </div>
                                                 @endif
                                                 <h5 class="sub-title">
                                                     <span>{{ $review->user->name ?? 'Anonymous' }}</span>
-                                                    no <span>{{ $review->created_at->format('M d, Y') }}</span>
+                                                    on <span>{{ $review->created_at->format('M d, Y') }}</span>
                                                 </h5>
                                                 <h3 class="title">{{ $review->title }}</h3>
                                                 <p>{{ $review->comment }}</p>
 
+                                                {{-- Hiển thị ảnh nếu có --}}
+                                                @if ($review->images)
+                                                    <div class="review-images">
+                                                        @foreach (json_decode($review->images) as $image)
+                                                            <img src="{{ Storage::url($image) }}" alt="Hình ảnh đánh giá"
+                                                                class="review-image"
+                                                                onclick="openImageModal(this.src)"
+                                                                style="max-width: 150px; margin: 5px; border-radius: 5px; cursor: pointer;">
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+
                                                 
+                                                <div id="imageModal" onclick="closeImageModal()" 
+                                                    style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; 
+                                                            background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center;">
+                                                    <img id="modalImage" src="" alt="Phóng to ảnh" 
+                                                        style="max-width: 90%; max-height: 90%; border-radius: 8px;">
+                                                </div>
                                             </div>
                                             <!--== End Reviews Content Item ==-->
                                         @empty
                                             <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
                                         @endforelse
+                                        <script>
+                                            
+                                        </script>
+
                                         <style>
                                             #loading-screen {
                                                 position: fixed;
@@ -458,12 +474,24 @@
                                             .hide-loading {
                                                 visibility: hidden;
                                             }
+
+                                            .review-images {
+                                                display: flex;
+                                                flex-wrap: wrap;
+                                                gap: 10px;
+                                            }
+
+                                            .review-image {
+                                                max-height: 100px;
+                                                object-fit: cover;
+                                            }
                                         </style>
-                                      
+
                                     </div>
 
-                                
-                                    
+
+
+
                                     <!--== Start Reviews Pagination Item ==-->
                                     <div class="review-pagination">
                                         {{ $reviews->links('pagination::bootstrap-4') }}
@@ -578,23 +606,3 @@
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
 
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
