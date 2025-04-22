@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\BrandChange;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Product;
@@ -40,7 +41,8 @@ class BrandController extends Controller
             'name.regex'    => 'Tên thương hiệu không hợp lệ.'
         ]);
 
-        Brand::create($data);
+        $brand = Brand::create($data);
+        event(new BrandChange($brand));
 
         if ($request->ajax()) {
             return response()->json([
@@ -69,6 +71,7 @@ class BrandController extends Controller
         ]);
 
         $brand->update($data);
+        event(new BrandChange($brand));
 
         if ($request->ajax()) {
             return response()->json([
@@ -83,6 +86,7 @@ class BrandController extends Controller
     public function destroy(Brand $brand)
     {
         $brand->delete();
+        event(new BrandChange($brand));
         return redirect()->back()->with('success', 'Xóa thành công.');
     }
 }

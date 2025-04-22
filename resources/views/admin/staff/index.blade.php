@@ -86,4 +86,5 @@
                 </div>
             </div>
         </div>
+        @vite('resources/js/user.js')
     @endsection

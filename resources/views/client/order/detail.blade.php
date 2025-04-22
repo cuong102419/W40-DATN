@@ -278,5 +278,7 @@
             </div>
         </div>
     </div>
+    <script> const orderId = {{ $order->id }} </script>
     <script src="{{ asset('client/js/order.js') }}"></script>
+    @vite('resources/js/order/status.js')
 @endsection

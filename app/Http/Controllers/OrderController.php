@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OrderChange;
+use App\Events\OrderCreate;
 use App\Mail\Checkout;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -157,6 +159,8 @@ class OrderController extends Controller
                         'unit_price' => $item['price']
                     ]);
                 }
+                
+                event(new OrderCreate);
 
                 if ($voucher) {
                     Voucher::where('code', $voucher['code'])->decrement('quantity', 1);
@@ -431,6 +435,7 @@ class OrderController extends Controller
                 ]);
             }
 
+            event(new OrderCreate);
             $voucher = session()->get('voucher');
 
             if ($voucher) {
@@ -564,6 +569,8 @@ class OrderController extends Controller
                     'unit_price' => $item['price']
                 ]);
             }
+
+            event(new OrderCreate);
             $voucher = session()->get('voucher');
 
             if ($voucher) {
@@ -594,6 +601,8 @@ class OrderController extends Controller
         $order->update([
             'status' => 'completed'
         ]);
+        event(new OrderChange($order->id));
+
         return redirect()->back()->with('success', 'Đơn hàng đã được hoàn thành.');
     }
 }

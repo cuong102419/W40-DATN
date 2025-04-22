@@ -33,9 +33,8 @@
                         <div class="mb-3">
                             <label for="" class="form-label">Danh mục</label>
                             <select class="form-select" name="category_id" id="">
-                                <option value="" disabled>Chọn danh mục</option>
                                 @foreach ($categories as $item)
-                                    <option {{ $product->category_id == $item->id ?? 'selected' }}  value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option {{ $product->category_id == $item->id ? 'selected' : '' }}  value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger error-category mt-2"></span>
@@ -43,9 +42,8 @@
                         <div class="mb-3">
                             <label for="" class="form-label">Thương hiệu</label>
                             <select class="form-select" name="brand_id" id="">
-                                <option value="" disabled>Chọn thương hiệu</option>
                                 @foreach ($brands as $item)
-                                    <option {{ $product->brand_id == $item->id ?? 'selected' }} value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option {{ $product->brand_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                             <span class="text-danger error-brand mt-2"></span>

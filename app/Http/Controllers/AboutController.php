@@ -11,7 +11,7 @@ class AboutController extends Controller
     //
     public function index()
     {
-        $reviews = Review::latest()->take(3)->get(); // Lấy 3 đánh giá mới nhất
+        $reviews = Review::latest('id')->take(3)->get();
         return view('client.about.index', compact('reviews'));
     }
 }

@@ -14,7 +14,7 @@
                     <div class="col-md-4">
                         <form method="GET" action="{{ route('admin-product.index') }}">
                             <div class="input-group input-group-sm">
-                                <input class="form-control border-0" name="keyword" type="text"
+                                <input class="form-control" name="keyword" type="text"
                                     placeholder="Tìm kiếm mã hoặc tên sản phẩm" value="{{ request('keyword') }}">
                                 <button type="submit" class="input-group-text bg-primary text-light"><i
                                         class="fas fa-search"></i></button>
@@ -50,7 +50,7 @@
                             class="fas fa-plus me-1"></i>Thêm mới</a>
                 </div>
 
-                <div class="table-responsive">
+                <div class="table-responsive bg-white p-2">
                     @if ($products->isNotEmpty())
                         <table class="table table-striped">
                             <thead>
@@ -59,6 +59,7 @@
                                     <th scope="col">Mã sản phẩm</th>
                                     <th scope="col">Hình ảnh</th>
                                     <th scope="col">Tên sản phẩm</th>
+                                    <th>Số biến thể</th>
                                     <th>Số lượng</th>
                                     <th>Lượt bán</th>
                                     <th>Thương hiệu</th>
@@ -80,6 +81,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $product->name }}</td>
+                                        <td>{{ $product->variants->count() }}</td>
                                         <td>{{ $product->variants->sum('quantity') }}</td>
                                         <td>{{ $product->sales_count }}</td>
                                         <td>{{ $product->brand->name }}</td>
@@ -112,4 +114,5 @@
             </div>
         </div>
     </div>
+    @vite('resources/js/product/list.js')
 @endsection

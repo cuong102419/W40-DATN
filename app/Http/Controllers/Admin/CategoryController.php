@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\CategoryChange;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -38,7 +39,8 @@ class CategoryController extends Controller
             'name.regex' => 'Tên danh mục không hợp lệ.'
         ]);
 
-        Category::create($data);
+        $category = Category::create($data);
+        event(new CategoryChange($category));
 
         return response()->json([
             'status' => 'success',
@@ -63,6 +65,7 @@ class CategoryController extends Controller
         ]);
 
         $category->update($data);
+        event(new CategoryChange($category));
 
         if ($request->ajax()) {
             return response()->json([
@@ -78,6 +81,7 @@ class CategoryController extends Controller
     {
         try {
             $category->delete();
+            event(new CategoryChange($category));
             return redirect()->back()->with('success', 'Xóa thành công!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Xóa không thành công!');

@@ -91,10 +91,11 @@
                         </table>
                         {{ $vouchers->links() }}
                     @else
-                        <h2>Chưa có khuyến mãi nào.</h2>
-                    @endif
+                        <h4 class="text-center">Chưa có khuyến mãi nào.</h4 class="text-center">
+                    @endif 
                 </div>
             </div>
         </div>
     </div>
+    @vite('resources/js/voucher.js')
 @endsection

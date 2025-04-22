@@ -13,7 +13,7 @@
                     <div class="col-md-4">
                         <form method="GET" action="{{ route('admin-brand.index') }}">
                             <div class="input-group input-group-sm">
-                                <input class="form-control border-0" name="keyword" type="text"
+                                <input class="form-control" name="keyword" type="text"
                                     placeholder="Tìm kiếm thương hiệu theo tên">
                                 <button type="submit" class="input-group-text bg-primary text-light"><i
                                         class="fas fa-search"></i></button>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
 
-                <div class="table-responsive mt-3">
+                <div class="table-responsive mt-3 bg-white p-3">
                     @if ($brands->isNotEmpty())
                         <table class="table table-striped">
                             <thead>
@@ -43,7 +43,7 @@
                                     <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
                                         <td>{{ $brand->name }}</td>
-                                        <td>{{ $brand->products->count() }}</td>
+                                        <td >{{ $brand->products->count() }}</td>
                                         <td>{{ $brand->created_at->format('d-m-Y') }}</td>
                                         <td>
                                             <div class="d-flex">
@@ -75,4 +75,5 @@
             </div>
         </div>
     </div>
+    @vite('resources/js/brand.js')
 @endsection

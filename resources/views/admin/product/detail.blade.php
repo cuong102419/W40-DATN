@@ -112,6 +112,7 @@
         </div>
     </div>
     <script>
+        const productId = {{ $product->id }};
         document.getElementById("uploadImage").addEventListener("change", function () {
             let fileCount = this.files.length;
             let displayText = fileCount > 0 ? fileCount + " tệp" : "Chọn ảnh";
@@ -156,5 +157,5 @@
             });
         });
     </script>
-
+    @vite('resources/js/product/detail.js')
 @endsection

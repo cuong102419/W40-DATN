@@ -75,13 +75,13 @@
                                         <td class="text-center">
                                             <div class="d-flex justify-content-center">
                                                 <a href="{{ route('admin-blog.edit', $blog->id) }}"
-                                                    class="btn btn-warning btn-sm me-2" title="Sửa">
+                                                    class="btn text-primary me-2" title="Sửa">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
                                                 <form method="POST" action="{{ route('admin-blog.delete', $blog->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Xóa"
+                                                    <button type="submit" class="btn text-danger" title="Xóa"
                                                         onclick="return confirm('Bạn có chắc muốn xóa bài viết này?')">
                                                         <i class="far fa-trash-alt"></i>
                                                     </button>
@@ -100,4 +100,5 @@
             </div>
         </div>
     </div>
+    @vite('resources/js/blog.js')
 @endsection

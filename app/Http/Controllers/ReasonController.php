@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\RequestOrder;
 use App\Models\Order;
 use App\Models\OrderCancellation;
 use App\Models\Reason;
@@ -47,6 +48,8 @@ class ReasonController extends Controller
             'order_id' => $order->id,
             'user_id' => $order->user_id,
         ]);
+        event(new RequestOrder($order->id));
+
         return response()->json([
             'status' => 'success',
             'message' => 'Gửi yêu cầu thành công.'
@@ -74,6 +77,7 @@ class ReasonController extends Controller
         }
         $data['type'] = 'return';
         Reason::create($data);
+        event(new RequestOrder($order->id));
         return response()->json([
             'status' => 'success',
             'message' => 'Gửi yêu cầu thành công.'

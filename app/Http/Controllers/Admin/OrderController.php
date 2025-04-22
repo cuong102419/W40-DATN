@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\OrderChange;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderHistory;
@@ -94,6 +95,7 @@ class OrderController extends Controller
         if ($request['payment_status']) {
             $order['payment_status'] = $request['payment_status'];
             $order->save();
+            event(new OrderChange($order->id));
 
             OrderHistory::create([
                 'order_id' => $order->id,
@@ -135,6 +137,7 @@ class OrderController extends Controller
         ]);
 
         $order->update($data);
+        event(new OrderChange($order->id));
 
         OrderHistory::create([
             'order_id' => $order->id,
@@ -180,6 +183,7 @@ class OrderController extends Controller
 
             $order->status = 'confirmed';
             $order->save();
+            event(new OrderChange($order->id));
 
             OrderHistory::create([
                 'order_id' => $order->id,
@@ -204,6 +208,7 @@ class OrderController extends Controller
         if ($request->input('action') == 'shipping') {
             $order->status = 'shipping';
             $order->save();
+            event(new OrderChange($order->id));
 
             OrderHistory::create([
                 'order_id' => $order->id,
@@ -224,6 +229,7 @@ class OrderController extends Controller
                 'status' => 'delivered',
                 'payment_status' => 'paid'
             ]);
+            event(new OrderChange($order->id));
 
             OrderHistory::create([
                 'order_id' => $order->id,
@@ -249,6 +255,7 @@ class OrderController extends Controller
         if ($request->input('action') == 'redeliver') {
             $order->status = 'shipping';
             $order->save();
+            event(new OrderChange($order->id));
 
             OrderHistory::create([
                 'order_id' => $order->id,
@@ -267,6 +274,7 @@ class OrderController extends Controller
         if ($request->input('action') == 'returned') {
             $order->status = 'returned';
             $order->save();
+            event(new OrderChange($order->id));
 
             OrderHistory::create([
                 'order_id' => $order->id,
@@ -301,6 +309,7 @@ class OrderController extends Controller
             'status' => 'canceled',
             'reason_cancel' => $request->reason
         ]);
+        event(new OrderChange($order->id));
 
         OrderHistory::create([
             'order_id' => $order->id,
@@ -336,6 +345,7 @@ class OrderController extends Controller
             'status' => 'failed',
             'reason_failed' => $request->reason
         ]);
+        event(new OrderChange($order->id));
 
         OrderHistory::create([
             'order_id' => $order->id,
@@ -357,6 +367,7 @@ class OrderController extends Controller
             'status' => 'returning',
             'reason_returned' => $request->reason
         ]);
+        event(new OrderChange($order->id));
 
         OrderHistory::create([
             'order_id' => $order->id,
@@ -384,6 +395,7 @@ class OrderController extends Controller
             'status' => 'returning',
             'reason_returned' => $request->reason
         ]);
+        event(new OrderChange($order->id));
 
         OrderHistory::create([
             'order_id' => $order->id,
@@ -417,6 +429,7 @@ class OrderController extends Controller
         $order->update([
             'status' => 'completed'
         ]);
+        event(new OrderChange($order->id));
 
         OrderHistory::create([
             'order_id' => $order->id,

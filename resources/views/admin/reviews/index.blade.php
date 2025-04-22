@@ -34,7 +34,7 @@
 
     <!-- Nút Tìm kiếm -->
     <div class="col-md-1 d-flex align-items-end">
-        <button type="submit" class="btn btn-primary w-100">Lọc</button>
+        <button type="submit" class="btn btn-primary">Lọc</button>
     </div>
 
     <!-- Nút Reset -->
@@ -154,15 +154,6 @@
     .form-control:focus, .form-select:focus {
         border-color: #86b7fe;
         box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-    }
-
-    .btn-primary {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-    }
-
-    .btn-primary:hover {
-        background-color: #0b5ed7;
     }
 
     .btn-secondary {

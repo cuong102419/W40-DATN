@@ -602,7 +602,10 @@
     <script>
         var cartIndexUrl = "{{ route('cart.index') }}";
         let productDiscount = @json($product->discount);
+        const productId = {{ $id }}
     </script>
     <script src="{{ asset('administrator/js/product.detail.js') }}"></script>
+    @vite('resources/js/product/detail.js')
+    @vite('resources/js/product-variant.js')
 
 @endsection

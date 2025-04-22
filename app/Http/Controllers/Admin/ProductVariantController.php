@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ProductChange;
+use App\Events\ProductVariantChange;
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -67,8 +69,8 @@ class ProductVariantController extends Controller
             'color.unique' => 'Màu sắc và kích cỡ này đã tồn tại cho sản phẩm này.'
         ]);
 
-
-        ProductVariant::create($data);
+        $variant = ProductVariant::create($data);
+        event(new ProductVariantChange($variant->product_id,$variant));
 
         if ($request->ajax()) {
             return response()->json([
@@ -119,7 +121,9 @@ class ProductVariantController extends Controller
                 'price' => $data['price'],
                 'color' => $data['color'],
             ]);
+
         $variant->update($data);
+        event(new ProductVariantChange($variant->product_id,$variant));
 
         if ($request->ajax()) {
             return response()->json([
@@ -139,7 +143,10 @@ class ProductVariantController extends Controller
                 $item->product_variant_id = null;
                 $item->save();
             }
+
             $variant->delete();
+            event(new ProductVariantChange($variant->product_id,$variant));
+
             return redirect()->back()->with('success', 'Xóa biến thể thành công.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');

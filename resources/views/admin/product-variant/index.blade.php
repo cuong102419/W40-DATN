@@ -46,6 +46,7 @@
                                             <div class="d-flex">
                                                 <a href="{{ route('product-variant.edit', [$product->id, $variant->id], ) }}"
                                                     class="btn text-primary ms-2" title="Sửa"><i class="fas fa-pen"></i></a>
+                                            @if ($variant->quantity <= 0)
                                                 <form action="{{ route('product-variant.delete', $variant->id) }}" method="post"
                                                     class="ms-2">
                                                     @csrf
@@ -54,6 +55,7 @@
                                                         onclick="return confirm('Bạn có muốn xóa biến thể này.')"><i
                                                             class="fas fa-trash-alt"></i></button>
                                                 </form>
+                                            @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -68,4 +70,6 @@
             </div>
         </div>
     </div>
+    <script> const productId = {{ $product->id }} </script>
+    @vite('resources/js/product-variant.js')
 @endsection
