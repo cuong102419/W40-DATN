@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\BlogChange;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use Illuminate\Http\Request;
@@ -42,19 +43,29 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title' => 'required|string|min:3|max:255',
-            'content' => 'required|string|min:10',
-            'author' => 'required|string|min:3|max:100',
-            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'title' => ['required', 'string', 'min:3', 'max:255'],
+            'content' => ['required' ,'string' ,'min:10'],
+            'author' => ['required' ,'string' ,'min:3' ,'max:100'],
+            'image_url' => ['required' ,'image' ,'mimes:jpeg,png,jpg,gif' ,'max:2048'],
+        ], [
+            'title.required' => 'Không được để trống.',
+            'title.string' => 'Không được chứa ký tự đặc biệt.',
+            'title.min' => 'Tối thiểu 3 ký tự.',
+            'content.required' => 'Không được để trống.',
+            'content.string' => 'Không được chứa ký tự đặc biệt.',
+            'content.min' => 'Tối thiểu 10 ký tự.',
+            'author.required' => 'Không được để trống.',
+            'author.string' => 'Không được chứa ký tự đặc biệt.',
+            'author.min' => 'Tối thiểu 3 ký tự.',
+            'image_url.required' => 'Không được để trống.',
         ]);
 
         if ($request->hasFile('image_url')) {
             $data['image_url'] = $request->file('image_url')->store('uploads/blogs', 'public');
         }
 
-
-
         $blog = Blog::create($data);
+        event(new BlogChange($blog));
 
         return response()->json([
             'status' => 'success',
@@ -86,6 +97,7 @@ class BlogController extends Controller
         }
 
         $blog->update($data);
+        event(new BlogChange($blog));
 
         return redirect()->route('admin-blog.index')->with('success', 'Bài viết đã được cập nhật!');
     }
@@ -95,6 +107,7 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
         Storage::disk('public')->delete($blog->image_url);
         $blog->delete();
+        event(new BlogChange($blog));
 
         return redirect()->route('admin-blog.index')->with('success', 'Bài viết đã được xóa!');
     }

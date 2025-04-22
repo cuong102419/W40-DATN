@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\UserChange;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ class UserController extends Controller
         try {
             $user->status = $request->status;
             $user->save();
+            event(new UserChange);
             return redirect()->back()->with('success', 'Cập nhật thành công.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Có lỗi xảy ra, vui lòng thử lại.');
@@ -47,6 +49,7 @@ class UserController extends Controller
         if (!$user->email_verified_at) {
             $user->email_verified_at = Carbon::now()->format('d-m-Y H:i:s');
             $user->save();
+            event(new UserChange);
         }
 
         return redirect()->back()->with('success', 'Xác nhận thành công.');

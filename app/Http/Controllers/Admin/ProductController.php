@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ProductChange;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
@@ -73,7 +74,8 @@ class ProductController extends Controller
 
         $data['slug'] = $this->slug($data['name']);
 
-        Product::create($data);
+        $product = Product::create($data);
+        event(new ProductChange($product->id, $product));
 
         if ($request->ajax()) {
             return response()->json([
@@ -96,7 +98,6 @@ class ProductController extends Controller
     {
         $brands = Brand::all();
         $categories = Category::all();
-
         return view('admin.product.edit', compact('product', 'brands', 'categories'));
     }
 
@@ -129,6 +130,7 @@ class ProductController extends Controller
 
         $product->update($data);
 
+        event(new ProductChange($product->id, $product));
 
         return response()->json([
             'status' => 'success',
@@ -140,7 +142,7 @@ class ProductController extends Controller
     {
         try {
             $product->delete();
-
+            event(new ProductChange($product->id, $product));
             return redirect()->back()->with('success', 'Xóa sản phẩm thành công.');
         } catch (\Throwable $th) {
             return redirect()->route('admin-product.index')->with('error', 'Xóa sản phẩm thất bại.');

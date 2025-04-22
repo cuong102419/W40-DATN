@@ -7,7 +7,7 @@
 @section('content')
     <div class="row g-4">
         <div class="col-12">
-            <div class="bg-light rounded h-100 p-4">
+            <div class="bg-light rounded vh-100 p-4">
                 <h6 class="mb-4">Lịch sử cập nhật đơn hàng</h6>
                 <div>
                     <a href="{{ route('admin-order.detail', $order->id) }}" class="btn btn-sm btn-secondary"><i

@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+    <meta name="user-id" content="{{ auth()->id() }}">
     <div class="row g-4">
         <div class="col-12">
             <div class="bg-light rounded h-100 p-4">
@@ -377,10 +378,13 @@
         </div>
     @endif
     <script>
+        const orderId = {{ $order->id }}
         $('#confirm-order button[type="submit"]').click(function() {
             let actionValue = $(this).val();
             $('#confirm-order input[name="action"]').val(actionValue);
         });
     </script>
     <script src="{{ asset('administrator/js/order.js') }}"></script>
+    @vite('resources/js/order/request.js')
+    @vite('resources/js/order/status.js')
 @endsection

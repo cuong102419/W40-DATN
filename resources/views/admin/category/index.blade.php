@@ -13,7 +13,7 @@
                     <div class="col-md-4">
                         <form method="GET" action="{{ route('admin-category.index') }}">
                             <div class="input-group input-group-sm">
-                                <input class="form-control border-0" name="keyword" type="text"
+                                <input class="form-control" name="keyword" type="text"
                                     placeholder="Tìm kiếm danh mục theo tên">
                                 <button type="submit" class="input-group-text bg-primary text-light"><i
                                         class="fas fa-search"></i></button>
@@ -25,7 +25,7 @@
                                 class="fas fa-plus me-2"></i>Tạo mới</a>
                     </div>
                 </div>
-                <div class="table-responsive mt-3">
+                <div class="table-responsive mt-3 bg-white p-3">
                     @if ($categories->isNotEmpty())
                         <table class="table table-striped">
                             <thead>
@@ -74,5 +74,5 @@
             </div>
         </div>
     </div>
-
+    @vite('resources/js/category.js')
 @endsection

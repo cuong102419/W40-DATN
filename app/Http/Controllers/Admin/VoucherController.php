@@ -85,7 +85,8 @@ class VoucherController extends Controller
             'expiration_date.after_or_equal' => 'Ngày hết hạn phải từ hôm nay trở đi.',
         ]);
 
-        Voucher::create($data);
+        $voucher = Voucher::create($data);
+        event(new \App\Events\Voucher($voucher));
 
         return response()->json([
             'status' => 'success',
@@ -134,6 +135,7 @@ class VoucherController extends Controller
         ]);
 
         $voucher->update($data);
+        event(new \App\Events\Voucher($voucher));
 
         return response()->json([
             'status' => 'success',
@@ -146,6 +148,7 @@ class VoucherController extends Controller
     public function destroy(Voucher $voucher)
     {
         $voucher->delete();
+        event(new \App\Events\Voucher($voucher));
         return redirect()->back()->with('success', 'Xóa thành công.');
     }
 }

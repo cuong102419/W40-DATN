@@ -100,4 +100,5 @@
                 </div>
             </div>
         </div>
+        @vite('resources/js/order/list.js')
 @endsection

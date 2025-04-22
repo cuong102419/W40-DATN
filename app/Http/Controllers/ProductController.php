@@ -120,6 +120,7 @@ class ProductController extends Controller
 
         return view('client.product.detail', compact(
             'product',
+            'id',
             'products',
             'reviews',
             'order',
