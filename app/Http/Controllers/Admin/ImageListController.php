@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ProductChange;
 use App\Http\Controllers\Controller;
 use App\Models\ImageList;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,7 +48,8 @@ class ImageListController extends Controller
                 ]);
             }
         }
-
+        $product = Product::where('id', $data['product_id'])->first();
+        event(new ProductChange($product->id, $product));
         if ($request->ajax()) {
             return response()->json([
                 'status'    => 'success',
@@ -66,6 +69,8 @@ class ImageListController extends Controller
 
         $image->delete();
 
+        $product = Product::where('id', $image->product_id)->first();
+        event(new ProductChange($product->id, $product));
 
         return redirect()->back()->with('success', 'Xóa thành công.');
     }

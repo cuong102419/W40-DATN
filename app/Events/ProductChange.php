@@ -21,6 +21,7 @@ class ProductChange implements ShouldBroadcast
     {
         $this->productId = $productId;
         $this->product = $product;
+        $this->dontBroadcastToCurrentUser();
     }
     public function broadcastOn():array
     {
