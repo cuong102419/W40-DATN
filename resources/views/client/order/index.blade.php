@@ -177,15 +177,15 @@
                                         <th colspan="2">Tổng cộng</th>
                                         <td>{{ number_format($subTotalOg) }}đ</td>
                                     </tr>
+                                    <tr class="shipping">
+                                        <th colspan="2">Shipping</th>
+                                        <td>{{ number_format($shipping, 0, '.', '.') }}</td>
+                                    </tr>
                                     <tr class="">
                                         <th colspan="2">Giảm giá</th>
                                         <td>
                                             {{ number_format($discount) }}đ
                                         </td>
-                                    </tr>
-                                    <tr class="shipping">
-                                        <th colspan="2">Shipping</th>
-                                        <td>{{ number_format($shipping, 0, '.', '.') }}</td>
                                     </tr>
                                     <tr class="order-total">
                                         <th colspan="2">

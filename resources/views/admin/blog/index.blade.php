@@ -18,7 +18,7 @@
                             <button type="submit" class="input-group-text bg-primary text-light"><i
                                     class="fas fa-search"></i></button>
                         </div>
-                    </form><br>
+                    </form>
                 </div>
 
                 <div class="row">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\RequestOrder;
+use App\Models\ImageReturn;
 use App\Models\Order;
 use App\Models\OrderCancellation;
 use App\Models\Reason;
@@ -56,11 +57,36 @@ class ReasonController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function uploadFile(Request $request, $filename)
+    {
+        $uploadFiles = [];
+        if ($request->hasFile($filename)) {
+            $files = is_array($request->file($filename)) ? $request->file($filename) : [$request->file($filename)];
+
+            foreach ($files as $file) {
+                $path = $file->store('images/products');
+                $uploadFiles[] = $path;
+            }
+        }
+
+        return $uploadFiles;
+    }
+
     public function returned(Request $request)
     {
-        $data = $request->all();
+        $data = $request->except('image');
         $order = Order::find($data['order_id']);
         $reason = Reason::where('order_id', $order->id)->where('type', 'return')->exists();
+
+        $image = $request->validate([
+            'image' => ['required', 'array',],
+            'image.*' => ['required', 'image'],
+        ], [
+            'image.required' => 'Không được để trống.',
+            'image.array' => 'Dữ liệu gửi lên không hợp lệ.',
+            'image.*.required' => 'Không được để trống.',
+            'image.*.image' => 'Tệp không hợp lệ.'
+        ]);
 
         if ($order->status != 'delivered') {
             return response()->json([
@@ -76,7 +102,18 @@ class ReasonController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
         $data['type'] = 'return';
-        Reason::create($data);
+        $reason = Reason::create($data);
+
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $file) {
+                $path = $file->store('reason-return', 'public');
+
+                ImageReturn::create([
+                    'reason_id' => $reason->id,
+                    'image' => $path
+                ]);
+            }
+        }
         event(new RequestOrder($order->id));
         return response()->json([
             'status' => 'success',

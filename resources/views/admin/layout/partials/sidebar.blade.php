@@ -7,20 +7,28 @@
             <a href="{{ route('dashboard.index') }}"
                 class="nav-item nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}"><i
                     class="fas fa-chart-bar"></i> Dashboard</a>
-                    
-            <a href="{{ route('admin-order.index') }}"
-                class="nav-item nav-link {{ request()->routeIs('admin-order.index') || request()->routeIs('admin-order.detail') ? 'active' : '' }}"><i
-                    class="fas fa-receipt"></i> Đơn hàng</a>
+
+            <div class="nav-item dropdown">
+                <a href="#"
+                    class="nav-link dropdown-toggle {{ request()->routeIs('admin-order.index') || request()->routeIs('admin-order.return-request') ? 'active' : '' }}"  data-bs-toggle="dropdown"><i
+                        class="fas fa-receipt"></i> Đơn hàng</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="{{ route('admin-order.index') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-order.index') ? 'active' : '' }}">Danh
+                        sách</a>
+                    <a href="{{ route('admin-order.return-request') }}"
+                        class="dropdown-item {{ request()->routeIs('admin-order.return-request') ? 'active' : '' }}">Yêu cầu hoàn trả</a>
+                </div>
+            </div>
 
             @if (Auth::user()->role == 'manager')
                 <div class="nav-item dropdown">
-                    <a href="#"
-                        class="nav-link dropdown-toggle {{ request()->routeIs('admin.user') ? 'active' : '' }}"
+                    <a href="#" class="nav-link dropdown-toggle {{ request()->routeIs('admin.user') || request()->routeIs('admin-staff.index') ? 'active' : '' }}"
                         data-bs-toggle="dropdown"><i class="fas fa-user-cog"></i> Người dùng</a>
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="{{ route('admin.user') }}"
                             class="dropdown-item {{ request()->routeIs('admin.user') ? 'active' : '' }}">Khách hàng</a>
-                        <a href="{{ route('admin-staff.index') }}" class="dropdown-item">Nhân viên</a>
+                        <a href="{{ route('admin-staff.index') }}" class="dropdown-item {{ request()->routeIs('admin-staff.index') ? 'active' : '' }}">Nhân viên</a>
                     </div>
                 </div>
             @else

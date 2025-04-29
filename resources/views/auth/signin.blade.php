@@ -60,7 +60,7 @@
                         if (response.status === "success") {    
                             toastr.success(response.message);
                             setTimeout(() => {
-                                if (response.role === 'admin') {
+                                if (response.role === 'manager' || response.role === 'staff') {
                                     window.location.href = "{{ route('dashboard.index') }}";
                                 } else {
                                     window.location.href = "{{ route('home') }}";

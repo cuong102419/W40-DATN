@@ -85,30 +85,7 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <form class="return-order" action="{{ route('admin-order.return-confirm', $order->id) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <input hidden name="reason" value="{{ $requestReturn->reason }}">
-                                            <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Bạn có muốn hoàn đơn hàng này.')">Xác nhận hoàn đơn</button>
-                                            <a data-bs-toggle="modal" data-bs-target="#cancel-return" class="btn btn-sm btn-danger">Từ chối</a>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @elseif ($requestReturn && $requestReturn->status == 'rejected')
-                                <tr>
-                                    <th>Yêu cầu hoàn trả</th>
-                                    <td>
-                                        {{-- <div>
-                                            <strong>Lý do: </strong>{{ $requestReturn->reason }}
-                                        </div>
-                                        <div>
-                                            <span>Ngày tạo:
-                                                {{ $requestReturn->created_at->format('d \T\h\á\n\g m, Y') }}</span>
-                                        </div> --}}
-                                        <span class="text-danger fw-bold">Từ chối</span>
-                                    </td>
-                                    <td>
-                                        <span><strong>Lý do từ chối:</strong> {{ $requestReturn->admin_note }}</span>
+                                        <a href="{{ route('admin-return.detail', $requestReturn->id) }}" class="btn btn-sm btn-danger">Xem yêu cầu</a>
                                     </td>
                                 </tr>
                             @endif
@@ -128,7 +105,7 @@
                                     @elseif ($order->status == 'failed')
                                         <span><strong>Lý do: </strong> {{ $order->reason_failed }}</span>
                                     @elseif ($order->status == 'returning' || $order->status == 'returned')
-                                        <span><strong>Lý do: </strong> {{ $order->reason_returned }}</span>
+                                        <a href="{{ route('admin-return.detail', $requestReturn->id) }}" class="btn btn-sm btn-danger">Xem yêu cầu</a>
                                     @endif
                                 </td>
                             </tr>
@@ -329,54 +306,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="reason-return">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form class="return-order" action="{{ route('admin-order.returned', $order->id) }}" method="post">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-header">
-                        <h6 class="modal-title">Hoàn trả sản phẩm về</h6>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            <textarea name="reason" class="form-control" id="" cols="20" rows="5"
-                                placeholder="Nhập lý do hoàn trả"></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Bạn có chắc muốn hoàn đơn.')">Xác nhận</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    @if ($requestReturn)
-        <div class="modal fade" id="cancel-return">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form class="cancel-return" action="{{ route('admin-order.cancel-return', $requestReturn->id) }}" method="post">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-header">
-                            <h6 class="modal-title">Từ chối hoàn trả</h6>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div>
-                                <textarea name="reason" class="form-control" id="" cols="20" rows="5"
-                                    placeholder="Nhập lý do từ chối"></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Bạn có chắc từ chối.')">Xác nhận</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    @endif
     <script>
         const orderId = {{ $order->id }}
         $('#confirm-order button[type="submit"]').click(function() {

@@ -16,29 +16,49 @@
                 </div>
 
                 <div>
-                    <div class="col-md-4">
-                        <form method="GET" action="{{ route('admin-staff.index') }}">
-                            <div class="d-flex align-items-center">
-                                <div class="me-2">
-                                    <label for="date">Chọn ngày:</label>
-                                    <input type="date" class="form-control form-control-sm" name="date" id="date"
-                                        value="{{ request('date') }}">
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <form method="GET" action="{{ route('admin-staff.index') }}">
+                                <div class="input-group input-group-sm">
+                                    <input type="hidden" name="status" value="{{ request('status', 'all') }}">
+                                    <input class="form-control" name="keyword" type="text"
+                                        placeholder="Tìm kiếm tài khoản theo tên hoặc email" value="{{ request('keyword') }}">
+                                    <button type="submit" class="input-group-text bg-primary text-light"><i
+                                            class="fas fa-search"></i></button>
                                 </div>
-                                <div>
-                                    <button class="btn btn-sm btn-primary mt-3"><i class="fas fa-filter"></i> Lọc</button>
+                            </form>
+                        </div>
+                        <div class="col-8">
+                            <form action="{{ route('admin-staff.index') }}" method="get">
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <div class=" me-2">
+                                        <input type="hidden" name="keyword" value="{{ request('keyword') }}">
+                                        <select name="status" id="" class="form-select form-select-sm">
+                                            <option value="all">Tất cả</option>
+                                            <option value="banned"
+                                                {{ request('status') == 'banned' ? 'selected' : '' }}>Vô hiệu hóa
+                                            </option>
+                                            <option value="active"
+                                                {{ request('status') == 'active' ? 'selected' : '' }}>Hoạt động
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{{ route('admin-staff.create') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus me-2"></i>Tạo mới</a>
                     </div>
 
-                    <div class=" table-responsive bg-white ps-3 pe-3">
+                    <div class=" table-responsive bg-white ps-3 pe-3 mt-3">
                         <table class="table mt-4 table-striped">
                             <thead>
                                 <tr class="text-center">
                                     <th>STT</th>
                                     <th>Họ tên</th>
-                                    <th>EMAIL</th>
-                                    <th>Chức năng</th>
+                                    <th>Email</th>
                                     <th>Trạng thái</th>
                                     <th>Ngày tạo</th>
                                     <th>Hành động</th>
@@ -50,9 +70,6 @@
                                         <th>{{ $index + 1 }}</th>
                                         <td>{{ $staff->name }}</td>
                                         <td>{{ $staff->email }}</td>
-                                        <td>
-                                            <span>Nhân viên</span>
-                                        </td>
                                         <td>
                                             <span
                                                 class=" fw-bold {{ $status[$staff->status]['class'] }}">{{ $status[$staff->status]['value'] }}</span>
@@ -72,7 +89,7 @@
                                                 @else
                                                     <button class="btn text-primary" name="action" value="unban"
                                                         type="submit"
-                                                        onclick="return confirm('Bạn có muốn mo khoa tài khoản nây.')"><i
+                                                        onclick="return confirm('Bạn có muốn mở khóa tài khoản nây.')"><i
                                                             class="fas fa-unlock-alt"></i></button>
                                                 @endif
                                             </form>
@@ -81,7 +98,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{-- {{ $staffs->links() }} --}} 
+                        {{ $staffs->links() }} 
                     </div>
                 </div>
             </div>

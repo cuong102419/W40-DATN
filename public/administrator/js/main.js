@@ -62,7 +62,7 @@
     // Salse & Revenue Chart
     var ctx3 = $("#line-chart").get(0).getContext("2d");
     var myChart3 = new Chart(ctx3, {
-        type: "line",
+        type: "bar",
         data: {
             labels: labelsRevenue,
             datasets: [{
@@ -78,25 +78,51 @@
         }
     });
 
-    // Pie Chart
-    var ctx5 = $("#pie-chart").get(0).getContext("2d");
-    var myChart5 = new Chart(ctx5, {
-        type: "pie",
+    // var ctx2 = $("#salse-revenue").get(0).getContext("2d");
+    // var myChart2 = new Chart(ctx2, {
+    //     type: "line",
+    //     data: {
+    //         labels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
+    //         datasets: [{
+    //                 label: "Lượt bán",
+    //                 data: [15, 30, 55, 45, 70, 65, 85],
+    //                 backgroundColor: "rgba(0, 156, 255, .5)",
+    //                 fill: true
+    //             },
+    //             {
+    //                 label: "Lượt xem",
+    //                 data: [99, 135, 170, 130, 190, 180, 270],
+    //                 backgroundColor: "rgba(0, 156, 255, .3)",
+    //                 fill: true
+    //             }
+    //         ]
+    //         },
+    //     options: {
+    //         responsive: true
+    //     }
+    // });
+
+
+    var ctx6 = $("#doughnut-chart").get(0).getContext("2d");
+    var myChart6 = new Chart(ctx6, {
+        type: "doughnut",
         data: {
-            labels: labels,
+            labels: brandLabels,
             datasets: [{
                 backgroundColor: [
-                    "rgba(0, 156, 255, .6)",
-                    "rgba(211, 211, 211, 0.7)"
+                    "rgba(0, 156, 255, .7)",
+                    "rgba(0, 186, 200, 0.6)",
+                    "rgba(255, 187, 69, 0.5)",
+                    "rgba(191, 175, 0, 0.4)",
+                    "rgba(0, 150, 32, 0.3)",
                 ],
-                data: data
+                data: brandSales
             }]
         },
         options: {
             responsive: true
         }
     });
-
 
 })(jQuery);
 

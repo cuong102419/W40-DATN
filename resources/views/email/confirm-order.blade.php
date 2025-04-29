@@ -86,10 +86,6 @@
                 </td>
             </tr>
             <tr>
-                <th>Thông tin thanh toán</th>
-                <td>{{ $order->address }}<br>
-            </tr>
-            <tr>
                 <th>Phương thức thanh toán</th>
                 <td>{{ $order->payment_method == 'COD' ? 'Thanh toán khi nhận hàng.' : ($order->payment_method == 'ATM' ? 'Thanh toán qua VNPay' : 'Thanh toán qua ví MOMO') }}
                 </td>
