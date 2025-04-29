@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -12,19 +13,39 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $totalUsers = User::where('role', '=', 'user')->count();
         $totalOrders = Order::where('status', '!=', 'canceled')->count();
         $totalSales = Product::sum('sales_count');
-        $totalRevenueMonth = Order::where('status', 'completed')->whereMonth('created_at', Carbon::now()->month)->sum('total_final');
-        $totalRevenue = Order::where('status', 'completed')->sum('total_final');
+        $totalRevenueMonth = Order::where('status', 'completed')->where('payment_status', 'paid')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->sum('total_final');
+        $totalRevenue = Order::where('status', 'completed')->where('payment_status', 'paid')->where('created_at', '>=', Carbon::now()->subMonths(3))->sum('total_final');
 
-        $revenueMonth = Order::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(total) as revenue")
-            ->where('payment_status', 'paid')
-            ->groupBy('month')
-            ->orderBy('month')
+        $query = Order::selectRaw("
+                    DATE_FORMAT(created_at, '%Y-%m') as raw_month,
+                    DATE_FORMAT(created_at, '%m/%Y') as month,
+                    SUM(total_final) as revenue
+                ")
+            ->where('status', 'completed')
+            ->where('payment_status', 'paid');
+
+        if ($request->filled('from')) {
+            $query->where('created_at', '>=', Carbon::parse($request->from)->startOfDay());
+        }
+
+        if ($request->filled('to')) {
+            $query->where('created_at', '<=', Carbon::parse($request->to)->endOfDay());
+        }
+
+        if (!$request->filled('from') && !$request->filled('to')) {
+            $query->where('created_at', '>=', Carbon::now()->subMonths(12));
+        }
+
+        $revenueMonth = $query->groupBy('raw_month', 'month')
+            ->orderBy('raw_month')
             ->pluck('revenue', 'month');
+
+
 
         $order = Order::selectRaw('status, COUNT(*) as total')
             ->whereIn('status', ['completed', 'canceled'])
@@ -55,12 +76,19 @@ class DashboardController extends Controller
         ];
 
         $quickListOrders = Order::orderBy('created_at', 'desc')->take(6)->get();
-        $productSale = Product::orderBy('sales_count', 'desc')
-            ->limit(5)
+        $topBrands = Brand::select('brands.name')
+            ->selectRaw('SUM(products.sales_count) as total_sales')
+            ->join('products', 'products.brand_id', '=', 'brands.id')
+            ->groupBy('brands.name')
+            ->orderByDesc('total_sales')
+            ->take(5)
             ->get();
 
+        $brandLabels = $topBrands->pluck('name');
+        $brandSales = $topBrands->pluck('total_sales');
+
         $productMonth = Product::whereHas('variants')->whereHas('imageLists')->latest('id')->limit(5)->get();
-        $productView = Product::whereHas('variants')->whereHas('imageLists')->orderBy('view', 'desc')->limit(5)->get();
+        $productView = Product::whereHas('variants')->whereHas('imageLists')->orderBy('view', 'desc')->limit(6)->get();
 
         return view('admin.dashboard.index', compact(
             'totalUsers',
@@ -74,7 +102,8 @@ class DashboardController extends Controller
             'productMonth',
             'productView',
             'statusOrder',
-            'productSale'
+            'brandLabels',
+            'brandSales'
         ));
     }
 }

@@ -13,24 +13,40 @@
                         <h6 class="title">Danh sách khách hàng</h6>
                         </a>
                     </div>
-
-                    <div class="col-md-4 col-sm-3">
-                        <form action="{{ route('admin.user') }}" method="get">
-                            <div class="d-flex align-items-center">
-                                <div class=" me-2">
-                                    <select name="status" id="" class="form-select form-select-sm">
-                                        <option value="">Tất cả</option>
-                                        <option value="unconfirmed"
-                                            {{ request('status') == 'unconfirmed' ? 'selected' : '' }}>Chưa xác nhận
-                                        </option>
-                                        <option value="confirmed"
-                                            {{ request('status') == 'confirmed' ? 'selected' : '' }}>Đã xác nhận
-                                        </option>
-                                    </select>
+                    <div class="row mt-3">
+                        <div class="col-4">
+                            <form method="GET" action="{{ route('admin.user') }}">
+                                <div class="input-group input-group-sm">
+                                    <input type="hidden" name="status" value="{{ request('status', 'all') }}">
+                                    <input class="form-control" name="keyword" type="text"
+                                        placeholder="Tìm kiếm tài khoản theo tên hoặc email" value="{{ request('keyword') }}">
+                                    <button type="submit" class="input-group-text bg-primary text-light"><i
+                                            class="fas fa-search"></i></button>
                                 </div>
-                                <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                        <div class="col-8">
+                            <form action="{{ route('admin.user') }}" method="get">
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <div class=" me-2">
+                                        <input type="hidden" name="keyword" value="{{ request('keyword') }}">
+                                        <select name="status" id="" class="form-select form-select-sm">
+                                            <option value="all">Tất cả</option>
+                                            <option value="unconfirmed"
+                                                {{ request('status') == 'unconfirmed' ? 'selected' : '' }}>Chưa xác nhận
+                                            </option>
+                                            <option value="banned"
+                                                {{ request('status') == 'banned' ? 'selected' : '' }}>Vô hiệu hóa
+                                            </option>
+                                            <option value="active"
+                                                {{ request('status') == 'active' ? 'selected' : '' }}>Hoạt động
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fas fa-filter"></i> Lọc</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                 </div>

@@ -17,6 +17,9 @@ class Reason extends Model
         'type',
         'reason',
         'status',
+        'bank',
+        'bank_account',
+        'fullname',
         'admin_note',
     ];
 
@@ -26,5 +29,9 @@ class Reason extends Model
 
     public function user() {
         return $this->belongsTo(User::class);
+    }
+
+    public function images() {
+        return $this->hasMany(ImageReturn::class);
     }
 }

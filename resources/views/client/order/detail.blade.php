@@ -12,9 +12,9 @@
                     <div>
                         <h5 class="text-uppercase">Đơn hàng: {{ $order->order_code }}</h5>
                     </div>
-
-                    @if ($order->status == 'delivered')          
-                        <form action="{{ route('order.completed', $order->id) }}" method="POST" onsubmit="return confirm('Bạn chắc chắn đã nhận được hàng?')">
+                    @if ($order->status == 'delivered')
+                        <form action="{{ route('order.completed', $order->id) }}" method="POST"
+                            onsubmit="return confirm('Bạn chắc chắn đã nhận được hàng?')">
                             @csrf
                             <button type="submit" class="btn btn-theme btn-sm">Nhận hàng thành công</button>
                         </form>
@@ -25,6 +25,101 @@
                         </div>
                     @endif
                 </div>
+                @if ($order->status == 'unconfirmed')
+                    <div class="coupon-accordion mt-4" id="CouponAccordion">
+                        <div>
+                            <h5>
+                                <a href="#" class="btn btn-theme btn-sm" data-bs-toggle="collapse"
+                                    data-bs-target="#couponaccordion">Hủy đơn</a>
+                            </h5>
+                            <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
+                                <div class="card-body">
+                                    <div class="apply-coupon-wrap mb-60">
+                                        <form id="request-cancel" action="{{ route('order.cancel-request') }}" method="post">
+                                            @csrf
+                                            <div class="row">
+                                                <div>
+                                                    <div class="form-group">
+                                                        <textarea class="reason form-control" cols="30" rows="5" type="text"
+                                                            placeholder="Nhập lý do huỷ đơn" name="reason" required></textarea>
+                                                    </div>
+                                                    <div>
+                                                        <input name="order_id" value="{{ $order->id }}" hidden>
+                                                        @if (Auth::check())
+                                                        <input name="user_id" value="{{ Auth::user()->id }}" hidden @endif>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <button type="submit"
+                                                        onclick="return confirm('Bạn có chắc muốn hủy đơn hàng.')"
+                                                        class="btn-theme btn-sm">Gửi</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @elseif ($order->status == 'delivered')
+                    <div class="coupon-accordion mt-4" id="CouponAccordion">
+                        <div>
+                            <h5>
+                                <a href="#" class="btn btn-theme btn-sm" data-bs-toggle="collapse"
+                                    data-bs-target="#couponaccordion">Yêu cầu hoàn trả</a>
+                            </h5>
+                            <div id="couponaccordion" class="collapse mt-4" data-bs-parent="#CouponAccordion">
+                                <div class="card-body">
+                                    <div class="apply-coupon-wrap mb-60 w-75 ms-1">
+                                        <form id="request-return" action="{{ route('order.return-request') }}" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="row">
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label for="">Chọn ngân hàng <span
+                                                                class="text-danger">*</span></label>
+                                                        <select id="bankSelect" name="bank" class="form-select"></select>
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="">Số tài khoản <span
+                                                            class="text-danger">*</span></label>
+                                                            <input type="text" name="bank_account" class="fullname form-control" required placeholder="Nhập số tài khoản">
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="">Họ và tên <span
+                                                            class="text-danger">*</span></label>
+                                                            <input type="text" name="fullname" class="fullname form-control" required placeholder="Nhập đầy đủ họ tên">
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="">Nhập hình ảnh sản phẩm <span
+                                                                class="text-danger">*</span></label>
+                                                        <input type="file" class="image form-control" multiple name="image[]" id="image" required>
+                                                        <span class="error-image text-danger mt-2 "></span>
+                                                    </div>
+                                                    <div class="form-group mt-3">
+                                                        <label for="">Lý do <span class="text-danger">*</span></label>
+                                                        <textarea class="reason form-control" cols="30" rows="5" type="text"
+                                                            placeholder="Nhập lý do hoàn trả" name="reason" required></textarea>
+                                                    </div>
+                                                    <div>
+                                                        <input name="order_id" value="{{ $order->id }}" hidden>
+                                                        @if (Auth::check())
+                                                        <input name="user_id" value="{{ Auth::user()->id }}" hidden @endif>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-3">
+                                                    <button type="submit"
+                                                        onclick="return confirm('Bạn có chắc muốn hoàn trả sản phẩm.')"
+                                                        class="btn-theme btn-sm">Gửi</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="mt-5 border p-4">
                     <div class="d-flex justify-content-between border-bottom pb-4">
                         <div>
@@ -41,6 +136,12 @@
                                     <span>{{ $order->reason_failed }}</span>
                                 @endif
                             </div>
+                           @if ($reason && $reason->type == 'return' && $reason->status == 'rejected')
+                                <span>Yêu cầu hoàn trả bị từ chối, đơn hàng đã được hoàn thành.</span>
+                            @elseif ($reason && $reason->status == 'pending')
+                                <span>Yêu cầu đang chờ phê duyệt.</span>
+                            @endif
+                            
                         </div>
                         <div>
                             Ngày tạo:
@@ -54,8 +155,8 @@
                             <tr>
                                 <td>
                                     <div class="d-flex">
-                                            <img class="rounded" src="{{ Storage::url($item->image_url) }}"
-                                                width="200" height="110" alt="">
+                                        <img class="rounded" src="{{ Storage::url($item->image_url) }}" width="200" height="110"
+                                            alt="">
                                         <div class="ms-4">
                                             <h4 class="product-title">{{ $item->product_name }}</h4>
                                             <div>
@@ -82,76 +183,6 @@
                         @endforeach
                     </table>
                 </div>
-                @if ($order->status == 'unconfirmed')
-                    <div class="coupon-accordion mt-4" id="CouponAccordion">
-                        <div>
-                            <h5>
-                                <a href="#" class="btn btn-theme btn-sm" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Hủy đơn</a>
-                            </h5>
-                            <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
-                                <div class="card-body">
-                                    <div class="apply-coupon-wrap mb-60">
-                                        <form id="request-cancel" action="{{ route('order.cancel-request') }}" method="post">
-                                            @csrf
-                                            <div class="row">
-                                                <div>
-                                                    <div class="form-group">
-                                                        <textarea class="reason form-control" cols="30" rows="5" type="text"
-                                                            placeholder="Nhập lý do huỷ đơn" name="reason" required></textarea>
-                                                    </div>
-                                                    <div>
-                                                        <input name="order_id" value="{{ $order->id }}" hidden>
-                                                        @if (Auth::check())
-                                                        <input name="user_id" value="{{ Auth::user()->id }}" hidden
-                                                        @endif>
-                                                    </div>
-                                                </div>
-                                                <div class="mt-3">
-                                                    <button type="submit" onclick="return confirm('Bạn có chắc muốn hủy đơn hàng.')" class="btn-theme btn-sm">Gửi</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @elseif ($order->status == 'delivered')
-                    <div class="coupon-accordion mt-4" id="CouponAccordion">
-                        <div>
-                            <h5>
-                                <a href="#" class="btn btn-theme btn-sm" data-bs-toggle="collapse" data-bs-target="#couponaccordion">Yêu cầu hoàn trả</a>
-                            </h5>
-                            <div id="couponaccordion" class="collapse" data-bs-parent="#CouponAccordion">
-                                <div class="card-body">
-                                    <div class="apply-coupon-wrap mb-60">
-                                        <form id="request-return" action="{{ route('order.return-request') }}" method="post">
-                                            @csrf
-                                            <div class="row">
-                                                <div>
-                                                    <div class="form-group">
-                                                        <textarea class="reason form-control" cols="30" rows="5" type="text"
-                                                            placeholder="Nhập lý do hoàn trả" name="reason" required></textarea>
-                                                    </div>
-                                                    <div>
-                                                        <input name="order_id" value="{{ $order->id }}" hidden>
-                                                        @if (Auth::check())
-                                                        <input name="user_id" value="{{ Auth::user()->id }}" hidden
-                                                        @endif>
-                                                    </div>
-                                                </div>
-                                                <div class="mt-3">
-                                                    <button type="submit" onclick="return confirm('Bạn có chắc muốn hoàn trả sản phẩm.')" class="btn-theme btn-sm">Gửi</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-
             </div>
             <div class="col-5">
                 <div class="mt-5">
@@ -219,10 +250,10 @@
                                         <span class="small">{{ $payment_method[$order->payment_method] }}</span>
                                     </div>
                                     @if ($order->payment_method != 'COD')
-                                    <div class="mb-4">
-                                        <span
-                                            class="small fw-bold {{ $payment_status[$order->payment_status]['class'] }}">{{ $payment_status[$order->payment_status]['value'] }}</span>
-                                    </div>
+                                        <div class="mb-4">
+                                            <span
+                                                class="small fw-bold {{ $payment_status[$order->payment_status]['class'] }}">{{ $payment_status[$order->payment_status]['value'] }}</span>
+                                        </div>
                                     @endif
                                 </td>
                                 <td class="text-end">

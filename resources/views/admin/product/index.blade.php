@@ -10,7 +10,7 @@
         <div class="col-12">
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">Danh sách sản phẩm</h6>
-                <div class="row mb-4 justify-content-between">
+                <div class="row mb-2 justify-content-between">
                     <div class="col-md-4">
                         <form method="GET" action="{{ route('admin-product.index') }}">
                             <div class="input-group input-group-sm">
@@ -45,7 +45,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="">
+                <div class="mb-2">
                     <a href="{{ route('admin-product.create') }}" class="btn btn-sm btn-primary"><i
                             class="fas fa-plus me-1"></i>Thêm mới</a>
                 </div>
@@ -89,8 +89,10 @@
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('admin-product.detail', $product->id) }}"
-                                                    class="btn text-primary ms-2" title="Chi tiết sản phẩm"><i
+                                                    class="btn text-primary" title="Chi tiết sản phẩm"><i
                                                         class="fas fa-info-circle fa-lg"></i></a>
+                                                <a href="{{ route('product-variant.index', $product->id) }}"
+                                                    class="btn text-success" title="Biến thể sản phẩm"><i class="fas fa-boxes"></i></a>
                                                 @if ($product->variants->isEmpty())
                                                     <form action="{{ route('admin-product.delete', $product->id) }}"
                                                         method="post" class="ms-2">

@@ -70,12 +70,12 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <th>Giảm giá</th>
-                            <td class="text-end">-{{ number_format($order->discount_amount, 0, '.', '.') }}đ</td>
-                        </tr>
-                        <tr>
                             <th>Shipping</th>
                             <td class="text-end">{{ number_format($order->shipping, 0, '.', '.') }}đ</td>
+                        </tr>
+                        <tr>
+                            <th>Giảm giá</th>
+                            <td class="text-end">{{ number_format($order->discount_amount, 0, '.', '.') }}đ</td>
                         </tr>
                         <tr>
                             <td>
@@ -117,7 +117,7 @@
                     </table>
                 </div>
                 <div class="text-center mt-4">
-                    <a href="{{ route('home') }}" class="btn-theme">Tiếp tục mua sắm</a>
+                    <a href="{{ route('order.detail', $order->id) }}" class="btn-theme">Xem đơn hàng</a>
                 </div>
             </div>
         </div>

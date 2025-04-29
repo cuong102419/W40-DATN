@@ -13,11 +13,20 @@ class UserController extends Controller
 {
     public function listUser(Request $request)
     {
-        
+
         $query = User::query();
 
-        if ($request->status === 'confirmed') {
-            $query->whereNotNull('email_verified_at');
+        if ($request->keyword) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'LIKE', "%{$request->keyword}%")
+                    ->orWhere('email', 'LIKE', "%{$request->keyword}%");
+            });
+        }
+
+        if ($request->status === 'active') {
+            $query->where('status', 1);
+        } elseif ($request->status === 'banned') {
+            $query->where('status', 0);
         } elseif ($request->status === 'unconfirmed') {
             $query->whereNull('email_verified_at');
         }

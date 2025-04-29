@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->nullable();
             $table->foreignId('order_id')->constrained();
             $table->enum('type', ['return', 'cancel']);
+            $table->string('bank')->nullable();
+            $table->string('bank_account')->nullable();
+            $table->string('fullname')->nullable();
             $table->text('reason');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('admin_note')->nullable();

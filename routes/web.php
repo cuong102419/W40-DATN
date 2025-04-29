@@ -27,6 +27,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Admin\ReasonController as AdminReasonController;
 use App\Http\Controllers\ReasonController;
 use App\Http\Controllers\VerifyAccountController;
 use App\Http\Middleware\CheckAuth;
@@ -205,6 +206,8 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::put('/return-confirm/{order}', [AdminOrderController::class, 'return_confirm'])->name('admin-order.return-confirm');
         Route::put('/cancel-return/{requestReturn}', [AdminOrderController::class, 'cancel_return'])->name('admin-order.cancel-return');
         Route::get('/{order}/history', [HistoryController::class, 'index'])->name('admin-order.history');
+        Route::get('/return-request', [AdminReasonController::class, 'index'])->name('admin-order.return-request');
+        Route::get('/return-request/{reason}', [AdminReasonController::class, 'detail'])->name('admin-return.detail');
     });
 
     
@@ -217,5 +220,7 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
     Route::prefix('/staff')->middleware([CheckManager::class])->group(function () {
         Route::get('/', [StaffController::class, 'index'])->name('admin-staff.index');
         Route::patch('/status/{user}', [StaffController::class, 'status'])->name('admin-staff.status');
+        Route::get('/create', [StaffController::class, 'create'])->name('admin-staff.create');
+        Route::post('/store', [StaffController::class, 'store'])->name('admin-staff.store');
     });
 });
