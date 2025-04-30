@@ -336,11 +336,17 @@
                                                                         <div class="form-group">
                                                                             <label for="for_images">Tải lên hình ảnh sản
                                                                                 phẩm bạn đã nhận (tối đa 3 ảnh)</label>
+
                                                                             <input type="file" name="images[]"
                                                                                 class="form-control image-input"
-                                                                                id="for_images_{{ $index }}" multiple>
+                                                                                id="for_images_{{ $index }}"
+                                                                                multiple>
                                                                             <div class="image-preview mt-2"
                                                                                 id="preview-{{ $index }}"></div>
+                                                                            @error('images.*')
+                                                                                <div class="text-danger">{{ $message }}
+                                                                                </div>
+                                                                            @enderror
                                                                         </div>
                                                                         {{-- Hidden inputs --}}
                                                                         <input type="hidden" name="product_variant_id"
@@ -385,7 +391,7 @@
                                                     giá.
                                                 </div>
                                             @endif
-                                            
+
                                         </div>
                                     </div>
 
@@ -433,18 +439,17 @@
                                                     <div class="review-images">
                                                         @foreach (json_decode($review->images) as $image)
                                                             <img src="{{ Storage::url($image) }}" alt="Hình ảnh đánh giá"
-                                                                class="review-image"
-                                                                onclick="openImageModal(this.src)"
+                                                                class="review-image" onclick="openImageModal(this.src)"
                                                                 style="max-width: 150px; margin: 5px; border-radius: 5px; cursor: pointer;">
                                                         @endforeach
                                                     </div>
                                                 @endif
 
-                                                
-                                                <div id="imageModal" onclick="closeImageModal()" 
+
+                                                <div id="imageModal" onclick="closeImageModal()"
                                                     style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; 
                                                             background-color: rgba(0,0,0,0.8); justify-content: center; align-items: center;">
-                                                    <img id="modalImage" src="" alt="Phóng to ảnh" 
+                                                    <img id="modalImage" src="" alt="Phóng to ảnh"
                                                         style="max-width: 90%; max-height: 90%; border-radius: 8px;">
                                                 </div>
                                             </div>
@@ -452,9 +457,7 @@
                                         @empty
                                             <p>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
                                         @endforelse
-                                        <script>
-                                            
-                                        </script>
+                                        <script></script>
 
                                         <style>
                                             #loading-screen {

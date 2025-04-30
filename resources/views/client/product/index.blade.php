@@ -94,7 +94,7 @@
                                                 <input type="hidden" name="max_price" value="{{ request()->max_price }}">
                                             @endif
 
-                                            <span>Sort By :</span>
+                                            <span>Sắp xếp :</span>
                                             <select name="sort" class="form-select d-inline-block w-auto"
                                                 onchange="this.form.submit()">
                                                 <option value="" {{ request('sort') == '' ? 'selected' : '' }}>Mặc định
