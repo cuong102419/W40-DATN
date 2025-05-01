@@ -27,6 +27,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Admin\AdminReviewController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReasonController as AdminReasonController;
 use App\Http\Controllers\ReasonController;
 use App\Http\Controllers\VerifyAccountController;
@@ -121,7 +122,7 @@ Route::prefix('/checkout')->group(function () {
 Route::prefix(('/order'))->group(function () {
     Route::get('/', [OrderController::class, 'index'])->name('order.index');
     Route::get('/list', [OrderController::class, 'list'])->middleware('auth')->name('order.list');
-    Route::get('/detail/{order}', [OrderController::class, 'detail'])->middleware('auth')->name('order.detail');
+    Route::get('/detail/{order}', [OrderController::class, 'detail'])->name('order.detail');
     Route::post('/cancel', [ReasonController::class, 'cancel'])->name('order.cancel-request');
     Route::post('/return', [ReasonController::class, 'returned'])->name('order.return-request');
     Route::post('/completed/{order}', [OrderController::class, 'completed'])->name('order.completed');
@@ -222,5 +223,13 @@ Route::prefix('admin')->middleware([CheckAuth::class])->group(function () {
         Route::patch('/status/{user}', [StaffController::class, 'status'])->name('admin-staff.status');
         Route::get('/create', [StaffController::class, 'create'])->name('admin-staff.create');
         Route::post('/store', [StaffController::class, 'store'])->name('admin-staff.store');
+    });
+
+    Route::prefix('/profile')->group(function () {
+        Route::get('/{user}', [ProfileController::class, 'index'])->name('admin-profile.index');
+        Route::get('/edit/{user}', [ProfileController::class, 'edit'])->name('admin-profile.edit');
+        Route::put('/edit/{user}', [ProfileController::class, 'update'])->name('admin-profile.update');
+        Route::get('/change-password/{user}', [ProfileController::class, 'change'])->name('admin-profile.change-password');
+        Route::put('/change-password/{user}', [ProfileController::class, 'update_pass'])->name('admin-profile.update-password');
     });
 });

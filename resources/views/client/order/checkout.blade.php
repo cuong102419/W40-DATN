@@ -49,7 +49,9 @@
                             <tr>
                                 <td>
                                     <div>
-                                        <span class="fw-bold"><a href="{{ route('product.detail', ['id' => $item->product_variant->product_id, 'slug' => Str::slug($item->product_name)]) }}">{{ $item->product_name }}</a> ×
+                                        <span class="fw-bold"><a
+                                                href="{{ route('product.detail', ['id' => $item->product_variant->product_id, 'slug' => Str::slug($item->product_name)]) }}">{{ $item->product_name }}</a>
+                                            ×
                                             {{ $item->quantity }}</span>
                                     </div>
                                     <div>
@@ -117,7 +119,12 @@
                     </table>
                 </div>
                 <div class="text-center mt-4">
-                    <a href="{{ route('order.detail', $order->id) }}" class="btn-theme">Xem đơn hàng</a>
+                    @if (Auth::check())
+                        <a href="{{ route('order.detail', $order->id) }}" class="btn-theme">Xem đơn hàng</a>
+                    @else
+                        <a href="{{ route('home') }}" class="btn-theme">Tiếp tục mua sắm</a>
+                    @endif
+
                 </div>
             </div>
         </div>

@@ -34,6 +34,7 @@
         $(document).ready(function () {
             $("#brand-form").on("submit", function (e) {
                 e.preventDefault();
+                $('.text-danger').text('');
 
                 let form = $(this);
                 let formData = form.serialize() + "&_method=PUT";
