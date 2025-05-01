@@ -24,7 +24,9 @@ class ReviewController extends Controller
             'rating' => 'required|integer|min:1|max:5',
             'title' => 'required|string|max:255',
             'comment' => 'required|string|max:1500',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Kiểm tra ảnh
+            'images.*' => 'nullable|mimes:jpeg,png,jpg,webp,avif|max:4080', // Kiểm tra ảnh
+        ], [
+            'images.*' => 'Tệp phải là ảnh.'
         ]);
 
         // Thêm đoạn này ngay sau validate
@@ -56,12 +58,11 @@ class ReviewController extends Controller
         if ($alreadyReviewed) {
             return back()->with('error', 'Bạn đã đánh giá sản phẩm này cho đơn hàng này rồi.');
         }
-        // Xử lý hình ảnh nếu có
+        // Xử lý hình ảnh 
         $imagePaths = [];
         if ($request->hasFile('images')) {
             $images = $request->file('images');
 
-            // Kiểm tra số lượng ảnh không vượt quá 3
             if (count($images) > 3) {
                 return back()->with('error', 'Bạn chỉ được tải lên tối đa 3 ảnh.');
             }
@@ -71,7 +72,7 @@ class ReviewController extends Controller
                 $imagePaths[] = $path;
             }
         }
-        // Tạo đánh giá
+        // lưu đánh giá vào csdl
         Review::create([
             'user_id' => $user->id,
             'product_id' => $request->product_id,
