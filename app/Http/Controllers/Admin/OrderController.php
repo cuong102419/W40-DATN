@@ -225,19 +225,35 @@ class OrderController extends Controller
         }
 
         if ($request->input('action') == 'delivered') {
-            $order->update([
-                'status' => 'delivered',
-                'payment_status' => 'paid'
-            ]);
-            event(new OrderChange($order->id));
+            if ($order->user_id == null) {
+                $order->update([
+                    'status' => 'completed',
+                    'payment_status' => 'paid'
+                ]);
+                event(new OrderChange($order->id));
 
-            OrderHistory::create([
-                'order_id' => $order->id,
-                'admin_id' => Auth::user()->id,
-                'action' => 'delivered',
-                'note' => 'Cập nhật trạng thái đơn hàng "giao thành công".',
-                'changed_at' => Carbon::now()
-            ]);
+                OrderHistory::create([
+                    'order_id' => $order->id,
+                    'admin_id' => Auth::user()->id,
+                    'action' => 'delivered',
+                    'note' => 'Cập nhật trạng thái đơn hàng "Hoàn thành".',
+                    'changed_at' => Carbon::now()
+                ]);
+            } else {
+                $order->update([
+                    'status' => 'delivered',
+                    'payment_status' => 'paid'
+                ]);
+                event(new OrderChange($order->id));
+
+                OrderHistory::create([
+                    'order_id' => $order->id,
+                    'admin_id' => Auth::user()->id,
+                    'action' => 'delivered',
+                    'note' => 'Cập nhật trạng thái đơn hàng "giao thành công".',
+                    'changed_at' => Carbon::now()
+                ]);
+            }
 
             foreach ($order->orderItems as $item) {
                 $variant = ProductVariant::find($item->product_variant_id);
@@ -404,7 +420,7 @@ class OrderController extends Controller
             'note' => 'Xác nhận yêu cầu hoàn trả từ khách hàng.',
             'changed_at' => Carbon::now()
         ]);
-        
+
         $reason = Reason::where('order_id', $order->id)->first();
 
         if ($reason) {
@@ -419,7 +435,8 @@ class OrderController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function cancel_return(Request $request, Reason $requestReturn) {
+    public function cancel_return(Request $request, Reason $requestReturn)
+    {
         $requestReturn->update([
             'status' => 'rejected',
             'admin_note' => $request->reason
@@ -444,5 +461,5 @@ class OrderController extends Controller
             'message' => 'Cập nhật thành công.'
         ], Response::HTTP_OK);
     }
-    
+
 }

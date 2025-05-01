@@ -75,6 +75,9 @@
                             <div class="d-flex align-items-end">
                                 <button type="submit" class="btn btn-primary btn-sm"><i
                                         class="fas fa-filter me-2"></i>Lọc</button>
+                                <a href="{{ route('dashboard.index') }}" class="btn btn-secondary btn-sm ms-2">
+                                    <i class="fas fa-sync me-2"></i>Reset
+                                </a>
                             </div>
                         </form>
                     </div>
@@ -87,19 +90,6 @@
                 </div>
             </div>
         </div>
-        {{-- <div class="row g-4 mt-3">
-            <div class="col-sm-12 col-xl-12">
-                <div class="bg-light text-center rounded p-4">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h5 class="mb-4">Ahihi</h5>
-                        {{-- <h6>Tổng doanh thu 3 tháng gần đây: <span class="text-danger">{{ number_format($totalRevenue,
-                                0, '.', '.') }}đ</span></h6> --}}
-                        {{--
-                    </div>
-                    <canvas class="bg-white p-3" id="salse-revenue"></canvas>
-                </div>
-            </div>
-        </div> --}}
 
         <!-- Recent Sales Start -->
         <div class="container-fluid mb-3 pt-4 px-4 bg-light mt-4">

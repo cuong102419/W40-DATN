@@ -98,7 +98,7 @@
                 <tr>
                     <th>Sản phẩm</th>
                     <td>{{ $item->product_variant->product->name }} (Số lượng: {{ $item->quantity }})<br>Màu sắc: <span
-                            style="width: 18px; height: 18px; background-color: {{ $item->product_variant->color }}; display: inline-block;">
+                            style="width: 18px; height: 18px; border: 1px solid #333; border-radius: 50%; background-color: {{ $item->product_variant->color }}; display: inline-block;">
                         </span><br>Kích
                         thước:
                         {{ $item->product_variant->size }}
@@ -107,16 +107,13 @@
             @endforeach
             <tr>
                 <th>Tổng giá trị</th>
-                <td class="highlight">{{ number_format($order->total_final, 0, '.','.' )}} ₫</td>
+                <td class="highlight">{{ number_format($order->total_final, 0, '.','.' )}}đ</td>
             </tr>
             <tr>
                 <th>Vận chuyển</th>
-                <td>{{ $order->shipping }}</td>
+                <td>{{ number_format($order->shipping, 0, '.', '.') }}đ</td>
             </tr>
         </table>
-
-        <p>Chúng tôi sẽ thông báo cho bạn khi đơn hàng được gửi đi và cung cấp thông tin theo dõi để bạn có thể kiểm tra
-            tình trạng đơn hàng.</p>
 
         <div class="footer">
             <p>Cảm ơn bạn đã mua sắm tại FreakSport!</p>

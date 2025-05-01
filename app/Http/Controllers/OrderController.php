@@ -235,9 +235,7 @@ class OrderController extends Controller
 
     public function detail(Order $order)
     {
-        if ($order->user_id != Auth::user()->id) {
-            abort(404);
-        }
+
         $orderItems = OrderItem::where('order_id', $order->id)->get();
         $status = [
             'unconfirmed' => ['value' => 'Chờ xác nhận', 'class' => 'text-secondary'],
@@ -263,6 +261,10 @@ class OrderController extends Controller
         ];
 
         $reason = Reason::where('order_id', $order->id)->first();
+
+        if ( !Auth::check() || $order->user_id != Auth::user()->id) {
+            abort(404);
+        }
 
         return view('client.order.detail', compact('order', 'orderItems', 'status', 'payment_method', 'payment_status', 'reason'));
     }
