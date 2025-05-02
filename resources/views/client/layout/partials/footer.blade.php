@@ -7,12 +7,6 @@
                     <!--== Start widget Item ==-->
                     <div class="widget-item">
                         <div class="about-widget-wrap">
-                            <div class="widget-logo-area">
-                                <a href="index.html">
-                                    <img class="logo-main" src="{{ asset('client/img/logo1.webp')}}" width="170"
-                                        height="34" alt="Logo" />
-                                </a>
-                            </div>
                             <p class="desc">Nhà sưu tầm và phân phối chính hãng các
                                  thương hiệu thời trang quốc tế hàng đầu Việt Nam.</p>
                             <div class="social-icons">
