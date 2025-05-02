@@ -119,6 +119,10 @@
                             $("input[name='featured']").prop("checked", false);
                             CKEDITOR.instances.description.setData("");
                             toastr.success(response.message);
+
+                            setTimeout(function () {
+                                window.location.href = '/admin/product/detail/' + response.data;
+                            }, 1500);
                         }
                     },
                     error: function (xhr) {

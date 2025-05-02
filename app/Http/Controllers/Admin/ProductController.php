@@ -80,7 +80,8 @@ class ProductController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Thêm sản phẩm thành công.'
+                'message' => 'Thêm sản phẩm thành công.',
+                'data' => $product->id
             ], Response::HTTP_OK);
         }
 
