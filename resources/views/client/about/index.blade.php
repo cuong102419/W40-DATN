@@ -75,21 +75,21 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="team-member">
-                        <img src="{{ asset('client/img/about/tts.jpg') }}" style="width: 160px; height: 180px;" alt="CEO" class="img-fluid rounded-circle mb-3">
+                        <img src="{{ asset('client/img/about/avatar/son.jpg') }}" style="width: 180px; height: 180px;" alt="CEO" class="img-fluid rounded-circle mb-3">
                         <h4>Trần Thái Sơn</h4>
                         <p>CEO & Founder</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="team-member">
-                        <img src="{{ asset('client/img/about/pmc.jpg') }}" style="width: 160px; height: 180px;" alt="Manager" class="img-fluid rounded-circle mb-3">
+                        <img src="{{ asset('client/img/about/avatar/cuong.jpg') }}" style="width: 180px; height: 180px;" alt="Manager" class="img-fluid rounded-circle mb-3">
                         <h4>Phạm Mạnh Cường</h4>
                         <p>Quản Lý Cửa Hàng</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="team-member">
-                        <img src="{{ asset('client/img/about/4.jpg') }}" style="width: 160px; height: 180px;" alt="Marketing" class="img-fluid rounded-circle mb-3">
+                        <img src="{{ asset('client/img/about/avatar/hoang.jpg') }}" style="width: 180px; height: 180px;" alt="Marketing" class="img-fluid rounded-circle mb-3">
                         <h4>Nguyễn Trọng Hoàng</h4>
                         <p>Trưởng Phòng Marketing</p>
                     </div>
@@ -99,14 +99,14 @@
             <div class="row mt-5">
                 <div class="col-md-6">
                     <div class="team-member ms-5">
-                        <img src="{{ asset('client/img/about/5.jpg') }}" style="width: 160px; height: 180px;" alt="Marketing" class="img-fluid rounded-circle mb-3">
+                        <img src="{{ asset('client/img/about/avatar/duc.jpg') }}" style="width: 180px; height: 180px;" alt="Marketing" class="img-fluid rounded-circle mb-3">
                         <h4>Trần Minh Đức</h4>
                         <p>Trưởng Phòng Nhân Sự</p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="team-member me-5">
-                        <img src="{{ asset('client/img/about/6.jpg') }}" style="width: 160px; height: 180px;" alt="Marketing" class="img-fluid rounded-circle mb-3">
+                        <img src="{{ asset('client/img/about/avatar/manh.jpg') }}" style="width: 160px; height: 180px;" alt="Marketing" class="img-fluid rounded-circle mb-3">
                         <h4>Trần Duy Mạnh</h4>
                         <p>Trưởng Phòng Kinh Doanh</p>
                     </div>
