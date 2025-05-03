@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class BrandController extends Controller
@@ -33,7 +34,7 @@ class BrandController extends Controller
     {
 
         $data = $request->validate([
-            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', 'unique:brands']
+            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4',  Rule::unique('brands')->whereNull('deleted_at'),]
         ], [
             'name.required' => 'Tên thương hiệu không được để trống.',
             'name.min'      => 'Tên thương hiệu phải có ít nhất 4 ký tự.',
@@ -62,7 +63,7 @@ class BrandController extends Controller
     public function update(Request $request, Brand $brand)
     {
         $data = $request->validate([
-            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', 'unique:brands,name,' . $brand->name]
+            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', Rule::unique('brands')->whereNull('deleted_at')->ignore($brand->id)],
         ], [
             'name.required' => 'Tên thương hiệu không được để trống.',
             'name.min'      => 'Tên thương hiệu phải có ít nhất 4 ký tự.',

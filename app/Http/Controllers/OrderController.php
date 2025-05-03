@@ -159,7 +159,7 @@ class OrderController extends Controller
                         'unit_price' => $item['price']
                     ]);
                 }
-                
+
                 event(new OrderCreate);
 
                 if ($voucher) {
@@ -262,7 +262,7 @@ class OrderController extends Controller
 
         $reason = Reason::where('order_id', $order->id)->first();
 
-        if ( !Auth::check() || $order->user_id != Auth::user()->id) {
+        if (!Auth::check() || $order->user_id != Auth::user()->id) {
             abort(404);
         }
 
@@ -589,7 +589,9 @@ class OrderController extends Controller
 
             return redirect()->route('order.checkout', $encryptedId)->with('success', 'Tạo đơn hàng thành công.');
         } else {
-            $orderPending->delete();
+            if ($orderPending) {
+                $orderPending->delete();
+            }
 
             return redirect()->route('order.index')->with('error', 'Thanh toán thất bại.');
         }
