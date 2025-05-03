@@ -6,6 +6,7 @@ use App\Events\CategoryChange;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
@@ -31,7 +32,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', 'unique:categories']
+            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', Rule::unique('categories')->whereNull('deleted_at'),]
         ], [
             'name.required' => 'Tên danh mục không được để trống.',
             'name.min' => 'Tên danh mục phải có ít nhất 4 ký tự.',
@@ -56,7 +57,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $data = $request->validate([
-            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', 'unique:categories,name,' . $category->name]
+            'name' => ['required', 'regex:/^[\pL\s\-]+$/u', 'min:4', Rule::unique('categories')->whereNull('deleted_at')->ignore($category->id)],
         ], [
             'name.required' => 'Tên danh mục không được để trống.',
             'name.min'      => 'Tên danh mục phải có ít nhất 4 ký tự.',

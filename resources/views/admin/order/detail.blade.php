@@ -25,10 +25,8 @@
                                 <button onclick="return confirm('Bạn có muốn xác nhận đơn hàng này.')" type="submit"
                                     name="action" value="confirmed" class="btn btn-sm btn-primary"><i
                                         class="fas fa-check me-2"></i>Xác nhận</button>
-                                @if (!$requestCancel)
                                     <a data-bs-toggle="modal" data-bs-target="#reason-cancel"
                                         class="btn btn-sm btn-danger"><i class="far fa-window-close me-2"></i>Hủy</a>
-                                @endif
                             @elseif ($order->status == 'confirmed')
                                 <button type="submit" name="action" value="shipping" class="btn btn-sm btn-primary"><i
                                         class="fas fa-shipping-fast me-2"></i>Giao hàng</button>
@@ -105,7 +103,11 @@
                                     @elseif ($order->status == 'failed')
                                         <span><strong>Lý do: </strong> {{ $order->reason_failed }}</span>
                                     @elseif ($order->status == 'returning' || $order->status == 'returned')
-                                        <a href="{{ route('admin-return.detail', $requestReturn->id) }}" class="btn btn-sm btn-danger">Xem yêu cầu</a>
+                                        @if ($requestReturn)
+                                            <a href="{{ route('admin-return.detail', $requestReturn->id) }}" class="btn btn-sm btn-danger">Xem yêu cầu</a>
+                                        @else
+                                            <span><strong>Lý do: </strong> {{ $order->reason_returned }}</span>   
+                                        @endif
                                     @endif
                                 </td>
                             </tr>
@@ -257,6 +259,29 @@
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="reason-return">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="return-order" action="{{ route('admin-order.returned', $order->id) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h6 class="modal-title">Hoàn trả sản phẩm về</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <textarea name="reason" class="form-control" id="" cols="20" rows="5"
+                                placeholder="Nhập lý do hoàn trả"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-sm btn-primary" onclick="return confirm('Bạn có chắc muốn hoàn đơn.')">Xác nhận</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

@@ -55,7 +55,7 @@ class VoucherController extends Controller
         }
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
-            'code' => ['required', 'string', 'min:4', 'unique:vouchers,code'],
+            'code' => ['required', 'string', 'min:4', Rule::unique('vouchers')->whereNull('deleted_at')],
             'type' => ['required'],
             'kind' => ['required'],
             'value' => ['required', 'numeric', 'min:0'],
@@ -104,7 +104,7 @@ class VoucherController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
-            'code' => ['required', 'string', 'min:4', Rule::unique('vouchers')->ignore($voucher->id)],
+            'code' => ['required', 'string', 'min:4', Rule::unique('vouchers')->whereNull('deleted_at')->ignore($voucher->id)],
             'type' => ['required'],
             'kind' => ['required'],
             'value' => ['required', 'numeric', 'min:0'],

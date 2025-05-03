@@ -52,8 +52,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'sku' => ['required', 'min:4', 'unique:products'],
-            'name' => ['required', 'min:4', 'unique:products'],
+            'sku' => ['required', 'min:4', Rule::unique('products')->whereNull('deleted_at')],
+            'name' => ['required', 'min:4', Rule::unique('products')->whereNull('deleted_at')],
             'category_id' => ['required'],
             'brand_id' => ['required'],
             'discount' => ['required'],
@@ -105,8 +105,8 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $data = $request->validate([
-            'sku' => ['required', 'min:4', Rule::unique('products')->ignore($product->id)],
-            'name' => ['required', 'min:4', Rule::unique('products')->ignore($product->id)],
+            'sku' => ['required', 'min:4', Rule::unique('products')->whereNull('deleted_at')->ignore($product->id)],
+            'name' => ['required', 'min:4', Rule::unique('products')->whereNull('deleted_at')->ignore($product->id)],
             'category_id' => ['required'],
             'brand_id' => ['required'],
             'discount' => ['required'],
