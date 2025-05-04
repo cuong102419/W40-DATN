@@ -146,9 +146,9 @@ class ProductController extends Controller
         $brands = Brand::all();
 
         if ($keyword) {
-            $products = Product::where('name', 'LIKE', "%$keyword%")->get();
+            $products = Product::where('name', 'LIKE', "%$keyword%")->has('variants')->has('imageLists')->latest('id')->paginate(10);
         } else {
-            $products = Product::all();
+            $products = Product::latest('id')->has('variants')->has('imageLists')->paginate(10);
         }
 
         return view('client.product.index', compact('products', 'categories', 'brands'));
