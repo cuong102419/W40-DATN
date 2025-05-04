@@ -319,7 +319,7 @@
                                                                     <div class="form-group">
                                                                         <label>Loại giày</label>
                                                                         <input class="form-control" type="text"
-                                                                            value="{{ $product->name }}" readonly>
+                                                                            value="{{ $item->product_name }}" readonly>
 
                                                                         <label for="">Size</label>
                                                                         <input class="form-control" type="text"
@@ -408,7 +408,16 @@
                                                         </li>
                                                     @endfor
                                                 </ul>
-                                                <h5>{{ $review->product->name ?? 'Sản phẩm không tồn tại' }}</h5>
+                                                @php
+                                                    // Lấy thông tin từ order_items theo review
+                                                    $item = \App\Models\OrderItem::where('order_id', $review->order_id)
+                                                        ->where('product_variant_id', $review->product_variant_id)
+                                                        ->first();
+                                                @endphp
+
+                                                <h5>
+                                                    {{ $item ? $item->product_name : $review->product->name ?? 'Sản phẩm không tồn tại' }}
+                                                </h5>
 
                                                 @php
                                                     // Lấy thông tin từ order_items theo review
