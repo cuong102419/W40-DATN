@@ -29,7 +29,7 @@ class AutoCompleteOrders extends Command
     public function handle()
     {
         $orders = Order::where('status', 'delivered')
-            ->where('updated_at', '<=', now()->subMinutes(1)) // 👉 đổi về subDays(2) khi chạy thật
+            ->where('updated_at', '<=', now()->subMinutes(1)) //đổi về subDays(2) khi chạy thật
             ->get();
 
         foreach ($orders as $order) {
