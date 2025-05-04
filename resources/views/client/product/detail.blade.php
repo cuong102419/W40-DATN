@@ -432,13 +432,13 @@
                                                         <p style="margin: 0; display: flex; align-items: center;">
                                                             <strong style="margin-right: 4px;">Màu:</strong>
                                                             <span class="color-box"
-                                                                style="width: 20px; height: 20px; background-color: {{ $item->color }}; border-radius: 50%; display: inline-block;"></span>
+                                                                style="width: 20px; height: 20px; background-color: {{ $item->color }}; border-radius: 50%; display: inline-block; border: 1px solid gray"></span>
                                                         </p>
                                                     </div>
                                                 @endif
                                                 <h5 class="sub-title">
                                                     <span>{{ $review->user->name ?? 'Anonymous' }}</span>
-                                                    on <span>{{ $review->created_at->format('M d, Y') }}</span>
+                                                    vào ngày <span>{{ $review->created_at->format('d \t\h\á\n\g m, Y') }}</span>
                                                 </h5>
                                                 <h3 class="title">{{ $review->title }}</h3>
                                                 <p>{{ $review->comment }}</p>

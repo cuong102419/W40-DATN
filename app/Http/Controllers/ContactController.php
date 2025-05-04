@@ -32,7 +32,7 @@ class ContactController extends Controller
         ];
 
         // Gửi email
-        Mail::to('hoangntph44858@fpt.edu.vn')->send(new ContactMail((array) $request->all()));
+        Mail::to('cuongmanh1024@gmail.com')->send(new ContactMail((array) $request->all()));
 
 
 
