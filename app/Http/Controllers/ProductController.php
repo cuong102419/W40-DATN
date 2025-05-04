@@ -114,7 +114,7 @@ class ProductController extends Controller
             ->paginate(5)
             ->appends(['rating' => $ratingFilter]);
 
-        $products = Product::with('category', 'brand', 'imageLists')->get();
+        $products = Product::with('category', 'brand', 'imageLists')->has('variants')->has('imageLists')->get();
 
         $product->increment('view');
 
