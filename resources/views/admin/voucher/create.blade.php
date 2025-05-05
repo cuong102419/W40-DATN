@@ -81,6 +81,8 @@
             $("#voucher-form").on("submit", function (e) {
                 e.preventDefault();
 
+                $('.text-danger').text('');
+
                 let form = $(this);
                 let formData = form.serialize();
 
@@ -91,7 +93,6 @@
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
-                            // Xóa dữ liệu sau khi thêm thành công
                             $("input[name='name']").val("");
                             $("input[name='code']").val("");
                             $("input[name='min_total']").val("");

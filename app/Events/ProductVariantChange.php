@@ -20,6 +20,7 @@ class ProductVariantChange implements ShouldBroadcast
     {
         $this->productId = $productId;
         $this->productVariant = $productVariant;
+        $this->dontBroadcastToCurrentUser();
     }
 
     public function broadcastOn()
