@@ -56,7 +56,7 @@ class ProductController extends Controller
             'name' => ['required', 'min:4', Rule::unique('products')->whereNull('deleted_at')],
             'category_id' => ['required'],
             'brand_id' => ['required'],
-            'discount' => ['required'],
+            'discount' => ['required', 'numeric', 'max:90'],
             'featured' => ['nullable'],
             'description' => ['required']
         ], [
@@ -69,7 +69,9 @@ class ProductController extends Controller
             'category_id.required' => 'Vui lòng chọn loại sản phẩm.',
             'brand_id.required' => 'Vui lòng chọn hãng sản phẩm.',
             'description.required' => 'Mô tả không được để trống.',
-            'discount.required' => 'Giá trị giảm giá không được để trống'
+            'discount.required' => 'Giá trị giảm giá không được để trống',
+            'discount.numeric' => 'Giá trị giảm giá không hợp lệ',
+            'discount.max' => 'Giá trị giảm giá không được lớn hơn 90%'
         ]);
 
         $data['slug'] = $this->slug($data['name']);
@@ -109,7 +111,7 @@ class ProductController extends Controller
             'name' => ['required', 'min:4', Rule::unique('products')->whereNull('deleted_at')->ignore($product->id)],
             'category_id' => ['required'],
             'brand_id' => ['required'],
-            'discount' => ['required'],
+            'discount' => ['required', 'numeric', 'max:90'],
             'featured' => ['nullable'],
             'description' => ['required']
         ], [
@@ -122,7 +124,9 @@ class ProductController extends Controller
             'category_id.required' => 'Vui lòng chọn loại sản phẩm.',
             'brand_id.required' => 'Vui lòng chọn hãng sản phẩm.',
             'description.required' => 'Mô tả không được để trống.',
-            'discount.required' => 'Giá trị giảm giá không được để trống'
+            'discount.required' => 'Giá trị giảm giá không được để trống',
+            'discount.numeric' => 'Giá trị giảm giá không hợp lệ',
+            'discount.max' => 'Giá trị giảm giá không được lớn hơn 90%'
         ]);
 
         if (!$request->has('featured')) {

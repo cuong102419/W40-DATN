@@ -19,6 +19,7 @@ class RequestOrder implements ShouldBroadcast
     public function __construct($orderId)
     {
         $this->orderId = $orderId;
+        $this->dontBroadcastToCurrentUser();
     }
 
     public function broadcastOn()

@@ -23,7 +23,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="" class="form-label">Giảm giá</label>
-                            <input type="number" name="discount" class="form-control" min="0" step="0.1" value="0">
+                            <input  name="discount" class="form-control" min="0" step="0.1" value="0">
                             <span class="text-danger error-discount mt-2"></span>
 
                         </div>
